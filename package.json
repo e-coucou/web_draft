@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "node": "^20.3.0"
+  },
+  "name": "web_draft",
+  "description": "mon site Web",
+  "version": "1.0.0",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

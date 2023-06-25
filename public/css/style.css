@@ -1,0 +1,102 @@
+
+body {
+    display:block; 
+    scroll-behavior: smooth;
+    /* background-color: rgb(33, 31, 31); */
+    margin: 0px;
+}
+header {
+    background-color: rgb(8, 64, 13);
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: aliceblue;
+    position: fixed;
+    margin-bottom: 5px;
+    height: 70px;
+    display: inline-flex;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 5px;
+  }
+nav ul li {
+    /* background-color: antiquewhite; */
+    margin-left: 25px;
+    margin-top: 5px;
+    padding: 1px;
+}
+nav ul li:hover {
+    background-color: rgb(82, 158, 89);
+}
+main {
+    padding-top: 40px;
+    top: 120px;
+    margin-bottom: 60px;
+}
+footer {
+    background-color:  rgb(8, 64, 13);
+    color: aliceblue;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-top: 20px;
+    height: 40px;
+}
+a {
+    display:inline-flex;
+    z-index: -1;
+    text-decoration: none;
+    list-style: none;
+}
+p {
+    display:inline-flex;
+    padding: 5px;
+    margin: 10px;
+}
+h3 {
+    background-color: rgb(243, 237, 237);
+    color: rgb(14, 56, 95);
+    border: 0px;
+    padding-top: 8px;
+    padding-bottom: 5px;
+}
+img.menu {
+    background-color: aqua;
+    padding: 1px;
+    width: 45px;
+    height: 45px;
+    margin: 1px;
+    filter:blur(0px);
+    filter: brightness(-1);
+    filter:sepia(1);
+    z-index: -1;
+}
+img.menu:hover {
+    /* margin: 1px; */
+    filter: brightness(+1);
+}
+img.list {
+    background-color: aqua;
+    padding: 1px;
+    width: 100px;
+    height: 100px;
+    margin: 2px;
+    filter:blur(0px);
+    filter: brightness(-3);
+    z-index: -1;
+}
+img.list:hover {
+    filter: blur(2px);
+}
+
+a:hover {
+    background-image: rgb(218, 78, 174);
+    filter: blur(0px);
+    /* width: 104px; */
+    margin: 0px;
+    transition: 1s;
+}
