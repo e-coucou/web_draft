@@ -1,0 +1,15 @@
+const eC = {version: 'r01'};
+
+function windowsResized(){
+	resizeCanvas(windowWidth,windowHeight);
+}
+
+function setup() {
+	// createCanvas(windowWidth,windowHeight);
+	createCanvas(600,600);
+	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
+}
+
+function draw() {
+	background(0);
+}
