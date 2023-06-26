@@ -1,0 +1,59 @@
+body {
+    margin: 0px;
+}
+
+div.canvas {
+    border-style: dashed;
+    border-color:  rgb(6, 77, 38);
+    border-width: 5px;
+    /* margin: 10px;
+    padding: 3px; */
+}
+
+/* h3 {
+    padding: 10px;
+    background-color: aquamarine;
+} */
+
+input {
+    background-color: rgb(208, 237, 228);
+    color: rgb(6, 77, 38);
+    font-weight: bold;
+}
+.entete {
+    background-color: rgb(5, 67, 46);
+    display: flex;
+    border-style: solid;
+    border-color: aquamarine;
+    border-width: 2px;
+}
+div.main {
+    border-style: solid;
+    border-color: aquamarine;
+    border-width: 2px;
+}
+img {
+    width: 50px;
+    height: 50px;
+    /* border-style: solid;
+    border-color: aquamarine;
+    border-width: 2px; */
+}
+
+div.entete {
+    /* position: absolute; */
+    /* left: 70px; */
+    height: 72px;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: azure;
+    /* width: 100%; */
+}
+.conteneur {
+    display: inline-flex;
+    padding: 10px;
+    border-style: solid;
+    border-color: aquamarine;
+    border-width: 1px;
+    align-items: center;
+}
