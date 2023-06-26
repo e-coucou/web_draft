@@ -7,4 +7,4 @@ var server = app.listen(3000);
 
 app.use(express.static('public'));
 
-console.log('Mon serveur est en marche ... en 3030');
+console.log('Mon serveur est en marche ... en 3000');
