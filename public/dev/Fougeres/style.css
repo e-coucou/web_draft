@@ -1,0 +1,12 @@
+div.canvas {
+    border-style: dashed;
+    border-color:  blue;
+    border-width: 5px;
+    margin: 10px;
+    padding: 3px;
+}
+
+h3 {
+    padding: 10px;
+    background-color: aquamarine;
+}
