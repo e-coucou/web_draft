@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 require('dotenv').config();
 
-var server = app.listen(3030);
+var server = app.listen(3000);
 
 app.use(express.static('public'));
 
