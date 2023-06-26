@@ -1,0 +1,39 @@
+
+html, body {
+    background-color: #f7f5f9;
+}
+
+#porte {
+    display: flex;
+}
+
+button {
+    font-size: 2em;
+    margin: 10px;
+}
+
+p {
+    font-size: 3em;
+    margin: 10px;
+}
+.porte {
+    width: 100px;
+    height: 200px;
+    background-color: rgb(29, 63, 186);
+    font-size: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.stat {
+    margin: 10px;
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 100;
+}
+
+.porte:hover {
+    background-color: blueviolet;
+}
