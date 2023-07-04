@@ -5,6 +5,7 @@ let particule;
 
 function setup() {
     let canvas = createCanvas(400,400);
+    canvas.parent("#canvas");
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     for (let i = 0; i<5 ; i++) {
         let x1 = random(width);
