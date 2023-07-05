@@ -16,7 +16,42 @@ function setup() {
     start = points[0];
     end = points[width-1];
     RDPPoints.push(start);
+    rdp(0, points.length-1, points, RDPPoints);
     RDPPoints.push(end);
+}
+
+function rdp(startId, endId, points, rdpPoints) {
+    let nextId = projectionMax(points, startId, endId);
+    while (nextId > 0) {
+        rdpPoints.push(points[nextId]);
+        if (startId != nextId) {
+            rdp(points, startId, nextId, rdpPoints);
+        }
+        if (nextId != endId) {
+            rdp(points, nextId, endId, rdpPoints);
+        }
+    }
+}
+
+function distLigne(a, b, c) { // distance projeté
+    return 100;
+}
+
+function projectionMax(points, a, b) {
+    let distMax = -1;
+    let start = points[a];
+    let end = points[b];
+    for (let i = a+1; i<b ; i++) {
+        let c = points[i];
+        let d = distLigne(c, start, end);
+        if (c>distMax) {
+            distMax = c;
+            retIndex = i; // le point le plus loin
+        }
+    }
+    if (distMax>epsilon) {
+        return retIndex;
+    } else { return -1; }
 }
 
 function draw() {
@@ -36,5 +71,4 @@ function draw() {
         vertex(p.x,p.y);
     }
     endShape();
-
 }
