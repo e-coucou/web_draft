@@ -7,7 +7,7 @@ class Bird {
         }
         this.x = width/9;
         this.y = height/2;
-        this.r = 20;
+        this.r = 60;
         this.gravity = 0.8;
         this.vel = 0;
         this.lift = 15;
@@ -89,6 +89,10 @@ class Bird {
 
     show() {
         fill(this.couleur);
+        texture(oiseau);
+        textureMode(NORMAL);
+        noStroke()
+        strokeWeight(1);
         circle(this.x,this.y,this.r);
     }
 }

@@ -24,11 +24,11 @@ class NeuralNetwork {
 			this.bo.randomize();
 	//--
 		}
-		this.learnbing_rate = 0.2;
+		this.learning_rate = 0.2;
 	}
 	
 	setLR(lr) {
-		this.learnbing_rate = lr;
+		this.learning_rate = lr;
 	}
 	//
 	copy() {
@@ -50,7 +50,18 @@ class NeuralNetwork {
 		this.bo.map(mutate);
 
 	}
-
+	static deserialize(data) {
+		if (typeof data == 'string') {
+		  data = JSON.parse(data);
+		}
+		let nn = new NeuralNetwork(data.Inb, data.Hnb, data.Onb);
+		nn.wih = Matrix.deserialize(data.wih);
+		nn.who = Matrix.deserialize(data.who);
+		nn.bh = Matrix.deserialize(data.bh);
+		nn.bo = Matrix.deserialize(data.bo);
+		nn.l = data.learning_rate;
+		return nn;
+	  }
 	predic(a) {
 		return this.feedforward_EP(a).matrix;
 	}
@@ -91,7 +102,7 @@ s	}
 		// caculate gradient output
 		let gradients = Matrix.map(outputs,dsigmoid);
 		gradients.multiply(output_error);
-		gradients.multiply(this.learnbing_rate);
+		gradients.multiply(this.learning_rate);
 
 		//calculate delta
 		let hiddenT = Matrix.transpose(hidden);
@@ -107,7 +118,7 @@ s	}
 		//calculate hidden gradient
 		let hidden_gradient = Matrix.map(hidden,dsigmoid);
 		hidden_gradient.multiply(hidden_error);
-		hidden_gradient.multiply(this.learnbing_rate);
+		hidden_gradient.multiply(this.learning_rate);
 
 		// calculate input hidden deltas
 		let inputT = Matrix.transpose(inputs);

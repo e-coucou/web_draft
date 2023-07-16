@@ -4,7 +4,7 @@ class Pipe {
         this.top = random(height/2);
         this.bottom = height - (this.top+this.trou);
         this.x = width;
-        this.w= 40;
+        this.w= 80;
         this.speed = -3;
         this.couleur_b = color(255);
         this.couleur_t = color(255);
@@ -34,9 +34,12 @@ class Pipe {
     }
 
     show() {
-        fill(this.couleur_t);
+        // fill(this.couleur_t);
+        stroke(this.couleur_b);
+        strokeWeight(2);
+        texture(wall);
+        textureMode(NORMAL);
         rect(this.x,0, this.w,this.top);
-        fill(this.couleur_b);
-        rect(this.x,height - this.bottom, this.w, this.bottom);
+        rect(this.x,height - this.bottom, this.w, this.bottom,15,0);
     }
 }

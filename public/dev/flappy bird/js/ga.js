@@ -6,7 +6,7 @@ class GA {
         this.score = 0;
         this.maxScore=0;
         this.bestBird= null;
-        this.gen = 0;
+        this.gen = 1;
         for (let i=0; i<this.Total; i++) {
             this.birds.push(new Bird());
         }    
@@ -23,7 +23,11 @@ class GA {
                 this.supp(i);
             }
         }
-        if (this.birds.length == 0) this.nextGen();
+        if (this.birds.length == 0) {
+            this.nextGen();
+            return true;
+        }
+        return false;
     }
     show() {
         for (let b of this.birds) {
