@@ -1,6 +1,6 @@
 class Pipe {
     constructor() {
-        this.trou = random(height/6, height/2);
+        this.trou = random(height/8, height/4);
         this.top = random(height/2);
         this.bottom = height - (this.top+this.trou);
         this.x = width;
@@ -39,7 +39,11 @@ class Pipe {
         strokeWeight(2);
         texture(wall);
         textureMode(NORMAL);
+        stroke(this.couleur_t);
+        noStroke();
         rect(this.x,0, this.w,this.top);
+        texture(poteau);
+        textureMode(NORMAL);
         rect(this.x,height - this.bottom, this.w, this.bottom,15,0);
     }
 }

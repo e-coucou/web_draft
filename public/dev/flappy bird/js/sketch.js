@@ -3,19 +3,22 @@ let w,h;
 let scene;
 let generation;
 let pipes=[];
-let slider;
+let sliderCycle, sliderMutate;
 let counter;
 let maxScore;
 let brainSaved;
-let oiseau, soleil, wall, bck;
+let oiseau, soleil, wall, bck, poteau;
 let Tektur;
+let defile;
+let mutateRate;
 
 function preload() {
     brainSaved = loadJSON("./data/bestBird.json");
-    wall = loadImage("./data/arbre.jpg");
+    wall = loadImage("./data/haut.png");
     oiseau = loadImage("./data/oiseau.png");
     soleil = loadImage("./data/soleil.png");
-    bck = loadImage("./data/bck_1.jpg");
+    poteau = loadImage("./data/poteau.png");
+    bck = loadImage("./data/bck_3.png");
     Tektur = loadFont("../../font/Tektur-VariableFont_wdth,wght.ttf")
 }
 
@@ -33,13 +36,15 @@ function windowResized() {
     pipes=[];
     pipes.push(new Pipe);
     scene = new Scene();
+    defile=0;
 }
 
 function setup() {
     canvas = createCanvas(innerWidth,innerHeight,WEBGL);
     canvas.parent('#canvas');
     windowResized();
-    slider = createSlider(1,20,1);
+    sliderCycle = createSlider(1,20,1);
+    sliderMutate = createSlider(0.01,0.2,0.1,0.01);
     textFont("Tektur");
     textAlign(LEFT, CENTER);
     textSize(12);
@@ -55,7 +60,8 @@ function keyPressed() {
 }
 
 function draw() {
-    let cycles = slider.value();
+    let cycles = sliderCycle.value();
+    mutateRate = sliderMutate.value();
     for (let c=0; c<cycles; c++) {
         counter++;
         if (counter % 100 == 0) {
@@ -73,7 +79,10 @@ function draw() {
     }
     // background(162,247,255);  //bleu ciel
     translate(-width/2,-height/2);
-    image(bck,-width/8,-3*height/4);
+    // image(bck,-width/100,-height/6);
+    // image(bck,0,0,bck.width,height,100,0,width,2*height,100,0,width,height);
+    defile++;
+    image(bck,0,0,bck.width,height,defile%width,0,width,2*height); //,100,0,width,height);
     for (let p of pipes) {
         p.show();
     }
@@ -87,4 +96,7 @@ function draw() {
     text(nf(generation.maxScore,0,0)+" / "+nf(maxScore,0,0),5,45);
     fill(255,0,0);
     text("#"+counter,5,60);
+    fill(0,255,255);
+    text("Speed: "+cycles,5,height-30);
+    text("Mutate: "+nf(mutateRate,1,2),5,height-15);
 }

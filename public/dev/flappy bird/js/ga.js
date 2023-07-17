@@ -36,7 +36,6 @@ class GA {
     }
     nextGen() {
         this.gen++;
-        console.log(this.gen);
         this.Fitness();
 
         let pick = this.pickOne();
@@ -51,19 +50,20 @@ class GA {
     }
 
     pickOne() {
-        let idx = this.saved.length-1;
+        // let idx = this.saved.length-1;
+        let idx = 0;
         let r = random(1);
 
         while (r>0) {
             // console.log(idx);
             r = r - this.saved[idx].fitness;
-            idx--;
+            idx++;
         }
-        idx++;
+        idx--;
         let pick = this.saved[idx];
         let brain = pick.brain.copy();
         let child = new Bird(brain);
-        child.mutate(0.1);
+        child.mutate(mutateRate);
         return child;
     }
 

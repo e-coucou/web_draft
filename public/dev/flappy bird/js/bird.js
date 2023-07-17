@@ -24,7 +24,7 @@ class Bird {
         if (this.y>height - this.r/2) {
             this.y=height - this.r/2;
             this.vel = 0;
-            // this.life = false;
+            this.life = false;
         }
         if (this.y<0) {
             this.y= this.r/2;
