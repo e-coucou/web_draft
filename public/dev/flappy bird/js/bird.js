@@ -3,7 +3,7 @@ class Bird {
         if (brain_ instanceof NeuralNetwork) {
             this.brain = new NeuralNetwork(brain_);
         } else {
-            this.brain = new NeuralNetwork(5,8,2);
+            this.brain = new NeuralNetwork(5,6,2);
         }
         this.x = width/9;
         this.y = height/2;

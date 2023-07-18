@@ -24,6 +24,10 @@ class NeuralNetwork {
 			this.bo.randomize();
 	//--
 		}
+
+		this.h_o;
+		this.h_i;
+		this.o;
 		this.learning_rate = 0.2;
 	}
 	
@@ -70,11 +74,15 @@ class NeuralNetwork {
 		let input = Matrix.fromArray(a);
 		let h_i = Matrix.multiply(this.wih,input);
 		h_i.add(this.bh);
+		this.h_i = h_i.copy();
 		let h_o = Matrix.map(h_i,sigmoid);
+		this.h_o = h_o.copy();
+		// console.log(this.h_o);
 		// h_i.print();
 		let o_i = Matrix.multiply(this.who,h_o);
 		o_i.add(this.bo);
 		let output = Matrix.map(o_i,sigmoid);
+		this.o = output.copy();
 		
 		return output;
 s	}
@@ -126,6 +134,51 @@ s	}
 		this.wih.add(delta_ih);
 		this.bh.add(hidden_gradient);
 
+	}
+
+	render() {
+		fill(0,120,120,120);
+		noStroke();
+		let w = 150;
+		let h = 100;
+		let x = width-w;
+		let y = height-h;
+		rect(x,y,w,h);
+		let h0 = h / (this.Inb +1);
+		let h1 = h / (this.Hnb +1);
+		let h2 = h / (this.Onb +1);
+		stroke(255,60);
+		strokeWeight(1);
+		for (let i=0; i<this.Inb;i++) {
+			for (let j=0; j<this.Hnb;j++) {
+				let c = map(this.wih.matrix[i][j], -10, 10, 0, 255);
+				stroke(255,c);
+				line(x+w/4, y + (i+1)*h0, x+w/2, y +(j+1)*h1);
+			}
+		}
+		for (let i=0; i<this.Onb;i++) {
+			for (let j=0; j<this.Hnb;j++) {
+				let c = map(this.wih.matrix[i][j], -10, 10, 0, 255);
+				stroke(255,c);
+				line(x+3*w/4, y + (i+1)*h2, x+w/2, y +(j+1)*h1);
+			}
+		}
+		noStroke();
+		for (let i=0; i<this.Inb;i++) {
+			let c = map(this.h_i.matrix[i][0], -1, 1, 0, 255);
+			fill(c,255);
+			circle(x+w/4, y + (i+1)*h0, 10);
+		}
+		for (let i=0; i<this.Hnb;i++) {
+			let c = map(this.h_o.matrix[i][0], -1, 1, 0, 255);
+			fill(c,255);
+			circle(x+w/2, y + (i+1)*h1, 10);
+		}
+		for (let i=0; i<this.Onb;i++) {
+			let c = map(this.o.matrix[i][0], -1, 1, 0, 255);
+			fill(c,255);
+			circle(x+3*w/4, y + (i+1)*h2, 10);
+		}
 	}
 
 }

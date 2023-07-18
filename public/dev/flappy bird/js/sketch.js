@@ -7,7 +7,7 @@ let sliderCycle, sliderMutate;
 let counter;
 let maxScore;
 let brainSaved;
-let oiseau, soleil, wall, bck, poteau;
+let oiseau, soleil, wall, bck, poteau=[];
 let Tektur;
 let defile;
 let mutateRate;
@@ -17,7 +17,8 @@ function preload() {
     wall = loadImage("./data/haut.png");
     oiseau = loadImage("./data/oiseau.png");
     soleil = loadImage("./data/soleil.png");
-    poteau = loadImage("./data/poteau.png");
+    poteau.push(loadImage("./data/poteau.png"));
+    poteau.push(loadImage("./data/poteau2.png"));
     bck = loadImage("./data/bck_3.png");
     Tektur = loadFont("../../font/Tektur-VariableFont_wdth,wght.ttf")
 }
@@ -43,8 +44,8 @@ function setup() {
     canvas = createCanvas(innerWidth,innerHeight,WEBGL);
     canvas.parent('#canvas');
     windowResized();
-    sliderCycle = createSlider(1,20,1);
-    sliderMutate = createSlider(0.01,0.2,0.1,0.01);
+    sliderCycle = createSlider(1,20,20);
+    sliderMutate = createSlider(0.01,0.2,0.2,0.01);
     textFont("Tektur");
     textAlign(LEFT, CENTER);
     textSize(12);
@@ -62,6 +63,7 @@ function keyPressed() {
 function draw() {
     let cycles = sliderCycle.value();
     mutateRate = sliderMutate.value();
+    let newG=false;
     for (let c=0; c<cycles; c++) {
         counter++;
         if (counter % 100 == 0) {
@@ -75,7 +77,8 @@ function draw() {
                 pipes.splice(i,1);
             }
         }
-        if (generation.update()) counter=0; // new gen
+        newG = generation.update();
+        if (newG) counter=0; // new gen
     }
     // background(162,247,255);  //bleu ciel
     translate(-width/2,-height/2);
@@ -88,6 +91,11 @@ function draw() {
     }
     generation.show();
     scene.show();
+    if (generation.birds.length > 0 && !newG)
+        {   
+            // console.log(generation.birds.length);
+            generation.birds[0].brain.render();
+        }
     maxScore = max(maxScore,generation.maxScore);
     fill(0);
     textFont(Tektur);

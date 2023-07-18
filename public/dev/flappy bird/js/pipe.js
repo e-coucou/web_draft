@@ -8,6 +8,7 @@ class Pipe {
         this.speed = -3;
         this.couleur_b = color(255);
         this.couleur_t = color(255);
+        this.poteau = random(poteau);
     }
 
     setDefaut() {
@@ -42,7 +43,7 @@ class Pipe {
         stroke(this.couleur_t);
         noStroke();
         rect(this.x,0, this.w,this.top);
-        texture(poteau);
+        texture(this.poteau);
         textureMode(NORMAL);
         rect(this.x,height - this.bottom, this.w, this.bottom,15,0);
     }
