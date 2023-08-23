@@ -52,7 +52,7 @@ class GA {
     pickOne() {
         // let idx = this.saved.length-1;
         let idx = 0;
-        let r = random(1);
+        let r = random();
 
         while (r>0) {
             // console.log(idx);

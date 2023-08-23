@@ -29,6 +29,13 @@ class NeuralNetwork {
 		this.h_i;
 		this.o;
 		this.learning_rate = 0.2;
+		this.affNtw = true;
+		this.w = 150;
+		this.h = 100;
+}
+
+	switchNtw() {
+		this.affNtw = ! this.affNtw;
 	}
 	
 	setLR(lr) {
@@ -48,10 +55,10 @@ class NeuralNetwork {
 				return val;
 			}
 		}
-		this.wih.map(mutate);
-		this.who.map(mutate);
-		this.bh.map(mutate);
-		this.bo.map(mutate);
+		this.wih.map_(mutate);
+		this.who.map_(mutate);
+		this.bh.map_(mutate);
+		this.bo.map_(mutate);
 
 	}
 	static deserialize(data) {
@@ -75,13 +82,13 @@ class NeuralNetwork {
 		let h_i = Matrix.multiply(this.wih,input);
 		h_i.add(this.bh);
 		this.h_i = h_i.copy();
-		let h_o = Matrix.map(h_i,sigmoid);
+		let h_o = Matrix.map_(h_i,sigmoid);
 		this.h_o = h_o.copy();
 		// console.log(this.h_o);
 		// h_i.print();
 		let o_i = Matrix.multiply(this.who,h_o);
 		o_i.add(this.bo);
-		let output = Matrix.map(o_i,sigmoid);
+		let output = Matrix.map_(o_i,sigmoid);
 		this.o = output.copy();
 		
 		return output;
@@ -95,11 +102,11 @@ s	}
 		let hidden = Matrix.multiply(this.wih,inputs);
 		hidden.add(this.bh);
 		// activation function
-		hidden.map(sigmoid);
+		hidden.map_(sigmoid);
 		// generate outputs
 		let outputs = Matrix.multiply(this.who,hidden);
 		outputs.add(this.bo);
-		outputs.map(sigmoid);
+		outputs.map_(sigmoid);
 
 		// console.table(outputs.matrix);
 		// console.table(this.feedforward_EP(a).matrix);
@@ -108,7 +115,7 @@ s	}
 		let output_error = Matrix.subtract(answer,outputs);
 
 		// caculate gradient output
-		let gradients = Matrix.map(outputs,dsigmoid);
+		let gradients = Matrix.map_(outputs,dsigmoid);
 		gradients.multiply(output_error);
 		gradients.multiply(this.learning_rate);
 
@@ -124,7 +131,7 @@ s	}
 		let whoT = Matrix.transpose(this.who);
 		let hidden_error = Matrix.multiply(whoT,output_error);
 		//calculate hidden gradient
-		let hidden_gradient = Matrix.map(hidden,dsigmoid);
+		let hidden_gradient = Matrix.map_(hidden,dsigmoid);
 		hidden_gradient.multiply(hidden_error);
 		hidden_gradient.multiply(this.learning_rate);
 
@@ -136,48 +143,64 @@ s	}
 
 	}
 
+	inRender(x,y) {
+		let inclus = (x > width - this.w && this.w< width && y>height-this.h && y<height);
+		// console.log('coucou',x,y,inclus);
+		return inclus;
+	}
+
 	render() {
-		fill(0,120,120,120);
-		noStroke();
-		let w = 150;
-		let h = 100;
-		let x = width-w;
-		let y = height-h;
-		rect(x,y,w,h);
-		let h0 = h / (this.Inb +1);
-		let h1 = h / (this.Hnb +1);
-		let h2 = h / (this.Onb +1);
-		stroke(255,60);
-		strokeWeight(1);
-		for (let i=0; i<this.Inb;i++) {
-			for (let j=0; j<this.Hnb;j++) {
-				let c = map(this.wih.matrix[i][j], -10, 10, 0, 255);
-				stroke(255,c);
-				line(x+w/4, y + (i+1)*h0, x+w/2, y +(j+1)*h1);
+		if (this.affNtw) {
+			this.w = 150;
+			this.h = 100;
+			fill(0,120,120,120);
+			noStroke();
+			let x = width-this.w;
+			let y = height-this.h;
+			rect(x,y,this.w,this.h,20);
+			let h0 = this.h / (this.Inb +1);
+			let h1 = this.h / (this.Hnb +1);
+			let h2 = this.h / (this.Onb +1);
+			stroke(255,60);
+			strokeWeight(1);
+			for (let i=0; i<this.Inb;i++) {
+				for (let j=0; j<this.Hnb;j++) {
+					let c = map(this.wih.matrix[i][j], -10, 10, 0, 255);
+					stroke(255,c);
+					line(x+this.w/4, y + (i+1)*h0, x+this.w/2, y +(j+1)*h1);
+				}
 			}
-		}
-		for (let i=0; i<this.Onb;i++) {
-			for (let j=0; j<this.Hnb;j++) {
-				let c = map(this.wih.matrix[i][j], -10, 10, 0, 255);
-				stroke(255,c);
-				line(x+3*w/4, y + (i+1)*h2, x+w/2, y +(j+1)*h1);
+			for (let i=0; i<this.Onb;i++) {
+				for (let j=0; j<this.Hnb;j++) {
+					let c = map(this.wih.matrix[i][j], -10, 10, 0, 255);
+					stroke(255,c);
+					line(x+3*this.w/4, y + (i+1)*h2, x+this.w/2, y +(j+1)*h1);
+				}
 			}
-		}
-		noStroke();
-		for (let i=0; i<this.Inb;i++) {
-			let c = map(this.h_i.matrix[i][0], -1, 1, 0, 255);
-			fill(c,255);
-			circle(x+w/4, y + (i+1)*h0, 10);
-		}
-		for (let i=0; i<this.Hnb;i++) {
-			let c = map(this.h_o.matrix[i][0], -1, 1, 0, 255);
-			fill(c,255);
-			circle(x+w/2, y + (i+1)*h1, 10);
-		}
-		for (let i=0; i<this.Onb;i++) {
-			let c = map(this.o.matrix[i][0], -1, 1, 0, 255);
-			fill(c,255);
-			circle(x+3*w/4, y + (i+1)*h2, 10);
+			noStroke();
+			for (let i=0; i<this.Inb;i++) {
+				let c = map(this.h_i.matrix[i][0], -1, 1, 0, 255);
+				fill(c,255);
+				circle(x+this.w/4, y + (i+1)*h0, 10);
+			}
+			for (let i=0; i<this.Hnb;i++) {
+				let c = map(this.h_o.matrix[i][0], -1, 1, 0, 255);
+				fill(c,255);
+				circle(x+this.w/2, y + (i+1)*h1, 10);
+			}
+			for (let i=0; i<this.Onb;i++) {
+				let c = map(this.o.matrix[i][0], -1, 1, 0, 255);
+				fill(c,255);
+				circle(x+3*this.w/4, y + (i+1)*h2, 10);
+			}
+		} else {
+			this.w = 30;
+			this.h = 30;
+			fill(0,120,120,120);
+			noStroke();
+			let x = width-this.w;
+			let y = height-this.h;
+			rect(x,y,this.w,this.h, 6);
 		}
 	}
 

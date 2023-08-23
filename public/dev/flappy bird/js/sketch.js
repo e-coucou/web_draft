@@ -1,9 +1,9 @@
-const TOTAL = 500;
+let TOTAL = 500;
 let w,h;
 let scene;
 let generation;
 let pipes=[];
-let sliderCycle, sliderMutate;
+let sliderCycle, sliderMutate, sliderPop;
 let counter;
 let maxScore;
 let brainSaved;
@@ -44,13 +44,22 @@ function setup() {
     canvas = createCanvas(innerWidth,innerHeight,WEBGL);
     canvas.parent('#canvas');
     windowResized();
-    sliderCycle = createSlider(1,20,20);
-    sliderMutate = createSlider(0.01,0.2,0.2,0.01);
+    sliderCycle = createSlider(1,50,20);
+    sliderCycle.parent("#iter");
+    sliderMutate = createSlider(0.01,0.2,0.1,0.01);
+    sliderMutate.parent("#mutation");
+    sliderPop = createSlider(100,1000,300,50);
+    sliderPop.parent("#pop");
     textFont("Tektur");
     textAlign(LEFT, CENTER);
     textSize(12);
 }
 
+function mouseClicked() {
+    if (generation.birds[0].brain.inRender(mouseX,mouseY)) {
+        generation.birds[0].brain.switchNtw();
+    }
+}
 function keyPressed() {
     // if (key==' ') {
     //     bird.up();
@@ -63,6 +72,7 @@ function keyPressed() {
 function draw() {
     let cycles = sliderCycle.value();
     mutateRate = sliderMutate.value();
+    // TOTAL = sliderPop.value();
     let newG=false;
     for (let c=0; c<cycles; c++) {
         counter++;
@@ -101,7 +111,7 @@ function draw() {
     textFont(Tektur);
     text("Gen: "+generation.gen,5,15);
     text(generation.birds.length+" / "+TOTAL,5,30);
-    text(nf(generation.maxScore,0,0)+" / "+nf(maxScore,0,0),5,45);
+    text(nf(generation.maxScore,0,1)+" / "+nf(maxScore,0,1),5,45);
     fill(255,0,0);
     text("#"+counter,5,60);
     fill(0,255,255);

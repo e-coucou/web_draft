@@ -99,7 +99,7 @@ static transpose(a) {
 	return result;
 }
 
-map(fct) {
+map_(fct) {
 	for(let i =0;i<this.rows;i++) {
 		for(let j=0;j<this.cols;j++) {
 			let v = this.matrix[i][j];
@@ -107,7 +107,7 @@ map(fct) {
 		}
 	}
 }
-static map(a,fct) {
+static map_(a,fct) {
 	let result = new Matrix(a.rows,a.cols);
 	for(let i =0;i<result.rows;i++) {
 		for(let j=0;j<result.cols;j++) {

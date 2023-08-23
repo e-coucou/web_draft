@@ -10,6 +10,7 @@ let rot=0;
 
 function preload() {
     data = loadTable('./data/temperature.csv','csv','header');
+    // https://data.giss.nasa.gov/gistemp/ source des données
 }
 function setup() {
     canvas = createCanvas(w,h,WEBGL);
