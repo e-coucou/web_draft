@@ -31,7 +31,12 @@ function mousePressed() {
     if (mouseX>(padding) && mouseX<(w+padding) && mouseY>(padding) && mouseY<(h+padding) && mode==0) {
         let id_ = floor((mouseY-padding) / (h / joueurs.length));
         id=iDs[id_];
-    } 
+    }
+    if (mouseX>(padding) && mouseX<(w+padding) && mouseY>(h+padding) && mouseY<(h+padding+10) && mode==0) {
+        let id_ = floor((mouseX-padding) / (w / matchs.length));
+        index = id_;
+        annee = matchs[id_].annee;
+    }
 }
 function mouseMoved() {
     xM = max(padding,min(mouseX,w+padding));
