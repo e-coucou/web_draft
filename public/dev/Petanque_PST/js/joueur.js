@@ -45,9 +45,7 @@ class Joueur {
         this.rank = n+1;
         this.hist.push({c:(n+1), elo:this.ELO});
         if (a_) {
-            let r = {};
-            r[annee] = {c: (n+1) , elo: this.ELO}; 
-            this.clast.push(r);
+            this.clast.push({a: annee, c: (n+1) , elo: this.ELO});
         }
     }
     addMatch(p_, c_, a_, eqN_,ref_) {
@@ -89,8 +87,9 @@ class Joueur {
     }
     draw(idx,n,w,h, elo=this.ELO) {
         noStroke();
-        let x = 20 + (w / 40 * (elo-20));
-        let y = 25 + h/n*int(idx);
+        let x = padding + (w / 40 * (elo-20));
+        let dy = h/n;
+        let y = padding + dy*(int(idx)-0.5);
         let r = 2 + this.match/4;
         this.getColor();
         circle(x,y,r);
@@ -107,7 +106,7 @@ class Joueur {
         this.getColor();
         rect(x,y-13,5,26);
         fill(10,50,10);
-        rect(x+5,y-13,w_+14,26);
+        rect(x+5,y-13,w_-5,26);
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(16);
@@ -125,15 +124,18 @@ class Joueur {
             text(this.victoires[i],x+90+30*i,y+dy);
         }
         dy += 18;
-        text('. Matchs gagnés : '+this.gagne,x+5,y+dy);
-        dy += 16;
-        text('. Matchs perdus : '+this.perdu,x+5,y+dy);
-        dy += 16;
-        text('. Matchs nuls   : '+this.nul,x+5,y+dy);
+        let tmp = 'Matchs : Gagnés='+this.gagne + ', Perdus='+this.perdu+', Nuls='+this.nul; 
+        text(tmp,x,y+dy);
         dy += 18;
         text('Points Marqués/Encaissés : '+this.pour+' / '+this.contre+' ('+((this.pour>this.contre)?'+':'')+(this.pour-this.contre)+')',x,y+dy);
         dy += 18;
         text('Catégorie Pointeur/Tireur : '+this.pointeur+' / '+this.tireur,x,y+dy);
+        dy += 18;
+        tmp='Classements : ';
+        for (let c of this.clast) {
+            tmp = tmp + c.a +'='+ c.c +(c.c==1?'er (':'eme (')+ nf(c.elo,0,1) + ')  ';
+        }
+        text( tmp,x,y+dy);
         dy += 18;
         text('Palmares :',x,y+dy);
         for (let i in this.annees) {
@@ -226,10 +228,11 @@ class Match {
         let ecart = Math.abs(this.equipes[0].sc - this.equipes[1].sc)
         let p_ = this.type.indexOf("Finale");
         if (p_ != -1) {
-            Kf = 1.1;
+            Kf = 1.15;
             this.equipes[0].eq.setPalmares(this.annee,0,1,this.id);
             this.equipes[1].eq.setPalmares(this.annee,1,0,this.id);
         }
+        if (this.type == "Demi") Kf = 1.1;
         if (this.type == "Finale") Kf = 1.3;
         if (ecart>6) P = Ke;
 
