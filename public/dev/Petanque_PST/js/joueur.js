@@ -72,6 +72,7 @@ class Joueur {
             case 1 : fill(10,200,10); break;
             case 2 : fill(10,255,10); break;
         }
+        if (this.id == idSel) {fill(color(couleur.cur));}
     }
     show(idx, x_, y_, elo=this.ELO) {
         let x= x_, y = y_;
@@ -83,7 +84,11 @@ class Joueur {
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(12);
-        text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x, y);
+        if (debug == 1) {
+            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x, y);
+        } else {
+            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] ", x, y);
+        }
     }
     draw(idx,n,w,h, elo=this.ELO) {
         noStroke();

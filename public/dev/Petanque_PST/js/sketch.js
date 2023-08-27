@@ -7,19 +7,19 @@ let j_json, e_json, m_json;
 let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
-let id = -1;
-let mode = 1;
+let id = 0, idSel;
+let mode = 1, debug = 0;
 let annee;
 let w,h;
 let padding = 24;
 
-let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , f:[60,140,70]};
+let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , f:[60,140,70], cur:[200,200,20]};
 
 function mousePressed() {
     if (mouseX>(width-205) && mouseX<width) {
-        id = round((mouseY - 80) / 20);
-        if ( id<0 || id>=joueurs.length) {
-                id=-1;
+        let id_ = round((mouseY - 80) / 20);
+        if ( id_<0 || id_>=joueurs.length) {
+                console.log('oup');
             } else {
                 id = iDs[id];
             }
@@ -36,6 +36,12 @@ function mousePressed() {
         let id_ = floor((mouseX-padding) / (w / matchs.length));
         index = id_;
         annee = matchs[id_].annee;
+    }
+    if (mouseX>=(width-40) && mouseX<width && mouseY>=(height-40)) {
+        mode = (mode + 1) %2;
+    }
+    if (mouseX>=(width-100) && mouseX<(width-60) && mouseY>=(height-40)) {
+        debug = (debug + 1) %2;
     }
 }
 function mouseMoved() {
@@ -101,7 +107,7 @@ function drawDateBar() {
     let dx = w / matchs.length , dy=10;
     for (let i=0; i<matchs.length; i++) {
         if (i==index) {
-            fill(color(couleur.sel));
+            fill(color(couleur.cur));
         } else {
             if (matchs[i].type=="Poule") fill(color(couleur.pl));
             if (matchs[i].type=="Demi") fill(color(couleur.dm));
@@ -117,6 +123,9 @@ function showMatch() {
     let e1 = m.equipes[0].eq;
     let e2 = m.equipes[1].eq;
     let mid = 3*w/4+15, dt = 25;
+    fill(200);
+    textAlign(CENTER,CENTER);
+    text(m.type,x+mid,y);
     fill(120,180,120);
     let sc1 = m.equipes[0].sc, sc2=m.equipes[1].sc;
     if (sc1>=sc2) {
@@ -282,6 +291,10 @@ function setup() {
 
 function draw() {
     background(220);
+    idSel = joueurs[id].id;
+    fill(color(couleur.bk));
+    circle(width-20,height-20,25);
+    circle(width-80,height-20,25);
     fill(color(couleur.bk));
     textAlign(CENTER,CENTER);
     textSize(36);
