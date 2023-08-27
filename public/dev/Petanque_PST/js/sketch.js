@@ -21,7 +21,7 @@ function mousePressed() {
         if ( id_<0 || id_>=joueurs.length) {
                 console.log('oup');
             } else {
-                id = iDs[id];
+                id = iDs[id_];
             }
     }
     if (mouseX>padding && mouseX<(w+padding) && mouseY<padding) {
