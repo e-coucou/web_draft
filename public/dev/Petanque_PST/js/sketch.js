@@ -9,7 +9,7 @@ let nbMatchs;
 let xM=0,yM=0;
 let id = 0, idSel;
 let mode = 1, debug = 0;
-let annee;
+let annee, selA;
 let w,h;
 let padding = 24;
 
@@ -24,15 +24,20 @@ function mousePressed() {
                 id = iDs[id_];
             }
     }
+    // Selction de l'année
     if (mouseX>padding && mouseX<(w+padding) && mouseY<padding) {
         let id_ = floor((mouseX-padding) / (w / annees.length));
-        setDateSel(id_);
-    } 
+        selA = id_;
+        setDateSel(selA);
+    }
+    // Selection du joueur (cote en Y modulo le nb de joueurs)
     if (mouseX>(padding) && mouseX<(w+padding) && mouseY>(padding) && mouseY<(h+padding) && mode==0) {
         let id_ = floor((mouseY-padding) / (h / joueurs.length));
         id=iDs[id_];
     }
+    // Selection du match par la bande inférieure
     if (mouseX>(padding) && mouseX<(w+padding) && mouseY>(h+padding) && mouseY<(h+padding+10) && mode==0) {
+        console;log('ici');
         let id_ = floor((mouseX-padding) / (w / matchs.length));
         index = id_;
         annee = matchs[id_].annee;
@@ -76,9 +81,8 @@ function keyPressed() {
     if (key=='r') {
         setDateSel(3);
     }
-    if (key=='w') {
-        mode = (mode+1)%2;
-    }
+    if (key=='w') { mode = (mode+1)%2;}
+    if (key=='d') { debug = (debug+1)%2;}
 }
 
 function preload() {
@@ -283,7 +287,8 @@ function setup() {
         a_ = false;
     }
     // frameRate(1);
-    setDateSel(annees.length-1);
+    selA = annees.length-1;
+    setDateSel(selA);
     w = (width-260)*1.;
     h = (height-padding)*0.5;
 }
@@ -312,7 +317,7 @@ function draw() {
         let idx = int(joueurs[i].hist[index].c);
         let elo = joueurs[i].hist[index].elo;
         iDs[idx-1] = i;
-        joueurs[i].show(idx, width-205, 20*(idx-1)+80);
+        joueurs[i].show(idx, width-205, 20*(idx-1)+80,elo);
         if (mode==0) {
             joueurs[i].draw(idx,joueurs.length,w,h,elo);
         }
