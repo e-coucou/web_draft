@@ -120,6 +120,16 @@ function drawDateBar() {
         rect(x_+i*dx,y_,dx,dy);
     }
 }
+function pouleClst(p) {
+    let clt = [];
+    for (let i =0; i<p.length;i++) {
+        let a = {n:p[i].equipes[0].eq.nom, s:p[i].equipes[0].sc};
+        clt.push(a);
+        // console.log(a);
+    }
+    return clt;
+
+}
 function showMatch() {
     let x = padding;
     let y = h+padding-30;
@@ -170,6 +180,7 @@ function drawConcours(x_, y_ ,a_) {
         let e2 = p[i].equipes[1].eq;
         text(e1.nom+' '+p[i].equipes[0].sc+' - '+p[i].equipes[1].sc+' '+e2.nom,x,y+i*22);
     }
+    // pouleClst(p);
     // y += 15 + 6*22;
     x = w + padding - x_;
     y = y_;
