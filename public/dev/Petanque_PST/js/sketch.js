@@ -120,14 +120,37 @@ function drawDateBar() {
         rect(x_+i*dx,y_,dx,dy);
     }
 }
-function pouleClst(p) {
+function pouleClst(m) {
     let clt = [];
-    for (let i =0; i<p.length;i++) {
-        let a = {n:p[i].equipes[0].eq.nom, s:p[i].equipes[0].sc};
-        clt.push(a);
-        // console.log(a);
+    for (let i =0; i<m.length;i++) {
+        for (let j=0;j<2;j++) {
+            let e = m[i].equipes[j].eq.nom;
+            let p = m[i].equipes[j].sc;
+            let c = m[i].equipes[(j+1)%2].sc;
+            let d = p - c;
+            let g = 1;
+            if (p>c) g=3;
+            if (p<c) g=0;
+            let a = {n:e, p:p, c:c , s:g, d:d};
+            clt.push(a);
+        }
     }
-    return clt;
+    // console.log(a);
+    let u1 = [...new Set(clt.map(a => a.n ))];
+    let b = [];
+    u1.forEach( a => {  let res =  clt.filter( c => {return (c.n==a)}) ; b.push(res); } );
+    let r =[];
+    for (let i=0; i<b.length ; i++) {
+        let p = b[i].reduce((a,b) =>{ return a+b.p}, 0);
+        let c = b[i].reduce((a,b) =>{ return a+b.c}, 0);
+        let s = b[i].reduce((a,b) =>{ return a+b.s}, 0);
+        let d = b[i].reduce((a,b) =>{ return a+b.d}, 0);
+        r.push({n:u1[i], p:p , c:c, s:s, d:d})
+    }
+    r.sort((a,b) => {return b.p - a.p;});
+    r.sort((a,b) => {return b.d - a.d;});
+    r.sort((a,b) => {return b.s - a.s;});
+    return r;
 
 }
 function showMatch() {
@@ -180,7 +203,13 @@ function drawConcours(x_, y_ ,a_) {
         let e2 = p[i].equipes[1].eq;
         text(e1.nom+' '+p[i].equipes[0].sc+' - '+p[i].equipes[1].sc+' '+e2.nom,x,y+i*22);
     }
-    // pouleClst(p);
+    let r = pouleClst(p);
+    y += 150;
+    text('classement',x,y); y +=20;
+    for (let i=0; i<r.length;i++ ) {
+        // text(r[i].n+' : '+r[i].s+'pts '+r[i].p+' '+r[i].c+' ',r[i].d,x,y+i*18);
+        text(r[i].n+' : '+r[i].s+'pts +'+r[i].p+' -'+r[i].c+' ('+r[i].d+')',x,y+i*18);
+    }
     // y += 15 + 6*22;
     x = w + padding - x_;
     y = y_;
@@ -193,6 +222,13 @@ function drawConcours(x_, y_ ,a_) {
         let e1 = p[i].equipes[0].eq;
         let e2 = p[i].equipes[1].eq;
         text(e1.nom+' '+p[i].equipes[0].sc+' - '+p[i].equipes[1].sc+' '+e2.nom,x,y+i*22);
+    }
+    r = pouleClst(p);
+    y += 150;
+    text('classement',x,y); y +=20;
+    for (let i=0; i<r.length;i++ ) {
+        // text(r[i].n+' : '+r[i].s+'pts '+r[i].p+' '+r[i].c+' ',r[i].d,x,y+i*18);
+        text(r[i].n+' : '+r[i].s+'pts +'+r[i].p+' -'+r[i].c+' ('+r[i].d+')',x,y+i*18);
     }
     x = padding;
     y = y_;
