@@ -12,6 +12,7 @@ let id = 0, idSel;
 let mode = 1, debug = 0;
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
+let toggle=false;
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , f:[60,140,70], cur:[180,180,0]};
 let poules = ['Gassin', 'Ramatuelle'];
@@ -21,83 +22,90 @@ function setCat(id_=1) {
     categories = categories ^ id_;
     id = 1;
 }
+function mouseReleased() {
+    toggle = false;
+}
 function mouseClicked() {
-    if (mode==0 || mode==3) {
-        // Selction de la categorie du joueur
-        if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
-            let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
-            setCat(selCat[id_].id);
-        }
-    }
-    // selction switch
-    if (mode<2) {
-        // Selction de la categorie du joueur
-        if (mouseX>(3*(width-padding)/4) && mouseX<(width-2*padding) && mouseY<(height-padding) && mouseY>(height-20-padding)) {
-            joueurs = initJoueurs.slice();
-            mode = (mode + 1) %2;
-            id=1;
-        }
-    }
-    if (mode==0 || mode==3) {
-        // Selction de la categorie du joueur
-        if (mouseX>(2*padding) && mouseX<(width-2*padding)/4 && mouseY<(height-padding) && mouseY>(height-20-padding)) {
-            // joueurs = initJoueurs.slice();
-            mode = mode ^ 3;
-            id=1;
-        }
-    }
-    // Selction de l'année
-    if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
-        let id_ = floor((mouseX-padding) / ((width+2*padding) / annees.length));
-        if (mode < 2 || mode==3) {
-            selA = id_;
-            setDateSel(selA);
-        } else {
-            if (id_==0) mode = 0;
-        }
-    }
+
 }
 function mousePressed() {
-    if (mouseX>(padding) && mouseX<(width-padding) && mode==0) {
-        let id_ = round((mouseY - 80) / 20);
-        if ( id_<0 || id_>=joueurs.length) {
-            mode=0;
-        } else {
-            id = id_;
-            mode = 2;
+    if ( !toggle) {
+        if (mode==0 || mode==3) {
+            // Selction de la categorie du joueur
+            if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
+                let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
+                setCat(selCat[id_].id);
+            }
         }
-    }
-    if (mode==1) {
-        // Selction de la phase
-        if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
-            let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
-            phase = t_json[id_].type;
-            poule = poules[0];
+        // selction switch
+        if (mode<2) {
+            // Selction de la categorie du joueur
+            if (mouseX>(3*(width-padding)/4) && mouseX<(width-2*padding) && mouseY<(height-padding) && mouseY>(height-20-padding)) {
+                joueurs = initJoueurs.slice();
+                mode = (mode + 1) %2;
+                id=1;
+            }
         }
-        // Selction de la poule
-        if (mouseX>padding && mouseX<(width-padding) && mouseY<79 && mouseY>54) {
-            let id_ = floor((mouseX-padding) / ((width+2*padding) / 2));
-            poule = poules[id_];
+        // Selction de l'année
+        if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
+            let id_ = floor((mouseX-padding) / ((width+2*padding) / annees.length));
+            if (mode < 2 || mode==3) {
+                selA = id_;
+                setDateSel(selA);
+            } else {
+                if (id_==0) mode = 0;
+            }
         }
+        if (mouseX>(padding) && mouseX<(width-padding) && mode==0) {
+            let id_ = round((mouseY - 80) / 20);
+            if ( id_<0 || id_>=joueurs.length) {
+                mode=0;
+            } else {
+                id = id_;
+                mode = 2;
+            }
+        }
+        if (mode==0 || mode==3) {
+            // Selction de la categorie du joueur
+            if (mouseX>(2*padding) && mouseX<(width-2*padding)/4 && mouseY<(height-padding) && mouseY>(height-20-padding)) {
+                // joueurs = initJoueurs.slice();
+                mode = mode ^ 3;
+                id=1;
+            }
+        }    
+        if (mode==1) {
+            // Selction de la phase
+            if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
+                let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
+                phase = t_json[id_].type;
+                poule = poules[0];
+            }
+            // Selction de la poule
+            if (mouseX>padding && mouseX<(width-padding) && mouseY<79 && mouseY>54) {
+                let id_ = floor((mouseX-padding) / ((width+2*padding) / 2));
+                poule = poules[id_];
+            }
+        }
+        // Selection du joueur (cote en Y modulo le nb de joueurs)
+        if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(padding) && mouseY<(height-padding) && mode==0) {
+            let id_ = floor((mouseY-padding) / ((height-padding) / joueurs.length));
+            id=iDs[id_];
+        }
+        // Selection du match par la bande inférieure
+        if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(height-padding) && mouseY<(height- padding+10) && mode==0) {
+            console;log('ici');
+            let id_ = floor((mouseX-padding) / ((width-2*padding) / matchs.length));
+            index = id_;
+            annee = matchs[id_].annee;
+        }
+        // if (mouseX>=(width-40) && mouseX<width && mouseY>=(height-40)) {
+        //     BSwitch();
+        // }
+        // if (mouseX>=(width-100) && mouseX<(width-60) && mouseY>=(height-40)) {
+        //     debug = (debug + 1) %2;
+        // }
     }
-    // Selection du joueur (cote en Y modulo le nb de joueurs)
-    if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(padding) && mouseY<(height-padding) && mode==0) {
-        let id_ = floor((mouseY-padding) / ((height-padding) / joueurs.length));
-        id=iDs[id_];
-    }
-    // Selection du match par la bande inférieure
-    if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(height-padding) && mouseY<(height- padding+10) && mode==0) {
-        console;log('ici');
-        let id_ = floor((mouseX-padding) / ((width-2*padding) / matchs.length));
-        index = id_;
-        annee = matchs[id_].annee;
-    }
-    // if (mouseX>=(width-40) && mouseX<width && mouseY>=(height-40)) {
-    //     BSwitch();
-    // }
-    // if (mouseX>=(width-100) && mouseX<(width-60) && mouseY>=(height-40)) {
-    //     debug = (debug + 1) %2;
-    // }
+    toggle = true;
 }
 function mouseMoved() {
     xM = max(padding,min(mouseX,width-2*padding));
