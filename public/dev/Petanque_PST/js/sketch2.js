@@ -12,24 +12,24 @@ let id = 0, idSel;
 let mode = 1, debug = 0;
 let annee, selA;
 let w,h;
-let padding = 24;
+let padding = 5;
 let bt_tireur, bt_pointeur, bt_egal, bt_all;
 let bt_switch;
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , f:[60,140,70], cur:[200,200,20]};
 
 function mousePressed() {
-    if (mouseX>(width-205) && mouseX<width) {
-        let id_ = round((mouseY - 80) / 20);
-        if ( id_<0 || id_>=joueurs.length) {
-                console.log('oup');
-            } else {
-                id = iDs[id_];
-            }
-    }
+    // if (mouseX>(width-205) && mouseX<width) {
+    //     let id_ = round((mouseY - 80) / 20);
+    //     if ( id_<0 || id_>=joueurs.length) {
+    //             console.log('oup');
+    //         } else {
+    //             id = iDs[id_];
+    //         }
+    // }
     // Selction de l'année
-    if (mouseX>padding && mouseX<(w+padding) && mouseY<padding) {
-        let id_ = floor((mouseX-padding) / (w / annees.length));
+    if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
+        let id_ = floor((mouseX-padding) / ((width+2*padding) / annees.length));
         selA = id_;
         setDateSel(selA);
     }
@@ -94,7 +94,7 @@ function preload() {
     m_json = loadJSON("./data/matchs.json");
 }
 function drawDate() {
-    let dx = w / annees.length;
+    let dx = (width - 2* padding) / annees.length;
     let x = dx/2 + padding, y = 12;
     textAlign(CENTER,CENTER);
     for (let a of annees) {
@@ -358,6 +358,7 @@ function setup() {
     bt_switch.mousePressed(BSwitch);
 
     initJoueurs = joueurs.slice();
+
 }
 
 function Btireur() {
@@ -383,20 +384,20 @@ function BSwitch() {
 }
 function draw() {
     background(220);
-    idSel = joueurs[id].id;
-    fill(color(couleur.bk));
-    circle(width-20,height-20,25);
-    circle(width-80,height-20,25);
-    fill(color(couleur.bk));
-    textAlign(CENTER,CENTER);
-    textSize(36);
-    text(matchs[index].annee, width-130+padding, 25);
-    textSize(14);
-    text(matchs[index].type, width-130+padding, 55);
+    // idSel = joueurs[id].id;
+    // fill(color(couleur.bk));
+    // circle(width-20,height-20,25);
+    // circle(width-80,height-20,25);
+    // fill(color(couleur.bk));
+    // textAlign(CENTER,CENTER);
+    // textSize(36);
+    // text(matchs[index].annee, width-130+padding, 25);
+    // textSize(14);
+    // text(matchs[index].type, width-130+padding, 55);
 
-    noStroke();
-    fill(color(couleur.bg));
-    rect(padding,padding,w,h);
+    // noStroke();
+    // fill(color(couleur.bg));
+    // rect(padding,padding,w,h);
 
     drawDate();
 
@@ -404,25 +405,25 @@ function draw() {
         let idx = int(joueurs[i].hist[index].c);
         let elo = joueurs[i].hist[index].elo;
         iDs[idx-1] = i;
-        joueurs[i].show(idx, width-205, 20*(idx-1)+80,elo);
-        if (mode==0) {
-            joueurs[i].draw(idx,joueurs.length,w,h,elo);
-        }
+        joueurs[i].show(idx, 10, 20*(idx-1)+80, width-20,elo);
+        // if (mode==0) {
+        //     joueurs[i].draw(idx,joueurs.length,w,h,elo);
+        // }
     }
-    if (mode==1) drawConcours(20,40,annee);
-    if (mode==0) {
-        drawDateBar();
-        showMatch(index);
-    }
-    // if (frameCount % 5 == 0) {
+    // if (mode==1) drawConcours(20,40,annee);
+    // if (mode==0) {
+    //     drawDateBar();
+    //     showMatch(index);
+    // }
+    // // if (frameCount % 5 == 0) {
     //     if (index<nbMatchs-1) {
     //         index += 1;
     //     }
     // }
-    if (id != -1) {
-        joueurs[id].fiche(padding,height/2,w,matchs);
-    }
-    stroke(130);
-    line(padding,yM,w+padding,yM);
-    line(xM,padding,xM,h+padding);
+    // if (id != -1) {
+    //     joueurs[id].fiche(padding,height/2,w,matchs);
+    // }
+    // stroke(130);
+    // line(padding,yM,w+padding,yM);
+    // line(xM,padding,xM,h+padding);
 }

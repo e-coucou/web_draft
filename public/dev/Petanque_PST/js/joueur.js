@@ -74,13 +74,13 @@ class Joueur {
         }
         if (this.id == idSel) {fill(color(couleur.cur));}
     }
-    show(idx, x_, y_, elo=this.ELO) {
+    show(idx, x_, y_, w_, elo=this.ELO) {
         let x= x_, y = y_;
         noStroke();
         this.getColor();
         rect(x-7,y-9,6,18);
         fill(10,70,10);
-        rect(x,y-9,200,18);
+        rect(x,y-9,w_,18);
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(12);
