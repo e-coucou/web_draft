@@ -75,27 +75,27 @@ class Joueur {
         if (this.id == idSel) {fill(color(couleur.cur));}
     }
     show(idx, x_, y_, w_, elo=this.ELO) {
-        let x= x_, y = y_;
+        let x= x_, y = y_, s=10;
         noStroke();
         this.getColor();
-        rect(x-7,y-9,6,18);
+        rect(x,y-9,s-1,18);
         fill(10,70,10);
-        rect(x,y-9,w_,18);
+        rect(x+s,y-9,w_-s,18);
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(12);
         if (debug == 1) {
-            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x, y);
+            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
         } else {
-            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] ", x, y);
+            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] ", x+2*s, y);
         }
     }
     draw(idx,n,w,h, elo=this.ELO) {
         noStroke();
         let x = padding + (w / 40 * (elo-20));
         let dy = h/n;
-        let y = padding + dy*(int(idx)-0.5);
-        let r = 2 + this.match/4;
+        let y = 79 + dy*(int(idx)-0.5);
+        let r = 2 + this.match/3;
         this.getColor();
         circle(x,y,r);
         fill(255);
@@ -106,18 +106,20 @@ class Joueur {
 
     fiche(x_,y_,w_,matchs_) {
         let x= x_;
-        let y = y_+35;
+        let y = y_;
+        let s = 10;
         noStroke();
         this.getColor();
-        rect(x,y-13,5,26);
+        rect(x,y-13,s,26);
         fill(10,50,10);
-        rect(x+5,y-13,w_-5,26);
+        rect(x+s,y-13,w_-s,26);
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(16);
-        text(this.rank+'/ '+this.nom+' ('+nf(this.ELO,0,1)+')',x+7,y);
+        text(this.rank+'/ '+this.nom+' ('+nf(this.ELO,0,1)+')',x+2*s,y);
         fill(10,50,10);
         textSize(12);
+        y += 10;
         let dy=22;
         text('Participations :',x,y+dy);
         for (let i in this.annees) {
@@ -137,11 +139,13 @@ class Joueur {
         text('Catégorie Pointeur/Tireur : '+this.pointeur+' / '+this.tireur,x,y+dy);
         dy += 18;
         tmp='Classements : ';
+        text( tmp,x,y+dy); dy += 16;
         for (let c of this.clast) {
-            tmp = tmp + c.a +':'+ c.c +(c.c==1?'er (':'eme (')+ nf(c.elo,0,1) + ')  ';
+            tmp =  c.a +':'+ c.c +(c.c==1?'er (':'eme (')+ nf(c.elo,0,1) + ')  ';
+            text( tmp,x+s,y+dy);
+            dy += 16;
         }
-        text( tmp,x,y+dy);
-        dy += 18;
+        dy += 2;
         text('Palmares :',x,y+dy);
         for (let i in this.annees) {
             dy += 16;
@@ -152,7 +156,8 @@ class Joueur {
             let res = (m.equipes[e1].sc > m.equipes[e2].sc)?'Gagnée':'Perdue';
             let sc = '  ('+m.equipes[e1].sc+'-'+m.equipes[e2].sc+')';
             let vs_t = ' vs ('+vs.nom+') '+ vs.tireur.nom+'/'+vs.pointeur.nom;
-            text(t.annee+' ('+t.team+') -'+t.cat+' avec '+t.coeq.nom+' "'+m.type+'" '+res+sc+vs_t,x+5,y+dy);
+            text(t.annee+' ('+t.team+') -'+t.cat+' avec '+t.coeq.nom,x+s,y+dy); dy+=16;
+            text('"'+m.type+'" '+res+sc+vs_t,x+2*s,y+dy);
         }
         dy += 18;
         text('Matchs :',x,y+dy);
@@ -171,7 +176,7 @@ class Joueur {
                 sc_t = sc_t + '  ('+m.equipes[e1].sc+'-'+m.equipes[e2].sc+')';
                 // let vs_t = ' vs ('+vs.nom+') '+ vs.tireur.nom+'/'+vs.pointeur.nom;
             }
-            text(sc_t,x+5,y+dy);
+            text(sc_t,x+s,y+dy);
         }
     }
 }
