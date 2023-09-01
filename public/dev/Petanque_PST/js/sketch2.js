@@ -4,19 +4,20 @@ let equipes = [];
 let matchs = [];
 let annees = [];
 let iDs = [];
-let j_json, e_json, m_json;
+let j_json, e_json, m_json, t_json;
 let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
 let id = 0, idSel;
 let mode = 1, debug = 0;
-let annee, selA;
+let annee, selA, phase = "Poule", poule;
 let w,h;
 let padding = 5;
 let bt_tireur, bt_pointeur, bt_egal, bt_all;
 let bt_switch;
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , f:[60,140,70], cur:[200,200,20]};
+let poules = ['Gassin', 'Ramatuelle'];
 
 function mousePressed() {
     // if (mouseX>(width-205) && mouseX<width) {
@@ -92,6 +93,7 @@ function preload() {
     j_json = loadJSON("./data/joueurs.json");
     e_json = loadJSON("./data/equipes.json");
     m_json = loadJSON("./data/matchs.json");
+    t_json = loadJSON("./data/type.json");
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -358,6 +360,7 @@ function setup() {
     bt_switch.mousePressed(BSwitch);
 
     initJoueurs = joueurs.slice();
+    poule = poules[0];
 
 }
 
@@ -401,16 +404,19 @@ function draw() {
 
     drawDate();
 
-    for (let i in joueurs) {
-        let idx = int(joueurs[i].hist[index].c);
-        let elo = joueurs[i].hist[index].elo;
-        iDs[idx-1] = i;
-        joueurs[i].show(idx, 10, 20*(idx-1)+80, width-20,elo);
-        // if (mode==0) {
-        //     joueurs[i].draw(idx,joueurs.length,w,h,elo);
-        // }
+    if (mode==0) {
+        for (let i in joueurs) {
+            let idx = int(joueurs[i].hist[index].c);
+            let elo = joueurs[i].hist[index].elo;
+            iDs[idx-1] = i;
+            joueurs[i].show(idx, 10, 20*(idx-1)+80, width-20,elo);
+            // if (mode==0) {
+            //     joueurs[i].draw(idx,joueurs.length,w,h,elo);
+            // }
+        }
     }
-    // if (mode==1) drawConcours(20,40,annee);
+
+    if (mode==1) drawTournois(0,40,width, height-100,annee);
     // if (mode==0) {
     //     drawDateBar();
     //     showMatch(index);
