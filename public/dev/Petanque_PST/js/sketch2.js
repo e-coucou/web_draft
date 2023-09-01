@@ -34,6 +34,19 @@ function mousePressed() {
         selA = id_;
         setDateSel(selA);
     }
+    if (mode==1) {
+        // Selction de la phase
+        if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
+            let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
+            phase = t_json[id_].type;
+            poule = poules[0];
+        }
+        // Selction de la poule
+        if (mouseX>padding && mouseX<(width-padding) && mouseY<79 && mouseY>54) {
+            let id_ = floor((mouseX-padding) / ((width+2*padding) / 2));
+            poule = poules[id_];
+        }
+    }
     // Selection du joueur (cote en Y modulo le nb de joueurs)
     if (mouseX>(padding) && mouseX<(w+padding) && mouseY>(padding) && mouseY<(h+padding) && mode==0) {
         let id_ = floor((mouseY-padding) / (h / joueurs.length));
