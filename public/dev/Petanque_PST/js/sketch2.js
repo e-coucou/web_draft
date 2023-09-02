@@ -229,12 +229,19 @@ function showMatch() {
     drawScore(e1,e2,sc1,sc2,0,y,mid,s2,dt,w2);
 }
 function windowResized() {
-    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.98);
+    let h_ = innerHeight*0.98;
+    let w_ = min(0.59*h_, innerWidth);
+    canvas = resizeCanvas(w_,h_);
+    // canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.98);
 }
 
 function setup() {
-    canvas = createCanvas(innerWidth*0.99,innerHeight*0.98);
+    let h_ = innerHeight*0.98;
+    let w_ = min(0.59*h_, innerWidth);
+    console.log('setup',w_,h_, innerWidth/innerHeight);
+    canvas = createCanvas(w_,h_);
     canvas.parent("#canvas");
+    console.log(width/height, width, height);
 
     for (let i in j_json) {
         let j = j_json[i];
