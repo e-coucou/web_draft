@@ -162,44 +162,32 @@ function preload() {
 function drawSW() {
     let y = height-20;
     let x = 3*(width-padding)/4;
-    let l = (width-2*padding)/4;
-    textAlign(CENTER,CENTER);
-    fill(color(couleur.bg));
-    rect(x,y-10,l-20,20);
-    circle(x,y,20);
-    circle(x+l-20,y,20);
-    fill(255);
-    textAlign(LEFT,CENTER);
-    if (mode==0) {
-        text('Tournoi',6*(width-padding)/8,y);
-        fill(color(couleur.bk));
-        circle(x+l-l/2,y,18);
-    } else {
-        text('Tournoi',6*(width-padding)/8,y);
-        fill(color(couleur.cur));
-        circle(x+l-l/4,y,18);
-    }
+    let l = (width-4*padding)/4;
+    let r = 18;
+    showSwitch('Tournoi',x,y,l,r);
 }
 function drawGraph() {
+    let r = 18;
     let y = height-20;
-    let x = 2*padding;
-    let l = (width-2*padding)/4;
-    textAlign(CENTER,CENTER);
-    fill(color(couleur.bg));
-    rect(x,y-10,l-20,20);
-    circle(x,y,20);
-    circle(x+l-20,y,20);
-    fill(255);
-    textAlign(LEFT,CENTER);
-    if (mode==0) {
-        text('Graphe',3*padding,y);
-        fill(color(couleur.bk));
-        circle(x+l-l/2,y,18);
-    } else {
-        text('GrapheX',3*padding,y);
-        fill(color(couleur.cur));
-        circle(x+l-l/4,y,18);
-    }
+    let x = padding+r;
+    let l = (width-padding-r)/4;
+    showSwitch('Graphe',x,y,l,r);
+    // textAlign(CENTER,CENTER);
+    // fill(color(couleur.bg));
+    // rect(x,y-10,l-20,20);
+    // circle(x,y,20);
+    // circle(x+l-20,y,20);
+    // fill(255);
+    // textAlign(LEFT,CENTER);
+    // if (mode==0) {
+    //     text('Graphe',3*padding,y);
+    //     fill(color(couleur.bk));
+    //     circle(x+l-l/2,y,18);
+    // } else {
+    //     text('GrapheX',3*padding,y);
+    //     fill(color(couleur.cur));
+    //     circle(x+l-l/4,y,18);
+    // }
 }function drawBack() {
     let y = 12;
     textAlign(CENTER,CENTER);
