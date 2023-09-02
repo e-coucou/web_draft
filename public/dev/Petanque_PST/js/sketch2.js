@@ -13,6 +13,8 @@ let mode = 1, debug = 0;
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=false;
+let btTournoi,btGraphe, btCategories=[];
+let debounce=0;
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
     titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
@@ -23,33 +25,34 @@ function setCat(id_=1) {
     categories = categories ^ id_;
     id = 0;
 }
-function mouseReleased() {
-    toggle = false;
+function BtTournoi() {
+    joueurs = initJoueurs.slice();
+    mode = (mode + 1) %2;
+    id=0;
 }
+function BtGraphe() {
+    mode = mode ^ 3;
+}
+
 function mousePressed() {
     // Mode 0 = Liste
     // Mode 1 = Tournoi
     // Mode 2 = Fiche
     // Mode 3 = GrapheX
     //
-    if ( !toggle) {
-        if (mode==0 || mode==3) {
-            // Selction de la categorie du joueur /Tireur/Pointeur/Indifférent
-            if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
-                let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
-                setCat(selCat[id_].id);
+    if ( (frameCount-debounce > 10) ) {
+        debounce = frameCount;
+        //     // Selction de la categorie du joueur /Tireur/Pointeur/Indifférent
+        for( let n in btCategories) {
+            let c = btCategories[n];
+            if (c.isIn(mouseX,mouseY,mode)) {
+                let id_ = selCat[n].id;
+                c.setSW(setCat,id_);
             }
         }
         // selction switch Tournoi/Liste
-        if (mode==0 || mode==1) {
-            // Selction de la categorie du joueur
-            if (mouseX>(3*(width-padding)/4) && mouseX<(width-2*padding) && mouseY<(height-padding) && mouseY>(height-20-padding)) {
-                joueurs = initJoueurs.slice();
-                mode = (mode + 1) %2;
-                id=0;
-                toggle = true;
-                return;
-            }
+        if (btTournoi.isIn(mouseX,mouseY,mode)) {
+            btTournoi.setSW(BtTournoi);
         }
         // Selection de l'année
         if (mode==0 || mode==1 || mode == 3 || mode==2 ) {
@@ -73,15 +76,8 @@ function mousePressed() {
                 mode = 2;
             }
         }
-        if (mode==0 || mode==3) {
-            // Switch Graphix/Liste
-            if (mouseX>(2*padding) && mouseX<(width-2*padding)/4 && mouseY<(height-padding) && mouseY>(height-20-padding)) {
-                // joueurs = initJoueurs.slice();
-                console.log('ici', mode);
-                mode = mode ^ 3;
-                toggle = true;
-                return;
-            }
+        if (btGraphe.isIn(mouseX,mouseY,mode)) {
+            btGraphe.setSW(BtGraphe);
         }    
         if (mode==1) {
             // Selction de la phase
@@ -125,32 +121,12 @@ function mouseMoved() {
     //     id=id_;
     // } 
 }
-function selCategories() {
-    let dx = (width - 2* padding) / 3 ;
-    let x = dx/2 + padding, y = 40;
-    textAlign(CENTER,CENTER);
-    for (let p of selCat) {
-        if ( (p.id & categories) == p.id ) {
-            fill(color(couleur.cur));
-            rect(x-dx/2+1,y-12,dx-2,24);
-            fill(color(couleur.bk));
-            text(p.cat,x,y);
-            } else {
-            fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24);
-            fill(255);
-            text(p.cat,x,y);
-        }
-        x += dx;
-    }
-}
-
 function setDateSel(id_) {
     annee = annees[id_].a;
     index = annees[id_].m;
 }
 function keyPressed() {
-    if (key=='w') { BSwitch();}
+    if (key=='w') { BtTournoi();}
     if (key=='d') { debug = (debug+1)%2;}
 }
 function preload() {
@@ -159,36 +135,32 @@ function preload() {
     m_json = loadJSON("./data/matchs.json");
     t_json = loadJSON("./data/type.json");
 }
-function drawSW() {
+function createCategories() {
+    let r = 18;
+    let dx = (width - 2* padding) / 3;
+    let x = r, y = 40;
+    for (let p of selCat) {
+        if ( (p.id & categories) == p.id ) {
+            btCategories.push(new Switch(p.cat,x,y,dx-padding,r,[0,3],true));
+        }
+        x += dx;
+    }
+}
+function createTournoi() {
     let y = height-20;
     let x = 3*(width-padding)/4;
     let l = (width-4*padding)/4;
     let r = 18;
-    showSwitch('Tournoi',x,y,l,r);
+    return new Switch('Tournoi',x,y,l,r,[0,1]);
 }
-function drawGraph() {
+function createGraph() {
     let r = 18;
     let y = height-20;
-    let x = padding+r;
+    let x = padding+r/2;
     let l = (width-padding-r)/4;
-    showSwitch('Graphe',x,y,l,r);
-    // textAlign(CENTER,CENTER);
-    // fill(color(couleur.bg));
-    // rect(x,y-10,l-20,20);
-    // circle(x,y,20);
-    // circle(x+l-20,y,20);
-    // fill(255);
-    // textAlign(LEFT,CENTER);
-    // if (mode==0) {
-    //     text('Graphe',3*padding,y);
-    //     fill(color(couleur.bk));
-    //     circle(x+l-l/2,y,18);
-    // } else {
-    //     text('GrapheX',3*padding,y);
-    //     fill(color(couleur.cur));
-    //     circle(x+l-l/4,y,18);
-    // }
-}function drawBack() {
+    return new Switch('Graphe',x,y,l,r,[0,3]);
+}
+function drawBack() {
     let y = 12;
     textAlign(CENTER,CENTER);
     fill(color(couleur.cur));
@@ -283,13 +255,23 @@ function setup() {
 
     initJoueurs = joueurs.slice();
     poule = poules[0];
+    btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
+    btGraphe = createGraph();
+    createCategories();
 }
 function draw() {
     background(220);
     // console.log(id);
     // idSel = joueurs[id].id;
     noStroke();
-    if (mode == 0 || mode==1)  { drawDate(); drawSW(); }
+    btTournoi.show(mode); //drawSW();
+    btGraphe.show(mode);
+    for (c of btCategories) {
+        c.show(mode);
+    }
+    if (mode == 0 || mode==1)  { 
+        drawDate();
+    }
     if (mode == 3) {
         drawDate(); 
         fill(color(couleur.bk));
@@ -302,17 +284,16 @@ function draw() {
     }
     if (mode == 2) {drawBack(); }
     if (mode == 0 || mode == 3) {
-        selCategories();
-        drawGraph();
+        // selCategories();
         switch(categories) {
             case 0:
             case 7 : joueurs = initJoueurs.slice(); break;
-            case 1 : joueurs = initJoueurs.filter( a => { return a.tireur > a.pointeur;}); break;
-            case 2 : joueurs = initJoueurs.filter( a => { return a.tireur < a.pointeur;}); break;
-            case 3 : joueurs = initJoueurs.filter( a => { return a.tireur != a.pointeur;}); break;
-            case 4 : joueurs = initJoueurs.filter( a => { return a.tireur == a.pointeur;}); break;
-            case 5 : joueurs = initJoueurs.filter( a => { return a.tireur >= a.pointeur;}); break;
-            case 6 : joueurs = initJoueurs.filter( a => { return a.tireur <= a.pointeur;}); break;
+            case 1 : joueurs = initJoueurs.filter( a => { return a.tireur > a.pointeur;}); break; //tireurs
+            case 2 : joueurs = initJoueurs.filter( a => { return a.tireur < a.pointeur;}); break; //pointeurs
+            case 3 : joueurs = initJoueurs.filter( a => { return a.tireur != a.pointeur;}); break;  // neutre
+            case 4 : joueurs = initJoueurs.filter( a => { return a.tireur !=0 & a.pointeur != 0;}); break;
+            case 5 : joueurs = initJoueurs.filter( a => { return a.tireur !=0;}); break;
+            case 6 : joueurs = initJoueurs.filter( a => { return a.pointeur != 0;}); break;
         }
     }
     if (mode==0) {
