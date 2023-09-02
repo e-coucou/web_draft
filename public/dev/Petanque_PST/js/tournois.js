@@ -158,7 +158,7 @@ function drawPoule(x,y,w,h_,data) {
     if (phase=='Demi') { image(img_saint_tropez,mid-46, 2*height/3,92,114);}
     if (phase=="Poule") {
         let r = drawClstPoule(p);
-        y += 250;
+        y += 8*dt;
         let dx = width/10;
         textAlign(CENTER,CENTER);
         fill(color(couleur.bg));

@@ -240,7 +240,10 @@ function setup() {
     let w_ = min(0.59*h_, innerWidth);
     canvas = createCanvas(w_,h_); // mise en place du ratio 0.59
     canvas.parent("#canvas");
-
+    let x = (windowWidth - width) / 2;
+    let y = (windowHeight - height) / 2;
+    canvas.position(x, y+10);
+  
     for (let i in j_json) {
         let j = j_json[i];
         joueurs.push( new Joueur(j.nom,j.id));

@@ -76,18 +76,44 @@ class Joueur {
     }
     show(idx, x_, y_, w_, elo=this.ELO) {
         let x= x_, y = y_, s=10;
+        let dy = 18;
         noStroke();
         this.getColor();
-        rect(x,y-9,s-1,18);
+        rect(x,y-dy/2,s-1,dy);
         fill(10,70,10);
-        rect(x+s,y-9,w_-s,18);
+        rect(x+s,y-dy/2,w_-s,dy);
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(12);
+        let dx = w_/10;
+        x += 2*s;
         if (debug == 1) {
             text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
         } else {
-            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] ", x+2*s, y);
+            textStyle(BOLD);
+            text(nf(idx,2,0)+"/ "+this.nom, x, y); x+=3*dx;
+            textAlign(CENTER,CENTER);
+            fill(color(couleur.dm));
+            rect(x+1,y-dy/2+1,dx-2,dy-2);
+            rect(x+dx+1,y-dy/2+1,dx-2,dy-2);
+            rect(x+2*dx+1,y-dy/2+1,dx-2,dy-2);
+            rect(x+3*dx+1,y-dy/2+1,dx-2,dy-2);
+            rect(x+4*dx+1,y-dy/2+1,dx-2,dy-2);
+            // rect(x+5*dx+1,y-dy/2+1,dx-2,dy-2);
+            fill(color(couleur.cur));
+            text("["+nf(elo,0,1)+"]",x+dx/2, y);textStyle(NORMAL);
+            text(this.gagne,x+dx+dx/2, y);
+            text(this.nul,x+2*dx+dx/2, y);
+            text(this.perdu,x+3*dx+dx/2, y);
+            textSize(8);
+            let tmp = '';
+            for (let i=0;i<this.victoire;i++) { tmp += '🏆';}
+            text(tmp,x+4*dx+dx/2, y);
+            tmp = '';
+            for (let i=0;i<(this.tireur);i++) { tmp += '🔫';}
+            for (let i=0;i<(this.pointeur);i++) { tmp += '🪩';}
+            text(tmp,x+5.5*dx+dx/2, y);
+            textSize(12);
         }
     }
     draw(idx,n,w,h, elo=this.ELO) {

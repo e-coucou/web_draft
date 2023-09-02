@@ -1,11 +1,13 @@
 body {
     margin: 0px;
+    background-color: rgb(10, 95, 58);
+    background-image:url("../img/bk001.JPG")
 }
 
 div.canvas {
     border-style: dashed;
     border-color:  rgb(6, 77, 38);
-    border-width: 5px;
+    border-width: 0px;
     /* margin: 10px;
     padding: 3px; */
 }
@@ -29,7 +31,7 @@ input {
 }
 div.main {
     border-style: solid;
-    border-color: aquamarine;
+    border-color: rgb(14, 124, 42);
     border-width: 1px;
 }
 img {
@@ -57,4 +59,5 @@ div.entete {
     border-color: rgb(255, 255, 255);
     border-width: 1px;
     align-items: center;
+    background-color: black;
 }
