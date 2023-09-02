@@ -15,6 +15,8 @@ let padding = 5;
 let toggle=false;
 let btTournoi,btGraphe, btCategories=[];
 let debounce=0;
+let img_gassin, img_ramatuelle, img_saint_tropez;
+let img_finale=[];
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
     titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
@@ -139,6 +141,11 @@ function preload() {
     e_json = loadJSON("./data/equipes.json");
     m_json = loadJSON("./data/matchs.json");
     t_json = loadJSON("./data/type.json");
+    img_gassin = loadImage("./img/gassin.png"); //130x143
+    img_ramatuelle = loadImage("./img/ramatuelle.png"); //130x143
+    img_saint_tropez = loadImage("./img/saint-tropez.png"); //130x143
+    let img=loadImage("./img/2023.jpeg");
+    img_finale.push({a:2023,i:img}); //1024x768
 }
 function createCategories() {
     let r = 18;

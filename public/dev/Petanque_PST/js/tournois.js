@@ -1,4 +1,5 @@
-const iconPhase = [' 🐣', ' 🍺', ' 🍾'];
+const iconPhase = [' 🐣', ' 🍺', ' 🏆'];
+const medaille = ['🥇 ','🥈 ','🥉 ','','','','','🎖️ '];
 
 function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     if (sc1>=sc2) {
@@ -57,6 +58,8 @@ function selPoule() {
             fill(255);
         }
         text(p,x,y);
+        if (p=='Gassin') { image(img_gassin,x-dx/2+7,y-8,13,14);}
+        if (p=='Ramatuelle') { image(img_ramatuelle,x-dx/2+7,y-8,13,14);}
         x += dx;
     }
 }
@@ -136,6 +139,8 @@ function drawPoule(x,y,w,h_,data) {
         drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dt,w2);
     }
     if (phase=="Finale") {
+        let img = img_finale.filter( a => { return a.a==p[0].annee});
+        if (img[0] != undefined)  { tint(255,100); image(img[0].i,padding,y+215,w,w/10*7); tint(255,255);}
         let r = clastFinale(p);
         r.sort((a,b) => { return b.pt-a.pt;})
         y+=250;
@@ -143,12 +148,14 @@ function drawPoule(x,y,w,h_,data) {
         textAlign(CENTER,CENTER);
         textSize(16);
         textStyle(BOLD);
-        for (let e of r) {
-            text(e.nom + '  ' ,mid,y);
+        for (let i in r) {
+            let e = r[i];
+            text(medaille[i]+e.nom + '  ' ,mid,y);
             y+=25;
         }
         textSize(12); textStyle(NORMAL);
     }
+    if (phase=='Demi') { image(img_saint_tropez,mid-46, 2*height/3,92,114);}
     if (phase=="Poule") {
         let r = drawClstPoule(p);
         y += 250;
@@ -181,6 +188,12 @@ function drawPoule(x,y,w,h_,data) {
             text(r[i].p,7.5*dx,y+(i+1)*dt);
             text(' -'+r[i].c,8.5*dx,y+(i+1)*dt);
             text('('+r[i].d+')',9.5*dx,y+(i+1)*dt);
+        }
+        if (poule=='Gassin') {
+            image(img_gassin,mid-23,height - 150,46,57);
+        }
+        if (poule=='Ramatuelle') {
+            image(img_ramatuelle,mid-23,height - 150,46,57);
         }
     }
 }

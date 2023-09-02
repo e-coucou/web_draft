@@ -128,7 +128,7 @@ class Joueur {
         dy += 18;
         text('Victoires :',x,y+dy);
         for (let i in this.victoires) {
-            text(this.victoires[i],x+90+30*i,y+dy);
+            text(medaille[0]+this.victoires[i],x+90+50*i,y+dy);
         }
         dy += 18;
         let tmp = 'Matchs : Gagnés='+this.gagne + ', Perdus='+this.perdu+', Nuls='+this.nul; 
