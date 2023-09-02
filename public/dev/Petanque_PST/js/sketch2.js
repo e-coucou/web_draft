@@ -21,9 +21,7 @@ let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indifférent 🧐'}];
 
-function setCat(id_=1) {
-    categories = categories ^ id_;
-    id = 0;
+function update() {
     switch(categories) {
         case 0:
         case 7 : joueurs = initJoueurs.slice(); break;
@@ -35,13 +33,20 @@ function setCat(id_=1) {
         case 6 : joueurs = initJoueurs.filter( a => { return a.pointeur != 0;}); break;
     }
 }
+function setCat(id_=1) {
+    categories = categories ^ id_;
+    id = 0;
+    update();
+}
 function BtTournoi() {
     joueurs = initJoueurs.slice();
     mode = (mode + 1) %2;
     id=0;
+    update();
 }
 function BtGraphe() {
     mode = mode ^ 3;
+    update();
 }
 
 function mousePressed() {
@@ -217,11 +222,11 @@ function showMatch() {
     drawScore(e1,e2,sc1,sc2,0,y,mid,s2,dt,w2);
 }
 function windowResized() {
-    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.95);
+    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.99);
 }
 
 function setup() {
-    canvas = createCanvas(innerWidth*0.99,innerHeight*0.95);
+    canvas = createCanvas(innerWidth*0.99,innerHeight*0.99);
     canvas.parent("#canvas");
 
     for (let i in j_json) {
