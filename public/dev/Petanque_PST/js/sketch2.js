@@ -238,10 +238,8 @@ function windowResized() {
 function setup() {
     let h_ = innerHeight*0.98;
     let w_ = min(0.59*h_, innerWidth);
-    console.log('setup',w_,h_, innerWidth/innerHeight);
-    canvas = createCanvas(w_,h_);
+    canvas = createCanvas(w_,h_); // mise en place du ratio 0.59
     canvas.parent("#canvas");
-    console.log(width/height, width, height);
 
     for (let i in j_json) {
         let j = j_json[i];

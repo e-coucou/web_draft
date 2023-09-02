@@ -132,18 +132,18 @@ function drawPoule(x,y,w,h_,data) {
         if (phase == 'Finale') {
             textAlign(CENTER,CENTER);
             fill(color(couleur.bk));
-            text(p[i].type,mid,y+(i+1)*dt-15);
-            y+=17;
+            text(p[i].type,mid,y+(i+1)*dt-dt/4-2);
+            y+=dt/3;
         }
         let sc1 = p[i].equipes[0].sc, sc2=p[i].equipes[1].sc;
         drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dt,w2);
     }
     if (phase=="Finale") {
         let img = img_finale.filter( a => { return a.a==p[0].annee});
-        if (img[0] != undefined)  { tint(255,100); image(img[0].i,padding,y+215,w,w/10*7); tint(255,255);}
+        if (img[0] != undefined)  { tint(255,100); image(img[0].i,padding,y+4.5*dt,w,w/10*7); tint(255,255);}
         let r = clastFinale(p);
         r.sort((a,b) => { return b.pt-a.pt;})
-        y+=250;
+        y+=6*dt;
         fill(color(couleur.bk));
         textAlign(CENTER,CENTER);
         textSize(16);
