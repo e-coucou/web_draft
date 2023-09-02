@@ -1,3 +1,26 @@
+function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
+    if (sc1>=sc2) {
+        fill(color(couleur.sel));
+    } else { fill(160) ;}
+    rect(mid-s2+2,y+(i+1)*dt-dt/2,s2-4,dt-2);
+    if (sc2>=sc1) {
+        fill(color(couleur.sel));
+    } else { fill(160) ;}
+    rect(mid+3,y+(i+1)*dt-dt/2,s2-4,dt-2);
+    fill(color(couleur.bk));
+    rect(mid-w2-s2,y+(i+1)*dt-dt/2,w2,dt-2);
+    rect(mid+s2,y+(i+1)*dt-dt/2,w2,dt-2);
+    let e1_t = e1.tireur.nom+'/'+e1.pointeur.nom+' '+e1.nom;
+    let e2_t = e2.nom+' '+e2.tireur.nom+'/'+e2.pointeur.nom;
+    fill(255);
+    textAlign(CENTER,CENTER);
+    text(sc1,mid-s2/2,y+(i+1)*dt);
+    text(sc2,mid+s2/2,y+(i+1)*dt);
+    textAlign(RIGHT,CENTER);
+    text(e1_t,mid-s2,y+(i+1)*dt);
+    textAlign(LEFT,CENTER);
+    text(e2_t,mid+s2,y+(i+1)*dt);
+}
 function drawPhase() {
     let dx = (width - 2* padding) / Object.keys(t_json).length ;
     let x = dx/2 + padding, y = 40;
@@ -89,45 +112,41 @@ function drawPoule(x,y,w,h_,data) {
             text(p[i].type,mid,y+(i+1)*dt-10);
             y+=30;
         }
-        fill(120,180,120);
         let sc1 = p[i].equipes[0].sc, sc2=p[i].equipes[1].sc;
-        if (sc1>=sc2) {
-            fill(color(couleur.sel));
-        } else { fill(160) ;}
-        rect(mid-s2+2,y+(i+1)*dt-dt/2,s2-4,dt-2);
-        if (sc2>=sc1) {
-            fill(color(couleur.sel));
-        } else { fill(160) ;}
-        rect(mid+3,y+(i+1)*dt-dt/2,s2-4,dt-2);
-        fill(color(couleur.bk));
-        rect(mid-w2-s2,y+(i+1)*dt-dt/2,w2,dt-2);
-        rect(mid+s2,y+(i+1)*dt-dt/2,w2,dt-2);
-        let e1_t = e1.tireur.nom+'/'+e1.pointeur.nom+' '+e1.nom;
-        let e2_t = e2.nom+' '+e2.tireur.nom+'/'+e2.pointeur.nom;
-        fill(255);
-        textAlign(CENTER,CENTER);
-        text(sc1,mid-s2/2,y+(i+1)*dt);
-        text(sc2,mid+s2/2,y+(i+1)*dt);
-        // text('-',x+mid,y+(i+1)*20);
-        textAlign(RIGHT,CENTER);
-        text(e1_t,mid-s2,y+(i+1)*dt);
-        textAlign(LEFT,CENTER);
-        text(e2_t,mid+s2,y+(i+1)*dt);
+        drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dt,w2);
     }
     if (phase=="Poule") {
         let r = drawClstPoule(p);
         y += 250;
+        let dx = width/10;
         textAlign(CENTER,CENTER);
         fill(color(couleur.bg));
-        text('Classement : '+poule,mid,y); y +=20;
-        textAlign(LEFT,CENTER);
+        text('Classement : '+poule,mid,y); y +=25;
+        fill(0);
+        textAlign(CENTER,CENTER);
+        text('Pts',6.5*dx,y);
+        text('P',7.5*dx,y);
+        text('C',8.5*dx,y);
+        text('diff',9.5*dx,y); y-=5;
         for (let i=0; i<r.length;i++ ) {
             let e = equipes.filter(a => { return (a.annee==annee && a.nom==r[i].n);})[0];
             // text(r[i].n+' : '+r[i].s+'pts '+r[i].p+' '+r[i].c+' ',r[i].d,x,y+i*18);
             fill(color(couleur.bk));
             rect(2,y+(i+1)*dt-dt/2,w-4,dt-2);
+            textAlign(LEFT,CENTER);
             fill(255);
-            text(r[i].n+' : '+e.tireur.nom+'/'+e.pointeur.nom+'  '+r[i].s+'pts +'+r[i].p+' -'+r[i].c+' ('+r[i].d+')',x,y+(i+1)*dt);
+            text(r[i].n+' : '+e.tireur.nom+'/'+e.pointeur.nom,x,y+(i+1)*dt);
+            fill(color(couleur.dm));
+            rect(6*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
+            rect(7*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
+            rect(8*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
+            rect(9*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
+            fill(color(couleur.cur));
+            textAlign(CENTER,CENTER);
+            text(r[i].s,6.5*dx,y+(i+1)*dt);
+            text(r[i].p,7.5*dx,y+(i+1)*dt);
+            text(' -'+r[i].c,8.5*dx,y+(i+1)*dt);
+            text('('+r[i].d+')',9.5*dx,y+(i+1)*dt);
         }
     }
 }

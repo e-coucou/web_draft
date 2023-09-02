@@ -74,11 +74,13 @@ function mousePressed() {
             }
         }
         if (mode==0 || mode==3) {
-            // Selction de la categorie du joueur
+            // Switch Graphix/Liste
             if (mouseX>(2*padding) && mouseX<(width-2*padding)/4 && mouseY<(height-padding) && mouseY>(height-20-padding)) {
                 // joueurs = initJoueurs.slice();
-                console.log('ici');
+                console.log('ici', mode);
                 mode = mode ^ 3;
+                toggle = true;
+                return;
             }
         }    
         if (mode==1) {
@@ -94,13 +96,13 @@ function mousePressed() {
                 poule = poules[id_];
             }
         }
-        // Selection du joueur (cote en Y modulo le nb de joueurs)
-        if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(padding) && mouseY<(height-padding) && mode==0) {
-            let id_ = floor((mouseY-padding) / ((height-padding) / joueurs.length));
-            id=iDs[id_];
-        }
-        // Selection du match par la bande inférieure
-        if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(height-padding) && mouseY<(height- padding+10) && mode==0) {
+        // // Selection du joueur (cote en Y modulo le nb de joueurs)
+        // if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(padding) && mouseY<(height-padding) && mode==0) {
+        //     let id_ = floor((mouseY-padding) / ((height-padding) / joueurs.length));
+        //     id=iDs[id_];
+        // }
+        // Selection du match par la bande colorée (meme emplacement que sel Poule)
+        if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>54 && mouseY<79 && mode==3) {
             console;log('ici');
             let id_ = floor((mouseX-padding) / ((width-2*padding) / matchs.length));
             index = id_;
@@ -226,7 +228,7 @@ function drawDate() {
     }
 }
 function drawDateBar() {
-    let x = padding, y = padding+50;
+    let x = padding, y = padding+55;
     let dx = (width-2*padding) / matchs.length , dy=10;
     for (let i=0; i<matchs.length; i++) {
         if (i==index) {
@@ -241,38 +243,18 @@ function drawDateBar() {
 }
 function showMatch() {
     let x = padding;
-    let y = height-6*padding;
+    let y = height-7*padding;
     let m = matchs[index];
     let e1 = m.equipes[0].eq;
     let e2 = m.equipes[1].eq;
-    let mid = 5*(width-2*padding)/8, dt = 25;
-    fill(51);
+    let mid = 5*(width-2*padding)/8, dt = 20;
+    let s2 = (width*3/4) * 0.07 +1;
+    let w2 = (width*3/4)/2 - s2 -padding;
+    fill(color(couleur.bk));
     textAlign(CENTER,CENTER);
     text(m.type,x+mid,y);
-    fill(120,180,120);
     let sc1 = m.equipes[0].sc, sc2=m.equipes[1].sc;
-    if (sc1>=sc2) {
-        fill(color(couleur.sel));
-        rect(x+mid-dt+1,y+10,dt-4,18);
-    }
-    if (sc2>=sc1) {
-        fill(color(couleur.sel));
-        rect(x+mid+3,y+10,dt-4,18);
-    }
-    fill(color(couleur.bk));
-    rect(x+mid-157,y+10,137,18)
-    rect(x+mid+20,y+10,137,18)
-    let e1_t = e1.tireur.nom+'/'+e1.pointeur.nom+' '+e1.nom;
-    let e2_t = e2.nom+' '+e2.tireur.nom+'/'+e2.pointeur.nom;
-    fill(255);
-    textAlign(CENTER,CENTER);
-    text(sc1,x+mid-dt/2,y+20);
-    text(sc2,x+mid+dt/2,y+20);
-    text('-',x+mid,y+20);
-    textAlign(RIGHT,CENTER);
-    text(e1_t,x+mid-dt,y+20);
-    textAlign(LEFT,CENTER);
-    text(e2_t,x+mid+dt,y+20);
+    drawScore(e1,e2,sc1,sc2,0,y,mid,s2,dt,w2);
 }
 function windowResized() {
     canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.95);

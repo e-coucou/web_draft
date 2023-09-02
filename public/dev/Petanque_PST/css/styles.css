@@ -24,8 +24,8 @@ input {
     background-color: rgb(5, 67, 46);
     display: flex;
     border-style: solid;
-    border-color: aquamarine;
-    border-width: 2px;
+    border-color: rgb(255, 255, 255);
+    border-width: 1px;
 }
 div.main {
     border-style: solid;
@@ -46,14 +46,15 @@ div.entete {
     height: 16px;
     font-size: .6em;
     font-weight: bold;
-    color: azure;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(255, 255, 255);
     /* width: 100%; */
 }
 .conteneur {
     display: inline-flex;
     padding: 1px;
     border-style: solid;
-    border-color: aquamarine;
+    border-color: rgb(255, 255, 255);
     border-width: 1px;
     align-items: center;
 }

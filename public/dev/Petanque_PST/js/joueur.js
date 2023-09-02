@@ -100,7 +100,7 @@ class Joueur {
         circle(x,y,r);
         fill(255);
         textAlign(LEFT,CENTER);
-        textSize(10);
+        // textSize(10);
         text(this.nom.substring(0,20),x+5,y);
     }
 
