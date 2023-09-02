@@ -222,11 +222,11 @@ function showMatch() {
     drawScore(e1,e2,sc1,sc2,0,y,mid,s2,dt,w2);
 }
 function windowResized() {
-    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.99);
+    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.98);
 }
 
 function setup() {
-    canvas = createCanvas(innerWidth*0.99,innerHeight*0.99);
+    canvas = createCanvas(innerWidth*0.99,innerHeight*0.98);
     canvas.parent("#canvas");
 
     for (let i in j_json) {
