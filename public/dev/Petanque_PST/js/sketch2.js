@@ -275,11 +275,11 @@ function showMatch() {
     text(e2_t,x+mid+dt,y+20);
 }
 function windowResized() {
-    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.8);
+    canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.95);
 }
 
 function setup() {
-    canvas = createCanvas(innerWidth*0.99,innerHeight*0.8);
+    canvas = createCanvas(innerWidth*0.99,innerHeight*0.95);
     canvas.parent("#canvas");
 
     for (let i in j_json) {
