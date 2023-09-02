@@ -15,7 +15,7 @@ let padding = 5;
 let toggle=false;
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
-    titre:[5,67,46], f:[60,140,70], cur:[180,180,0]};
+    titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur'},{id:2, cat:'Pointeur'},{id:4, cat:'Indifférent'}];
 
@@ -47,6 +47,7 @@ function mousePressed() {
                 joueurs = initJoueurs.slice();
                 mode = (mode + 1) %2;
                 id=0;
+                toggle = true;
                 return;
             }
         }
@@ -129,12 +130,15 @@ function selCategories() {
     for (let p of selCat) {
         if ( (p.id & categories) == p.id ) {
             fill(color(couleur.cur));
-        } else {
+            rect(x-dx/2+1,y-12,dx-2,24);
             fill(color(couleur.bk));
+            text(p.cat,x,y);
+            } else {
+            fill(color(couleur.bk));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(255);
+            text(p.cat,x,y);
         }
-        rect(x-dx/2+1,y-12,dx-2,24);
-        fill(255);
-        text(p.cat,x,y);
         x += dx;
     }
 }
@@ -199,7 +203,7 @@ function drawGraph() {
     textAlign(CENTER,CENTER);
     fill(color(couleur.cur));
     rect(2,y-12,width/4,24);
-    fill(255);
+    fill(color(couleur.bk));
     text('Retour ',width/8,y);
 }
 function drawDate() {
@@ -209,14 +213,66 @@ function drawDate() {
     for (let a of annees) {
         if (a.a==annee) {
             fill(color(couleur.cur));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(color(couleur.bk));
+            text(a.a,x,y);
         } else {
             fill(color(couleur.bk));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(255);
+            text(a.a,x,y);
         }
-        rect(x-dx/2+1,y-12,dx-2,24);
-        fill(255);
-        text(a.a,x,y);
         x += dx;
     }
+}
+function drawDateBar() {
+    let x = padding, y = padding+50;
+    let dx = (width-2*padding) / matchs.length , dy=10;
+    for (let i=0; i<matchs.length; i++) {
+        if (i==index) {
+            fill(color(couleur.cur));
+        } else {
+            if (matchs[i].type=="Poule") fill(color(couleur.pl));
+            if (matchs[i].type=="Demi") fill(color(couleur.dm));
+            if (matchs[i].type.indexOf("Finale") != -1) fill(color(couleur.f));
+        }
+        rect(x+i*dx,y,dx,dy);
+    }
+}
+function showMatch() {
+    let x = padding;
+    let y = height-6*padding;
+    let m = matchs[index];
+    let e1 = m.equipes[0].eq;
+    let e2 = m.equipes[1].eq;
+    let mid = 5*(width-2*padding)/8, dt = 25;
+    fill(51);
+    textAlign(CENTER,CENTER);
+    text(m.type,x+mid,y);
+    fill(120,180,120);
+    let sc1 = m.equipes[0].sc, sc2=m.equipes[1].sc;
+    if (sc1>=sc2) {
+        fill(color(couleur.sel));
+        rect(x+mid-dt+1,y+10,dt-4,18);
+    }
+    if (sc2>=sc1) {
+        fill(color(couleur.sel));
+        rect(x+mid+3,y+10,dt-4,18);
+    }
+    fill(color(couleur.bk));
+    rect(x+mid-157,y+10,137,18)
+    rect(x+mid+20,y+10,137,18)
+    let e1_t = e1.tireur.nom+'/'+e1.pointeur.nom+' '+e1.nom;
+    let e2_t = e2.nom+' '+e2.tireur.nom+'/'+e2.pointeur.nom;
+    fill(255);
+    textAlign(CENTER,CENTER);
+    text(sc1,x+mid-dt/2,y+20);
+    text(sc2,x+mid+dt/2,y+20);
+    text('-',x+mid,y+20);
+    textAlign(RIGHT,CENTER);
+    text(e1_t,x+mid-dt,y+20);
+    textAlign(LEFT,CENTER);
+    text(e2_t,x+mid+dt,y+20);
 }
 function windowResized() {
     canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.8);
@@ -258,18 +314,12 @@ function setup() {
     initJoueurs = joueurs.slice();
     poule = poules[0];
 }
-
-// function BSwitch() {
-//     joueurs = initJoueurs.slice();
-//     mode = (mode + 1) %2;
-//     id=1;
-// }
 function draw() {
     background(220);
-    console.log(id);
-    idSel = joueurs[id].id;
+    // console.log(id);
+    // idSel = joueurs[id].id;
     noStroke();
-    if (mode < 2)  { drawDate(); drawSW(); }
+    if (mode == 0 || mode==1)  { drawDate(); drawSW(); }
     if (mode == 3) {
         drawDate(); 
         fill(color(couleur.bk));
@@ -313,10 +363,10 @@ function draw() {
         joueurs[id].fiche(padding,40,width-2*padding,matchs);
     }
     if (mode==1) drawTournois(0,40,width, height-100,annee);
-    // if (mode==0) {
-    //     drawDateBar();
-    //     showMatch(index);
-    // }
+    if (mode==3) {
+        drawDateBar();
+        showMatch(index);
+    }
     // // if (frameCount % 5 == 0) {
     //     if (index<nbMatchs-1) {
     //         index += 1;

@@ -6,11 +6,13 @@ function drawPhase() {
         let t=t_json[i];
         if (t.type==phase) {
             fill(color(couleur.cur));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(color(couleur.bk));
         } else {
             fill(color(couleur.bk));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(255);
         }
-        rect(x-dx/2+1,y-12,dx-2,24);
-        fill(255);
         text(t.type,x,y);
         x += dx;
     }
@@ -22,11 +24,13 @@ function selPoule() {
     for (let p of poules) {
         if (p==poule) {
             fill(color(couleur.cur));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(color(couleur.bk));
         } else {
             fill(color(couleur.bk));
+            rect(x-dx/2+1,y-12,dx-2,24);
+            fill(255);
         }
-        rect(x-dx/2+1,y-12,dx-2,24);
-        fill(255);
         text(p,x,y);
         x += dx;
     }
