@@ -14,48 +14,55 @@ let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=false;
 
-let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , f:[60,140,70], cur:[180,180,0]};
+let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
+    titre:[5,67,46], f:[60,140,70], cur:[180,180,0]};
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur'},{id:2, cat:'Pointeur'},{id:4, cat:'Indifférent'}];
 
 function setCat(id_=1) {
     categories = categories ^ id_;
-    id = 1;
+    id = 0;
 }
 function mouseReleased() {
     toggle = false;
 }
-function mouseClicked() {
-
-}
 function mousePressed() {
+    // Mode 0 = Liste
+    // Mode 1 = Tournoi
+    // Mode 2 = Fiche
+    // Mode 3 = GrapheX
+    //
     if ( !toggle) {
         if (mode==0 || mode==3) {
-            // Selction de la categorie du joueur
+            // Selction de la categorie du joueur /Tireur/Pointeur/Indifférent
             if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
                 let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
                 setCat(selCat[id_].id);
             }
         }
-        // selction switch
-        if (mode<2) {
+        // selction switch Tournoi/Liste
+        if (mode==0 || mode==1) {
             // Selction de la categorie du joueur
             if (mouseX>(3*(width-padding)/4) && mouseX<(width-2*padding) && mouseY<(height-padding) && mouseY>(height-20-padding)) {
                 joueurs = initJoueurs.slice();
                 mode = (mode + 1) %2;
-                id=1;
+                id=0;
+                return;
             }
         }
-        // Selction de l'année
-        if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
-            let id_ = floor((mouseX-padding) / ((width+2*padding) / annees.length));
-            if (mode < 2 || mode==3) {
-                selA = id_;
-                setDateSel(selA);
-            } else {
-                if (id_==0) mode = 0;
+        // Selection de l'année
+        if (mode==0 || mode==1 || mode == 3 || mode==2 ) {
+            if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
+                let id_ = floor((mouseX-padding) / ((width+2*padding) / annees.length));
+                if (mode < 2 || mode==3) {
+                    selA = id_;
+                    setDateSel(selA);
+                } else {
+                    if (id_==0) mode = 0;
+                }
             }
         }
+        // selection d'un jouer dans la liste
         if (mouseX>(padding) && mouseX<(width-padding) && mode==0) {
             let id_ = round((mouseY - 80) / 20);
             if ( id_<0 || id_>=joueurs.length) {
@@ -69,8 +76,8 @@ function mousePressed() {
             // Selction de la categorie du joueur
             if (mouseX>(2*padding) && mouseX<(width-2*padding)/4 && mouseY<(height-padding) && mouseY>(height-20-padding)) {
                 // joueurs = initJoueurs.slice();
+                console.log('ici');
                 mode = mode ^ 3;
-                id=1;
             }
         }    
         if (mode==1) {
@@ -98,12 +105,6 @@ function mousePressed() {
             index = id_;
             annee = matchs[id_].annee;
         }
-        // if (mouseX>=(width-40) && mouseX<width && mouseY>=(height-40)) {
-        //     BSwitch();
-        // }
-        // if (mouseX>=(width-100) && mouseX<(width-60) && mouseY>=(height-40)) {
-        //     debug = (debug + 1) %2;
-        // }
     }
     toggle = true;
 }
@@ -265,21 +266,9 @@ function setup() {
 // }
 function draw() {
     background(220);
-    // idSel = joueurs[id].id;
-    // fill(color(couleur.bk));
-    // circle(width-20,height-20,25);
-    // circle(width-80,height-20,25);
-    // fill(color(couleur.bk));
-    // textAlign(CENTER,CENTER);
-    // textSize(36);
-    // text(matchs[index].annee, width-130+padding, 25);
-    // textSize(14);
-    // text(matchs[index].type, width-130+padding, 55);
-
-    // noStroke();
-    // fill(color(couleur.bg));
-    // rect(padding,padding,w,h);
-
+    console.log(id);
+    idSel = joueurs[id].id;
+    noStroke();
     if (mode < 2)  { drawDate(); drawSW(); }
     if (mode == 3) {
         drawDate(); 
