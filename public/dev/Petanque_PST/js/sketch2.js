@@ -19,11 +19,21 @@ let debounce=0;
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
     titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
 let poules = ['Gassin', 'Ramatuelle'];
-let selCat = [ {id:1 , cat:'Tireur'},{id:2, cat:'Pointeur'},{id:4, cat:'Indifférent'}];
+let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indifférent 🧐'}];
 
 function setCat(id_=1) {
     categories = categories ^ id_;
     id = 0;
+    switch(categories) {
+        case 0:
+        case 7 : joueurs = initJoueurs.slice(); break;
+        case 1 : joueurs = initJoueurs.filter( a => { return a.tireur > a.pointeur;}); break; //tireurs
+        case 2 : joueurs = initJoueurs.filter( a => { return a.tireur < a.pointeur;}); break; //pointeurs
+        case 3 : joueurs = initJoueurs.filter( a => { return a.tireur != a.pointeur;}); break;  // neutre
+        case 4 : joueurs = initJoueurs.filter( a => { return a.tireur !=0 & a.pointeur != 0;}); break;
+        case 5 : joueurs = initJoueurs.filter( a => { return a.tireur !=0;}); break;
+        case 6 : joueurs = initJoueurs.filter( a => { return a.pointeur != 0;}); break;
+    }
 }
 function BtTournoi() {
     joueurs = initJoueurs.slice();
@@ -50,7 +60,7 @@ function mousePressed() {
                 c.setSW(setCat,id_);
             }
         }
-        // selction switch Tournoi/Liste
+        // selection switch Tournoi/Liste
         if (btTournoi.isIn(mouseX,mouseY,mode)) {
             btTournoi.setSW(BtTournoi);
         }
@@ -66,7 +76,7 @@ function mousePressed() {
                 }
             }
         }
-        // selection d'un jouer dans la liste
+        // selection d'un joueur dans la liste
         if (mouseX>(padding) && mouseX<(width-padding) && mode==0) {
             let id_ = round((mouseY - 80) / 20);
             if ( id_<0 || id_>=joueurs.length) {
@@ -80,13 +90,13 @@ function mousePressed() {
             btGraphe.setSW(BtGraphe);
         }    
         if (mode==1) {
-            // Selction de la phase
+            // Selection de la phase
             if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
                 let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
                 phase = t_json[id_].type;
                 poule = poules[0];
             }
-            // Selction de la poule
+            // Selection de la poule
             if (mouseX>padding && mouseX<(width-padding) && mouseY<79 && mouseY>54) {
                 let id_ = floor((mouseX-padding) / ((width+2*padding) / 2));
                 poule = poules[id_];
@@ -110,16 +120,6 @@ function mousePressed() {
 function mouseMoved() {
     xM = max(padding,min(mouseX,width-2*padding));
     yM = max(padding,min(mouseY,height-2*padding));
-    // if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(h+padding) && mouseY<(h+padding+10) && mode==0) {
-    //     let id_ = floor((mouseX-padding) / (w / matchs.length));
-    //     index = id_;
-    //     annee = matchs[id_].annee;
-    // }
-    // if (mouseX>(padding) && mouseX<(w+padding) && mouseY>(padding) && mouseY<(h+padding) && mode==0) {
-    //     let id_ = floor((mouseY-padding) / (h / joueurs.length));
-    //     console.log(id_);
-    //     id=id_;
-    // } 
 }
 function setDateSel(id_) {
     annee = annees[id_].a;
@@ -147,15 +147,15 @@ function createCategories() {
     }
 }
 function createTournoi() {
-    let y = height-20;
+    let r = 18;
+    let y = height-r/2-padding;
     let x = 3*(width-padding)/4;
     let l = (width-4*padding)/4;
-    let r = 18;
     return new Switch('Tournoi',x,y,l,r,[0,1]);
 }
 function createGraph() {
     let r = 18;
-    let y = height-20;
+    let y = height-r/2-padding;
     let x = padding+r/2;
     let l = (width-padding-r)/4;
     return new Switch('Graphe',x,y,l,r,[0,3]);
@@ -166,7 +166,7 @@ function drawBack() {
     fill(color(couleur.cur));
     rect(2,y-12,width/4,24);
     fill(color(couleur.bk));
-    text('Retour ',width/8,y);
+    text('Retour ⏎',width/8,y);
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -238,7 +238,7 @@ function setup() {
     for (let i in m_json) {
         let m = m_json[i];
         // console.log(m.annee);
-        matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule));
+        matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
         joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
         if (m.type == "Finale") {
             a_=true;
@@ -283,19 +283,6 @@ function draw() {
         }
     }
     if (mode == 2) {drawBack(); }
-    if (mode == 0 || mode == 3) {
-        // selCategories();
-        switch(categories) {
-            case 0:
-            case 7 : joueurs = initJoueurs.slice(); break;
-            case 1 : joueurs = initJoueurs.filter( a => { return a.tireur > a.pointeur;}); break; //tireurs
-            case 2 : joueurs = initJoueurs.filter( a => { return a.tireur < a.pointeur;}); break; //pointeurs
-            case 3 : joueurs = initJoueurs.filter( a => { return a.tireur != a.pointeur;}); break;  // neutre
-            case 4 : joueurs = initJoueurs.filter( a => { return a.tireur !=0 & a.pointeur != 0;}); break;
-            case 5 : joueurs = initJoueurs.filter( a => { return a.tireur !=0;}); break;
-            case 6 : joueurs = initJoueurs.filter( a => { return a.pointeur != 0;}); break;
-        }
-    }
     if (mode==0) {
         joueurs.sort( (a,b) => { return (b.hist[index].elo - a.hist[index].elo);});
         iDs = [];
@@ -305,9 +292,6 @@ function draw() {
             let elo = joueurs[i].hist[index].elo;
             iDs[i] = idx;
             joueurs[i].show(idx, padding, 20*(i)+80, width-2*padding,elo);
-            // if (mode==0) {
-            //     joueurs[i].draw(idx,joueurs.length,w,h,elo);
-            // }
         }
     }
     if (mode==2) {
@@ -318,15 +302,4 @@ function draw() {
         drawDateBar();
         showMatch(index);
     }
-    // // if (frameCount % 5 == 0) {
-    //     if (index<nbMatchs-1) {
-    //         index += 1;
-    //     }
-    // }
-    // if (id != -1) {
-    //     joueurs[id].fiche(padding,height/2,w,matchs);
-    // }
-    // stroke(130);
-    // line(padding,yM,w+padding,yM);
-    // line(xM,padding,xM,h+padding);
 }

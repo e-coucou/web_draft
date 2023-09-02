@@ -214,7 +214,7 @@ class Equipe {
 }
 
 class Match {
-    constructor(id_, E1_, E2_, sc1_, sc2_, type_, annee_,poule_="elimination") {
+    constructor(id_, E1_, E2_, sc1_, sc2_, type_, annee_,poule_="elimination",k_=0) {
         this.id = id_;
         this.equipes = [];
         this.equipes.push({eq:E1_, sc:sc1_});
@@ -222,6 +222,7 @@ class Match {
         this.type = type_;
         this.annee = annee_;
         this.poule = poule_;
+        this.k=k_;
         this.equipes[0].eq.addMatch(sc1_,sc2_,annee_,0,this);
         this.equipes[1].eq.addMatch(sc2_,sc1_,annee_,1,this);
         this.updateELO();

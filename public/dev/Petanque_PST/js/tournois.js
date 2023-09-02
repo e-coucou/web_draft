@@ -1,3 +1,5 @@
+const iconPhase = [' 🐣', ' 🍺', ' 🍾'];
+
 function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     if (sc1>=sc2) {
         fill(color(couleur.sel));
@@ -36,7 +38,7 @@ function drawPhase() {
             rect(x-dx/2+1,y-12,dx-2,24);
             fill(255);
         }
-        text(t.type,x,y);
+        text(t.type+iconPhase[i],x,y);
         x += dx;
     }
 }
@@ -91,6 +93,24 @@ function drawClstPoule(data) {
     return r;
 
 }
+function clastFinale(data){
+    let clt = [];
+    for (let m of data) {
+        let e1 = '('+m.equipes[0].eq.nom +') ' + m.equipes[0].eq.tireur.nom +'/' + m.equipes[0].eq.pointeur.nom;
+        let e2 = '('+m.equipes[1].eq.nom +') ' + m.equipes[1].eq.tireur.nom +'/' + m.equipes[1].eq.pointeur.nom;
+        let sc1 = m.equipes[0].sc;
+        let sc2 = m.equipes[1].sc;
+        let k = m.k;
+        if (sc1>sc2) {
+            clt.push({nom:e1, sc:sc1, pt:k+1});
+            clt.push({nom:e2, sc:sc2, pt:k});
+        } else {
+            clt.push({nom:e1, sc:sc1, pt:k});
+            clt.push({nom:e2, sc:sc2, pt:k+1});
+        }
+    }
+    return clt;
+}
 function drawPoule(x,y,w,h_,data) {
     let p = data.filter( r => { return ( r.type.indexOf(phase) != -1 && r.poule==poule); });
     let s2 = w * 0.07 +1;
@@ -109,11 +129,25 @@ function drawPoule(x,y,w,h_,data) {
         if (phase == 'Finale') {
             textAlign(CENTER,CENTER);
             fill(color(couleur.bk));
-            text(p[i].type,mid,y+(i+1)*dt-10);
-            y+=30;
+            text(p[i].type,mid,y+(i+1)*dt-15);
+            y+=17;
         }
         let sc1 = p[i].equipes[0].sc, sc2=p[i].equipes[1].sc;
         drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dt,w2);
+    }
+    if (phase=="Finale") {
+        let r = clastFinale(p);
+        r.sort((a,b) => { return b.pt-a.pt;})
+        y+=250;
+        fill(color(couleur.bk));
+        textAlign(CENTER,CENTER);
+        textSize(16);
+        textStyle(BOLD);
+        for (let e of r) {
+            text(e.nom + '  ' ,mid,y);
+            y+=25;
+        }
+        textSize(12); textStyle(NORMAL);
     }
     if (phase=="Poule") {
         let r = drawClstPoule(p);
