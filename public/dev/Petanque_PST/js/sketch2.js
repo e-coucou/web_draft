@@ -13,7 +13,7 @@ let mode = 1, debug = 0;
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=false;
-let btTournoi,btGraphe, btCategories=[];
+let btTournoi,btGraphe,btRetour, btCategories=[];
 let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
@@ -21,7 +21,7 @@ let img_finale=[];
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
     titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
 let poules = ['Gassin', 'Ramatuelle'];
-let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indifférent 🧐'}];
+let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
 
 function update() {
     switch(categories) {
@@ -71,6 +71,10 @@ function mousePressed() {
         if (btTournoi.isIn(mouseX,mouseY,mode)) {
             btTournoi.setSW(BtTournoi);
         }
+        // selection Bouton de retour
+        if (btRetour.isIn(mouseX,mouseY,mode)) {
+            mode=0;
+        }
         // Selection de l'année
         if (mode==0 || mode==1 || mode == 3 || mode==2 ) {
             if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
@@ -78,8 +82,6 @@ function mousePressed() {
                 if (mode < 2 || mode==3) {
                     selA = id_;
                     setDateSel(selA);
-                } else {
-                    if (id_==0) mode = 0;
                 }
             }
         }
@@ -109,11 +111,6 @@ function mousePressed() {
                 poule = poules[id_];
             }
         }
-        // // Selection du joueur (cote en Y modulo le nb de joueurs)
-        // if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>(padding) && mouseY<(height-padding) && mode==0) {
-        //     let id_ = floor((mouseY-padding) / ((height-padding) / joueurs.length));
-        //     id=iDs[id_];
-        // }
         // Selection du match par la bande colorée (meme emplacement que sel Poule)
         if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>54 && mouseY<79 && mode==3) {
             console;log('ici');
@@ -172,13 +169,19 @@ function createGraph() {
     let l = (width-padding-r)/4;
     return new Switch('Graphe',x,y,l,r,[0,3]);
 }
-function drawBack() {
-    let y = 12;
-    textAlign(CENTER,CENTER);
-    fill(color(couleur.cur));
-    rect(2,y-12,width/4,24);
-    fill(color(couleur.bk));
-    text('Retour ⏎',width/8,y);
+// function drawBack() {
+function createBack() {
+    let r = 18;
+    let y = height-2*r-padding;
+    let x = (width-2*padding)/2;
+    let l = (width-padding)/4;
+    return new Bouton('Retour ⏎',x,y,l,r,[2],true);
+    // let y = 12;
+    // textAlign(CENTER,CENTER);
+    // fill(color(couleur.cur));
+    // rect(2,y-12,width/4,24);
+    // fill(color(couleur.bk));
+    // text('Retour ⏎',width/8,y);
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -277,6 +280,7 @@ function setup() {
     poule = poules[0];
     btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
     btGraphe = createGraph();
+    btRetour = createBack();
     createCategories();
 }
 function draw() {
@@ -286,14 +290,14 @@ function draw() {
     noStroke();
     btTournoi.show(mode); //drawSW();
     btGraphe.show(mode);
+    btRetour.show(mode);
     for (c of btCategories) {
         c.show(mode);
     }
-    if (mode == 0 || mode==1)  { 
+    if (mode == 0 || mode==1 || mode==3)  { 
         drawDate();
     }
     if (mode == 3) {
-        drawDate(); 
         fill(color(couleur.bk));
         rect(padding,79,width-2*padding,height-120);
         for (let i in joueurs) {
@@ -302,16 +306,37 @@ function draw() {
             joueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-120,elo);
         }
     }
-    if (mode == 2) {drawBack(); }
+    // if (mode == 2) {drawBack(); }
     if (mode==0) {
         joueurs.sort( (a,b) => { return (b.hist[index].elo - a.hist[index].elo);});
-        iDs = [];
-        iDs = [ ...Array(joueurs.length).keys() ];
+        // iDs = [];
+        // iDs = [ ...Array(joueurs.length).keys() ];
+        let w_ = width-2*padding;
+        let dx = w_/12;
+        let x_ = padding + 2*8 +3.5*dx;
+        let y_ = 67, dy_=18;
+        noFill();
+        stroke(color(couleur.bk));
+        rect(x_+1,y_-dy_/2+1,dx-2,dy_-2);
+        rect(x_+1*dx,y_-dy_/2+1,dx-2,dy_-2);
+        rect(x_+2*dx,y_-dy_/2+1,dx-2,dy_-2);
+        rect(x_+3*dx,y_-dy_/2+1,dx-2,dy_-2);
+        rect(x_+4*dx,y_-dy_/2+1,dx-2,dy_-2);
+        rect(x_+5*dx,y_-dy_/2+1,dx-2,dy_-2);
+        textAlign(CENTER,CENTER);textStyle(NORMAL);
+        fill(color(couleur.bk));
+        text('ELO',x_+1+dx/2, y_);
+        text('G',x_+dx+dx/2, y_);
+        text('N',x_+2*dx+dx/2, y_);
+        text('P',x_+3*dx+dx/2, y_);
+        // textSize(10);
+        text('po',x_+4*dx+dx/2, y_);
+        text('co',x_+5*dx+dx/2, y_);
         for (let i in joueurs) {
             let idx = int(joueurs[i].hist[index].c);
             let elo = joueurs[i].hist[index].elo;
-            iDs[i] = idx;
-            joueurs[i].show(idx, padding, 20*(i)+80, width-2*padding,elo);
+            // iDs[i] = idx;
+            joueurs[i].show(idx, padding, 20*(i)+85, w_,elo);
         }
     }
     if (mode==2) {
