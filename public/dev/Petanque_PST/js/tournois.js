@@ -31,12 +31,14 @@ function drawPhase() {
     for (let i in t_json) {
         let t=t_json[i];
         if (t.type==phase) {
+            stroke(color(couleur.dm));
             fill(color(couleur.cur));
-            rect(x-dx/2+1,y-12,dx-2,24);
+            rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(color(couleur.bk));
         } else {
+            noStroke();
             fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24);
+            rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(255);
         }
         text(t.type+iconPhase[i],x,y);
@@ -49,12 +51,14 @@ function selPoule() {
     textAlign(CENTER,CENTER);
     for (let p of poules) {
         if (p==poule) {
+            stroke(color(couleur.dm));
             fill(color(couleur.cur));
-            rect(x-dx/2+1,y-12,dx-2,24);
+            rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(color(couleur.bk));
         } else {
+            noStroke();
             fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24);
+            rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(255);
         }
         text(p,x,y);

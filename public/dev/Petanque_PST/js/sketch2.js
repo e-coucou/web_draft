@@ -228,6 +228,7 @@ function readELO() {
     }
 }
 function drawParam() {
+    // a compléter ...
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -236,13 +237,15 @@ function drawDate() {
     textSize(14);
     for (let a of annees) {
         if (a.a==annee) {
+            stroke(color(couleur.dm));
             fill(color(couleur.cur));
-            rect(x-dx/2+1,y-12,dx-2,24);
+            rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(color(couleur.bk));
             text(a.a,x,y);
         } else {
+            noStroke();
             fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24);
+            rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(255);
             text(a.a,x,y);
         }
