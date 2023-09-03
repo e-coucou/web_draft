@@ -175,13 +175,7 @@ function createBack() {
     let y = height-2*r-padding;
     let x = (width-2*padding)/2;
     let l = (width-padding)/4;
-    return new Bouton('Retour ⏎',x,y,l,r,[2],true);
-    // let y = 12;
-    // textAlign(CENTER,CENTER);
-    // fill(color(couleur.cur));
-    // rect(2,y-12,width/4,24);
-    // fill(color(couleur.bk));
-    // text('Retour ⏎',width/8,y);
+    return new Bouton('Retour ⏎',x,y,l,[2],true);
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -235,7 +229,26 @@ function windowResized() {
     let h_ = innerHeight*0.98;
     let w_ = min(0.59*h_, innerWidth);
     canvas = resizeCanvas(w_,h_);
-    // canvas = resizeCanvas(innerWidth*0.99,innerHeight*0.98);
+    let x_ = (windowWidth - width) / 2;
+    let y_ = (windowHeight - height) / 2;
+    // canvas.position(x_, y_+10);
+    let r_=18;
+    y_ = height-r_/2-padding;
+    x_ = padding+r_/2;
+    let l_ = (width-padding-r_)/4;
+    btGraphe.redim(x_,y_,l_,l_);
+    x_ = 3*(width-padding)/4;
+    l_ = (width-4*padding)/4;
+    btTournoi.redim(x_,y_,l_);
+    x_ = (width-2*padding)/2;
+    l_ = (width-padding)/4;
+    btRetour.redim(x_,y_,l_);
+    let dx_ = (width - 2* padding) / 3;
+    x_ = r_, y_ = 40;
+    for (let p of btCategories) {
+        p.redim(x_,y_,dx_-padding,dx_-padding);
+        x_ += dx_;
+    }
 }
 
 function setup() {

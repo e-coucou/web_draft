@@ -20,9 +20,9 @@ function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     text(sc1,mid-s2/2,y+(i+1)*dt);
     text(sc2,mid+s2/2,y+(i+1)*dt);
     textAlign(RIGHT,CENTER);
-    text(e1_t,mid-s2,y+(i+1)*dt);
+    text(e1_t,mid-s2*1.1,y+(i+1)*dt);
     textAlign(LEFT,CENTER);
-    text(e2_t,mid+s2,y+(i+1)*dt);
+    text(e2_t,mid+s2*1.1,y+(i+1)*dt);
 }
 function drawPhase() {
     let dx = (width - 2* padding) / Object.keys(t_json).length ;
@@ -63,7 +63,7 @@ function selPoule() {
         x += dx;
     }
 }
-function drawClstPoule(data) {
+function ClstPoule(data) {
     let clt = [];
     for (let i =0; i<data.length;i++) {
         for (let j=0;j<2;j++) {
@@ -122,7 +122,7 @@ function drawPoule(x,y,w,h_,data) {
     let mid = w/2;
     fill(200); noStroke();
     textAlign(LEFT,CENTER);
-    textSize(12); //dt/2.5);
+    textSize(min(14,dt/3)); //dt/2.5);
     y += 35;
     fill(255);
     for (let i in p ) {
@@ -146,18 +146,18 @@ function drawPoule(x,y,w,h_,data) {
         y+=6*dt;
         fill(color(couleur.bk));
         textAlign(CENTER,CENTER);
-        textSize(16);
+        textSize(min(16,dt/2.5));
         textStyle(BOLD);
         for (let i in r) {
             let e = r[i];
             text(medaille[i]+e.nom + '  ' ,mid,y);
             y+=25;
         }
-        textSize(12); textStyle(NORMAL);
+        textSize(min(14,dt/3)); textStyle(NORMAL);
     }
     if (phase=='Demi') { image(img_saint_tropez,mid-46, 2*height/3,92,114);}
     if (phase=="Poule") {
-        let r = drawClstPoule(p);
+        let r = ClstPoule(p);
         y += 8*dt;
         let dx = width/10;
         textAlign(CENTER,CENTER);
@@ -182,9 +182,10 @@ function drawPoule(x,y,w,h_,data) {
             rect(7*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
             rect(8*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
             rect(9*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
-            fill(color(couleur.cur));
             textAlign(CENTER,CENTER);
+            fill(255);textStyle(BOLD);
             text(r[i].s,6.5*dx,y+(i+1)*dt);
+            fill(color(couleur.cur));textStyle(NORMAL);
             text(r[i].p,7.5*dx,y+(i+1)*dt);
             text(' -'+r[i].c,8.5*dx,y+(i+1)*dt);
             text('('+r[i].d+')',9.5*dx,y+(i+1)*dt);

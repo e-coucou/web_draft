@@ -1,15 +1,20 @@
-class Switch {
-    constructor(txt,x,y,l,r,mode,init_=false) {
+class BtBase {
+    constructor(txt,x,y,l) {
         this.txt = txt;
         this.x = x;
         this.y = y;
         this.l = l;
-        this.r = r;
-        this.mode = mode;
-        this.on = init_;
-        this.lx = this.x + this.l;
+    }
+    init(l_) {
+        this.lx = this.x+l_;
         this.ly1 = this.y - 10;
         this.ly2 = this.y + 10;
+    }
+    redim(x_,y_,l_,lx_) {
+        this.x = x_;
+        this.y = y_;
+        this.l = l_;
+        this.init(lx_);
     }
     setOn() {
         this.on = true;
@@ -25,12 +30,30 @@ class Switch {
             callback();
         }
     }
+    isIn(x_,y_) {
+        if ( x_>(this.x-this.l/2) && x_<this.lx && y_>this.ly1 && y_<this.ly2) {
+            return true;
+        } else { return false;}
+    }
+}
+class Switch extends BtBase {
+    constructor(txt,x,y,l_,r,mode,init_=false) {
+        super(txt,x,y,l_)
+        this.r = r;
+        this.mode = mode;
+        this.on = init_;
+        super.init(l_);
+    }
     isIn(x_, y_,mode_) {
         if (this.mode.includes(mode_)) {
-            if ( x_>this.x && x_<this.lx && y_>this.ly1 && y_<this.ly2) {
-                return true;
-            } else { return false;}
+            // if ( x_>this.x && x_<this.lx && y_>this.ly1 && y_<this.ly2) {
+            //     return true;
+            return (super.isIn(x_,y_));
+            // } else { return false;}
         } else { return false;}
+    }
+    redim(x_,y_,l_,lx_) {
+        super.redim(x_,y_,l_,l_);
     }
     show(mode_) {
         if (this.mode.includes(mode_)) {
@@ -58,39 +81,20 @@ class Switch {
     }
 }
 
-class Bouton {
-    constructor(txt,x,y,l,r,mode,init_=false) {
-        this.txt = txt;
-        this.x = x;
-        this.y = y;
-        this.l = l;
-        this.r = r;
+class Bouton extends BtBase{
+    constructor(txt,x,y,l_,mode,init_=false) {
+        super(txt,x,y,l_);
         this.mode = mode;
         this.on = init_;
-        this.lx = x+this.l/2;
-        this.ly1 = this.y - 10;
-        this.ly2 = this.y + 10;
-    }
-    setOn() {
-        this.on = true;
-    }
-    setOff() {
-        this.on = false;
-    }
-    setSW(callback,id_) {
-        this.on = !(this.on);
-        if (id_) {
-            callback(id_);
-        } else {
-            callback();
-        }
+        super.init(l_/2);
     }
     isIn(x_, y_,mode_) {
         if (this.mode.includes(mode_)) {
-            if ( x_>(this.x-this.l/2) && x_<this.lx && y_>this.ly1 && y_<this.ly2) {
-                return true;
-            } else { return false;}
+            return (super.isIn(x_,y_));
         } else { return false;}
+    }
+    redim(x_,y_,l_,lx_) {
+        super.redim(x_,y_,l_,l_/2);
     }
     show(mode_) {
         if (this.mode.includes(mode_)) {
