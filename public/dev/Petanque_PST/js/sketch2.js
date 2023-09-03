@@ -1,3 +1,4 @@
+let param;
 let joueurs = [];
 let initJoueurs = [];
 let equipes = [];
@@ -134,6 +135,7 @@ function keyPressed() {
     if (key=='d') { debug = (debug+1)%2;}
 }
 function preload() {
+    param = loadJSON("./data/param.json");
     j_json = loadJSON("./data/joueurs.json");
     e_json = loadJSON("./data/equipes.json");
     m_json = loadJSON("./data/matchs.json");
@@ -143,6 +145,8 @@ function preload() {
     img_saint_tropez = loadImage("./img/saint-tropez.png"); //130x143
     let img=loadImage("./img/2023.jpeg");
     img_finale.push({a:2023,i:img}); //1024x768
+    img=loadImage("./img/2022.jpg");
+    img_finale.push({a:2022,i:img}); //1024x768
 }
 function createCategories() {
     let r = 18;

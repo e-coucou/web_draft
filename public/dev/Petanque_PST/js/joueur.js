@@ -1,12 +1,8 @@
-const Ke = 1.5;
-const I = 40;
-const Kr = 10.;
-
 class Joueur {
     constructor(nom_, id_) {
         this.nom=nom_;
         this.id = id_;
-        this.ELO = I;
+        this.ELO = param.ELO.init;
         this.rank = 0;
         this.match = 0;
         this.tireur = 0;
@@ -269,34 +265,34 @@ class Match {
     updateELO() {
         let ELO1 = this.equipes[0].eq.ELOm;
         let ELO2 = this.equipes[1].eq.ELOm;
-        let Kf = 1.;
-        let P = 1.;
+        let Kf = param.ELO.std;
+        let P = param.ELO.std;
         let v=0;
         let D = (ELO1 - ELO2); let gain=0;
-        D = Math.min(5, Math.max(-5,D));
+        D = Math.min(param.ELO.maxEcart, Math.max(-param.ELO.maxEcart,D));
         let ecart = Math.abs(this.equipes[0].sc - this.equipes[1].sc)
         let p_ = this.type.indexOf("Finale");
         if (p_ != -1) {
-            Kf = 1.1;
+            Kf = param.ELO.finaliste;
             this.equipes[0].eq.setPalmares(this.annee,0,1,this.id);
             this.equipes[1].eq.setPalmares(this.annee,1,0,this.id);
         }
-        if (this.type == "Demi") Kf = 1.;
-        if (this.type == "Finale") Kf = 1.2;
-        if (ecart>6) P = Ke;
+        if (this.type == "Demi") Kf = param.ELO.demi;
+        if (this.type == "Finale") Kf = param.ELO.finale;
+        if (ecart>param.ELO.bonusSeuil) P = param.ELO.bonus;
 
         if (this.equipes[0].sc > this.equipes[1].sc) {
             if (this.type == "Finale") this.equipes[0].eq.setVictoire(this.annee);
-            gain = 1 - D/Kr;
+            gain = 1 - D/param.ELO.seuil;
             v=1;
         }
         if (this.equipes[0].sc < this.equipes[1].sc) {
             if (this.type == "Finale") this.equipes[1].eq.setVictoire(this.annee);
-            gain = -(1 +  D/ Kr);
+            gain = -(1 +  D/ param.ELO.seuil);
             v=-1;
         }
         if (this.equipes[0].sc == this.equipes[1].sc) {
-            gain = - D/ Kr;
+            gain = - D/ param.ELO.seuil;
             v=0;
         }
         this.equipes[0].eq.update(gain*P*Kf,v);
