@@ -53,6 +53,7 @@ function BtGraphe() {
     update();
 }
 function HTMLRetour() {
+    console.log('ici')
     select('canvas').show();
     select('#notice').style('display','hidden');
     select('#ELO').style('display','hidden');
@@ -77,7 +78,10 @@ function mousePressed() {
         // selection switch Tournoi/Liste
         if (btTournoi.isIn(mouseX,mouseY,mode)) { btTournoi.setSW(BtTournoi); }
         // selection Bouton de retour
-        if (btRetour.isIn(mouseX,mouseY,mode)) { mode=0; toggle=true; }
+        if (btRetour.isIn(mouseX,mouseY,mode)) { 
+            // select('#notice').style('display','hidden');
+            // select('#ELO').style('display','hidden');
+                    mode=0; toggle=true; btTournoi.setOff();}
         // slecture de la notice / read ELO explication
         if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); }
         if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); }
