@@ -2,7 +2,7 @@ body {
     margin: 0px;
     background-color: rgb(10, 95, 58);
     /* background-color:transparent; */
-    background-image:url("../img/bk001.jpg");
+    background-image:url("../img/bk001.JPG");
     image-rendering: pixelated;
     color:azure;
 }

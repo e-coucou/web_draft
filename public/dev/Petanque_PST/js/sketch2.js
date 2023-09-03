@@ -165,7 +165,7 @@ function preload() {
     img_saint_tropez = loadImage("./img/saint-tropez.png"); //130x143
     let img=loadImage("./img/2023.jpeg");
     img_finale.push({a:2023,i:img}); //1024x768
-    img=loadImage("./img/2022.jpg");
+    img=loadImage("./img/2022.JPG");
     img_finale.push({a:2022,i:img}); //1024x768
 }
 function createCategories() {
