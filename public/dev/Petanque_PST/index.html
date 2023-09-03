@@ -57,7 +57,35 @@
         </li>
         </ul>
       </p>
-      <!-- <img src="./img/2023.jpeg"></img> -->
+      <input class="styled" id="retour1" type="button" value="RETOUR">
+      <img src="./img/2023.jpeg"></img>
     </div>
+    <div class="notice" id="ELO"
+      <h2>Classement ELO ...</h2>
+      <p>Ce type de classement est utilisé aux échecs et dans tous les sports (Foot, Rugby ...) pour classer les équipes ou les joueurs.
+        Pour notre classement PST nous utilisons le même que pour le classement des équipes de Rugby par l'IRB depuis 2003.</p>
+        <p>Chaque joueur qui débute reçoit un capital de 40pts.</p>
+        <p>Chaque équipe se voit attribuée la moyenne des notes ELO de ses joueurs.</p>
+        <p>Lors d'un match :</p>
+        <ul>
+          <li>L'équipe 1 est celle qui a le plus de point ELO au début du match</li>
+          <li>On calcul la différence : D = ELO(équipe 1) - ELO(équipe 2)</li>
+          <li>On limite cet écart à 5pts</li>
+          <li>Si une des 2 équipes a gagné avec plus de 6 pts (mieux que 13-7), on multiplie par un coefficient de 1.5</li>
+          <li>La valeure obtenue est divisée par 10</li>
+          <li>... et on attribue suivant les formules suivantes :
+            <ul>
+              <li>si Equipe 1 gagne -> points = 1 - D/10</li>
+              <li>si Equipe 1 perd  -> points = -(1 + D/10)</li>
+              <li>si Equipe 1 gagne -> points = - D/10</li>
+            </ul>
+            On peut aussi attribuer des coefficients 1.1 pour les Finales et 1.25 pour les finalistes par exemple.</li>
+            <li>Les points obtenus sont ajoutés à l'équipe qui a gagnée et retirés à l'équipe qui a perdue.
+          </li>
+        </ul>
+        <p>Les calculs se font match après match depuis le premier et donc les prochains peuvent tout changer ... ou pas !</p>
+        <p>Pour ceux qui sont curieux : <a href="https://fr.wikipedia.org/wiki/Classement_World_Rugby_des_équipes_nationales_de_rugby_à_XV" tabindex="1" title="Wikipédia">Wikipédia</a></p>
+        <input class="styled" id="retour2" type="button" value="RETOUR">
+      </div>
    </body>
 </html>

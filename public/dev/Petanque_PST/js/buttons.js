@@ -4,11 +4,17 @@ class BtBase {
         this.x = x;
         this.y = y;
         this.l = l;
+        this.h = 10;
     }
     init() {
         this.lx = this.x+this.l/2;
-        this.ly1 = this.y - 10;
-        this.ly2 = this.y + 10;
+        this.ly1 = this.y - this.h;
+        this.ly2 = this.y + this.h;
+        this.hh = 2 * this.h;
+    }
+    setH(h_) {
+        this.h = h_;
+        this.init();
     }
     redim(x_,y_,l_,) {
         this.x = x_;
@@ -57,7 +63,7 @@ class Switch extends BtBase {
     }
     show(mode_) {
         if (this.mode.includes(mode_)) {
-            textSize(12);
+            textSize(this.h*1.2);
             textStyle(NORMAL);
             textAlign(CENTER,CENTER);
             fill(color(couleur.bg));
@@ -88,7 +94,7 @@ class Bouton extends BtBase{
         super(txt,x,y,l_);
         this.mode = mode;
         this.on = init_;
-        super.init(l_/2);
+        super.init();
     }
     isIn(x_, y_,mode_) {
         if (this.mode.includes(mode_)) {
@@ -98,19 +104,49 @@ class Bouton extends BtBase{
     show(mode_) {
         if (this.mode.includes(mode_)) {
             textAlign(CENTER,CENTER);
-            textSize(12);
+            textSize(this.h*1.2);
             textStyle(NORMAL);
             if (this.on) {
                 fill(color(couleur.cur));
-                rect(this.x-this.l/2,this.y-10,this.l,20);
+                rect(this.x-this.l/2,this.y-this.h,this.l,this.hh);
                 fill(color(couleur.bk));
                 text(this.txt,this.x,this.y);
                 // circle(this.x+this.l-this.r,this.y,this.r);
             } else {
                 fill(color(couleur.bk));
-                rect(this.x-this.l/2,this.y-10,this.l,20);
+                rect(this.x-this.l/2,this.y-this.h,this.l,this.hh);
+                fill(color(couleur.cur)); fill(255);
+                text(this.txt,this.x,this.y);
+            }        
+        }
+    }
+}
+
+class BoutonC extends BtBase {
+    constructor(txt,x,y,l_,mode,init_=false) {
+        super(txt,x,y,l_);
+        this.mode = mode;
+        this.on = init_;
+        super.init();
+    }
+    isIn(x_, y_,mode_) {
+        if (this.mode.includes(mode_)) {
+            return (super.isIn(x_,y_));
+        } else { return false;}
+    }
+    show(mode_) {
+        if (this.mode.includes(mode_)) {
+            textAlign(CENTER,CENTER);
+            textSize(2*this.l);
+            textStyle(NORMAL);
+            if (this.on) {
+                fill(color(couleur.bk));
+                text(this.txt,this.x,this.y);
+                // circle(this.x+this.l-this.r,this.y,this.r);
+            } else {
                 fill(color(couleur.dm));
                 text(this.txt,this.x,this.y);
             }        
         }
-    }}
+    }
+}

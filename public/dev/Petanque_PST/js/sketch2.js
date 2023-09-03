@@ -13,11 +13,12 @@ let id = 0, idSel;
 let mode = 1, debug = 0;
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
-let toggle=false;
-let btTournoi,btGraphe,btRetour, btCategories=[];
+let toggle=true;
+let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice;
 let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
+let btHTML;
 
 let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
     titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
@@ -51,7 +52,12 @@ function BtGraphe() {
     mode = mode ^ 3;
     update();
 }
-
+function HTMLRetour() {
+    select('canvas').show();
+    select('#notice').style('display','hidden');
+    select('#ELO').style('display','hidden');
+    toggle = true;
+}
 function mousePressed() {
     // Mode 0 = Liste
     // Mode 1 = Tournoi
@@ -69,13 +75,12 @@ function mousePressed() {
             }
         }
         // selection switch Tournoi/Liste
-        if (btTournoi.isIn(mouseX,mouseY,mode)) {
-            btTournoi.setSW(BtTournoi);
-        }
+        if (btTournoi.isIn(mouseX,mouseY,mode)) { btTournoi.setSW(BtTournoi); }
         // selection Bouton de retour
-        if (btRetour.isIn(mouseX,mouseY,mode)) {
-            mode=0;
-        }
+        if (btRetour.isIn(mouseX,mouseY,mode)) { mode=0; toggle=true; }
+        // slecture de la notice / read ELO explication
+        if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); }
+        if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); }
         // Selection de l'année
         if (mode==0 || mode==1 || mode == 3 || mode==2 ) {
             if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
@@ -99,6 +104,9 @@ function mousePressed() {
         if (btGraphe.isIn(mouseX,mouseY,mode)) {
             btGraphe.setSW(BtGraphe);
         }    
+        if (btInfo.isIn(mouseX,mouseY,mode)) {
+            mode = 4;
+        }    
         if (mode==1) {
             // Selection de la phase
             if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
@@ -114,13 +122,11 @@ function mousePressed() {
         }
         // Selection du match par la bande colorée (meme emplacement que sel Poule)
         if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>54 && mouseY<79 && mode==3) {
-            console;log('ici');
             let id_ = floor((mouseX-padding) / ((width-2*padding) / matchs.length));
             index = id_;
             annee = matchs[id_].annee;
         }
     }
-    toggle = true;
 }
 function mouseMoved() {
     xM = max(padding,min(mouseX,width-2*padding));
@@ -134,10 +140,19 @@ function keyPressed() {
     if (key=='w') { BtTournoi();}
     if (key=='d') { debug = (debug+1)%2;}
     if (key=='h') { select('canvas').hide();}
-    if (key=='s') { select('canvas').show();}
+    if (key=='s') { console.log('show');select('canvas').show();}
     if (key=='a') { 
-        my = select("notice"); console.log(my);
-        my.style('display','none');}
+        my = select("#notice");
+        my.style('display','none');
+        my = select("#ELO");
+        my.style('display','none');
+    }
+    if (key=='z') { 
+        my = select("#notice");
+        my.style('display','none');
+        my = select("#ELO");
+        my.style('display','none');
+    }
 }
 function preload() {
     param = loadJSON("./data/param.json");
@@ -178,18 +193,47 @@ function createGraph() {
     let l = (width-padding-r)/4;
     return new Switch('Graphe',x,y,l,r,[0,3]);
 }
+function createInfo() {
+    let l=18;
+    let y =height - 15 - padding;
+    let x = width / 2;
+    return new BoutonC('⚙️',x,y,l,[0,1]);
+}
 // function drawBack() {
 function createBack() {
     let r = 18;
     let y = height-2*r-padding;
     let x = (width-2*padding)/2;
     let l = (width-padding)/4;
-    return new Bouton('Retour ⏎',x,y,l,[2],true);
+    return new Bouton('Retour ⏎',x,y,l,[2,4],true);
+}
+function readNotice() {
+    btHTML = select("#retour1");
+    btHTML.mousePressed(HTMLRetour);
+    if (toggle) {
+        select("canvas").hide();
+        select("#notice").style('display','block');
+        select("#ELO").style('display','none');
+        toggle = false;
+    }
+}
+function readELO() {
+    btHTML = select("#retour2");
+    btHTML.mousePressed(HTMLRetour);
+    if (toggle) {
+        select("canvas").hide();
+        select("#notice").style('display','none');
+        select("#ELO").style('display','block');
+        toggle = false;
+    }
+}
+function drawParam() {
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
     let x = dx/2 + padding, y = 12;
     textAlign(CENTER,CENTER);
+    textSize(14);
     for (let a of annees) {
         if (a.a==annee) {
             fill(color(couleur.cur));
@@ -247,6 +291,7 @@ function windowResized() {
     x_ = padding+r_/2;
     let l_ = (width-padding-r_)/4;
     btGraphe.redim(x_,y_,l_);
+    btInfo.redom(width/2,y_,25,25);
     x_ = 3*(width-padding)/4;
     l_ = (width-4*padding)/4;
     btTournoi.redim(x_,y_,l_);
@@ -283,7 +328,6 @@ function setup() {
     let a_ = false;
     for (let i in m_json) {
         let m = m_json[i];
-        // console.log(m.annee);
         matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
         joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
         if (m.type == "Finale") {
@@ -304,16 +348,25 @@ function setup() {
     btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
     btGraphe = createGraph();
     btRetour = createBack();
+    btInfo = createInfo();
     createCategories();
+    btNotice = new Bouton('Notice ...',width/2,30,width/2,[4],false);
+    btELO = new Bouton('ELO explication !',width/2,70,width/2,[4],false);
+    btELO.setH(14); btNotice.setH(14);
+
+    select("#notice").style('display','none');
+    select("#ELO").style('display','none');
 }
 function draw() {
     background(220);
-    // console.log(id);
     // idSel = joueurs[id].id;
     noStroke();
     btTournoi.show(mode); //drawSW();
     btGraphe.show(mode);
     btRetour.show(mode);
+    btInfo.show(mode);
+    btNotice.show(mode);
+    btELO.show(mode);
     for (c of btCategories) {
         c.show(mode);
     }
@@ -365,6 +418,7 @@ function draw() {
     if (mode==2) {
         joueurs[id].fiche(padding,40,width-2*padding,matchs);
     }
+    if (mode==4) drawParam();
     if (mode==1) drawTournois(0,40,width, height-100,annee);
     if (mode==3) {
         drawDateBar();
