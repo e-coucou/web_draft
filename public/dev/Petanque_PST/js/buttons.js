@@ -6,7 +6,7 @@ class BtBase {
         this.l = l;
     }
     init() {
-        this.lx = this.x+this.l;
+        this.lx = this.x+this.l/2;
         this.ly1 = this.y - 10;
         this.ly2 = this.y + 10;
     }
@@ -52,8 +52,8 @@ class Switch extends BtBase {
             // } else { return false;}
         } else { return false;}
     }
-    redim(x_,y_,l_,lx_) {
-        super.redim(x_,y_,l_,l_);
+    redim(x_,y_,l_) {
+        super.redim(x_+l_/2,y_,l_);
     }
     show(mode_) {
         if (this.mode.includes(mode_)) {
@@ -94,9 +94,6 @@ class Bouton extends BtBase{
         if (this.mode.includes(mode_)) {
             return (super.isIn(x_,y_));
         } else { return false;}
-    }
-    redim(x_,y_,l_) {
-        super.redim(x_,y_,l_);
     }
     show(mode_) {
         if (this.mode.includes(mode_)) {

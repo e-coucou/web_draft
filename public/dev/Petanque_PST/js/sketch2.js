@@ -133,6 +133,11 @@ function setDateSel(id_) {
 function keyPressed() {
     if (key=='w') { BtTournoi();}
     if (key=='d') { debug = (debug+1)%2;}
+    if (key=='h') { select('canvas').hide();}
+    if (key=='s') { select('canvas').show();}
+    if (key=='a') { 
+        my = select("notice"); console.log(my);
+        my.style('display','none');}
 }
 function preload() {
     param = loadJSON("./data/param.json");
@@ -232,15 +237,16 @@ function showMatch() {
 function windowResized() {
     let h_ = innerHeight*0.98;
     let w_ = min(0.59*h_, innerWidth);
-    canvas = resizeCanvas(w_,h_);
+    resizeCanvas(w_,h_);
     let x_ = (windowWidth - width) / 2;
     let y_ = (windowHeight - height) / 2;
+    select('canvas').position(x_, y_+10);
     // canvas.position(x_, y_+10);
     let r_=18;
     y_ = height-r_/2-padding;
     x_ = padding+r_/2;
     let l_ = (width-padding-r_)/4;
-    btGraphe.redim(x_,y_,l_,l_);
+    btGraphe.redim(x_,y_,l_);
     x_ = 3*(width-padding)/4;
     l_ = (width-4*padding)/4;
     btTournoi.redim(x_,y_,l_);
