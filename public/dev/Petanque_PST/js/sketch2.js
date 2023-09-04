@@ -27,8 +27,8 @@ let couleur_arr =[
     {dm:'#20bf55', bk:'#0b4f6c', sel:'#01baef', txt:'#fbfbff', cur:'#757575'},
     {bk:'#1d3461', dm:'#1f487e', cur:'#376996', sel:'#6290c8', txt:'#92accc'},
     {bk:'#084b83', dm:'#42bfdd', cur:'#bbe6e4', sel:'#ffe45e', txt:'#ff66b3'}, //f0f6f6
-    {bk:'#22577a', dm:'#38a3a5', cur:'#57cc99', sel:'#80ed99', txt:'#c7f9cc'},
-    {bk:[10,50,20], cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[220,250,50]} ,
+    {bk:'#22577a', dm:'#38a3a5', cur:'#57cc99', sel:'#60cd79', txt:'#c7f9cc'},
+    {bk:[10,50,20], cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[180,220,40]} ,
     { bk:[20,10,50], sel:'#FFC300', dm:'#FF5733' , txt:[5,46,67], cur:'#DAF7A6'},
     {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc'},
     {bk:'#01161e', dm:'#124559', cur:'#598392', sel:'#aec3b0', txt:'#eff6e0'}]
@@ -85,11 +85,12 @@ function mousePressed() {
                 c.setSW(setCat,id_);
             }
         }
-        //     // Selction de la couleurt
+        //     // Selction de la couleur
         for( let n in btCouleur) {
             let c = btCouleur[n];
             if (c.isIn(mouseX,mouseY,mode)) {
                 couleur_sel=n; couleur=couleur_arr[couleur_sel];
+                select('body').style('background-color',couleur.bk);
             }
         }
         // selection switch Tournoi/Liste
@@ -255,13 +256,13 @@ function drawParam() {
     let y = 150;
     let dy = 20;
     textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(12); textStyle(NORMAL);
-    text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1); y += dy;
+    text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
     text('Limitation du gain au delà de ',x,y); text(param.ELO.seuil+' pts',x1,y); y += dy;
-    text('Coefficient pour un match normal :',x,y); text(param.ELO.std+' pts',x1,y); y += dy;
-    text('Coefficient pour un match en "demi" :',x,y); text(param.ELO.demi+' pts',x1,y); y += dy;
-    text('Coefficient pour un match dans les phases finales :',x,y); text(param.ELO.finaliste+' pts',x1,y); y += dy;
+    text('Coefficient match normal :',x,y); text(param.ELO.std+' pts',x1,y); y += dy;
+    text('Coefficient en "demi" :',x,y); text(param.ELO.demi+' pts',x1,y); y += dy;
+    text('Coefficient phases finales :',x,y); text(param.ELO.finaliste+' pts',x1,y); y += dy;
     text('Coefficient pour la FINALE :',x,y); text(param.ELO.finale+' pts',x1,y); y += dy;
-    text('Ecart au score qui permet un coef. de majoration:',x,y); text(param.ELO.bonusSeuil+' pts',x1,y); y += dy;
+    text('Ecart pour un coef. de majoration:',x,y); text(param.ELO.bonusSeuil+' pts',x1,y); y += dy;
     text('Coefficient de majoration :',x,y); text(param.ELO.bonus+' pts',x1,y); y += dy;
     y += 2*dy;
     let y_ = y;
@@ -423,6 +424,7 @@ function setup() {
     select("#ELO").style('display','none');
 
     couleur = couleur_arr[couleur_sel];
+    select('body').style('background-color',couleur.bk);
     for (let c=0;c<couleur_arr.length;c++) {
         btCouleur.push(new BoutonC('B',100,100,20,[4],true));
     }
