@@ -20,9 +20,18 @@ let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
 let btHTML;
 let couleur_sel=0, couleur , btCouleur=[];
-let couleur_arr =[ {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , titre:[5,67,46], f:[60,140,70], cur:[220,250,50]} ,
-    { bk:[50,10,20], bg:[70,30,30], sel:[200,50,50], pl:[80,20,20], dm:[120,50,50] ,titre:[67,5,46], f:[140,60,70], cur:[255,120,255] } ,
-    { bk:[20,10,50], bg:[30,30,70], sel:[50,50,200], pl:[20,20,80], dm:[50,50,120] , titre:[5,46,67], f:[70,60,140], cur:[50,220,250]} ]
+let couleur_arr =[
+    {bk:'#a20021', dm:'#f52f57', sel:'#f79d5c', cur:'#f3752b', txt:'#ededf4'},
+    {bk:'#230007', txt:'#d7cf07', sel:'#d98324', cur:'#a40606', dm:'#5a0002'},
+    {txt:'#89d2dc', sel:'#6564db', cur:'#232ed1', dm:'#101d42', bk:'#0d1317'},
+    {dm:'#20bf55', bk:'#0b4f6c', sel:'#01baef', txt:'#fbfbff', cur:'#757575'},
+    {bk:'#1d3461', dm:'#1f487e', cur:'#376996', sel:'#6290c8', txt:'#92accc'},
+    {bk:'#084b83', dm:'#42bfdd', cur:'#bbe6e4', sel:'#ffe45e', txt:'#ff66b3'}, //f0f6f6
+    {bk:'#22577a', dm:'#38a3a5', cur:'#57cc99', sel:'#80ed99', txt:'#c7f9cc'},
+    {bk:[10,50,20], cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[220,250,50]} ,
+    { bk:[20,10,50], sel:'#FFC300', dm:'#FF5733' , txt:[5,46,67], cur:'#DAF7A6'},
+    {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc'},
+    {bk:'#01161e', dm:'#124559', cur:'#598392', sel:'#aec3b0', txt:'#eff6e0'}]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
 
@@ -80,7 +89,6 @@ function mousePressed() {
         for( let n in btCouleur) {
             let c = btCouleur[n];
             if (c.isIn(mouseX,mouseY,mode)) {
-                let id_ = selCat[n].id;
                 couleur_sel=n; couleur=couleur_arr[couleur_sel];
             }
         }
@@ -246,7 +254,7 @@ function drawParam() {
     let x = 30, x1 = width*2/3;
     let y = 150;
     let dy = 20;
-    textAlign(LEFT,CENTER); fill(color(couleur.bg)); textSize(12); textStyle(NORMAL);
+    textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(12); textStyle(NORMAL);
     text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1); y += dy;
     text('Limitation du gain au delà de ',x,y); text(param.ELO.seuil+' pts',x1,y); y += dy;
     text('Coefficient pour un match normal :',x,y); text(param.ELO.std+' pts',x1,y); y += dy;
@@ -257,29 +265,30 @@ function drawParam() {
     text('Coefficient de majoration :',x,y); text(param.ELO.bonus+' pts',x1,y); y += dy;
     y += 2*dy;
     let y_ = y;
-    text('Couleur du fond :',x,y); y += dy;
-    text('Couleur du background :',x,y); y += dy;
-    text('Couleur du courant :',x,y); y += dy;
-    text('Couleur du sélection :',x,y); y += dy;
-    text('Couleur du demi :',x,y); y += dy;
-    text('Couleur du finale :',x,y); y += dy;
-    text('Couleur du pl :',x,y); y += dy;
-    text('Couleur du titre :',x,y); y += dy;
-    y = y_;
-    fill(color(couleur.bg));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.bk));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.cur));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.sel));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.dm));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.f));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.pl));rect(x1,y-7,15,14); y += dy;
-    fill(color(couleur.titre));rect(x1,y-7,15,14); y += dy;
-
+    // text('Couleur  :',x,y); y += dy;
+    // text('Couleur du background :',x,y); y += dy;
+    // text('Couleur du courant :',x,y); y += dy;
+    // text('Couleur du sélection :',x,y); y += dy;
+    // text('Couleur du demi :',x,y); y += dy;
+    // text('Couleur du finale :',x,y); y += dy;
+    // text('Couleur du pl :',x,y); y += dy;
+    // text('Couleur du titre :',x,y); y += dy;
+    // y = y_;
+    // fill(color(couleur.bg));rect(x1,y-7,15,14); y += dy;
+    for (let i in couleur_arr) {
+        i = int(i);
+        fill(color(couleur_arr[i].bk));rect(x1-140,y-7,15,14);text('Palette '+i+((i==couleur_sel)?' <selection>':''),x,y);
+        fill(color(couleur_arr[i].dm));rect(x1-120,y-7,15,14); 
+        fill(color(couleur_arr[i].cur));rect(x1-100,y-7,15,14);
+        fill(color(couleur_arr[i].sel));rect(x1-80,y-7,15,14);
+        fill(color(couleur_arr[i].txt));rect(x1-60,y-7,15,14);
+        y += dy;
+    }
     y = y_;
     for (let i in btCouleur) {
-        btCouleur[i].redim(x1+80,y+20,20);
-        fill(color(couleur_arr[i].sel));rect(x1+60,y-10,40,40,5);
-        y += 3*dy;
+        btCouleur[i].redim(x1+7,y,10);
+        fill(color(couleur_arr[i].dm));rect(x1,y-8,16,16,2);
+        y += dy;
     }
 }
 function drawDate() {
@@ -290,7 +299,7 @@ function drawDate() {
     for (let a of annees) {
         if (a.a==annee) {
             stroke(color(couleur.dm));
-            fill(color(couleur.cur));
+            fill(color(couleur.sel));
             rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(color(couleur.bk));
             text(a.a,x,y);
@@ -309,11 +318,11 @@ function drawDateBar() {
     let dx = (width-2*padding) / matchs.length , dy=10;
     for (let i=0; i<matchs.length; i++) {
         if (i==index) {
-            fill(color(couleur.cur));
+            fill(color(couleur.sel));
         } else {
-            if (matchs[i].type=="Poule") fill(color(couleur.pl));
+            if (matchs[i].type=="Poule") fill(color(couleur.bk));
             if (matchs[i].type=="Demi") fill(color(couleur.dm));
-            if (matchs[i].type.indexOf("Finale") != -1) fill(color(couleur.f));
+            if (matchs[i].type.indexOf("Finale") != -1) fill(color(couleur.cur));
         }
         rect(x+i*dx,y,dx,dy);
     }
@@ -380,25 +389,26 @@ function setup() {
         equipes.push( new Equipe(e.nom,joueurs[e.J1],joueurs[e.J2],e.annee));
     }
     nbMatchs = Object.keys(m_json).length ;
-    let a_ = false;
-    for (let i in m_json) {
-        let m = m_json[i];
-        matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
-        joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
-        if (m.type == "Finale") {
-            a_=true;
-            annees.push({a:m.annee,m:int(i)});
-        }
-        for (let j in joueurs) {
-            joueurs[j].setClst(j,a_,m.annee);
-        }
-        a_ = false;
-    }
+    calculELO(true);
+    // let a_ = false;
+    // for (let i in m_json) {
+    //     let m = m_json[i];
+    //     matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
+    //     joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
+    //     if (m.type == "Finale") {
+    //         a_=true;
+    //         annees.push({a:m.annee,m:int(i)});
+    //     }
+    //     for (let j in joueurs) {
+    //         joueurs[j].setClst(j,a_,m.annee);
+    //     }
+    //     a_ = false;
+    // }
     // frameRate(1);
     selA = annees.length-1;
     setDateSel(selA);
 
-    initJoueurs = joueurs.slice();
+    // initJoueurs = joueurs.slice();
     poule = poules[0];
     btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
     btGraphe = createGraph();
@@ -413,9 +423,9 @@ function setup() {
     select("#ELO").style('display','none');
 
     couleur = couleur_arr[couleur_sel];
-    btCouleur.push(new BoutonC('',100,100,20,[4],true));
-    btCouleur.push(new BoutonC('',100,100,20,[4],true));
-    btCouleur.push(new BoutonC('',100,100,20,[4],true));
+    for (let c=0;c<couleur_arr.length;c++) {
+        btCouleur.push(new BoutonC('B',100,100,20,[4],true));
+    }
 }
 function draw() {
     background(220);

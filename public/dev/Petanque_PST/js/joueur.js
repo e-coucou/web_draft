@@ -1,27 +1,51 @@
+function calculELO(new_ = true) {
+    for (let j of joueurs)
+        { j.reset(); };
+    if ( !new_) { for (let e of equipes) e.resetELO();}
+    matchs = [];
+    let a_ = false;
+    for (let i in m_json) {
+        let m = m_json[i];
+        matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
+        joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
+        if (m.type == "Finale") {
+            a_=true;
+            if (new_) annees.push({a:m.annee,m:int(i)});
+        }
+        for (let j in joueurs) {
+            joueurs[j].setClst(j,a_,m.annee);
+        }
+        a_ = false;
+    }
+    initJoueurs = joueurs.slice();
+}
 class Joueur {
     constructor(nom_, id_) {
         this.nom=nom_;
         this.id = id_;
+        this.reset();
+        this.team = [];
+        this.tireur = 0;
+        this.pointeur = 0;
+        this.annees=[];
+    }
+
+    reset() {
         this.ELO = param.ELO.init;
         this.rank = 0;
         this.match = 0;
-        this.tireur = 0;
-        this.pointeur = 0;
         this.gagne=0;
         this.perdu=0;
         this.nul=0;
         this.victoire = 0;
         this.pour=0;
         this.contre=0;
-        this.annees=[];
         this.victoires=[];
         this.hist=[];
         this.palmares=[];
         this.clast = [];
-        this.team = [];
         this.matchs = [];
     }
-
     setVictoire(annee_) {
         this.victoire += 1;
         this.victoires.push(annee_);
@@ -64,9 +88,11 @@ class Joueur {
     }
     getColor() {
         switch (this.victoire) {
-            case 0 : fill(10,120,10); break;
-            case 1 : fill(10,200,10); break;
-            case 2 : fill(10,255,10); break;
+            case 0 : fill(color(couleur.dm)); break;
+            case 1 : fill(color(couleur.cur)); break;
+            case 2 : fill(color(couleur.sel)); break;
+            case 3:
+            case 4 : fill(color(couleur.txt)); break;
         }
         if (this.id == idSel) {fill(color(couleur.cur));}
     }
@@ -76,7 +102,7 @@ class Joueur {
         noStroke();
         this.getColor();
         rect(x,y-dy/2,s-1,dy);
-        fill(color(couleur.pl));
+        fill(color(couleur.bk));
         rect(x+s,y-dy/2,w_-s,dy);
         fill(255);
         textAlign(LEFT,CENTER);
@@ -89,7 +115,7 @@ class Joueur {
             textStyle(BOLD);
             text(nf(idx,2,0)+"/ "+this.nom, x, y); x+=3.5*dx;
             textAlign(CENTER,CENTER);
-            fill(color(couleur.dm));
+            fill(color(couleur.cur));
             rect(x+1,y-dy/2+1,dx-2,dy-2);
             rect(x+dx+1,y-dy/2+1,dx-2,dy-2);
             rect(x+2*dx+1,y-dy/2+1,dx-2,dy-2);
@@ -99,7 +125,7 @@ class Joueur {
             fill(color(couleur.bk));
             rect(x+6*dx+1,y-dy/2+1,dx-2,dy-2);
             // rect(x+5*dx+1,y-dy/2+1,dx-2,dy-2);
-            fill(color(couleur.cur));
+            fill(color(couleur.txt));
             text(nf(elo,0,1),x+dx/2, y);textStyle(NORMAL);
             text(this.gagne,x+dx+dx/2, y);
             text(this.nul,x+2*dx+dx/2, y);
@@ -139,7 +165,7 @@ class Joueur {
         noStroke();
         this.getColor();
         rect(x,y-13,s,26);
-        fill(color(couleur.pl));
+        fill(color(couleur.dm));
         rect(x+s,y-13,w_-s,26);
         fill(255);
         textAlign(LEFT,CENTER);
@@ -151,7 +177,7 @@ class Joueur {
         textSize(14);
         text(tmp,x+w_,y);
         textAlign(LEFT,CENTER);
-        fill(color(couleur.pl));
+        fill(color(couleur.dm));
         textSize(12);
         y += 10;
         let dy=22;
@@ -226,6 +252,10 @@ class Equipe {
         this.annee = annee_;
     }
 
+    resetELO() {
+        this.ELOm = (this.tireur.ELO + this.tireur.ELO ) /2;
+    }
+
     setVictoire(annee_) {
         this.pointeur.setVictoire(annee_);
         this.tireur.setVictoire(annee_);
@@ -297,5 +327,5 @@ class Match {
         }
         this.equipes[0].eq.update(gain*P*Kf,v);
         this.equipes[1].eq.update(-gain*P*Kf,-v);
-}
+    }
 }

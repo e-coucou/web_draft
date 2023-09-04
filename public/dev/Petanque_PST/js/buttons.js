@@ -66,23 +66,23 @@ class Switch extends BtBase {
             textSize(this.h*1.2);
             textStyle(NORMAL);
             textAlign(CENTER,CENTER);
-            fill(color(couleur.bg));
-            rect(this.x-this.l/2,this.y-10,this.l-20,20);
-            circle(this.x-this.l/2,this.y,20);
-            circle(this.x+this.l/2-20,this.y,20);
-            fill(color(couleur.f));
-            rect(this.x+this.l/2-2.2*this.r,this.y-this.r/2,1.1*this.r+2,this.r);
+            fill(color(couleur.bk));
+            rect(this.x-this.l/2,this.y-11,this.l-20,22);
+            circle(this.x-this.l/2,this.y,22);
+            circle(this.x+this.l/2-20,this.y,22);
+            fill(color(couleur.cur));
+            rect(this.x+this.l/2-2.2*this.r , this.y-this.r/2 -1 , 1.1*this.r+2 , this.r+2);
             circle(this.x+this.l/2-2.2*this.r,this.y,this.r+2);
-            circle(this.x+this.l/2-this.r,this.y,this.r+2);
+            circle(this.x+this.l/2-this.r-2 , this.y ,this.r+2);
             fill(255);
             textAlign(LEFT,CENTER);
             if (this.on) {
                 text(this.txt,this.x-this.l/2,this.y);
-                fill(color(couleur.cur));
-                circle(this.x+this.l/2-this.r,this.y,this.r);
+                fill(color(couleur.sel));
+                circle(this.x+this.l/2-this.r-3,this.y,this.r);
             } else {
                 text(this.txt,this.x-this.l/2,this.y);
-                fill(color(couleur.bk));
+                fill(color(couleur.dm));
                 circle(this.x+this.l/2-2.2*this.r,this.y,this.r);
             }        
         }
@@ -107,7 +107,7 @@ class Bouton extends BtBase{
             textSize(this.h*1.2);
             textStyle(NORMAL);
             if (this.on) {
-                fill(color(couleur.cur));
+                fill(color(couleur.sel));
                 rect(this.x-this.l/2,this.y-this.h,this.l,this.hh);
                 fill(color(couleur.bk));
                 text(this.txt,this.x,this.y);
@@ -115,7 +115,7 @@ class Bouton extends BtBase{
             } else {
                 fill(color(couleur.bk));
                 rect(this.x-this.l/2,this.y-this.h,this.l,this.hh);
-                fill(color(couleur.cur)); fill(255);
+                fill(color(couleur.sel)); fill(255);
                 text(this.txt,this.x,this.y);
             }        
         }
@@ -142,10 +142,11 @@ class BoutonC extends BtBase {
             if (this.on) {
                 fill(color(couleur.bk));
                 text(this.txt,this.x,this.y);
-                // circle(this.x+this.l-this.r,this.y,this.r);
+                circle(this.x+this.l-this.r,this.y,this.r);
             } else {
-                fill(color(couleur.dm));
+                fill(color(couleur.sel));
                 text(this.txt,this.x,this.y);
+                circle(this.x+this.l-this.r,this.y,this.r);
             }        
         }
     }

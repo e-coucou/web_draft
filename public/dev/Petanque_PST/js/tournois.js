@@ -32,7 +32,7 @@ function drawPhase() {
         let t=t_json[i];
         if (t.type==phase) {
             stroke(color(couleur.dm));
-            fill(color(couleur.cur));
+            fill(color(couleur.sel));
             rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(color(couleur.bk));
         } else {
@@ -52,7 +52,7 @@ function selPoule() {
     for (let p of poules) {
         if (p==poule) {
             stroke(color(couleur.dm));
-            fill(color(couleur.cur));
+            fill(color(couleur.sel));
             rect(x-dx/2+1,y-12,dx-2,24,10);
             fill(color(couleur.bk));
         } else {
@@ -165,7 +165,7 @@ function drawPoule(x,y,w,h_,data) {
         y += 8*dt;
         let dx = width/10;
         textAlign(CENTER,CENTER);
-        fill(color(couleur.bg));
+        fill(color(couleur.bk));
         text('Classement : '+poule,mid,y); y +=25;
         fill(0);
         textAlign(CENTER,CENTER);
@@ -181,7 +181,7 @@ function drawPoule(x,y,w,h_,data) {
             textAlign(LEFT,CENTER);
             fill(255);
             text(r[i].n+' : '+e.tireur.nom+'/'+e.pointeur.nom,x,y+(i+1)*dt);
-            fill(color(couleur.dm));
+            fill(color(couleur.cur));
             rect(6*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
             rect(7*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
             rect(8*dx,y+(i+1)*dt-dt/2+2,dx-2,dt-6);
@@ -189,7 +189,7 @@ function drawPoule(x,y,w,h_,data) {
             textAlign(CENTER,CENTER);
             fill(255);textStyle(BOLD);
             text(r[i].s,6.5*dx,y+(i+1)*dt);
-            fill(color(couleur.cur));textStyle(NORMAL);
+            fill(color(couleur.txt));textStyle(NORMAL);
             text(r[i].p,7.5*dx,y+(i+1)*dt);
             text(' -'+r[i].c,8.5*dx,y+(i+1)*dt);
             text('('+r[i].d+')',9.5*dx,y+(i+1)*dt);
