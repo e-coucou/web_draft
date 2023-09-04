@@ -10,7 +10,7 @@ let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
 let id = 0, idSel;
-let mode = 1, debug = 0;
+let mode = 1, debug = 0, mode_prev;
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=true;
@@ -19,9 +19,10 @@ let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
 let btHTML;
-
-let couleur = {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] ,
-    titre:[5,67,46], f:[60,140,70], cur:[220,250,50]};
+let couleur_sel=0, couleur , btCouleur=[];
+let couleur_arr =[ {bk:[10,50,20], bg:[30,70,30], sel:[50,200,50], pl:[20,80,20], dm:[50,120,50] , titre:[5,67,46], f:[60,140,70], cur:[220,250,50]} ,
+    { bk:[50,10,20], bg:[70,30,30], sel:[200,50,50], pl:[80,20,20], dm:[120,50,50] ,titre:[67,5,46], f:[140,60,70], cur:[255,120,255] } ,
+    { bk:[20,10,50], bg:[30,30,70], sel:[50,50,200], pl:[20,20,80], dm:[50,50,120] , titre:[5,46,67], f:[70,60,140], cur:[50,220,250]} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
 
@@ -53,7 +54,6 @@ function BtGraphe() {
     update();
 }
 function HTMLRetour() {
-    console.log('ici')
     select('canvas').show();
     select('#notice').style('display','hidden');
     select('#ELO').style('display','hidden');
@@ -64,6 +64,7 @@ function mousePressed() {
     // Mode 1 = Tournoi
     // Mode 2 = Fiche
     // Mode 3 = GrapheX
+    // Mode 4 = Param
     //
     if ( (frameCount-debounce > 10) ) {
         debounce = frameCount;
@@ -75,13 +76,21 @@ function mousePressed() {
                 c.setSW(setCat,id_);
             }
         }
+        //     // Selction de la couleurt
+        for( let n in btCouleur) {
+            let c = btCouleur[n];
+            if (c.isIn(mouseX,mouseY,mode)) {
+                let id_ = selCat[n].id;
+                couleur_sel=n; couleur=couleur_arr[couleur_sel];
+            }
+        }
         // selection switch Tournoi/Liste
         if (btTournoi.isIn(mouseX,mouseY,mode)) { btTournoi.setSW(BtTournoi); }
         // selection Bouton de retour
         if (btRetour.isIn(mouseX,mouseY,mode)) { 
             // select('#notice').style('display','hidden');
             // select('#ELO').style('display','hidden');
-                    mode=0; toggle=true; btTournoi.setOff();}
+                    mode=mode_prev; toggle=true; btTournoi.setOff();}
         // slecture de la notice / read ELO explication
         if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); }
         if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); }
@@ -102,6 +111,7 @@ function mousePressed() {
                 mode=0;
             } else {
                 id = id_;
+                mode_prev = mode;
                 mode = 2;
             }
         }
@@ -109,7 +119,7 @@ function mousePressed() {
             btGraphe.setSW(BtGraphe);
         }    
         if (btInfo.isIn(mouseX,mouseY,mode)) {
-            mode = 4;
+            mode_prev = mode; mode = 4;
         }    
         if (mode==1) {
             // Selection de la phase
@@ -233,6 +243,44 @@ function readELO() {
 }
 function drawParam() {
     // a compléter ...
+    let x = 30, x1 = width*2/3;
+    let y = 150;
+    let dy = 20;
+    textAlign(LEFT,CENTER); fill(color(couleur.bg)); textSize(12); textStyle(NORMAL);
+    text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1); y += dy;
+    text('Limitation du gain au delà de ',x,y); text(param.ELO.seuil+' pts',x1,y); y += dy;
+    text('Coefficient pour un match normal :',x,y); text(param.ELO.std+' pts',x1,y); y += dy;
+    text('Coefficient pour un match en "demi" :',x,y); text(param.ELO.demi+' pts',x1,y); y += dy;
+    text('Coefficient pour un match dans les phases finales :',x,y); text(param.ELO.finaliste+' pts',x1,y); y += dy;
+    text('Coefficient pour la FINALE :',x,y); text(param.ELO.finale+' pts',x1,y); y += dy;
+    text('Ecart au score qui permet un coef. de majoration:',x,y); text(param.ELO.bonusSeuil+' pts',x1,y); y += dy;
+    text('Coefficient de majoration :',x,y); text(param.ELO.bonus+' pts',x1,y); y += dy;
+    y += 2*dy;
+    let y_ = y;
+    text('Couleur du fond :',x,y); y += dy;
+    text('Couleur du background :',x,y); y += dy;
+    text('Couleur du courant :',x,y); y += dy;
+    text('Couleur du sélection :',x,y); y += dy;
+    text('Couleur du demi :',x,y); y += dy;
+    text('Couleur du finale :',x,y); y += dy;
+    text('Couleur du pl :',x,y); y += dy;
+    text('Couleur du titre :',x,y); y += dy;
+    y = y_;
+    fill(color(couleur.bg));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.bk));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.cur));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.sel));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.dm));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.f));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.pl));rect(x1,y-7,15,14); y += dy;
+    fill(color(couleur.titre));rect(x1,y-7,15,14); y += dy;
+
+    y = y_;
+    for (let i in btCouleur) {
+        btCouleur[i].redim(x1+80,y+20,20);
+        fill(color(couleur_arr[i].sel));rect(x1+60,y-10,40,40,5);
+        y += 3*dy;
+    }
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -363,6 +411,11 @@ function setup() {
 
     select("#notice").style('display','none');
     select("#ELO").style('display','none');
+
+    couleur = couleur_arr[couleur_sel];
+    btCouleur.push(new BoutonC('',100,100,20,[4],true));
+    btCouleur.push(new BoutonC('',100,100,20,[4],true));
+    btCouleur.push(new BoutonC('',100,100,20,[4],true));
 }
 function draw() {
     background(220);
@@ -374,6 +427,9 @@ function draw() {
     btInfo.show(mode);
     btNotice.show(mode);
     btELO.show(mode);
+    for (c of btCouleur) {
+        c.show(mode);
+    }
     for (c of btCategories) {
         c.show(mode);
     }
@@ -431,4 +487,6 @@ function draw() {
         drawDateBar();
         showMatch(index);
     }
+    textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
+    text(mode,width-10,height-10);
 }

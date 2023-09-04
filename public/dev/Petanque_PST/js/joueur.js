@@ -76,7 +76,7 @@ class Joueur {
         noStroke();
         this.getColor();
         rect(x,y-dy/2,s-1,dy);
-        fill(10,70,10);
+        fill(color(couleur.pl));
         rect(x+s,y-dy/2,w_-s,dy);
         fill(255);
         textAlign(LEFT,CENTER);
@@ -139,7 +139,7 @@ class Joueur {
         noStroke();
         this.getColor();
         rect(x,y-13,s,26);
-        fill(10,50,10);
+        fill(color(couleur.pl));
         rect(x+s,y-13,w_-s,26);
         fill(255);
         textAlign(LEFT,CENTER);
@@ -151,7 +151,7 @@ class Joueur {
         textSize(14);
         text(tmp,x+w_,y);
         textAlign(LEFT,CENTER);
-        fill(10,50,10);
+        fill(color(couleur.pl));
         textSize(12);
         y += 10;
         let dy=22;
