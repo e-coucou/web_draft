@@ -5,11 +5,11 @@ function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     if (sc1>=sc2) {
         fill(color(couleur.sel));
     } else { fill(160) ;}
-    rect(mid-s2+2,y+(i+1)*dt-dt/2,s2-4,dt-2);
+    rect(mid-s2+2 , y+(i+1)*dt-dt/2 , s2-3 , dt-2);
     if (sc2>=sc1) {
         fill(color(couleur.sel));
     } else { fill(160) ;}
-    rect(mid+3,y+(i+1)*dt-dt/2,s2-4,dt-2);
+    rect(mid+2 , y+(i+1)*dt-dt/2 , s2-3 , dt-2);
     fill(color(couleur.bk));
     rect(mid-w2-s2,y+(i+1)*dt-dt/2,w2,dt-2);
     rect(mid+s2,y+(i+1)*dt-dt/2,w2,dt-2);

@@ -21,17 +21,21 @@ let img_finale=[];
 let btHTML;
 let couleur_sel=0, couleur , btCouleur=[];
 let couleur_arr =[
-    {bk:'#a20021', dm:'#f52f57', sel:'#f79d5c', cur:'#f3752b', txt:'#ededf4'},
+    {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8'},
+    {txt:'#cad2c5', sel:'#84a98c', cur:'#52796f', dm:'#354f52', bk:'#2f3e46'},
+    {txt:'#dad7cd', sel:'#a3b18a', cur:'#588157', dm:'#3a5a40', bk:'#344e41'},
+    {bk:'#22223b', dm:'#4a4e69', cur:'#9a8c98', sel:'#c9ada7', txt:'#f2e9e4'},
+    {bk:'#0A3214', cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[180,220,0]} ,
+    {bk:'#01161e', dm:'#124559', cur:'#598392', sel:'#aec3b0', txt:'#eff6e0'},
+    {bk:'#a20021', dm:'#f52f57', cur:'#f79d5c', sel:'#f3752b', txt:'#ededf4'},
     {bk:'#230007', txt:'#d7cf07', sel:'#d98324', cur:'#a40606', dm:'#5a0002'},
     {txt:'#89d2dc', sel:'#6564db', cur:'#232ed1', dm:'#101d42', bk:'#0d1317'},
     {dm:'#20bf55', bk:'#0b4f6c', sel:'#01baef', txt:'#fbfbff', cur:'#757575'},
     {bk:'#1d3461', dm:'#1f487e', cur:'#376996', sel:'#6290c8', txt:'#92accc'},
     {bk:'#084b83', dm:'#42bfdd', cur:'#bbe6e4', sel:'#ffe45e', txt:'#ff66b3'}, //f0f6f6
     {bk:'#22577a', dm:'#38a3a5', cur:'#57cc99', sel:'#60cd79', txt:'#c7f9cc'},
-    {bk:[10,50,20], cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[180,220,40]} ,
-    { bk:[20,10,50], sel:'#FFC300', dm:'#FF5733' , txt:[5,46,67], cur:'#DAF7A6'},
-    {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc'},
-    {bk:'#01161e', dm:'#124559', cur:'#598392', sel:'#aec3b0', txt:'#eff6e0'}]
+    {bk:'#140a32', sel:'#FFC300', dm:'#FF5733' , txt:[5,46,67], cur:'#DAF7A6'},
+    {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc'} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
 
@@ -46,6 +50,14 @@ function update() {
         case 5 : joueurs = initJoueurs.filter( a => { return a.tireur !=0;}); break;
         case 6 : joueurs = initJoueurs.filter( a => { return a.pointeur != 0;}); break;
     }
+}
+function update_color(n) {
+    couleur_sel=int(n);
+    couleur=couleur_arr[n];
+    select('body').style('background-color',couleur.bk);
+    select('body').style('color',couleur.txt);
+    select('.entete').style('background-color',couleur.bk);
+    selectAll('.notice').forEach( a => a.style('background-color',couleur.bk));
 }
 function setCat(id_=1) {
     categories = categories ^ id_;
@@ -89,17 +101,13 @@ function mousePressed() {
         for( let n in btCouleur) {
             let c = btCouleur[n];
             if (c.isIn(mouseX,mouseY,mode)) {
-                couleur_sel=n; couleur=couleur_arr[couleur_sel];
-                select('body').style('background-color',couleur.bk);
+                update_color(n);
             }
         }
         // selection switch Tournoi/Liste
         if (btTournoi.isIn(mouseX,mouseY,mode)) { btTournoi.setSW(BtTournoi); }
         // selection Bouton de retour
-        if (btRetour.isIn(mouseX,mouseY,mode)) { 
-            // select('#notice').style('display','hidden');
-            // select('#ELO').style('display','hidden');
-                    mode=mode_prev; toggle=true; btTournoi.setOff();}
+        if (btRetour.isIn(mouseX,mouseY,mode)) {  mode=mode_prev; toggle=true; btTournoi.setOff();}
         // slecture de la notice / read ELO explication
         if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); }
         if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); }
@@ -162,20 +170,6 @@ function setDateSel(id_) {
 function keyPressed() {
     if (key=='w') { BtTournoi();}
     if (key=='d') { debug = (debug+1)%2;}
-    if (key=='h') { select('canvas').hide();}
-    if (key=='s') { console.log('show');select('canvas').show();}
-    if (key=='a') { 
-        my = select("#notice");
-        my.style('display','none');
-        my = select("#ELO");
-        my.style('display','none');
-    }
-    if (key=='z') { 
-        my = select("#notice");
-        my.style('display','none');
-        my = select("#ELO");
-        my.style('display','none');
-    }
 }
 function preload() {
     param = loadJSON("./data/param.json");
@@ -253,7 +247,7 @@ function readELO() {
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width*2/3;
-    let y = 150;
+    let y = 100;
     let dy = 20;
     textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(12); textStyle(NORMAL);
     text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
@@ -266,19 +260,9 @@ function drawParam() {
     text('Coefficient de majoration :',x,y); text(param.ELO.bonus+' pts',x1,y); y += dy;
     y += 2*dy;
     let y_ = y;
-    // text('Couleur  :',x,y); y += dy;
-    // text('Couleur du background :',x,y); y += dy;
-    // text('Couleur du courant :',x,y); y += dy;
-    // text('Couleur du sélection :',x,y); y += dy;
-    // text('Couleur du demi :',x,y); y += dy;
-    // text('Couleur du finale :',x,y); y += dy;
-    // text('Couleur du pl :',x,y); y += dy;
-    // text('Couleur du titre :',x,y); y += dy;
-    // y = y_;
-    // fill(color(couleur.bg));rect(x1,y-7,15,14); y += dy;
     for (let i in couleur_arr) {
         i = int(i);
-        fill(color(couleur_arr[i].bk));rect(x1-140,y-7,15,14);text('Palette '+i+((i==couleur_sel)?' <selection>':''),x,y);
+        fill(color(couleur_arr[i].bk));rect(x1-140,y-7,15,14);text('Palette '+i+((i==couleur_sel)?' ➡️':''),x,y);
         fill(color(couleur_arr[i].dm));rect(x1-120,y-7,15,14); 
         fill(color(couleur_arr[i].cur));rect(x1-100,y-7,15,14);
         fill(color(couleur_arr[i].sel));rect(x1-80,y-7,15,14);
@@ -316,7 +300,7 @@ function drawDate() {
 }
 function drawDateBar() {
     let x = padding, y = padding+55;
-    let dx = (width-2*padding) / matchs.length , dy=10;
+    let dx = (width-2*padding) / matchs.length , dy=15;
     for (let i=0; i<matchs.length; i++) {
         if (i==index) {
             fill(color(couleur.sel));
@@ -423,8 +407,7 @@ function setup() {
     select("#notice").style('display','none');
     select("#ELO").style('display','none');
 
-    couleur = couleur_arr[couleur_sel];
-    select('body').style('background-color',couleur.bk);
+    update_color(0);
     for (let c=0;c<couleur_arr.length;c++) {
         btCouleur.push(new BoutonC('B',100,100,20,[4],true));
     }

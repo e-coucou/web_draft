@@ -6,7 +6,9 @@ body {
     image-rendering: pixelated;
     color:azure;
 }
-
+a {
+    color: red;
+}
 div.canvas {
     /* border-style: dashed; */
     /* border-color:  rgb(6, 77, 38); */
@@ -40,6 +42,7 @@ input {
     background-color: rgb(208, 237, 228);
     color: rgb(6, 77, 38);
     font-weight: bold;
+    margin: auto;
 }
 .entete {
     background-color: rgb(5, 67, 46);
@@ -84,13 +87,14 @@ div.entete {
 .styled {
     border: 0;
     line-height: 2.5;
-    padding: 0 20px;
+    margin: 5px 40%;
+    /* padding: 0 20px; */
     font-size: 1rem;
     text-align: center;
     color: #fff;
     text-shadow: 1px 1px 1px #000;
     border-radius: 10px;
-    background-color: rgb(4, 45, 18);
+    background-color: rgb(172, 180, 175);
     background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
     box-shadow:
       inset 2px 2px 3px rgba(255, 255, 255, 0.6),
@@ -98,7 +102,7 @@ div.entete {
   }
   
   .styled:hover {
-    background-color: rgb(30, 209, 48);
+    background-color: rgb(0, 0, 0);
   }
   
   .styled:active {
