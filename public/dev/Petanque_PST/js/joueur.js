@@ -98,7 +98,7 @@ class Joueur {
     }
     show(idx, x_, y_, w_, elo=this.ELO) {
         let x= x_, y = y_, s=8;
-        let dy = 18;
+        let dy = inter-2;
         noStroke();
         this.getColor();
         rect(x,y-dy/2,s-1,dy);
@@ -106,7 +106,7 @@ class Joueur {
         rect(x+s,y-dy/2,w_-s,dy);
         fill(255);
         textAlign(LEFT,CENTER);
-        textSize(12);
+        textSize(max(int(dy/2),11));
         let dx = w_/12;
         x += 2*s;
         if (debug == 1) {

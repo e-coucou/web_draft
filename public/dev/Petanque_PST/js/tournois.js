@@ -127,7 +127,7 @@ function drawPoule(x,y,w,h_,data) {
     fill(200); noStroke();
     textAlign(LEFT,CENTER);
     textSize(min(14,dt/3)); //dt/2.5);
-    y += 35;
+    if (phase=='Finale') {y += 5;} else {y+=35;}
     fill(255);
     for (let i in p ) {
         i = int(i);
@@ -147,7 +147,7 @@ function drawPoule(x,y,w,h_,data) {
         if (img[0] != undefined)  { tint(255,100); image(img[0].i,padding,y+4.5*dt,w,w/10*7); tint(255,255);}
         let r = clastFinale(p);
         r.sort((a,b) => { return b.pt-a.pt;})
-        y+=6*dt;
+        y+=5*dt;
         fill(color(couleur.bk));
         textAlign(CENTER,CENTER);
         textSize(min(16,dt/2.5));

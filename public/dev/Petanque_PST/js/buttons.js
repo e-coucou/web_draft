@@ -142,11 +142,11 @@ class BoutonC extends BtBase {
             if (this.on) {
                 fill(color(couleur.bk));
                 text(this.txt,this.x,this.y);
-                circle(this.x+this.l-this.r,this.y,this.r);
+                // circle(this.x+this.l-this.r,this.y,this.r);
             } else {
                 fill(color(couleur.sel));
                 text(this.txt,this.x,this.y);
-                circle(this.x+this.l-this.r,this.y,this.r);
+                // circle(this.x+this.l-this.r,this.y,this.r);
             }        
         }
     }
