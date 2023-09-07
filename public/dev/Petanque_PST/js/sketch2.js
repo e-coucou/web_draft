@@ -20,7 +20,9 @@ let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
 let btHTML;
 let couleur_sel=0, couleur , btCouleur=[];
+let btPM = [];
 let couleur_arr =[
+    {sel:'#FF5733',bk:'#581845',dm:'#900C3F',cur:'#C70039',tt:'#FFC300',txt:'#DAF7A6'},
     {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8'},
     {txt:'#cad2c5', sel:'#84a98c', cur:'#52796f', dm:'#354f52', bk:'#2f3e46'},
     {txt:'#dad7cd', sel:'#a3b18a', cur:'#588157', dm:'#3a5a40', bk:'#344e41'},
@@ -58,6 +60,21 @@ function update_color(n) {
     select('body').style('color',couleur.txt);
     select('.entete').style('background-color',couleur.bk);
     selectAll('.notice').forEach( a => a.style('background-color',couleur.bk));
+}
+function update_PM(n) {
+    let c =int(n /2), d=n%2;
+    const HH=1; LL=0.05;
+    switch (c) {
+        case 0 : if (d) { param.ELO.init -= HH; } else {param.ELO.init += HH;}; break;
+        case 1 : if (d) { param.ELO.seuil -= HH; } else {param.ELO.seuil += HH;}; break;
+        case 2 : if (d) { param.ELO.std -= LL; } else {param.ELO.std += LL;}; break;
+        case 3 : if (d) { param.ELO.demi -= LL; } else {param.ELO.demi += LL;}; break;
+        case 4 : if (d) { param.ELO.finaliste -= LL; } else {param.ELO.finaliste += LL;}; break;
+        case 5 : if (d) { param.ELO.finale -= LL; } else {param.ELO.finale += LL;}; break;
+        case 6 : if (d) { param.ELO.bonusSeuil -= HH; } else {param.ELO.bonusSeuil += HH;}; break;
+        case 7 : if (d) { param.ELO.bonus -= LL; } else {param.ELO.bonus += LL;}; break;
+    }
+    calculELO(false);
 }
 function setCat(id_=1) {
     categories = categories ^ id_;
@@ -104,6 +121,13 @@ function mousePressed() {
                 update_color(n);
             }
         }
+        //    Boutons  +/-  de Param
+        for( let n in btPM) {
+            let b = btPM[n];
+            if (b.isIn(mouseX,mouseY,mode)) {
+                update_PM(n);
+            }
+        }
         // selection switch Tournoi/Liste
         if (btTournoi.isIn(mouseX,mouseY,mode)) { btTournoi.setSW(BtTournoi); }
         // selection Bouton de retour
@@ -133,6 +157,7 @@ function mousePressed() {
             }
         }
         if (btGraphe.isIn(mouseX,mouseY,mode)) {
+            mode_prev = mode;
             btGraphe.setSW(BtGraphe);
         }    
         if (btInfo.isIn(mouseX,mouseY,mode)) {
@@ -252,12 +277,12 @@ function drawParam() {
     textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(12); textStyle(NORMAL);
     text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
     text('Limitation du gain au delà de ',x,y); text(param.ELO.seuil+' pts',x1,y); y += dy;
-    text('Coefficient match normal :',x,y); text(param.ELO.std+' pts',x1,y); y += dy;
-    text('Coefficient en "demi" :',x,y); text(param.ELO.demi+' pts',x1,y); y += dy;
-    text('Coefficient phases finales :',x,y); text(param.ELO.finaliste+' pts',x1,y); y += dy;
-    text('Coefficient pour la FINALE :',x,y); text(param.ELO.finale+' pts',x1,y); y += dy;
+    text('Coefficient match normal :',x,y); text(nf(param.ELO.std,0,2)+' pts',x1,y); y += dy;
+    text('Coefficient en "demi" :',x,y); text(nf(param.ELO.demi,0,2)+' pts',x1,y); y += dy;
+    text('Coefficient phases finales :',x,y); text(nf(param.ELO.finaliste,0,2)+' pts',x1,y); y += dy;
+    text('Coefficient pour la FINALE :',x,y); text(nf(param.ELO.finale,0,2)+' pts',x1,y); y += dy;
     text('Ecart pour un coef. de majoration:',x,y); text(param.ELO.bonusSeuil+' pts',x1,y); y += dy;
-    text('Coefficient de majoration :',x,y); text(param.ELO.bonus+' pts',x1,y); y += dy;
+    text('Coefficient de majoration :',x,y); text(nf(param.ELO.bonus,0,2)+' pts',x1,y); y += dy;
     y += 2*dy;
     let y_ = y;
     for (let i in couleur_arr) {
@@ -275,6 +300,11 @@ function drawParam() {
         fill(color(couleur_arr[i].dm));rect(x1,y-8,16,16,2);
         y += dy;
     }
+    y = 100;
+    // for (let i in btPM) {
+    //     btPM[i].redim(x1+20,y,10);
+    //     y += dy;
+    // }
 }
 function drawDate() {
     let dx = (width - 2* padding) / annees.length;
@@ -314,13 +344,14 @@ function drawDateBar() {
 }
 function showMatch() {
     let x = padding;
-    let y = height-7*padding;
+    let y = height-12*padding;
     let m = matchs[index];
     let e1 = m.equipes[0].eq;
     let e2 = m.equipes[1].eq;
-    let mid = 5*(width-2*padding)/8, dt = 20;
+    // let mid = 5*(width-2*padding)/8, dt = 20;
+    let mid = (width-2*padding)/2, dt = 24;
     let s2 = (width*3/4) * 0.07 +1;
-    let w2 = (width*3/4)/2 - s2 -padding;
+    let w2 = (width-2*padding)/2  - s2 - padding;
     fill(color(couleur.bk));
     textAlign(CENTER,CENTER);
     text(m.type,x+mid,y);
@@ -375,21 +406,6 @@ function setup() {
     }
     nbMatchs = Object.keys(m_json).length ;
     calculELO(true);
-    // let a_ = false;
-    // for (let i in m_json) {
-    //     let m = m_json[i];
-    //     matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
-    //     joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
-    //     if (m.type == "Finale") {
-    //         a_=true;
-    //         annees.push({a:m.annee,m:int(i)});
-    //     }
-    //     for (let j in joueurs) {
-    //         joueurs[j].setClst(j,a_,m.annee);
-    //     }
-    //     a_ = false;
-    // }
-    // frameRate(1);
     selA = annees.length-1;
     setDateSel(selA);
 
@@ -411,6 +427,12 @@ function setup() {
     for (let c=0;c<couleur_arr.length;c++) {
         btCouleur.push(new BoutonC('B',100,100,20,[4],true));
     }
+    let dy = 20;
+    for (let b=0;b<8;b++) {
+        btPM.push(new BoutonC('🔼',width*2/3+60,100+(b*dy),5,[4],true));
+        btPM.push(new BoutonC('🔽',width*2/3+75,100+(b*dy),5,[4],true));
+        // dy += dy;
+    }
 }
 function draw() {
     background(220);
@@ -422,22 +444,19 @@ function draw() {
     btInfo.show(mode);
     btNotice.show(mode);
     btELO.show(mode);
-    for (c of btCouleur) {
-        c.show(mode);
-    }
-    for (c of btCategories) {
-        c.show(mode);
-    }
+    for (c of btCouleur) { c.show(mode); }
+    for (c of btPM) { c.show(mode); }
+    for (c of btCategories) { c.show(mode);}
     if (mode == 0 || mode==1 || mode==3)  { 
         drawDate();
     }
     if (mode == 3) {
         fill(color(couleur.bk));
-        rect(padding,79,width-2*padding,height-120);
+        rect(padding,79,width-2*padding,height-145);
         for (let i in joueurs) {
             let idx = int(joueurs[i].hist[index].c);
             let elo = joueurs[i].hist[index].elo;
-            joueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-120,elo);
+            joueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-145,elo);
         }
     }
     // if (mode == 2) {drawBack(); }
