@@ -139,6 +139,12 @@ function drawPoule(x,y,w,h_,data) {
             text(p[i].type,mid,y+(i+1)*dt-dt/4-2);
             y+=dt/3;
         }
+        if (phase == 'Demi') {
+            textAlign(CENTER,CENTER);
+            fill(color(couleur.bk));
+            // text(p[i].type,mid,y+(i+1)*dt-dt/4-2);
+            y+=dt/3;
+        }
         let sc1 = p[i].equipes[0].sc, sc2=p[i].equipes[1].sc;
         drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dt,w2);
     }
@@ -159,7 +165,9 @@ function drawPoule(x,y,w,h_,data) {
         }
         textSize(min(14,dt/3)); textStyle(NORMAL);
     }
-    if (phase=='Demi') { image(img_saint_tropez,mid-46, 2*height/3,92,114);}
+    if (phase=='Demi') { 
+        image(img_saint_tropez,mid-46, 2*height/3,92,114);
+    }
     if (phase=="Poule") {
         let r = ClstPoule(p);
         y += 8*dt;

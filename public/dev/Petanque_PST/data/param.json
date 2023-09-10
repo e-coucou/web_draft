@@ -1,3 +1,11 @@
 {
-    "ELO":{"std":1.0 ,"demi":1.0,"finaliste":1.1, "finale":1.25 , "init":40, "seuil":10, "bonus":1.5, "bonusSeuil":6, "maxEcart":5 }
+    "ELO":{"std":1.0 ,
+        "demi":1.0,
+        "finaliste":1.1,
+        "finale":1.25 ,
+        "init":40,
+        "seuil":10,
+        "bonus":1.5,
+        "bonusSeuil":6,
+        "maxEcart":5 }
 }

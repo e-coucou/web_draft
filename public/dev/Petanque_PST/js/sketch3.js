@@ -105,6 +105,7 @@ function HTMLRetour() {
     select('#ELO').style('display','hidden');
     toggle = true;
 }
+
 function setDateSel(id_) {
     annee = annees[id_].a;
     index = annees[id_].m;
@@ -137,34 +138,6 @@ function createCategories() {
         }
         x += dx;
     }
-}
-function createTournoi() {
-    let r = 18;
-    let y = height-r/2-padding;
-    let x = 3*(width-padding)/4;
-    let l = (width-4*padding)/4;
-    return new Switch('Tournoi',x,y,l,r,[0,1]);
-}
-function createGraph() {
-    let r = 18;
-    let y = height-r/2-padding;
-    let x = padding+r/2;
-    let l = (width-padding-r)/4;
-    return new Switch('Graphe',x,y,l,r,[0,3]);
-}
-function createInfo() {
-    let l=18;
-    let y =height - 15 - padding;
-    let x = width / 2;
-    return new BoutonC('⚙️',x,y,l,[0,1]);
-}
-// function drawBack() {
-function createBack() {
-    let r = 18;
-    let y = height-2*r-padding;
-    let x = (width-2*padding)/2;
-    let l = (width-padding)/4;
-    return new Bouton('Retour ⏎',x,y,l,[4],true);
 }
 function readNotice() {
     btHTML = select("#retour1");
@@ -328,32 +301,16 @@ function setup() {
 
     // initJoueurs = joueurs.slice();
     poule = poules[0];
-    btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
-    btGraphe = createGraph();
-    btRetour = createBack();
-    btInfo = createInfo();
+    // btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
+    createButtons();
+    // btRetour = createBack();
+    // btInfo = createInfo();
     createCategories();
-    btNotice = new Bouton('Notice ...',width/2,30,width/2,[4],false);
-    btELO = new Bouton('ELO explication !',width/2,70,width/2,[4],false);
-    btELO.setH(14); btNotice.setH(14);
 
     select("#notice").style('display','none');
     select("#ELO").style('display','none');
 
     update_color(0);
-    for (let c=0;c<couleur_arr.length;c++) {
-        btCouleur.push(new BoutonC('B',100,100,20,[4],true));
-    }
-    let dy = 20;
-    for (let b=0;b<8;b++) {
-        btPM.push(new BoutonC('🔼',width*9.7/10,100+(b*dy),7,[4],true));
-        btPM.push(new BoutonC('🔽',width*9/10,100+(b*dy),7,[4],true));
-        // dy += dy;
-    }
-    inter = int((height-120)/initJoueurs.length);
-    btNav.push(new BoutonC('◀️',width/10,height-7-padding,14,[2],true));
-    btNav.push(new BoutonC('⤴️',width/2,height-7-padding,14,[2],true));
-    btNav.push(new BoutonC('▶️',width*9/10,height-7-padding,14,[2],true));
 }
 function draw() {
     background(220);
