@@ -1,23 +1,20 @@
 
 function createButtons() {
-    console.log('coucou')
+    let left, right,center;
     let r = 18;
-    let y = height-r/2-padding;
-    let x = 3*(width-padding)/4;
+    center = width/2;
+    right = 3*(width-padding)/4;
+    left = padding + r/2;
+
+    let y = height-r-padding;
     let l = (width-4*padding)/4;
-    btTournoi = new Switch('Tournoi',x,y,l,r,[0,1],true);
-    x = padding+r/2;
-        // let l = (width-padding-r)/4;
-    btGraphe = new Switch('Graphe',x,y,l,r,[0,3]);
-        // let y = height-2*r-padding;
-    x = width/2;
+    btTournoi = new Switch('Tournoi',right,y,l,r,[0,1,3],true);
+    btGraphe = new Switch('Graphe',left,y,l,r,[0,3]);
     l = (width-padding)/4;
-    btRetour = new Bouton('Retour ⏎',x,y,l,[4],true);
-    // y =height - 15 - padding;
-    x = width / 2;
-    btInfo = new BoutonC('⚙️',x,y,r,[0,1]);
-    btNotice = new Bouton('Notice ...',width/2,30,width/2,[4],false);
-    btELO = new Bouton('ELO explication !',width/2,70,width/2,[4],false);
+    btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);
+    btInfo = new BoutonC('⚙️',center,y,r,[0,1]);
+    btNotice = new Bouton('Notice ...',left,30,width/2,[4],false);
+    btELO = new Bouton('ELO explication !',right,70,width/2,[4],false);
     btELO.setH(14); btNotice.setH(14);
     for (let c=0;c<couleur_arr.length;c++) {
         btCouleur.push(new BoutonC('B',100,100,20,[4],true));
@@ -26,12 +23,27 @@ function createButtons() {
     for (let b=0;b<8;b++) {
         btPM.push(new BoutonC('🔼',width*9.7/10,100+(b*dy),7,[4],true));
         btPM.push(new BoutonC('🔽',width*9/10,100+(b*dy),7,[4],true));
-        // dy += dy;
+    }
+    let dx = (width - 2* padding) / 3;
+    let x = r;
+    y = 40;
+    for (let p of selCat) {
+        if ( (p.id & categories) == p.id ) {
+            btCategories.push(new Switch(p.cat,x,y,dx-padding,r,[0,3],true));
+        }
+        x += dx;
     }
     inter = int((height-120)/initJoueurs.length);
-    btNav.push(new BoutonC('◀️',width/10,height-7-padding,14,[2],true));
-    btNav.push(new BoutonC('⤴️',width/2,height-7-padding,14,[2],true));
-    btNav.push(new BoutonC('▶️',width*9/10,height-7-padding,14,[2],true));
+    btNav.push(new BoutonC('◀️',left,height-7-padding,14,[2],true));
+    btNav.push(new BoutonC('⤴️',center,height-7-padding,14,[2],true));
+    btNav.push(new BoutonC('▶️',right,height-7-padding,14,[2],true));
+    dx = (width-2*padding)/annees.length;
+    for (let i in annees) {
+        i = int(i);
+        a = annees[i];
+        btAnnee.push(new Bouton(a.a,(i+0.5)*dx+padding,padding+r/2,dx-4,[0,1,3],false));
+    }
+
 }
 class BtBase {
     constructor(txt,x,y,l) {

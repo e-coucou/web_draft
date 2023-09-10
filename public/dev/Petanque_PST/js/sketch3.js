@@ -19,7 +19,7 @@ let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
 let btHTML;
-let couleur_sel=0, couleur , btCouleur=[];
+let couleur_sel=0, couleur , btCouleur=[], btAnnee=[];
 let btPM = [], btNav = [];
 let couleur_arr =[
     {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8'},
@@ -109,6 +109,10 @@ function HTMLRetour() {
 function setDateSel(id_) {
     annee = annees[id_].a;
     index = annees[id_].m;
+    for (let i in annees) {
+        c = btAnnee[i];
+        if (annees[i].a == annee) { c.setOn();} else { c.setOff();}
+    }
 }
 function keyPressed() {
     if (key=='w') { BtTournoi();}
@@ -127,17 +131,6 @@ function preload() {
     img_finale.push({a:2023,i:img}); //1024x768
     img=loadImage("./img/2022.JPG");
     img_finale.push({a:2022,i:img}); //1024x768
-}
-function createCategories() {
-    let r = 18;
-    let dx = (width - 2* padding) / 3;
-    let x = r, y = 40;
-    for (let p of selCat) {
-        if ( (p.id & categories) == p.id ) {
-            btCategories.push(new Switch(p.cat,x,y,dx-padding,r,[0,3],true));
-        }
-        x += dx;
-    }
 }
 function readNotice() {
     btHTML = select("#retour1");
@@ -196,28 +189,6 @@ function drawParam() {
     //     y += dy;
     // }
 }
-function drawDate() {
-    let dx = (width - 2* padding) / annees.length;
-    let x = dx/2 + padding, y = 12;
-    textAlign(CENTER,CENTER);
-    textSize(14);
-    for (let a of annees) {
-        if (a.a==annee) {
-            stroke(color(couleur.dm));
-            fill(color(couleur.sel));
-            rect(x-dx/2+1,y-12,dx-2,24,10);
-            fill(color(couleur.bk));
-            text(a.a,x,y);
-        } else {
-            noStroke();
-            fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24,10);
-            fill(255);
-            text(a.a,x,y);
-        }
-        x += dx;
-    }
-}
 function drawDateBar() {
     let x = padding, y = padding+55;
     let dx = (width-2*padding) / matchs.length , dy=15;
@@ -234,7 +205,7 @@ function drawDateBar() {
 }
 function showMatch() {
     let x = padding;
-    let y = height-12*padding;
+    let y = height-14*padding;
     let m = matchs[index];
     let e1 = m.equipes[0].eq;
     let e2 = m.equipes[1].eq;
@@ -296,20 +267,11 @@ function setup() {
     }
     nbMatchs = Object.keys(m_json).length ;
     calculELO(true);
-    selA = annees.length-1;
-    setDateSel(selA);
-
-    // initJoueurs = joueurs.slice();
     poule = poules[0];
-    // btTournoi = createTournoi(); btTournoi.setOn(); // par defaut en mode tournois
     createButtons();
-    // btRetour = createBack();
-    // btInfo = createInfo();
-    createCategories();
-
+    setDateSel(annees.length-1);
     select("#notice").style('display','none');
     select("#ELO").style('display','none');
-
     update_color(0);
 }
 function draw() {
@@ -321,21 +283,20 @@ function draw() {
     btInfo.show(mode);
     btNotice.show(mode);
     btELO.show(mode);
+    for (c of btAnnee) { c.show(mode); }
     for (c of btCouleur) { c.show(mode); }
     for (c of btPM) { c.show(mode); }
     for (c of btNav) { c.show(mode); }
     for (c of btCategories) { c.show(mode);}
-    if (mode == 0 || mode==1 || mode==3)  {  drawDate(); }
     if (mode == 3) {
         fill(color(couleur.bk));
-        rect(padding,79,width-2*padding,height-145);
+        rect(padding,79,width-2*padding,height-155);
         for (let i in joueurs) {
             let idx = int(joueurs[i].hist[index].c);
             let elo = joueurs[i].hist[index].elo;
-            joueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-145,elo);
+            joueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-155,elo);
         }
     }
-    // if (mode == 2) {drawBack(); }
     if (mode==0) {
         joueurs.sort( (a,b) => { return (b.hist[index].elo - a.hist[index].elo);});
         let w_ = width-2*padding;

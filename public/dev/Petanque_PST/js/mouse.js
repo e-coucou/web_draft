@@ -5,10 +5,9 @@ function mousePressed() {
     // Mode 3 = GrapheX
     // Mode 4 = Param
     //
-    if ( ((frameCount-debounce) > 30) ) {
-        console.log('ici:',debounce-frameCount);
+    if ( ((frameCount-debounce) > 10) ) {
         debounce = frameCount;
-        //     // Selction de la categorie du joueur /Tireur/Pointeur/Indifférent
+        // Selection de la categorie du joueur /Tireur/Pointeur/Indifférent
         for( let n in btCategories) {
             let c = btCategories[n];
             if (c.isIn(mouseX,mouseY,mode)) {
@@ -17,7 +16,7 @@ function mousePressed() {
                 return
             }
         }
-        //     // Selction de la couleur
+        // Selection de la couleur
         for( let n in btCouleur) {
             let c = btCouleur[n];
             if (c.isIn(mouseX,mouseY,mode)) {
@@ -48,15 +47,12 @@ function mousePressed() {
         // slecture de la notice / read ELO explication
         if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); }
         if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); }
-        // Selection de l'année
-        if (mode==0 || mode==1 || mode == 3 || mode==2 ) {
-            if (mouseX>padding && mouseX<(width-padding) && mouseY<24 && mouseY>0) {
-                let id_ = floor((mouseX-padding) / ((width+2*padding) / annees.length));
-                if (mode < 2 || mode==3) {
-                    selA = id_;
-                    setDateSel(selA);
-                    return;
-                }
+        //     Selection de l'année
+        for( let n in btAnnee) {
+            let c = btAnnee[n];
+            if (c.isIn(mouseX,mouseY,mode)) {
+                setDateSel(n);
+                return;
             }
         }
         // selection d'un joueur dans la liste
@@ -95,10 +91,10 @@ function mousePressed() {
             index = id_;
             annee = matchs[id_].annee;
         }
-        if (mode == 3) {
-            let id_ = floor((mouseY-82)/joueurs.length);
-            console.log(id_,'/',mouseY)
-        }
+        // if (mode == 3) {
+        //     let id_ = floor((mouseY-82)/joueurs.length);
+        //     console.log(id_,'/',mouseY)
+        // }
     }
 }
 function mouseMoved() {
