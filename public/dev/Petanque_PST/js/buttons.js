@@ -1,4 +1,17 @@
-
+function showButtons() {
+    btTournoi.show(mode); //drawSW();
+    btGraphe.show(mode);
+    btRetour.show(mode);
+    btInfo.show(mode);
+    btNotice.show(mode);
+    btELO.show(mode);
+    for (c of btAnnee) { c.show(mode); }
+    for (c of btCouleur) { c.show(mode); }
+    for (c of btPM) { c.show(mode); }
+    for (c of btNav) { c.show(mode); }
+    for (c of btCategories) { c.show(mode);}
+    for (c of btPhase) { c.show(mode);}
+}
 function createButtons() {
     let left, right,center;
     let r = 18;
@@ -12,10 +25,10 @@ function createButtons() {
     btGraphe = new Switch('Graphe',left,y,l,r,[0,3]);
     l = (width-padding)/4;
     btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);
-    btInfo = new BoutonC('⚙️',center,y,r,[0,1]);
-    btNotice = new Bouton('Notice ...',left,30,width/2,[4],false);
-    btELO = new Bouton('ELO explication !',right,70,width/2,[4],false);
-    btELO.setH(14); btNotice.setH(14);
+    btInfo = new BoutonC('⚙️',center,y,r,[0,1,3]);
+    btNotice = new Bouton('Notice',width/3,20,width/4,[4],false);
+    btELO = new Bouton('ELO explication !',2*width/3,20,width/4,[4],false);
+    btELO.setH(12); btNotice.setH(12);
     for (let c=0;c<couleur_arr.length;c++) {
         btCouleur.push(new BoutonC('B',100,100,20,[4],true));
     }
@@ -24,14 +37,14 @@ function createButtons() {
         btPM.push(new BoutonC('🔼',width*9.7/10,100+(b*dy),7,[4],true));
         btPM.push(new BoutonC('🔽',width*9/10,100+(b*dy),7,[4],true));
     }
-    let dx = (width - 2* padding) / 3;
+    l = (width - 2* padding) / 3;
     let x = r;
     y = 40;
     for (let p of selCat) {
         if ( (p.id & categories) == p.id ) {
-            btCategories.push(new Switch(p.cat,x,y,dx-padding,r,[0,3],true));
+            btCategories.push(new Switch(p.cat,x,y,l-padding,r,[0,3],true));
         }
-        x += dx;
+        x += l;
     }
     inter = int((height-120)/initJoueurs.length);
     btNav.push(new BoutonC('◀️',left,height-7-padding,14,[2],true));
@@ -43,7 +56,13 @@ function createButtons() {
         a = annees[i];
         btAnnee.push(new Bouton(a.a,(i+0.5)*dx+padding,padding+r/2,dx-4,[0,1,3],false));
     }
+    y=40;
+    btPhase.push( new Bouton(t_json[0].type+iconPhase[0],l/2+padding,y,l-4,[1]));
+    btPhase.push( new Bouton(t_json[1].type+iconPhase[1],width/2,y,l-4,[1]));
+    btPhase.push( new Bouton(t_json[2].type+iconPhase[2],width-l/2-padding,y,l-4,[1],true));
 
+    btPoule.push(new Bouton("Gassin",width/3,67,width/3-2,[1],true));
+    btPoule.push(new Bouton("Ramatuelle",2*width/3,67,width/3-2,[1]));
 }
 class BtBase {
     constructor(txt,x,y,l) {

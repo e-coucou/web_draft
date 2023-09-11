@@ -19,41 +19,38 @@ function mousePressed() {
         // Selection de la couleur
         for( let n in btCouleur) {
             let c = btCouleur[n];
-            if (c.isIn(mouseX,mouseY,mode)) {
-                update_color(n);
-                return
-            }
+            if (c.isIn(mouseX,mouseY,mode)) { update_color(n); return; }
         }
         //    Boutons  +/-  de Param
         for( let n in btPM) {
             let b = btPM[n];
-            if (b.isIn(mouseX,mouseY,mode)) {
-                update_PM(n);
-                return;
-            }
+            if (b.isIn(mouseX,mouseY,mode)) { update_PM(n); return; }
         }
         //    Boutons  Navigation
         for( let n in btNav) {
             let b = btNav[n];
-            if (b.isIn(mouseX,mouseY,mode)) {
-                update_Nav(n);
-                return;
-            }
+            if (b.isIn(mouseX,mouseY,mode)) { update_Nav(n); return; }
         }
         // selection switch Tournoi/Liste
         if (btTournoi.isIn(mouseX,mouseY,mode)) { btTournoi.setSW(BtTournoi); return; }
         // selection Bouton de retour
         if (btRetour.isIn(mouseX,mouseY,mode)) {  mode=mode_prev; toggle=true; btTournoi.setOff(); return; }
         // slecture de la notice / read ELO explication
-        if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); }
-        if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); }
+        if (btNotice.isIn(mouseX,mouseY,mode)) { readNotice(); return;}
+        if (btELO.isIn(mouseX,mouseY,mode)) { readELO(); return; }
         //     Selection de l'année
         for( let n in btAnnee) {
             let c = btAnnee[n];
-            if (c.isIn(mouseX,mouseY,mode)) {
-                setDateSel(n);
-                return;
-            }
+            if (c.isIn(mouseX,mouseY,mode)) { setDateSel(n); return; }
+        }
+        //     Selection de la phase
+        for( let n in btPhase) {
+            let c = btPhase[n];
+            if (c.isIn(mouseX,mouseY,mode)) { setPhase(n); return; }
+        }
+        for( let n in btPoule) {
+            let c = btPoule[n];
+            if (c.isIn(mouseX,mouseY,mode)) { setPoule(n); return; }
         }
         // selection d'un joueur dans la liste
         if (mouseX>(padding) && mouseX<(width-padding) && mode==0) {
@@ -72,25 +69,16 @@ function mousePressed() {
             return;
         }    
         if (btInfo.isIn(mouseX,mouseY,mode)) { mode_prev = mode; mode = 4; return }
-        if (mode==1) {
-            // Selection de la phase
-            if (mouseX>padding && mouseX<(width-padding) && mouseY<52 && mouseY>26) {
-                let id_ = floor((mouseX-padding) / ((width+2*padding) / 3));
-                phase = t_json[id_].type;
-                poule = poules[0];
-            }
-            // Selection de la poule
-            if (mouseX>padding && mouseX<(width-padding) && mouseY<79 && mouseY>54) {
-                let id_ = floor((mouseX-padding) / ((width+2*padding) / 2));
-                poule = poules[id_];
-            }
-        }
         // Selection du match par la bande colorée (meme emplacement que sel Poule)
-        if (mouseX>(padding) && mouseX<(width-2*padding) && mouseY>54 && mouseY<79 && mode==3) {
+        if (mouseX>(padding) && mouseX<(width-1*padding) && mouseY>54 && mouseY<79 && mode==3) {
             let id_ = floor((mouseX-padding) / ((width-2*padding) / matchs.length));
             index = id_;
             annee = matchs[id_].annee;
-        }
+            for (let i in annees) {
+                c = btAnnee[i];
+                if (annees[i].a == annee) { c.setOn();} else { c.setOff();}
+            }
+                }
         // if (mode == 3) {
         //     let id_ = floor((mouseY-82)/joueurs.length);
         //     console.log(id_,'/',mouseY)

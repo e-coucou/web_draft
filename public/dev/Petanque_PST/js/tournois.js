@@ -24,49 +24,6 @@ function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     textAlign(LEFT,CENTER);
     text(e2_t,mid+s2*1.1,y+(i+1)*dt);
 }
-function drawPhase() {
-    let dx = (width - 2* padding) / Object.keys(t_json).length ;
-    let x = dx/2 + padding, y = 40;
-    textAlign(CENTER,CENTER);
-    for (let i in t_json) {
-        let t=t_json[i];
-        if (t.type==phase) {
-            stroke(color(couleur.dm));
-            fill(color(couleur.sel));
-            rect(x-dx/2+1,y-12,dx-2,24,10);
-            fill(color(couleur.bk));
-        } else {
-            noStroke();
-            fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24,10);
-            fill(255);
-        }
-        text(t.type+iconPhase[i],x,y);
-        x += dx;
-    }
-}
-function selPoule() {
-    let dx = (width - 2* padding) / 2 ;
-    let x = dx/2 + padding, y = 67;
-    textAlign(CENTER,CENTER);
-    for (let p of poules) {
-        if (p==poule) {
-            stroke(color(couleur.dm));
-            fill(color(couleur.sel));
-            rect(x-dx/2+1,y-12,dx-2,24,10);
-            fill(color(couleur.bk));
-        } else {
-            noStroke();
-            fill(color(couleur.bk));
-            rect(x-dx/2+1,y-12,dx-2,24,10);
-            fill(255);
-        }
-        text(p,x,y);
-        if (p=='Gassin') { image(img_gassin,x-dx/2+7,y-8,13,14);}
-        if (p=='Ramatuelle') { image(img_ramatuelle,x-dx/2+7,y-8,13,14);}
-        x += dx;
-    }
-}
 function ClstPoule(data) {
     let clt = [];
     for (let i =0; i<data.length;i++) {
@@ -142,7 +99,7 @@ function drawPoule(x,y,w,h_,data) {
         if (phase == 'Demi') {
             textAlign(CENTER,CENTER);
             fill(color(couleur.bk));
-            // text(p[i].type,mid,y+(i+1)*dt-dt/4-2);
+            text(p[i].tableau,mid,y+(i+1)*dt-dt/4-2);
             y+=dt/3;
         }
         let sc1 = p[i].equipes[0].sc, sc2=p[i].equipes[1].sc;
@@ -214,9 +171,11 @@ function drawPoule(x,y,w,h_,data) {
 function drawTournois(x_, y_ , w_, h_ ,a_) {
     let x = x_+padding;
     let m = matchs.filter( r => { return ( r.annee == a_);});
-    drawPhase();
     if (phase=="Poule") {
-        selPoule();
+        for (c of btPoule) { c.show(mode);}
+        image(img_gassin,width/5,60,13,14);
+        image(img_ramatuelle,4*width/5-padding,60,13,14);
+        // if (p=='Ramatuelle') { image(img_ramatuelle,x-dx/2+7,y-8,13,14);}
     } else { poule='';}
-    drawPoule(x,y_,w_,h_,m);
+        drawPoule(x,y_,w_,h_,m);
 }

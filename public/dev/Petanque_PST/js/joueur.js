@@ -6,7 +6,7 @@ function calculELO(new_ = true) {
     let a_ = false;
     for (let i in m_json) {
         let m = m_json[i];
-        matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k));
+        matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k,m.tableau));
         joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
         if (m.type == "Finale") {
             a_=true;
@@ -278,7 +278,7 @@ class Equipe {
 }
 
 class Match {
-    constructor(id_, E1_, E2_, sc1_, sc2_, type_, annee_,poule_="elimination",k_=0) {
+    constructor(id_, E1_, E2_, sc1_, sc2_, type_, annee_,poule_="elimination",k_=0,tableau_='ignore') {
         this.id = id_;
         this.equipes = [];
         this.equipes.push({eq:E1_, sc:sc1_});
@@ -287,6 +287,7 @@ class Match {
         this.annee = annee_;
         this.poule = poule_;
         this.k=k_;
+        this.tableau = tableau_;
         this.equipes[0].eq.addMatch(sc1_,sc2_,annee_,0,this);
         this.equipes[1].eq.addMatch(sc2_,sc1_,annee_,1,this);
         this.updateELO();

@@ -19,7 +19,7 @@ let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
 let btHTML;
-let couleur_sel=0, couleur , btCouleur=[], btAnnee=[];
+let couleur_sel=0, couleur , btCouleur=[], btAnnee=[], btPhase=[], btPoule=[];
 let btPM = [], btNav = [];
 let couleur_arr =[
     {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8'},
@@ -105,7 +105,22 @@ function HTMLRetour() {
     select('#ELO').style('display','hidden');
     toggle = true;
 }
-
+function setPhase(id_) {
+    phase = t_json[id_].type;
+    // poule = poules[0]; btPoule[0].setOn();
+    setPoule(0);
+    for (let i in btPhase) {
+        c = btPhase[i];
+        if (i == id_) { c.setOn();} else { c.setOff();}
+    }
+}
+function setPoule(id_) {
+    poule = poules[id_];
+    for (let i in btPoule) {
+        c = btPoule[i];
+        if (i == id_) { c.setOn();} else { c.setOff();}
+    }
+}
 function setDateSel(id_) {
     annee = annees[id_].a;
     index = annees[id_].m;
@@ -155,7 +170,7 @@ function readELO() {
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width*2/3;
-    let y = 100;
+    let y = 80;
     let dy = 20;
     textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(12); textStyle(NORMAL);
     text('Score initial ELO (nouvau joueur) :',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
@@ -184,10 +199,6 @@ function drawParam() {
         y += dy;
     }
     y = 100;
-    // for (let i in btPM) {
-    //     btPM[i].redim(x1+20,y,10);
-    //     y += dy;
-    // }
 }
 function drawDateBar() {
     let x = padding, y = padding+55;
@@ -277,17 +288,7 @@ function setup() {
 function draw() {
     background(220);
     noStroke();
-    btTournoi.show(mode); //drawSW();
-    btGraphe.show(mode);
-    btRetour.show(mode);
-    btInfo.show(mode);
-    btNotice.show(mode);
-    btELO.show(mode);
-    for (c of btAnnee) { c.show(mode); }
-    for (c of btCouleur) { c.show(mode); }
-    for (c of btPM) { c.show(mode); }
-    for (c of btNav) { c.show(mode); }
-    for (c of btCategories) { c.show(mode);}
+    showButtons();
     if (mode == 3) {
         fill(color(couleur.bk));
         rect(padding,79,width-2*padding,height-155);
@@ -313,7 +314,7 @@ function draw() {
         rect(x_+4*dx,y_-dy_/2+1,dx-2,dy_-2);
         rect(x_+5*dx,y_-dy_/2+1,dx-2,dy_-2);
         textAlign(CENTER,CENTER);textStyle(NORMAL);
-        textSize(int(inter/2));
+        textSize(int(inter/2.5));
         fill(color(couleur.bk));
         text('ELO',x_+1+dx/2, y_);
         text('G',x_+dx+dx/2, y_);
