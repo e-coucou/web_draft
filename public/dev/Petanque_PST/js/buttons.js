@@ -26,16 +26,16 @@ function createButtons() {
     l = (width-padding)/4;
     btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);
     btInfo = new BoutonC('⚙️',center,y,r,[0,1,3]);
-    btNotice = new Bouton('Notice',width/3,20,width/4,[4],false);
-    btELO = new Bouton('ELO explication !',2*width/3,20,width/4,[4],false);
+    btNotice = new Bouton('Notice',width/3,20,width/3-2,[4],false);
+    btELO = new Bouton('ELO explication !',2*width/3,20,width/3-2,[4],false);
     btELO.setH(12); btNotice.setH(12);
     for (let c=0;c<couleur_arr.length;c++) {
         btCouleur.push(new BoutonC('B',100,100,20,[4],true));
     }
     let dy = 20;
     for (let b=0;b<8;b++) {
-        btPM.push(new BoutonC('🔼',width*9.7/10,100+(b*dy),7,[4],true));
-        btPM.push(new BoutonC('🔽',width*9/10,100+(b*dy),7,[4],true));
+        btPM.push(new BoutonC('🔼',width-4*10,80+(b*dy),7,[4],true));
+        btPM.push(new BoutonC('🔽',width-2*10,80+(b*dy),7,[4],true));
     }
     l = (width - 2* padding) / 3;
     let x = r;

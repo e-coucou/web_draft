@@ -194,8 +194,8 @@ function drawParam() {
     }
     y = y_;
     for (let i in btCouleur) {
-        btCouleur[i].redim(x1+7,y,10);
-        fill(color(couleur_arr[i].dm));rect(x1,y-8,16,16,2);
+        btCouleur[i].redim(width-30,y,10);
+        fill(color(couleur_arr[i].dm));rect(width-40,y-8,16,16,2);
         y += dy;
     }
     y = 100;
