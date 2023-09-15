@@ -126,7 +126,7 @@ class Joueur {
             rect(x+6*dx+1,y-dy/2+1,dx-2,dy-2);
             // rect(x+5*dx+1,y-dy/2+1,dx-2,dy-2);
             fill(color(couleur.txt));
-            text(nf(elo,0,1),x+dx/2, y);textStyle(NORMAL);
+            text(nf(elo,0,1),x+dx/2, y);textStyle(NORMAL);fill(255);
             text(this.gagne,x+dx+dx/2, y);
             text(this.nul,x+2*dx+dx/2, y);
             text(this.perdu,x+3*dx+dx/2, y);
@@ -154,8 +154,13 @@ class Joueur {
         circle(x,y,r);
         fill(255);
         textAlign(LEFT,CENTER);
-        // textSize(10);
-        text(this.nom.substring(0,20),x+5,y);
+        textSize(12);
+        let txt=this.nom.substring(0,20)+' ';
+        for (let i=0;i<this.victoire;i++) {
+            txt += '🏆';
+        }
+        text(txt,x+5,y);
+        // text(this.nom.substring(0,20),x+5,y);
     }
 
     fiche(x_,y_,w_,matchs_) {
@@ -221,7 +226,7 @@ class Joueur {
         }
         dy += 18;
         text('Matchs :',x,y+dy);
-        let sc_t='';
+        let sc_t='', g={Poule:0, Demi:0, Finale:0}, p={Poule:0, Demi:0, Finale:0},n={Poule:0, Demi:0, Finale:0};
         for (let a of this.annees) {
             dy += 16;
             let t = this.matchs.filter( r => {return (r.id==a);});
@@ -233,11 +238,27 @@ class Joueur {
                 // let vs = m.equipes[e2].eq;
                 // let res = (m.equipes[e1].sc > m.equipes[e2].sc)?'Gagnée':'Perdue';
                 // console.log(t,m,e1,e2);
-                sc_t = sc_t + '  ('+m.equipes[e1].sc+'-'+m.equipes[e2].sc+')';
+                let sc1=m.equipes[e1].sc, sc2 = m.equipes[e2].sc;
+                let type =m.type;
+                if (type.indexOf('Finale') != -1) type ='Finale';
+                if (sc1>sc2) g[type] += 1;
+                if (sc1<sc2) p[type] += 1;
+                if (sc1==sc2) n[type] += 1;
+                sc_t = sc_t + '  ('+sc1+'-'+sc2+')';
                 // let vs_t = ' vs ('+vs.nom+') '+ vs.tireur.nom+'/'+vs.pointeur.nom;
             }
             text(sc_t,x+s,y+dy);
         }
+        // console.log(g,p,n)
+        dy += 32; let vs='', ds='';
+        if (g.Finale>1) vs='s';
+        if (p.Finale>1) ds='s';
+        text('Tableau Finale : '+g.Finale+' victoire'+vs+' / '+p.Finale+' défaite'+ds,x,y+dy);dy+=16;
+        vs='';ds='';
+        if (g.Demi>1) vs='s';
+        if (p.Demi>1) ds='s';
+        text('Demi-Finale : '+g.Demi+' victoire'+vs+' / '+p.Demi+' défaite'+ds,x,y+dy);dy+=16;
+        text('Poules : Gagné='+g.Poule+' / Nul='+n.Poule+' / Perdu='+p.Poule,x,y+dy);
     }
 }
 

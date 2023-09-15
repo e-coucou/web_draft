@@ -60,8 +60,12 @@ function ClstPoule(data) {
 function clastFinale(data){
     let clt = [];
     for (let m of data) {
-        let e1 = '('+m.equipes[0].eq.nom +') ' + m.equipes[0].eq.tireur.nom +'/' + m.equipes[0].eq.pointeur.nom;
-        let e2 = '('+m.equipes[1].eq.nom +') ' + m.equipes[1].eq.tireur.nom +'/' + m.equipes[1].eq.pointeur.nom;
+        let p = round(random());
+        let t1= (p)?(m.equipes[0].eq.tireur.nom +'/' + m.equipes[0].eq.pointeur.nom):(m.equipes[0].eq.pointeur.nom +'/' + m.equipes[0].eq.tireur.nom)
+        p = round(random());
+        let t2= (p)?(m.equipes[1].eq.tireur.nom +'/' + m.equipes[1].eq.pointeur.nom):(m.equipes[1].eq.pointeur.nom +'/' + m.equipes[1].eq.tireur.nom)
+        let e1 = '('+m.equipes[0].eq.nom +') ' + t1;
+        let e2 = '('+m.equipes[1].eq.nom +') ' + t2;
         let sc1 = m.equipes[0].sc;
         let sc2 = m.equipes[1].sc;
         let k = m.k;
