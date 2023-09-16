@@ -186,6 +186,7 @@ class Joueur {
         textSize(12);
         y += 10;
         let dy=22;
+        x += s;
         text('Participations :',x,y+dy);
         for (let i in this.annees) {
             text(this.annees[i],x+90+30*i,y+dy);

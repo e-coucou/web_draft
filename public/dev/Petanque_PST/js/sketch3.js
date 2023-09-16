@@ -230,7 +230,7 @@ function draw() {
                 break;
             case 2:
                 btZoom.setOn();
-                joueurs[id].fiche(padding,40,width-2*padding,matchs);
+                joueurs[id].fiche(padding,15,width-2*padding,matchs);
                 break;
             case 4:
             case 5:
