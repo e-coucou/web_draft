@@ -1,5 +1,5 @@
 function calculELO(new_ = true) {
-    for (let j of joueurs)
+    for (let j of initJoueurs)
         { j.reset(); };
     if ( !new_) { for (let e of equipes) e.resetELO();}
     matchs = [];
@@ -7,17 +7,17 @@ function calculELO(new_ = true) {
     for (let i in m_json) {
         let m = m_json[i];
         matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k,m.tableau));
-        joueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
+        initJoueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
         if (m.type == "Finale") {
             a_=true;
             if (new_) annees.push({a:m.annee,m:int(i)});
         }
-        for (let j in joueurs) {
-            joueurs[j].setClst(j,a_,m.annee);
+        for (let j in initJoueurs) {
+            initJoueurs[j].setClst(j,a_,m.annee);
         }
         a_ = false;
     }
-    initJoueurs = joueurs.slice();
+    joueurs = initJoueurs.slice();
 }
 class Joueur {
     constructor(nom_, id_) {
@@ -110,7 +110,7 @@ class Joueur {
         let dx = w_/12;
         x += 2*s;
         if (debug == 1) {
-            text(nf(idx,2,0)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
+            text(round(idx)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
         } else {
             textStyle(BOLD);
             text(nf(idx,2,0)+"/ "+this.nom, x, y); x+=3.5*dx;

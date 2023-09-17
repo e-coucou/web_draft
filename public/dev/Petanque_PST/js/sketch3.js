@@ -1,4 +1,4 @@
-let param;
+let param, run=false;
 let joueurs = [];
 let initJoueurs = [];
 let equipes = [];
@@ -76,6 +76,7 @@ function update_PM(n) {
         case 7 : if (d) { param.ELO.bonus -= LL; } else {param.ELO.bonus += LL;}; break;
     }
     calculELO(false);
+    update();
 }
 function update_Nav(n) {
     switch (mode) {
@@ -86,8 +87,20 @@ function update_Nav(n) {
             // case 1 : mode = 0 ; console.log('retour') ;break;
             }
             break;
+        case 3:
+            if (run) { btNav[1].txt = '▶️' ; run=false;} 
+                else { btNav[1].txt = '⏸️' ; run= true; }
+            break;
         case 4 : mode = 5; break;
         case 5 : mode = 4; break;
+    }
+}
+function updateMatch(id_) {
+    index = id_;
+    annee = matchs[index].annee;
+    for (let i in annees) {
+        c = btAnnee[i];
+        if (annees[i].a == annee) { c.setOn();} else { c.setOff();}
     }
 }
 function setCat(id_=1) {
@@ -175,6 +188,11 @@ function readELO() {
     }
 }
 
+// function touchStarted() {
+//     let fs =fullscreen();
+//     if (!fs) { fullscreen(true);}
+// }
+
 function windowResized() {
     let h_ = innerHeight*0.98;
     let w_ = min(0.59*h_, innerWidth);
@@ -198,11 +216,11 @@ function setup() {
   
     for (let i in j_json) {
         let j = j_json[i];
-        joueurs.push( new Joueur(j.nom,j.id));
+        initJoueurs.push( new Joueur(j.nom,j.id));
     }
     for (let i in e_json) {
         let e = e_json[i];
-        equipes.push( new Equipe(e.nom,joueurs[e.J1],joueurs[e.J2],e.annee));
+        equipes.push( new Equipe(e.nom,initJoueurs[e.J1],initJoueurs[e.J2],e.annee));
     }
     nbMatchs = Object.keys(m_json).length ;
     calculELO(true);
@@ -216,6 +234,13 @@ function setup() {
     // mouseSelection=true;
 }
 function draw() {
+    if (run) {
+        if (frameCount % 10 == 0) {
+            index = (index+1) % matchs.length;
+            updateMatch(index);
+            mouseSelection = true;
+        }
+    }
     if (mouseSelection) {
         background(220);
         noStroke();
@@ -243,6 +268,12 @@ function draw() {
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
         text(mode,width-10,height-10);
+        for (let i=0; i<touchStarted.length;i++) {
+            text(touches[0].x+'/'+touches[0].y,20,height-50);
+        }
     }
     mouseSelection=false;
 }
+
+
+document.ontouchmove = function(event) {event.preventDefault();};
