@@ -47,8 +47,8 @@ function redimButtons() {
         b.redim(x,y,l-padding);
         x += l;
     }
-    btNav[0].redim(width*8.5/10,height-r-padding,14);
-    btNav[1].redim(width*9.5/10,height-r-padding,14);
+    btNav[0].redim(width*8.5/10,height-r-padding-3,14);
+    btNav[1].redim(width*9.5/10,height-r-padding-3,14);
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
         i = int(i);

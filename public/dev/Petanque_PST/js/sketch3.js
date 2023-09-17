@@ -267,7 +267,8 @@ function draw() {
         }
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
-        text(mode,width-10,height-10);
+        text(mode,10,height-10);
+        text('eCoucou 2023 v1',width*5/6,height-8);
         for (let i=0; i<touchStarted.length;i++) {
             text(touches[0].x+'/'+touches[0].y,20,height-50);
         }
