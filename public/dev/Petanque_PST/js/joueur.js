@@ -101,6 +101,11 @@ class Joueur {
         let dy = inter-2;
         noStroke();
         this.getColor();
+        if (this.hist[index].c>=this.hist[(index>0)?(index-1):0].c)
+            { fill(color(couleur.sel));}
+            else
+            { fill(255,0,0);}
+            // { fill(color(couleur.cur));}
         rect(x,y-dy/2,s-1,dy);
         fill(color(couleur.bk));
         rect(x+s,y-dy/2,w_-s,dy);

@@ -235,7 +235,7 @@ function setup() {
 }
 function draw() {
     if (run) {
-        if (frameCount % 10 == 0) {
+        if (frameCount % 100 == 0) {
             index = (index+1) % matchs.length;
             updateMatch(index);
             mouseSelection = true;
