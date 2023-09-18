@@ -3,8 +3,8 @@ var express = require('express');
 var app = express();
 require('dotenv').config();
 
-var server = app.listen(3000);
+var server = app.listen(process.env.PORT || 3000);
 
 app.use(express.static('public'));
 
-console.log('Mon serveur est en marche ... en 3000');
+console.log('Mon serveur est en marche ... en 3000 localement');
