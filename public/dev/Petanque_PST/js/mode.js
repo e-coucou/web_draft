@@ -52,8 +52,9 @@ function drawListe() {
     let w_ = width-2*padding;
     let dx = w_/12;
     let x_ = padding + 2*8 +3.5*dx;
-    let y_ = 67, dy_=18;
-    inter = int((height-120)/initJoueurs.length);
+    let y_ = 85;
+    let dy_=18;
+    inter = int((height-140)/initJoueurs.length);
     noFill();
     stroke(color(couleur.bk));
     rect(x_+1,y_-dy_/2+1,dx-2,dy_-2);
@@ -77,13 +78,15 @@ function drawListe() {
         let idx = int(joueurs[i].hist[index].c);
         let elo = joueurs[i].hist[index].elo;
         // iDs[i] = idx;
-        joueurs[i].show(idx, padding, inter*(i)+85, w_,elo);
+        joueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo);
     }    
+    drawDateBar();
 }
 
 function drawDateBar() {
-    let x = padding, y = padding+55;
+    let x = padding, y = padding+50;
     let dx = (width-2*padding) / matchs.length , dy=15;
+    noStroke();
     for (let i=0; i<matchs.length; i++) {
         if (i==index) {
             fill(color(couleur.sel));

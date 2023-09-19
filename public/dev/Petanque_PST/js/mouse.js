@@ -3,7 +3,7 @@ function touchStarted() {
     let fs =fullscreen();
     // console.log(fs);
     // if (!fs) { fullscreen(true);}
-    console.log(touches[0].x+'/'+touches[0].y,20,height-50);
+    // console.log(touches[0].x+'/'+touches[0].y,20,height-50);
     checkDots(touches[0].x, touches[0].y);
 }
 function mousePressed() {
@@ -75,8 +75,8 @@ function checkDots(mX, mY) {
             if (c.isIn(mX,mY,mode)) { setPoule(n); return; }
         }
         // selection d'un joueur dans la liste
-        if (mX>(padding) && mX<(width-padding) && mode==0) {
-            let id_ = round((mY - 80) / inter);
+        if (mX>(padding) && mX<(width-padding) && (mode==0) ) {
+            let id_ = round((mY - 85-18) / inter); // y_ + dy_
             if ( id_<0 || id_>=joueurs.length) {
                 mode=0;
             } else {
@@ -95,7 +95,7 @@ function checkDots(mX, mY) {
         }    
         if (btInfo.isIn(mX,mY,mode)) { mode_prev = mode; mode = 4; clearButtons(); btInfo.setOn(); return }
         // Selection du match par la bande colorée (meme emplacement que sel Poule)
-        if (mX>(padding) && mX<(width-1*padding) && mY>54 && mY<79 && mode==3) {
+        if (mX>(padding) && mX<(width-1*padding) && mY>54 && mY<79 && (mode==3 ||mode==0) ) {
             let id_ = floor((mX-padding) / ((width-2*padding) / matchs.length));
             updateMatch(id_);
         }

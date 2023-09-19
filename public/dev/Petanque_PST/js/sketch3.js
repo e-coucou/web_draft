@@ -1,3 +1,4 @@
+const eC = {version: 'v1.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 let param, run=false;
 let joueurs = [];
 let initJoueurs = [];
@@ -88,6 +89,7 @@ function update_Nav(n) {
             }
             break;
         case 3:
+        case 0:
             if (run) { btNav[1].txt = '▶️' ; run=false;} 
                 else { btNav[1].txt = '⏸️' ; run= true; }
             break;
@@ -121,8 +123,9 @@ function BtGraphe() {
 }
 function HTMLRetour() {
     select('canvas').show();
-    select('#notice').style('display','hidden');
-    select('#ELO').style('display','hidden');
+    select('#notice').style('display','none');
+    select('#ELO').style('display','none');
+    select('#start').style('display','none');
     toggle = true;
 }
 function setPhase(id_) {
@@ -174,6 +177,7 @@ function readNotice() {
         select("canvas").hide();
         select("#notice").style('display','block');
         select("#ELO").style('display','none');
+        select('#start').style('display','none');
         toggle = false;
     }
 }
@@ -184,6 +188,7 @@ function readELO() {
         select("canvas").hide();
         select("#notice").style('display','none');
         select("#ELO").style('display','block');
+        select('#start').style('display','none');
         toggle = false;
     }
 }
@@ -206,6 +211,7 @@ function windowResized() {
 }
 
 function setup() {
+	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     let h_ = innerHeight*0.98;
     let w_ = min(0.59*h_, innerWidth);
     canvas = createCanvas(w_,h_); // mise en place du ratio 0.59
@@ -229,13 +235,14 @@ function setup() {
     setDateSel(annees.length-1);
     select("#notice").style('display','none');
     select("#ELO").style('display','none');
+    select('#start').style('display','none');
     update_color(0);
     windowResized();
     // mouseSelection=true;
 }
 function draw() {
     if (run) {
-        if (frameCount % 100 == 0) {
+        if (frameCount % 30 == 0) {
             index = (index+1) % matchs.length;
             updateMatch(index);
             mouseSelection = true;
@@ -254,21 +261,24 @@ function draw() {
                 drawListe();
                 break;
             case 2:
+                run=false; btNav[1].txt = '▶️' ; run=false;
                 btZoom.setOn();
                 joueurs[id].fiche(padding,15,width-2*padding,matchs);
                 break;
             case 4:
             case 5:
+                run=false; btNav[1].txt = '▶️' ; run=false;
                 btInfo.setOn();
                 drawParam(); break;
             case 1:
+                run=false; btNav[1].txt = '▶️' ; run=false;
                 btTournoi.setOn();
                 drawTournois(0,40,width, height-100,annee); break;
         }
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
         text(mode,10,height-10);
-        text('eCoucou 2023 v1',width*5/6,height-8);
+        text('eCoucou '+eC.version+' '+eC.annee,width*4/5,height-8);
         for (let i=0; i<touchStarted.length;i++) {
             text(touches[0].x+'/'+touches[0].y,20,height-50);
         }

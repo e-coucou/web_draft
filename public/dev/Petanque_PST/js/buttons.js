@@ -101,7 +101,7 @@ function createButtons() {
     }
     // inter = int((height-120)/initJoueurs.length);
     btNav.push(new BoutonC('◀️',width*8/10,height-r-padding,14,[2,4,5],false));
-    btNav.push(new BoutonC('▶️',width*9/10,height-r-padding,14,[2,3,4,5],false));
+    btNav.push(new BoutonC('▶️',width*9/10,height-r-padding,14,[0,2,3,4,5],false));
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
         i = int(i);

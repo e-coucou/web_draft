@@ -87,25 +87,30 @@ class Joueur {
         if (win_==0) this.nul += 1;
     }
     getColor() {
-        switch (this.victoire) {
-            case 0 : fill(color(couleur.dm)); break;
-            case 1 : fill(color(couleur.cur)); break;
-            case 2 : fill(color(couleur.sel)); break;
-            case 3:
-            case 4 : fill(color(couleur.txt)); break;
+        // switch (this.victoire) {
+        //     case 0 : fill(color(couleur.dm)); break;
+        //     case 1 : fill(color(couleur.cur)); break;
+        //     case 2 : fill(color(couleur.sel)); break;
+        //     case 3:
+        //     case 4 : fill(color(couleur.txt)); break;
+        // }
+        // if (this.id == idSel) {fill(color(couleur.cur));}
+        let a=this.hist[index].c, b=this.hist[(index>0)?(index-1):0].c;
+        if (a<b) {
+            fill(0,255,0);
+        } else {
+            if (a>b) {
+                fill(255,0,0);
+            } else {
+                fill(55);
+            }
         }
-        if (this.id == idSel) {fill(color(couleur.cur));}
     }
     show(idx, x_, y_, w_, elo=this.ELO) {
         let x= x_, y = y_, s=8;
         let dy = inter-2;
         noStroke();
         this.getColor();
-        if (this.hist[index].c>=this.hist[(index>0)?(index-1):0].c)
-            { fill(color(couleur.sel));}
-            else
-            { fill(255,0,0);}
-            // { fill(color(couleur.cur));}
         rect(x,y-dy/2,s-1,dy);
         fill(color(couleur.bk));
         rect(x+s,y-dy/2,w_-s,dy);
