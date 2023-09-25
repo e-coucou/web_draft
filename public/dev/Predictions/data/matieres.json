@@ -1,0 +1,7 @@
+[
+    {"id":0, "nom":"Propylène", "prix":1000,"code":"C3"},
+    {"id":1, "nom":"Ammoniac", "prix":600,"code":"N"},
+    {"id":2, "nom":"Soude", "prix":300,"code":"Na"},
+    {"id":3, "nom":"Methanol", "prix":280,"code":"Me"},
+    {"id":4, "nom":"Soufre", "prix":160,"code":"S"}
+]
