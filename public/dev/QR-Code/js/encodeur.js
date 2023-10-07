@@ -30,7 +30,7 @@ class Encodeur {
         this.sub=[];
         this.code = [];
         this.mode = [0,0,1,0]; // Alphanumeric mode
-        this.carCount = [0,0,0,0,0,1,0,1,1]; // caractere count : nombrer de bit par caratères = 11
+        this.carCount = [0,0,0,0,0,1,0,1,1]; // caractere count : nombrer de caractere a codee sur 9 bit en aloha11
         this.codeWorks = [];
         this.pad = [[1,1,1,0,1,1,0,0],[0,0,0,1,0,0,0,1]];
         this.block =[];
@@ -47,7 +47,11 @@ class Encodeur {
     }
     encode() {
         this.codeWorks.push(...this.mode);
-        this.codeWorks.push(...this.carCount);
+        // a modifier compter les caractzres
+        let crCount=this.message.length;
+        this.carCount = new Binary(crCount,9);
+        this.carCount.encode();
+        this.codeWorks.push(...this.carCount.code);
         for (let p of this.sub) {
             if (p.length==2) {
                 let v = 45 * alphabet[p[0]] + alphabet[p[1]];
