@@ -1,5 +1,5 @@
 const eC = {version: 'v0.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
-let message = 'HE';
+let message = 'HELLO';
 const QR_Type = ['L','M','Q','H'];
 const QR_Version = [1,2,3,4,,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 let codePoly = [
@@ -29,7 +29,7 @@ let alphabet,qr_json,loc_json,info_json;
 let qrcode=[], qrinfo=[];
 let version = 1, type='Q', level = 0;
 let grille=[], dim, largeur, w;
-let code, base=104+8;
+let code, base=104+104;
 let qrType, qrInfo;
 
 function preload() {
