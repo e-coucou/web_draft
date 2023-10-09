@@ -1,8 +1,9 @@
 const eC = {version: 'v0.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 let message = 'HELLO WORLD';
 // let message = 'CECI EST UN ESSAI DE CODAGE ...';
-let quality = [{t:'L',i:[0,1]},{t:'M',i:[0,0]},{t:'Q',i:[1,1]},{t:'H',i:[1,0]}];
+const quality = [{t:'L',i:[0,1]},{t:'M',i:[0,0]},{t:'Q',i:[1,1]},{t:'H',i:[1,0]}];
 const QR_Version = [1,2,3,4,,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+const char = [{n:9,A:{l:9}},{n:26,A:{l:11}}];
 let codePoly = [];
 let padding = [0,0,7,7,7,7,7,0,0,0,0,0,0,0,3,3,3,3,3,3,3,4,4,4,4,4,4,4,3,3,3,3,3,3,3,0,0,0,0,0,0];
 let poly;
