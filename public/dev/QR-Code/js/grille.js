@@ -78,15 +78,18 @@ function mask(x,y,v,n) {
         case 1 : r = y % 2; break;
         case 2 : r = x % 3; break;
         case 3 : r = (x+y) % 3; break;
+        case 4 : r = (floor(y/2) + floor(x/3)) % 2; break;
+        case 5 : r = ((x*y) % 2) + ((x*y) % 3); break;
+        case 6 : r = ( ((x*y) % 2) + ((x*y) % 3) ) % 2; break;
+        case 7 : r = ( ((x+y) % 2) + ((x*y) % 3) ) % 2; break;
     }
     if (r==0) { return (v+1)%2;} else {return v;}
 }
 
-function addData(mask_=0) {
+function addData(mask_) {
+    console.log('addData',mask_)
     let x = dim-1, y=dim-1;
     let dir = { x:-1 , y:0 , d:-1};
-    let t=0; let cnt=0;
-    let v = 0;
     function move() {
         let wd=1000;
         while( (grille[x][y] != -1) && (wd>0)) {
@@ -106,9 +109,9 @@ function addData(mask_=0) {
             wd--;
         }
     }
-    for (let i=0;i<base;i++) {
-        v = code.blockBin[i];
-    // for (let v of code.blockBin) {
+    // for (let i=0;i<base;i++) {
+    //     v = code.blockBin[i];
+    for (let v of code.blockBin) {
         if (grille[x][y] == -1) {
             let r = mask(x,y,v,mask_);
             dot(x,y,(r+1)%2,false);
@@ -116,8 +119,6 @@ function addData(mask_=0) {
         } else {
             console.log('ca devrait pas arriver');
         }
-        cnt +=1;
-        t = (t+1)%2;
     }
 }
 function removeZ(arr) {
@@ -158,10 +159,8 @@ function addString(info_) {
     for (let i=0;i<l;i++) {
         mess = [0, ...mess];
     }
-    console.log('error',mess.length,mess);
     info_.push(...mess);
     info_ = bitWise(info_,mask);
-    console.log('result',info_);
     // info_ = qrInfo.mask;
     // console.log('table',info_);
     let pattern = [[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[7,8],[8,8],[8,7],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0]];
@@ -175,5 +174,45 @@ function addString(info_) {
     }
     for (let i =7;i<15;i++) {
         dot(dim-15+i,8,(info_[i]+1)%2,false);
+    }
+    // Code pour version sup ou egale à 7
+    if (version>6) {
+        pad = [0,0,0,0,0,0,0,0,0,0,0,0];
+        let tmp = new Binary(version,6); tmp.encode();
+        info_ = tmp.code.slice();
+        mess = info_.slice();
+        console.log(mess)
+        mess.push(...pad);
+        mess = removeZ(mess);
+        while (mess.length>12) {
+            let lPad = mess.length - poly7_.length;
+            let poly = padZero(poly7_, lPad);
+            mess = bitWise(mess,poly);
+            mess = removeZ(mess);
+            // console.log('first',mess.length,mess);
+        }
+        let l = 12 - mess.length;
+        for (let i=0;i<l;i++) {
+            mess = [0, ...mess];
+        }
+        console.log('error',mess);
+        info_.push(...mess);
+        // info_ = bitWise(info_,mask);
+        console.log('info >7 ', info_);
+        let b=0;
+        for (let i=5;i>=0;i--) {
+            for (let j = (dim-9); j>(dim-12);j--) {
+                dot(i,j,(info_[b]+1)%2,false);
+                dot(j,i,(info_[b]+1)%2,false);
+                b++;
+            }
+        }
+        // b=0;
+        // for (let i=5;i>=0;i--) {
+        //     for (let j = (dim-9); j>(dim-12);j--) {
+        //         dot(j,i,(info_[b]+1)%2+2,false);
+        //         b++;
+        //     }
+        // }
     }
 }

@@ -30,7 +30,7 @@ class Encodeur {
         this.sub=[];
         this.code = [];
         this.mode = [0,0,1,0]; // Alphanumeric mode
-        this.carCount = [0,0,0,0,0,1,0,1,1]; // caractere count : nombrer de caractere a codee sur 9 bit en aloha11
+        this.carCount = []; //[0,0,0,0,0,1,0,1,1]; // caractere count : nombrer de caractere a codee sur 9 bit en aloha11
         this.codeWorks = [];
         this.pad = [[1,1,1,0,1,1,0,0],[0,0,0,1,0,0,0,1]];
         this.block =[];

@@ -114,8 +114,58 @@ class Polynome {
         }
         return ret;
     }
+    mult(p_) {
+        let ret = [];
+        for (let i of this.poly) {
+            for (let j of p_.poly) {
+                let alpha = i.alpha + j.alpha;
+                let degre = i.degre + j.degre;
+                if (alpha > 255) { alpha = (alpha % 256) + floor(alpha/256);}
+                if (ret[degre] == undefined) {
+                    ret[degre] = [];
+                    ret[degre].push(alpha);
+                }
+                else {
+                    ret[degre].push(alpha);
+                }
+            }
+        }
+        // on calcule les coef dans le monde 
+        let d=ret.length;
+        let c = [];
+        for (let i=d-1;i>=0;i--) {
+            if (ret[i].length>1) {
+                let v0 = table_log[ret[i][0]];
+                let v1 = table_log[ret[i][1]];
+                let v = v0 ^ v1;
+                c.push(table_ant[v]);
+            } else {
+                c.push(ret[i][0]);
+            }
+        }        // console.log(c);
+        return c;
+    }
 }
 
+function createPoly() {
+    let P0= new Polynome ([0,0],1);
+    let P1= new Polynome ([0,1],1);
+    console.log(P1);
+    let P2 =  new Polynome (P1.mult(P0),1);
+    console.log(P2);
+
+    codePoly = [];
+    codePoly.push([0,0]);
+    codePoly.push([0,1]);
+
+    for (let i = 1; i<40 ; i++) {
+        let tmp = new Polynome ([0,i],1);
+        let ret = tmp.mult(P0);
+        codePoly.push(ret);
+        // console.log(ret);
+        P0= new Polynome(ret,1);
+    }
+}
 
 class RS {
     constructor() {
