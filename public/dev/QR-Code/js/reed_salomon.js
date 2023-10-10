@@ -150,9 +150,9 @@ class Polynome {
 function createPoly() {
     let P0= new Polynome ([0,0],1);
     let P1= new Polynome ([0,1],1);
-    console.log(P1);
+    // console.log(P1);
     let P2 =  new Polynome (P1.mult(P0),1);
-    console.log(P2);
+    // console.log(P2);
 
     codePoly = [];
     codePoly.push([0,0]);

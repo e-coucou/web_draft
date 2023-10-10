@@ -29,12 +29,20 @@ class Encodeur {
         this.messPoly = [];
         this.sub=[];
         this.code = [];
-        this.mode = [0,0,1,0]; // Alphanumeric mode
         this.carCount = []; //[0,0,0,0,0,1,0,1,1]; // caractere count : nombrer de caractere a codee sur 9 bit en aloha11
         this.codeWorks = [];
         this.pad = [[1,1,1,0,1,1,0,0],[0,0,0,1,0,0,0,1]];
         this.block =[];
         this.blockBin= [];
+        switch (mode) {
+            case 'N' : this.mode=[0,0,0,1]; break;
+            case 'A' : this.mode=[0,0,1,0]; break;
+            case 'B' : this.mode=[0,1,0,0]; break;
+            case 'K' : this.mode=[1,0,0,0]; break;
+            case 'E' : this.mode=[0,1,1,1]; break;
+        }
+        let tmp = caracteres.find(a=>{ return (version>=a.l  && version<= a.h);});
+        this.l = tmp[mode].l;
     }
     setEC(code) {
         this.QRType = code;
@@ -49,27 +57,44 @@ class Encodeur {
         this.codeWorks.push(...this.mode);
         // a modifier compter les caractzres
         let crCount=this.message.length;
-        this.carCount = new Binary(crCount,9);
+        this.carCount = new Binary(crCount,this.l);
         this.carCount.encode();
         this.codeWorks.push(...this.carCount.code);
-        for (let p of this.sub) {
-            if (p.length==2) {
-                let v = 45 * alphabet[p[0]] + alphabet[p[1]];
-                this.code.push(v);
-                let b = new Binary(v); 
-                b.encode(); 
-                // b.print();
-                this.codeWorks.push(...b.code);
-            } else {
-                let v = alphabet[p[0]];
-                this.code.push(v);
-                let b = new Binary(v,6); 
-                b.encode();
-                // b.print();
-                this.codeWorks.push(...b.code);
-            }
+        switch (mode) {
+            case 'A':
+                code.split(); // code.print();
+                for (let p of this.sub) {
+                    if (p.length==2) {
+                        let v = 45 * alphabet[p[0]] + alphabet[p[1]];
+                        this.code.push(v);
+                        let b = new Binary(v); 
+                        b.encode(); 
+                        // b.print();
+                        this.codeWorks.push(...b.code);
+                    } else {
+                        let v = alphabet[p[0]];
+                        this.code.push(v);
+                        let b = new Binary(v,6); 
+                        b.encode();
+                        // b.print();
+                        this.codeWorks.push(...b.code);
+                    }
+                }
+                break;
+            case 'B' :
+                console.log(this.message);
+                for (let c in this.message) {
+                    let v = this.message.charCodeAt(c);
+                    // console.log(v);
+                    this.code.push(v);
+                    let b = new Binary(v,8);
+                    b.encode();
+                    this.codeWorks.push(...b.code);
+                }
+                console.log(code);
+                break;
         }
-        console.log('correction   ',this.codeWorks.length)
+        // console.log('correction   ',this.codeWorks.length)
         this.codeWorks.push(...[0,0,0,0]);
         let l = this.codeWorks.length; let d = 8 - l%8; let a = [] ; for (let i =0; i<d;i++) { a.push(0);};
         this.codeWorks.push(...a);
@@ -122,12 +147,12 @@ class Encodeur {
             bl.push(a);
             st += this.QRType.dG2;
         }
-        console.log('Blocks : ',bl);
+        // console.log('Blocks : ',bl);
 
         //step
         for (let i=0; i<bl.length ; i++ ) {
             let polyMess = new Polynome(bl[i]);
-            console.log(polyMess)
+            // console.log(polyMess)
             let iter =  polyMess.poly.length;
             // polyMess.pow(poly_.length-1); //console.log('crypt ',poly_.length);
             polyMess.pow(qrType.ec); //console.log('crypt ',poly_.length);
@@ -136,7 +161,7 @@ class Encodeur {
             for (let i=0; i<iter ; i++) {
                 // for (let i=0; i<iter ; i++) {
                     let polyGen = new Polynome(poly_,1); //console.log('gen',polyGen.poly[0].coef)
-                polyGen.pow(iter); console.log(i,polyGen.poly.length,polyMess.poly.length,polyGen,polyMess)
+                polyGen.pow(iter); // console.log(i,polyGen.poly.length,polyMess.poly.length,polyGen,polyMess)
                 polyMess.poly[0].toAlpha();
                 let v = polyMess.poly[0].alpha; //console.log(polyMess.poly[0].coef,v);
                 polyGen.addAlpha(v);
@@ -148,7 +173,7 @@ class Encodeur {
             // console.log(i,e);
             error.push(e);
         }
-        console.log(error);
+        // console.log(error);
         // interleave CodeWorks
         let m = max(this.QRType.dG1, this.QRType.dG2);
         for (let i=0; i<m; i++) {
@@ -165,7 +190,7 @@ class Encodeur {
                 if ( v != undefined) { this.block.push(v); }
             }
         }
-        console.log(this.block);
+        // console.log(this.block);
         for (let b of this.block) {
             let e = new Binary(b,8); 
             e.encode();
@@ -176,7 +201,7 @@ class Encodeur {
         for (let i=0;i<padding[version];i++) {
             pad.push(0);
         }
-        console.log('pad',pad);
+        // console.log('pad',pad);
         this.blockBin.push(...pad);
 
         this.show(this.blockBin);

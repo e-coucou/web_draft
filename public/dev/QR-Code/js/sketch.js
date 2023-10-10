@@ -1,25 +1,29 @@
 const eC = {version: 'v0.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
-let message = 'HELLO WORLD';
-// let message = 'CECI EST UN ESSAI DE CODAGE ...';
+// let message = 'éric';
+// let message = "Hello, World! Ceci est un essai d'encodage d'un message en QR-Code. by eCoucou éric !";
+const message = "https://draft.e-coucou.com"; //+fromCharCode(0x0D)+fromCharCode(0x0A)+"VERSION:3.0"+fromCharCode(0x0D)+fromCharCode(0x0A)+"FN:Eric PLAIDY"+fromCharCode(0x0D)+fromCharCode(0x0A)+"END:VCARD";
+// FN:Forrest Gump ORG:Bubba Gump Shrimp Co. TITLE:Shrimp Man TEL;TYPE=work,voice;VALUE=uri:tel:+1-111-555-1212 TEL;TYPE=home,voice;VALUE=uri:tel:+1-404-555-1212 ADR;TYPE=WORK;PREF=1;LABEL='100 Waters Edge\nBaytown\n, LA 30314\nUnited States of America':;;100 Waters Edge;Baytown;LA;30314;United States of America ADR;TYPE=HOME;LABEL='42 Plantation St.\nBaytown\, LA 30314\nUnited States of America':;;42 Plantation St.;Baytown;LA;30314;United States of America EMAIL:forrestgump@example.com REV:20080424T195243Z x-qq:21588891 END:VCARD"
+
 const quality = [{t:'L',i:[0,1]},{t:'M',i:[0,0]},{t:'Q',i:[1,1]},{t:'H',i:[1,0]}];
-const QR_Version = [1,2,3,4,,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-const char = [{l:1,h:9,A:{l:9}},{l:10,h:26,A:{l:11}},{l:27,h:40,A:{l:13}}];
+const caracteres = [{l:1,h:9,A:{l:9},N:{l:10},B:{l:8}},{l:10,h:26,A:{l:11},N:{l:12},B:{l:16}},{l:27,h:40,A:{l:13},N:{l:14},B:{l:16}}];
 let codePoly = [];
 let padding = [0,0,7,7,7,7,7,0,0,0,0,0,0,0,3,3,3,3,3,3,3,4,4,4,4,4,4,4,3,3,3,3,3,3,3,0,0,0,0,0,0];
 let poly;
 let alphabet,qr_json,loc_json,info_json;
 let qrcode=[], qrinfo=[];
-let version = 2, type='Q', level = 0;
+let version = 2, type='Q', level = 0, mode = 'B';
 let selLevel,selVersion,selType;
 let grille=[], dim, largeur, w;
 let code, base=104+104;
 let qrType, qrInfo;
+// let message;
 
 function preload() {
-    alphabet = loadJSON('./data/alpha.json')
-    qr_json = loadJSON('./data/block.json')
-    loc_json = loadJSON('./data/patterns.json')
-    info_json = loadJSON('./data/information.json')
+    alphabet = loadJSON('./data/alpha.json');
+    qr_json = loadJSON('./data/block.json');
+    loc_json = loadJSON('./data/patterns.json');
+    info_json = loadJSON('./data/information.json');
+    // message = loadBytes('./data/vcard.txt');
 }
 
 function setVersion() {
@@ -116,7 +120,6 @@ function encodeMess() {
 
     code = new Encodeur(message);
     code.setEC(qrType);
-    code.split(); // code.print();
     code.encode();
     code.convertDec();
     code.errorCode();
