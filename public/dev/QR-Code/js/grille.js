@@ -87,7 +87,7 @@ function mask(x,y,v,n) {
 }
 
 function addData(mask_) {
-    console.log('addData',mask_)
+    // console.log('addData',mask_)
     let x = dim-1, y=dim-1;
     let dir = { x:-1 , y:0 , d:-1};
     function move() {
@@ -181,7 +181,7 @@ function addString(info_) {
         let tmp = new Binary(version,6); tmp.encode();
         info_ = tmp.code.slice();
         mess = info_.slice();
-        console.log(mess)
+        // console.log(mess)
         mess.push(...pad);
         mess = removeZ(mess);
         while (mess.length>12) {
@@ -195,10 +195,10 @@ function addString(info_) {
         for (let i=0;i<l;i++) {
             mess = [0, ...mess];
         }
-        console.log('error',mess);
+        // console.log('error',mess);
         info_.push(...mess);
         // info_ = bitWise(info_,mask);
-        console.log('info >7 ', info_);
+        // console.log('info >7 ', info_);
         let b=0;
         for (let i=5;i>=0;i--) {
             for (let j = (dim-9); j>(dim-12);j--) {

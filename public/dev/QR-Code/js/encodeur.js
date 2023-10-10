@@ -55,14 +55,15 @@ class Encodeur {
     }
     encode() {
         this.codeWorks.push(...this.mode);
+        let crCount;
         // a modifier compter les caractzres
-        let crCount=this.message.length;
-        this.carCount = new Binary(crCount,this.l);
-        this.carCount.encode();
-        this.codeWorks.push(...this.carCount.code);
         switch (mode) {
             case 'A':
-                code.split(); // code.print();
+                message_l=this.message.length;
+                this.carCount = new Binary(message_l,this.l);
+                this.carCount.encode();
+                this.codeWorks.push(...this.carCount.code);
+                        code.split(); // code.print();
                 for (let p of this.sub) {
                     if (p.length==2) {
                         let v = 45 * alphabet[p[0]] + alphabet[p[1]];
@@ -82,17 +83,31 @@ class Encodeur {
                 }
                 break;
             case 'B' :
-                console.log(this.message);
-                for (let c in this.message) {
-                    let v = this.message.charCodeAt(c);
-                    // console.log(v);
+                console.log("le message ... ",this.message);
+                // for (let c in this.message) {
+                //     let v = this.message.charCodeAt(c);
+                //     // console.log(v);
+                //     this.code.push(v);
+                //     let b = new Binary(v,8);
+                //     b.encode();
+                //     this.codeWorks.push(...b.code);
+                // }
+                // console.log(this.message.bytes);
+                message_l=this.message.bytes.length;
+                this.carCount = new Binary(message_l,this.l);
+                this.carCount.encode();
+                this.codeWorks.push(...this.carCount.code);
+                for (let v of this.message.bytes) {
                     this.code.push(v);
                     let b = new Binary(v,8);
                     b.encode();
                     this.codeWorks.push(...b.code);
                 }
-                console.log(code);
+                console.log(this.code);
                 break;
+            case 'E':
+
+
         }
         // console.log('correction   ',this.codeWorks.length)
         this.codeWorks.push(...[0,0,0,0]);
