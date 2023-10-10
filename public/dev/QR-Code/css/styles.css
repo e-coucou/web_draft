@@ -95,14 +95,14 @@ div.selection {
     border-style: solid;
     border-color: rgb(255, 255, 255);
     border-width: 1px;
-    align-items: center;
+    /* align-items: center; */
     background-color: black;
 }
 
 .styled {
     border: 0;
     line-height: 2.5;
-    margin: 5px 40%;
+    margin: 5px 5px;
     /* padding: 0 20px; */
     font-size: 1rem;
     text-align: center;
@@ -131,16 +131,16 @@ div.selection {
   
   .styled_2 {
     border: 0;
-    line-height: 2.5;
-    margin: 5px 10%;
+    line-height: 2.5px;
+    margin: 5px 5px;
     /* padding: 0 20px; */
     font-size: 0.7rem;
-    /* text-align: center; */
+    text-align: center;
     color: #fff;
     text-shadow: 1px 1px 1px #000;
     border-radius: 2px;
     background-color: rgb(172, 180, 175);
-    background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
+    /* background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0)); */
     box-shadow:
       inset 2px 2px 3px rgba(255, 255, 255, 0.6),
       inset -2px -2px 3px rgba(0, 0, 0, 0.6);

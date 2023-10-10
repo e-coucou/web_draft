@@ -36,8 +36,9 @@ function setVersion() {
 }
 
 function windowResized() {
+    let m = min(innerHeight,innerWidth);
     let h_ = innerHeight*0.98;
-    let w_ = min(0.59*h_, innerWidth);
+    let w_ = m*0.8;
     largeur = int(w_/dim);
     w_ = dim*largeur;
     resizeCanvas(w_,w_);
