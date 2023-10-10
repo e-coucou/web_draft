@@ -77,20 +77,24 @@ function chgType() {
 function setOptions() {
     btOptimise = select('#optimise');
     btOptimise.mousePressed(bestVersion);
+    btOptimise.position(innerWidth*0.8,innerHeight*0.92);
     selLevel = createSelect();
-    selLevel.class('styled_2')
+    selLevel.class('styled_2');
+    selLevel.position(10,innerHeight*0.95);
     for (let i=0;i<8;i++) {
         selLevel.option("Pattern "+i,i);
     }
     selLevel.changed(chgLevel);
     selVersion = createSelect();
-    selVersion.class('styled_2')
+    selVersion.class('styled_2');
+    selVersion.position(100,innerHeight*0.95);
     for (let i=1;i<41;i++) {
         selVersion.option("Version "+i,i);
     }
     selVersion.changed(chgVersion);
     selType = createSelect();
-    selType.class('styled_2')
+    selType.class('styled_2');
+    selType.position(200,innerHeight*0.95);
     for (let v of quality) {
         selType.option("Qualité "+v.t, v.t);
     }
@@ -181,11 +185,11 @@ function draw() {
             let e=0;
             switch (grille[i][j]) {
                 case -1: fill(77);stroke(90);strokeWeight(2); e=1 ; break;
-                case 0: fill(0);noStroke() ; break;
+                case 0: fill(50,120,0);noStroke() ; break;
                 case 1: fill(255);noStroke() ; break;
                 case 2: fill(0,0,255);noStroke() ; break;
-                case 3: fill(0,255,220);noStroke() ; break;
-                case 4: fill(255,220,0);noStroke() ; break;
+                case 3: fill(255,255,255);noStroke() ; break;
+                case 4: fill(0,120,0);noStroke() ; break;
             }
             rect(x+e,y+e,largeur-2*e,largeur-2*e,5);
         }
