@@ -1,13 +1,10 @@
-const eC = {version: 'v0.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
-// let message = 'éric';
-// let message = "Hello, World! Ceci est un essai d'encodage d'un message en QR-Code. by eCoucou éric !";
-// const message = "a"; //+fromCharCode(0x0D)+fromCharCode(0x0A)+"VERSION:3.0"+fromCharCode(0x0D)+fromCharCode(0x0A)+"FN:Eric PLAIDY"+fromCharCode(0x0D)+fromCharCode(0x0A)+"END:VCARD";
-// FN:Forrest Gump ORG:Bubba Gump Shrimp Co. TITLE:Shrimp Man TEL;TYPE=work,voice;VALUE=uri:tel:+1-111-555-1212 TEL;TYPE=home,voice;VALUE=uri:tel:+1-404-555-1212 ADR;TYPE=WORK;PREF=1;LABEL='100 Waters Edge\nBaytown\n, LA 30314\nUnited States of America':;;100 Waters Edge;Baytown;LA;30314;United States of America ADR;TYPE=HOME;LABEL='42 Plantation St.\nBaytown\, LA 30314\nUnited States of America':;;42 Plantation St.;Baytown;LA;30314;United States of America EMAIL:forrestgump@example.com REV:20080424T195243Z x-qq:21588891 END:VCARD"
+const eC = {version: 'v1.0', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'oct/23'};
 
-const quality = [{t:'L',i:[0,1]},{t:'M',i:[0,0]},{t:'Q',i:[1,1]},{t:'H',i:[1,0]}];
+const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 const caracteres = [{l:1,h:9,A:{l:9},N:{l:10},B:{l:8}},{l:10,h:26,A:{l:11},N:{l:12},B:{l:16}},{l:27,h:40,A:{l:13},N:{l:14},B:{l:16}}];
 let codePoly = [];
 let padding = [0,0,7,7,7,7,7,0,0,0,0,0,0,0,3,3,3,3,3,3,3,4,4,4,4,4,4,4,3,3,3,3,3,3,3,0,0,0,0,0,0];
+let couleurs = {Rouge:[120,50,0],Vert:[50,120,0], Bleu:[0,50,120]};
 let poly;
 let alphabet,qr_json,loc_json,info_json;
 let qrcode=[], qrinfo=[];
@@ -17,8 +14,7 @@ let grille=[], dim, largeur, w;
 let code, base=104+104;
 let qrType, qrInfo;
 let message, message_l;
-let btOptimise;
-let logo;
+let btOptimise, logo, upload, texte, couleur;
 
 function preload() {
     alphabet = loadJSON('./data/alpha.json');
@@ -31,21 +27,31 @@ function preload() {
 
 function setVersion() {
     dim = ((version-1)*4) + 21;
-    // selVersion.value = version;
     windowResized();
 }
 
 function windowResized() {
     let m = min(innerHeight,innerWidth);
-    let h_ = innerHeight*0.98;
-    let w_ = m*0.8;
-    largeur = int(w_/dim);
+    let padding = 20
+    // let h_ = innerHeight*0.98;
+    let w_ = m*0.6;
+    largeur = round(w_/dim);
     w_ = dim*largeur;
     resizeCanvas(w_,w_);
-    let x_ = (windowWidth - width) / 2;
-    let y_ = (windowHeight - height) / 2;
-    select('canvas').position(x_, y_+10);
+    let x_ = (windowWidth - width) -padding;
+    let y_ = 50; //(windowHeight - height) / 2;
+    select('canvas').position(x_, y_);
     w = w_;
+    selVersion.selected(version);
+    selType.selected(type);
+    selLevel.selected(level);
+    btOptimise.position(x_ + w_/2 - btOptimise.width/2 - padding/2,  y_+w+10);
+    selLevel.position(padding,50);
+    selVersion.position(padding,100);
+    selType.position(padding,150);
+    couleur.position(padding,200);
+    upload.position(padding,y_ + w+ 70+ btOptimise.height);
+    texte.position(padding,y_+w+150);
 }
 function loadData() {
     for (let i=0; i<Object.keys(qr_json).length;i++) {
@@ -74,31 +80,66 @@ function chgType() {
     loop();
 }
 
+function chgCouleur() {
+    loop();
+}
+
 function setOptions() {
     btOptimise = select('#optimise');
     btOptimise.mousePressed(bestVersion);
-    btOptimise.position(innerWidth*0.8,innerHeight*0.92);
     selLevel = createSelect();
     selLevel.class('styled_2');
-    selLevel.position(10,innerHeight*0.95);
     for (let i=0;i<8;i++) {
         selLevel.option("Pattern "+i,i);
     }
     selLevel.changed(chgLevel);
     selVersion = createSelect();
     selVersion.class('styled_2');
-    selVersion.position(100,innerHeight*0.95);
     for (let i=1;i<41;i++) {
         selVersion.option("Version "+i,i);
     }
     selVersion.changed(chgVersion);
     selType = createSelect();
     selType.class('styled_2');
-    selType.position(200,innerHeight*0.95);
     for (let v of quality) {
-        selType.option("Qualité "+v.t, v.t);
+        selType.option("Qualité "+v.t+v.m, v.t);
     }
     selType.changed(chgType);
+    upload = createFileInput(getFile);
+    upload.class('styled_2');
+
+    texte = createInput('eCoucou 2023');
+    texte.input(newMessage);
+
+    couleur = createSelect();
+    couleur.class('styled_2');
+    for (let c in couleurs) {
+        couleur.option(c);
+    }
+    couleur.changed(chgCouleur);
+}
+
+function newMessage()  {
+    message={bytes:[]};
+    for (let c of this.value()) {
+        let v = c.charCodeAt(0);
+        message.bytes.push(v);
+    }
+    // console.log(message);
+    encodeMess();
+    bestVersion();
+}
+
+function getFile(file) {
+    // console.log(file.data);
+    message={bytes:[]};
+    for (let c of file.data) {
+        let v = c.charCodeAt(0);
+        message.bytes.push(v);
+    }
+    // console.log(message);
+    encodeMess();
+    bestVersion();
 }
 
 function setup() {
@@ -114,12 +155,14 @@ function setup() {
     canvas.position(x, y+10);
 
     loadData();
-    setVersion();
     logTable();
     createPoly();
     setOptions();
+    setVersion();
     encodeMess();
-    createQR();
+    bestVersion();
+
+    frameRate(5);
 }
 
 function keyPressed() {
@@ -176,25 +219,35 @@ function createQR(level_ = level) {
 }
 
 function draw() {
-    background(51);
+    background(255);
     createQR();
     // dessine le QR-Code
     for (let i=0; i<dim ; i++ ) {
         for (let j=0; j<dim ; j++) {
             let x = i * largeur, y = j*largeur;
             let e=0;
+            let a=random(0,10), b=random(0,10), c=  random(0,10), d=random(0,10);
+            let g=random(1,5);
             switch (grille[i][j]) {
                 case -1: fill(77);stroke(90);strokeWeight(2); e=1 ; break;
-                case 0: fill(50,120,0);noStroke() ; break;
+                case 0: fill(couleurs[couleur.value()][0]+g*((a>d)?a:-a),couleurs[couleur.value()][1]+g*((b>d)?b:-b),couleurs[couleur.value()][2]+g*((c>d)?c:-c));noStroke() ; break;
                 case 1: fill(255);noStroke() ; break;
                 case 2: fill(0,0,255);noStroke() ; break;
                 case 3: fill(255,255,255);noStroke() ; break;
                 case 4: fill(0,120,0);noStroke() ; break;
             }
-            rect(x+e,y+e,largeur-2*e,largeur-2*e,5);
+            if (version>3) {
+                let l =  round(width*0.2 / largeur /2 ) ;
+                let st = dim/2 - l -1;
+                let end = dim/2 + l;
+                if (i>st && i<end && j>st && j<end) fill(255);
+            }
+            rect(x+e,y+e,largeur-2*e,largeur-2*e,a,b,c,d);
         }
     }
-    imageMode(CENTER);
-    image(logo,width/2,height/2,0.2*width,0.2*width);
+    if (version > 3 ){
+        imageMode(CENTER);
+        image(logo,width/2,height/2,0.2*width,0.2*width);
+    }
     noLoop()
 }

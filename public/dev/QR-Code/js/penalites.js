@@ -22,7 +22,6 @@ function condition_1() {
     // console.log(cnt);
     return cnt;
 }
-
 function condition_2() {
     let cnt=0;
     for (let i=0; i<dim-1 ; i++) {
@@ -37,7 +36,6 @@ function condition_2() {
     // console.log(cnt);
     return cnt;
 }
-
 function condition_3() {
     const p0 = '01000101111';
     const p1 = '11110100010';
@@ -91,14 +89,13 @@ function optimise() {
     for (let i=0;i<8;i++) {
         createQR(i);
         tmp = evaluate();
-        // console.log(tmp);
+        console.log(tmp);
         if (tmp<best) { best = tmp; sel = i ;} 
     }
     return (sel);
 }
-
 function bestVersion() {
-    let valide = qrcode.filter(a => { return (a.d > message_l && a.t==type); });
+    let valide = qrcode.filter(a => { return (a.d > (message_l+1) && a.t==type); });
     version = valide[0].v;
     setVersion();
     type = valide[0].t;

@@ -103,7 +103,7 @@ class Encodeur {
                     b.encode();
                     this.codeWorks.push(...b.code);
                 }
-                console.log(this.code);
+                // console.log(this.code);
                 break;
             case 'E':
 
@@ -218,8 +218,7 @@ class Encodeur {
         }
         // console.log('pad',pad);
         this.blockBin.push(...pad);
-
-        this.show(this.blockBin);
+        // this.show(this.blockBin);
     }
     show(arr) {
         let str='';

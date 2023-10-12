@@ -5,8 +5,8 @@ N:Plaidy;Eric;;M.;
 EMAIL;TYPE=INTERNET:eric.plaidy@adisseo.com
 TEL;TYPE=CELL:+33 6 2662 1093
 BDAY:19650513
-item1.ADR:;10 place du Général de Gaulle;Immeuble Antony Parc II;ANTONY;;92
- 160;FR;Immeuble Antony Parc II\n10 place du Général de Gaulle\nANTONY\n921
+item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92
+ 160;FR;Immeuble Antony Parc II\n10 place du General de Gaulle\nANTONY\n921
  60\nFR
 item1.X-ABLabel:HeadQuarter
 item2.URL:https://www.adisseo.com
