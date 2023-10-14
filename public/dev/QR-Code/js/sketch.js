@@ -15,7 +15,7 @@ let grille=[], dim, largeur, w;
 let code, base=104+104;
 let qrType, qrInfo;
 let message, message_l;
-let btOptimise, logo, upload, texte, couleur, mobile;
+let btOptimise, btSave, logo, upload, texte, couleur, mobile;
 let tpt=[], template;
 
 function preload() {
@@ -30,6 +30,10 @@ function preload() {
     tpt.push(loadBytes('./data/template/wifi.tpt'));
     tpt.push(loadBytes('./data/template/sms.tpt'));
     tpt.push(loadBytes('./data/template/email.tpt'));
+}
+
+function saveQR() {
+    saveGif('QR-Code',1);
 }
 
 function setVersion() {
@@ -65,7 +69,8 @@ function windowResized() {
     selVersion.selected(version);
     selType.selected(type);
     selLevel.selected(level);
-    btOptimise.position((windowWidth-btOptimise.width)/2-5, h_); h_ += btOptimise.height + padding;
+    btOptimise.position((windowWidth-btOptimise.width)/2-5, h_);
+    btSave.position(windowWidth-100, h_); h_ += btOptimise.height + padding;
     selVersion.position(x_,h_ ); let p = e + selVersion.elt.offsetWidth;
     selType.position(x_+p,h_ ); p += e + selType.elt.offsetWidth;
     selLevel.position(x_+p,h_); h_ += selLevel.height + padding;
@@ -103,6 +108,25 @@ function chgType() {
 }
 
 function chgCouleur() {
+    switch (couleur.value()) {
+        case 'Standard':
+        case 'Noir':
+            select('body').style('background-color',color(200,200,200));
+            selectAll('.styled_2').forEach(a=> {a.style('background-color',color(120,120,120))});
+            break;
+        case 'Vert':
+            select('body').style('background-color',color(198, 227, 199));
+            selectAll('.styled_2').forEach(a=> {a.style('background-color',color(20,60,20))});
+            break;
+        case 'Bleu':
+            select('body').style('background-color',color(198, 199, 227));
+            selectAll('.styled_2').forEach(a=> {a.style('background-color',color(20,20,60))});
+            break;
+        case 'Rouge':
+            select('body').style('background-color',color(227, 227, 199));
+            selectAll('.styled_2').forEach(a=> {a.style('background-color',color(60,20,20))});
+            break;
+        }
     loop();
 }
 function newTemplate() {
@@ -117,6 +141,8 @@ function newTemplate() {
 function setOptions() {
     btOptimise = select('#optimise');
     btOptimise.mousePressed(bestVersion);
+    btSave = select('#save');
+    btSave.mousePressed(saveQR);
     selLevel = createSelect();
     selLevel.parent('selection');
     selLevel.class('styled_2');
