@@ -1,0 +1,34 @@
+body {
+    background-color: aquamarine;
+}
+
+.ep {
+    display: grid;
+    border-color: black;
+    border-width: 2px;
+}
+.left {
+    position: absolute;
+    position: 10px 100px;
+}
+.right {
+    position: absolute;
+    position: 30% 100px;
+}
+span {
+    padding: 10px;
+    background-color: blueviolet;
+    margin: 2px;
+    border-radius: 20px;
+    border-color: rgb(179, 229, 61);
+    border-style: dashed;
+    border-width: 3px;
+}
+
+article {
+    background-color: red;
+    padding: 10px;
+    border-color: rgb(255, 255, 0);
+    border-width: 10px;
+    margin: 10px;
+}

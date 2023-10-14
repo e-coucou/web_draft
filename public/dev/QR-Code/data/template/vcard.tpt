@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:4.0
+FN:prenom nom
+N:nom;prenom;;genre;
+EMAIL;TYPE=INTERNET:moi@domaine.com
+TEL;TYPE=CELL:+33 6 1234 5678
+BDAY:aaaammjj //date de naissance
+URL:www.e-coucou.com
+TITLE:President
+CATEGORIES:cat1;cat2;cat3; 
+GENDER:M //genre
+LANG:FR-fr
+ROLE:President
+ORG:Presidence;Marketing;IT
+END:VCARD

@@ -105,8 +105,7 @@ class Encodeur {
                 }
                 // console.log(this.code);
                 break;
-            case 'E':
-
+            case 'E': break;
 
         }
         // console.log('correction   ',this.codeWorks.length)

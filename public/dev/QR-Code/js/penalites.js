@@ -19,7 +19,7 @@ function condition_1() {
             } else c1++;
         }
     }
-    // console.log(cnt);
+    // console.log('cd1:',cnt);
     return cnt;
 }
 function condition_2() {
@@ -88,8 +88,8 @@ function optimise() {
     let best =Infinity,sel=0;
     for (let i=0;i<8;i++) {
         createQR(i);
-        tmp = evaluate();
-        console.log(tmp);
+        let tmp = evaluate();
+        // console.log(i,tmp,best);
         if (tmp<best) { best = tmp; sel = i ;} 
     }
     return (sel);
