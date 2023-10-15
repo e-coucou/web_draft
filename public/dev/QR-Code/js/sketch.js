@@ -2,7 +2,7 @@ const eC = {version: 'v1.0', release:'r0', date:'sep/23', owner: 'rky', code:'y2
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 const caracteres = [{l:1,h:9,A:{l:9},N:{l:10},B:{l:8}},{l:10,h:26,A:{l:11},N:{l:12},B:{l:16}},{l:27,h:40,A:{l:13},N:{l:14},B:{l:16}}];
-const couleurs = {Standard:[0,0,0], Noir:[0,0,0],Rouge:[120,50,0],Vert:[50,120,0], Bleu:[0,50,120]};
+const couleurs = {Standard:[0,0,0], Noir:[0,0,0],Rouge:[180,50,0],Vert:[50,120,0], Bleu:[0,50,120]};
 const templates = [{t:'blank',v:0,m:'A'},{t:'VCARD', v:1, m:'B'},{t:'WIFI', v:2,m:'B'},{t:'SMS', v:3,m:'B'},{t:'eMAIL', v:4, m:'B'}];
 let codePoly = [];
 let padding = [0,0,7,7,7,7,7,0,0,0,0,0,0,0,3,3,3,3,3,3,3,4,4,4,4,4,4,4,3,3,3,3,3,3,3,0,0,0,0,0,0];
@@ -31,16 +31,13 @@ function preload() {
     tpt.push(loadBytes('./data/template/sms.tpt'));
     tpt.push(loadBytes('./data/template/email.tpt'));
 }
-
 function saveQR() {
-    saveGif('QR-Code',1);
+    saveGif('QR-Code',0.1);
 }
-
 function setVersion() {
     dim = ((version-1)*4) + 21;
     windowResized();
 }
-
 function setMessage(arr) {
     let m='';
     for (let b of arr) {
@@ -48,7 +45,6 @@ function setMessage(arr) {
     }
     return m;
 }
-
 function windowResized() {
     let padding = 20
     let m = min(innerHeight,innerWidth) - padding;
@@ -59,7 +55,6 @@ function windowResized() {
     largeur = round(w_/dim);
     w_ = dim*largeur;
     resizeCanvas(w_,w_);
-    // let x_ = (windowWidth - width) -padding - 40;
     let x_ = (windowWidth - w_ )/2 - padding;
     let y_ = 40; //(windowHeight - height) / 2;
     select('.right').position(x_, y_);
@@ -69,16 +64,17 @@ function windowResized() {
     selVersion.selected(version);
     selType.selected(type);
     selLevel.selected(level);
-    btOptimise.position((windowWidth-btOptimise.width)/2-5, h_);
-    btSave.position(windowWidth-100, h_); h_ += btOptimise.height + padding;
+    btOptimise.position(x_+padding, h_);
+    btSave.position(x_+w_-btSave.width, h_); h_ += btOptimise.height + padding;
     selVersion.position(x_,h_ ); let p = e + selVersion.elt.offsetWidth;
     selType.position(x_+p,h_ ); p += e + selType.elt.offsetWidth;
     selLevel.position(x_+p,h_); h_ += selLevel.height + padding;
-    couleur.position(x_,h_); h_ += couleur.height + padding;
     upload.position(x_,h_);h_ += upload.height + padding;
+    upload.style('width',w_+'px');
     selTemplate.position(x_,h_);h_ += selTemplate.height + padding;
     texte.position(x_,h_);
     texte.style('width',w_+padding+'px');
+    couleur.position(windowWidth-couleur.elt.offsetWidth-padding,1);
 }
 function loadData() {
     for (let i=0; i<Object.keys(qr_json).length;i++) {
@@ -106,25 +102,32 @@ function chgType() {
     encodeMess();
     loop();
 }
-
 function chgCouleur() {
     switch (couleur.value()) {
         case 'Standard':
         case 'Noir':
             select('body').style('background-color',color(200,200,200));
             selectAll('.styled_2').forEach(a=> {a.style('background-color',color(120,120,120))});
+            selectAll('.styled').forEach(a=> {a.style('background-color',color(120,120,120))});
+            selectAll('.styled:hover').forEach(a=> {a.style('background-color',color(2,96,60))});
             break;
         case 'Vert':
             select('body').style('background-color',color(198, 227, 199));
             selectAll('.styled_2').forEach(a=> {a.style('background-color',color(20,60,20))});
+            selectAll('.styled').forEach(a=> {a.style('background-color',color(20,60,20))});
+            selectAll('.styled:hover').forEach(a=> {a.style('background-color',color(2,96,60))});
             break;
         case 'Bleu':
             select('body').style('background-color',color(198, 199, 227));
             selectAll('.styled_2').forEach(a=> {a.style('background-color',color(20,20,60))});
+            selectAll('.styled').forEach(a=> {a.style('background-color',color(20,20,60))});
+            selectAll('.styled:hover').forEach(a=> {a.style('background-color',color(2,96,60))});
             break;
         case 'Rouge':
-            select('body').style('background-color',color(227, 227, 199));
-            selectAll('.styled_2').forEach(a=> {a.style('background-color',color(60,20,20))});
+            select('body').style('background-color',color(237, 180, 180));
+            selectAll('.styled_2').forEach(a=> {a.style('background-color',color(100,10,10))});
+            selectAll('.styled').forEach(a=> {a.style('background-color',color(100,10,10))});
+            selectAll('.styled:hover').forEach(a=> {a.style('background-color',color(2,96,60))});
             break;
         }
     loop();
@@ -137,7 +140,34 @@ function newTemplate() {
     message_l = template.bytes.length;
     bestVersion();
 }
-
+function newMessage()  {
+    message={bytes:[],txt:''};
+    let m_A = true;
+    mode='B';
+    for (let c of this.value()) {
+        let v = c.charCodeAt(0);
+        message.bytes.push(v);
+        message.txt+=c;
+        if (alphabet[c] == undefined) m_A=false;
+    }
+    message_l = message.bytes.length;
+    if (m_A) mode='A';
+    if (Number(message.txt)){
+        console.log('Numéric MODE available', message.txt);
+        mode='N';
+    }
+    bestVersion();
+}
+function getFile(file) {
+    message={bytes:[],txt:''};
+    for (let c of file.data) {
+        let v = c.charCodeAt(0);
+        message.bytes.push(v);
+        message.txt+=c;
+    }
+    message_l = message.bytes.length;
+    bestVersion();
+}
 function setOptions() {
     btOptimise = select('#optimise');
     btOptimise.mousePressed(bestVersion);
@@ -189,28 +219,6 @@ function setOptions() {
         selTemplate.option(c.t,c.v);
     }
 }
-
-function newMessage()  {
-    message={bytes:[]};
-    for (let c of this.value()) {
-        let v = c.charCodeAt(0);
-        message.bytes.push(v);
-    }
-    // console.log(message);
-    message_l = message.bytes.length;
-    bestVersion();
-}
-
-function getFile(file) {
-    message={bytes:[]};
-    for (let c of file.data) {
-        let v = c.charCodeAt(0);
-        message.bytes.push(v);
-    }
-    message_l = message.bytes.length;
-    bestVersion();
-}
-
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);

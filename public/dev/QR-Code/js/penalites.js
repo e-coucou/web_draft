@@ -104,6 +104,6 @@ function bestVersion() {
     selVersion.selected(version);
     selType.selected(type);
     selLevel.selected(level);
-    console.log(version, type, level);
+    // console.log(version, type, level);
     loop();
 }

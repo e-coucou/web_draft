@@ -48,22 +48,46 @@ class Encodeur {
         this.QRType = code;
     }
     split() {
-        let l = round(this.message.length / 2);
-        for (let n=0;n<l;n++) {
-            this.sub.push(this.message.substring(2*n, 2*n+2));
+        this.sub=[];
+        let l = int(this.message.txt.length / 2);
+        for (let n=0;n<=l;n++) {
+            this.sub.push(this.message.txt.substring(2*n, 2*n+2));
         }
+    }
+    splitNum() {
+        let l = int(this.message.txt.length / 3);
+        this.sub=[];
+        for (let n=0;n<=l;n++) {
+            this.sub.push(this.message.txt.substring(3*n, 3*n+3));
+        }
+        console.log(l,this.sub);
     }
     encode() {
         this.codeWorks.push(...this.mode);
         let crCount;
         // a modifier compter les caractzres
         switch (mode) {
-            case 'A':
-                message_l=this.message.length;
+            case 'N': 
                 this.carCount = new Binary(message_l,this.l);
                 this.carCount.encode();
                 this.codeWorks.push(...this.carCount.code);
-                        code.split(); // code.print();
+                this.splitNum(); // code.print();
+                for (let p of this.sub) {
+                    let l = this.l;
+                    if (p < 100) l=7;
+                    if (p < 10)  l=4;
+                    let b = new Binary(p,l);
+                    b.encode(); 
+                    b.print();
+                    this.codeWorks.push(...b.code);
+            }
+            break;
+            case 'A':
+                // message_l=this.message.length;
+                this.carCount = new Binary(message_l,this.l);
+                this.carCount.encode();
+                this.codeWorks.push(...this.carCount.code);
+                this.split(); // code.print();
                 for (let p of this.sub) {
                     if (p.length==2) {
                         let v = 45 * alphabet[p[0]] + alphabet[p[1]];
@@ -83,17 +107,8 @@ class Encodeur {
                 }
                 break;
             case 'B' :
-                console.log("le message ... ",this.message);
-                // for (let c in this.message) {
-                //     let v = this.message.charCodeAt(c);
-                //     // console.log(v);
-                //     this.code.push(v);
-                //     let b = new Binary(v,8);
-                //     b.encode();
-                //     this.codeWorks.push(...b.code);
-                // }
-                // console.log(this.message.bytes);
-                message_l=this.message.bytes.length;
+                // console.log("le message ... ",this.message);
+                // message_l=this.message.bytes.length;
                 this.carCount = new Binary(message_l,this.l);
                 this.carCount.encode();
                 this.codeWorks.push(...this.carCount.code);

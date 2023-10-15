@@ -1,0 +1,19 @@
+{
+    "scss.validate": false,
+    "github.branchProtection": true,
+    "githubIssues.queries": [
+        
+        {
+            "label": "Mes problèmes",
+            "query": "default"
+        },
+        {
+            "label": "Problèmes créés",
+            "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+        },
+        {
+            "label": "Problèmes récents",
+            "query": "state:open repo:${owner}/${repository} sort:updated-desc"
+        }
+    ]
+}
