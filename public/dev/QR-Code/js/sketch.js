@@ -1,4 +1,4 @@
-const eC = {version: 'v1.0', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'oct/23'};
+const eC = {version: 'v1.01', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'oct/23'};
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 const caracteres = [{l:1,h:9,A:{l:9},N:{l:10},B:{l:8}},{l:10,h:26,A:{l:11},N:{l:12},B:{l:16}},{l:27,h:40,A:{l:13},N:{l:14},B:{l:16}}];
