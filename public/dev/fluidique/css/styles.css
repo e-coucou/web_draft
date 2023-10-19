@@ -1,0 +1,124 @@
+body {
+    margin: 0px;
+    background-color: rgb(198, 227, 199);
+    /* background-color:transparent; */
+    /* background-image:url("../img/bk001.JPG"); */
+    /* image-rendering: pixelated; */
+    color:azure;
+    align-content: center;
+    /* display: contents; */
+}
+a {
+    color: rgb(0, 78, 42);
+}
+.center {
+    background-color: aquamarine;
+}
+.right {
+    position: absolute;
+    /* top: 50px;
+    left: 60px; */
+    background-color: #fff;
+}
+div.right {
+    border-style: solid;
+    border-color:  rgb(255, 255, 255);
+    border-width: 15px;
+    /* background-image: url("../img/2023.jpeg"); */
+    margin: 5px;
+    /* padding: 10px; */
+}
+
+input {
+    background-color: rgb(208, 237, 228);
+    color: rgb(6, 77, 38);
+    font-weight: bold;
+    margin: auto;
+}
+.entete {
+    background-color: rgb(0, 87, 53);
+    display: flex;
+    border-style: solid;
+    /* border-color: rgb(255, 255, 255); */
+    border-width: 1px;
+}
+div.main {
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    border-width: 1px;
+}
+img.conteneur {
+    width: 28px;
+    height: 28px;
+    /* border-style: solid;
+    border-color: aquamarine;
+    border-width: 2px; */
+}
+
+div.entete {
+    /* position: absolute; */
+    /* left: 70px; */
+    height: 36px;
+    font-size: .6em;
+    font-weight: bold;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(255, 255, 255);
+    /* width: 100%; */
+}
+.conteneur {
+    display: inline-flex;
+    padding: 1px;
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    border-width: 1px;
+    /* align-items: center; */
+    background-color: black;
+}
+
+.styled {
+    border: 0;
+    line-height: 2.5;
+    margin: 5px 5px;
+    padding: 0 20px;
+    font-size: 1rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 10px;
+    background-color: rgb(23, 165, 75);
+    background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
+    box-shadow:
+      inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+      inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+  }
+  
+  .styled:hover {
+    background-color: rgb(2, 96, 60);
+  }
+  .styled_2:hover {
+    background-color: rgb(2, 96, 60);
+  }
+  
+  .styled:active {
+    box-shadow:
+      inset -2px -2px 3px rgba(43, 226, 156, 0.6),
+      inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+  }
+  
+  .styled_2 {
+    border: 0;
+    line-height: 4.5px;
+    margin: 5px 5px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    text-align: right;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 2px;
+    background-color: rgb(50, 110, 72);
+    /* background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0)); */
+    box-shadow:
+      inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+      inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+  }
+  
