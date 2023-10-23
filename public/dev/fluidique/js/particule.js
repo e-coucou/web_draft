@@ -1,7 +1,7 @@
 let collisionPerte = 0.6;
 let blurRadius = 0.2;
-let targetDensite= 5;
-let pressionMult=0.5;
+let targetDensite= 10;
+let pressionMult=1.8;
 
 function DensiteTOPression(d){
     let err = d - targetDensite;
@@ -13,6 +13,12 @@ function blurKernel(rayon, dst) {
     let value =  max(0, rayon*rayon-dst*dst);
     return value*value*value / volume;
 }
+function blurKernel_v2(rayon, dst) {
+    let volume = PI * Math.pow(rayon,8) / 4;
+    let value =  max(0, rayon-dst);
+    return value*value*value / volume;
+}
+
 function blurKernelDerivee(rayon, dst) {
     if (dst>=rayon) return 0;
     let f = (rayon * rayon - dst * dst);
@@ -20,37 +26,40 @@ function blurKernelDerivee(rayon, dst) {
     // console.log('ici',ech * dst * f * f);
     return (ech * dst * f * f);
 }
-function densite(t) {
+function CalculDensite(t) {
     let d=0;
     for (let p of particules) {
         let pos = p.pos.copy();
-        let dst = pos.dist(t); // console.log(dst)
+        let dst = pos.sub(t).mag(); // console.log(dst)
         let influence = blurKernel(blurRadius,dst);
+        // console.log(influence)
         d += influence *p.m;
     }
     return d;
 }
-function propriete(t) {
+function CalculPropriete(t) {
     let d = 0;
     for (let p of particules) {
         let pos = p.pos.copy();
-        let dst = pos.dist(t);
+        let dst = pos.sub(t).mag();
         let influence = blurKernel(blurRadius,dst);
+        // let densite = CalculDensite(p.pos);
         d += p.propriete * influence * p.m / p.densite;
         // d += influence * p.m ;
     }
+    if (d>maxD) maxD=d;
     return d;
 }
 
-function proprieteGradrient(t) {
+function CalculProprieteGradrient(t) {
     let propGradient = createVector(0,0);
     for (let p of particules) {
         let pos = p.pos.copy();
-        let dst = pos.dist(t);
+        let dir = pos.sub(t);
+        let dst = dir.mag();
         if (dst != 0) {
-            let dir = pos.sub(t);
             let slope = blurKernelDerivee(blurRadius,dst);
-            dir.mult(-slope * p.m / p.densite /dst);
+            dir.mult(slope * p.m / p.densite /dst);
             dir.mult(p.propriete);
             propGradient.add(dir);
         }
@@ -62,12 +71,12 @@ function pressionForce(t) {
     let pressionF = createVector(0,0);
     for (let p of particules) {
         let pos = p.pos.copy();
-        let dst = pos.dist(t);
+        let dst = pos.sub(t).mag();
         if (dst != 0) {
             let dir = pos.sub(t);
             let slope = blurKernelDerivee(blurRadius,dst);
-            dir.mult(-slope * p.m / p.densite /dst);
-            dir.mult(DensiteTOPression(p.densite));
+            dir.mult(slope * p.m / p.densite /dst);
+            dir.mult(DensiteTOPression(p.densite)/1000);
             pressionF.add(dir);
         }
     }
@@ -76,16 +85,17 @@ function pressionForce(t) {
 
 function simulationStep() {
     for (let i=0; i<particules.length; i++) {
-        
+
     }
 }
 
 function proprieteUnit(p) {
-    return Math.cos( p.y-1 + Math.sin(p.x -1 ));
+    return Math.cos( p.y -3 * Math.sin(p.x ));
 }
 
 class Particule {
-    constructor(x,y,c) {
+    constructor(x,y,c,i) {
+        this.id=i;
         this.pos = createVector(x,y);
         this.vel = createVector(0,0);
         this.acc = createVector(0,0);
@@ -97,25 +107,26 @@ class Particule {
     applyForce(f) {
         this.acc.add(f);
     }
-    densite() {
-        this.densite = densite(this.pos);
+    initDensite() {
+        this.densite = CalculDensite(this.pos);
     }
     edge() {
-        if (this.pos.x<this.r) {
-            this.vel.x *= -collisionPerte;
-            this.pos.x=this.r;
+        // let rr=this.r/width;
+        if (this.pos.x<-1) {
+            this.vel.x *= -1 * collisionPerte;
+            this.pos.x=-1;
         }
-        if (this.pos.x>width-this.r) {
-            this.vel.x *= -collisionPerte;
-            this.pos.x = width-this.r;
+        if (this.pos.x>1) {
+            this.vel.x *= -1 * collisionPerte;
+            this.pos.x = 1;
         }
-        if (this.pos.y<this.r) {
-            this.vel.y *= -collisionPerte;
-            this.pos.y = this.r;
+        if (this.pos.y<-1) {
+            this.vel.y *= -1 * collisionPerte;
+            this.pos.y = -1;
         }
-        if ( this.pos.y>height-this.r) {
-            this.vel.y *= -collisionPerte;
-            this.pos.y = height -this.r;
+        if ( this.pos.y>1) {
+            this.vel.y *= -1 * collisionPerte;
+            this.pos.y = 1;
         }
     }
     update() {
@@ -127,11 +138,34 @@ class Particule {
         this.edge();
         this.show();
     }
+    simulation() {
+        let g=createVector(0,0.003);
+        this.applyForce(g);
+        this.Calculdensite();
+        let pressionF = pressionForce(this.pos);
+        let pressionAcc = pressionF.mult(1/this.densite); //console.log(pressionAcc.x, pressionAcc.y);
+        // this.vel = (this.acc.copy());
+        this.vel.add(this.acc);
+        this.vel.add(pressionAcc);
+        // this.vel = pressionAcc.copy();
+        this.pos.add(this.vel);
+        this.acc.mult(0);
+        this.edge();
+        this.show();
+    }
+
     show() {
-        fill(this.color);
+        // fill(this.color);
         noStroke();
         let x = (this.pos.x + 1) * width / 2;
         let y = (this.pos.y + 1) * height / 2;
+        let c=255;
+        if (this.densite > targetDensite) { 
+            c = map(this.densite,targetDensite,maxD,120,255);
+            fill(c,0,0);}
+        if (this.densite <= targetDensite) { 
+            c = map(this.densite,0,targetDensite,120,255);
+            fill(0,0,c);} 
         circle(x, y,2*this.r*width);
     }
 }
