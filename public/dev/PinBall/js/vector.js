@@ -22,6 +22,16 @@ class Vector2 {
     mag() {
         return (Math.sqrt(this.x*this.x + this.y*this.y));
     }
+    limit(s) {
+        let r = this.mag();
+        if (r>s) { 
+            r = s/r;
+            this.x = this.x*r;
+            this.y = this.y*r;
+        }
+        // this.x = max(abs(this.x),s)*this.x/abs(this.x);
+        // this.y = max(abs(this.y),s)*this.y/abs(this.y);
+    }
     norm(){
         let d= this.mag();
         this.x /= d;

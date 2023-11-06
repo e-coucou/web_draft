@@ -1,4 +1,4 @@
-const dt = 1.0 /100.0; // 60 trames par seconde
+const dt = 1.0 /30.0; // 60 trames par seconde
 const gravite = new Vector2(0,-9.81);
 
 class Particule {
@@ -26,17 +26,19 @@ class Particule {
         this.show();
     }
     edge(dtS_) {
-        if (this.pos.x<this.rayon) { this.pos.x = (2*this.rayon-this.pos.x)*dtS_; this.vel.x *= -1;}
-        if (this.pos.x>simW-this.rayon) { this.pos.x = (2 * (simW -this.rayon)-this.pos.x)*dtS_;this.vel.x *= -1;}
-        if (this.pos.y<this.rayon) { this.pos.y = (2*this.rayon-this.pos.y)*dtS_; this.vel.y *= -1;}
-        if (this.pos.y>simH-this.rayon) { this.pos.y = (2*(simH-this.rayon) - this.pos.y)*dtS_; this.vel.y *= -1;}
+        // let dtS=0.1;
+        let dtS = dtS_;
+        if (this.pos.x<(this.rayon+4.7)) { let dx = (-this.pos.x + this.rayon) * dtS ; this.pos.x = this.rayon + dx + 4.7; this.vel.x *= -1;}
+        if (this.pos.x>(simW - 9.1 - this.rayon)) { let dx = (simW - this.pos.x ) * dtS; this.pos.x = simW - this.rayon - dx  - 9.1; this.vel.x *= -1;}
+        if (this.pos.y<(this.rayon+4)) { let dy = (-this.pos.y + this.rayon) * dtS ; this.pos.y = this.rayon  + 4 + dy; this.vel.y *= -1;}
+        if (this.pos.y>(simH-this.rayon)) { let dy = (simH -this.pos.y ) * dtS ;this.pos.y = simH-this.rayon - dy; this.vel.y *= -1;}
     }
 
 
     checkCollision(p) {
         let dir = Vector2.sub(p.pos,this.pos);
         let d = dir.mag();
-    
+
         let corr = this.rayon+p.rayon;
         if (d > corr) { 
             return;}
@@ -75,12 +77,15 @@ class Particule {
     updPos(dtS_) {
         this.applyForce(gravite);
         this.posPrev = this.pos.copy();
-        this.vel.add(this.acc, dtS_);
+        this.vel.add(gravite, dtS_); // modif
         this.pos.add(this.vel, dtS_);
-        this.acc.mult(0); 
+        // this.acc.mult(0); 
+        // this.vel = Vector2.sub(this.pos,this.posPrev,1/dtS_);
+        // this.vel.limit(8);
     }
     updVel(dtS_) {
         this.vel = Vector2.sub(this.pos,this.posPrev,1/dtS_);
+        this.vel.limit(7);
     }
 
     show() {
