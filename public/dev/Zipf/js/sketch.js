@@ -5,6 +5,36 @@ let DEBUG = true;
 let villes = [];
 let iter;
 const a1 = Math.log(33000);
+let france=[];
+let municipalities = [];
+let nb=0;
+
+function preload() {
+    france.push(loadTable('./data/2020.csv','ssv','header'));
+    // france.push(loadTable('./data/2019.csv','ssv','header'));
+}
+function getFrance() {
+    villes=[];
+    let min_=Infinity, max_=0;
+    for (let r of france[0].rows) {
+        // console.log(r.obj)
+        pop = int(r.obj.PMUN20.replace(/\s/g,''));
+        libelle = r.obj.NCC;
+        id = r.obj.COM;
+        villes.push( pop);
+        if (pop<min_) min_ = pop;
+        if (pop>max_) max_ = pop;
+        if (nb<1) {
+            url = 'https://api-adresse.data.gouv.fr/search/?q='+libelle+'&citycode='+id+'&type=municipality';
+            info = httpGet(url, (data)=> {
+                municipalities.push(info);
+            });
+        }
+        nb++;
+    }
+    villes.sort((a,b)=> {return (b-a);});
+    return [min_, max_];
+}
 
 function windowResized() {
     let m = min(innerHeight,innerWidth);
@@ -60,6 +90,12 @@ function keyPressed() {
         DEBUG = ! DEBUG;
     }
 }
+function simul() {
+    for (let i=0; i<365;i++) {
+        [min_, max_] = Evolution();
+        iter++;
+    }
+}
 
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
@@ -75,10 +111,7 @@ function setup() {
 function draw() {
     background(0);
     let min_, max_;
-    for (let i=0; i<365;i++) {
-        [min_, max_] = Evolution();
-        iter++;
-    }
+    [min_, max_] = getFrance();
     drawVilles(min_, max_);
     let sum = villes.reduce((a,v)=>{return a+v;});
     rate.html('execution en '+round(deltaTime)+' ms'+'    Nombre de particules = '+iter+' - distrib '+round(min_)+'/'+round(max_)+'  pop= '+sum);
