@@ -2,12 +2,14 @@ const eC = {version: 'v0.01', release:'r0', date:'nov/23', owner: 'rky', code:'y
 let mobile;
 let DEBUG = true;
 
-let villes = [];
+let villes = [], URLs=[];
 let iter;
 const a1 = Math.log(33000);
 let france=[];
 let municipalities = [];
 let nb=0;
+let min_, max_;
+
 
 function preload() {
     france.push(loadTable('./data/2020.csv','ssv','header'));
@@ -24,12 +26,13 @@ function getFrance() {
         villes.push( pop);
         if (pop<min_) min_ = pop;
         if (pop>max_) max_ = pop;
-        if (nb<1) {
+        // if (nb<1) {
             url = 'https://api-adresse.data.gouv.fr/search/?q='+libelle+'&citycode='+id+'&type=municipality';
-            info = httpGet(url, (data)=> {
-                municipalities.push(info);
-            });
-        }
+            URLs.push({id:id, lib:libelle, population:pop, url:url});
+            // info = httpGet(url, 'json', (data)=> {
+            //     municipalities.push(data);
+            // });
+        // }
         nb++;
     }
     villes.sort((a,b)=> {return (b-a);});
@@ -106,14 +109,22 @@ function setup() {
     rate = select("#rate");
     Init(33000);
     iter=0;
+    frameRate(1);
+    let min_, max_;
+    [min_, max_] = getFrance();
+    drawVilles(min_, max_);
+    iter = 0;
 }
 
 function draw() {
     background(0);
-    let min_, max_;
-    [min_, max_] = getFrance();
+    // [min_, max_] = getFrance();
     drawVilles(min_, max_);
     let sum = villes.reduce((a,v)=>{return a+v;});
     rate.html('execution en '+round(deltaTime)+' ms'+'    Nombre de particules = '+iter+' - distrib '+round(min_)+'/'+round(max_)+'  pop= '+sum);
     if (DEBUG) noLoop();
+    // createStringDict(URLs).saveJSON('test.json');
+    info = httpGet(URLs[iter++].url, 'json', (data)=> {
+        municipalities.push(data);
+    });
 }
