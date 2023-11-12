@@ -98,7 +98,7 @@ function getFrance() {
 function windowResized() {
     let m = min(innerHeight,innerWidth);
     let w_ = int(m*0.8) - 10;
-    resizeCanvas(innerWidth-10,innerHeight-200);
+    resizeCanvas(innerWidth-10,innerHeight-80);
     let r = width/height;
     initQT(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
 }
@@ -167,7 +167,7 @@ function setup() {
     Zipf.setVilles(0,villes);
     Details = new Detail(170,10,100,100);
     Details.setValues(villes[0].hist);
-    btDensite = new Button(width-100,height-100,50,25);
+    btDensite = new Button(width-65,height-60,50,25);
     let r = width/height;
     drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
 }

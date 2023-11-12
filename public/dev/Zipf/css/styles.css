@@ -13,10 +13,10 @@ a {
 }
 .center {
     position: relative;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
     border-style: solid;
-    border-color:  rgb(255, 255, 255);
-    border-width: 5px;
+    border-color:  rgb(10, 200, 150);
+    border-width: 1px;
 }
 .right {
     position: absolute;
@@ -41,7 +41,7 @@ input {
     margin: auto;
 }
 .entete {
-    background-color: rgb(0, 87, 53);
+    background-color: rgb(10, 200, 150);
     display: flex;
     border-style: solid;
     /* border-color: rgb(255, 255, 255); */
