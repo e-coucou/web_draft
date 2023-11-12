@@ -3,6 +3,7 @@ let mobile;
 let DEBUG = true, VERBOSE = false, LOOP = false, DENSITE = false;
 
 let btDensite;
+let REDUC=800, RATIO=1.5;
 
 const a1 = Math.log(33000);
 const MIN_X= 0, MAX_X = 1438080, MIN_Y=6001357, MAX_Y = 7191821;
@@ -15,84 +16,14 @@ let qt, nb=0;
 // let municipalities = [];
 let min_, max_;
 let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=0;
-let listId = 0, villesSel=0, selectRange = false, selectFix=false, [selX,selY] = [0,0];
+// let listId = 0, villesSel=0,
+let selectRange = false, selectFix=false, [selX,selY] = [0,0];
 
-let Annee, Departements, Zipf, Details;
+let Annee, Departements, Zipf, Details, ListeVille;
 let cVert = [10, 200, 150];
 
-function preload() {
-    // france.push(loadTable('./data/1968.csv','ssv','header'));
-    // france.push(loadTable('./data/1975.csv','ssv','header'));
-    // france.push(loadTable('./data/1982.csv','ssv','header'));
-    // france.push(loadTable('./data/1990.csv','ssv','header'));
-    // france.push(loadTable('./data/1999.csv','ssv','header'));
-    // france.push(loadTable('./data/2006.csv','ssv','header'));
-    // france.push(loadTable('./data/2007.csv','ssv','header'));
-    // france.push(loadTable('./data/2008.csv','ssv','header'));
-    // france.push(loadTable('./data/2009.csv','ssv','header'));
-    // france.push(loadTable('./data/2010.csv','ssv','header'));
-    // france.push(loadTable('./data/2011.csv','ssv','header'));
-    // france.push(loadTable('./data/2012.csv','ssv','header'));
-    // france.push(loadTable('./data/2013.csv','ssv','header'));
-    // france.push(loadTable('./data/2014.csv','ssv','header'));
-    // france.push(loadTable('./data/2015.csv','ssv','header'));
-    // france.push(loadTable('./data/2016.csv','ssv','header'));
-    // france.push(loadTable('./data/2017.csv','ssv','header'));
-    // france.push(loadTable('./data/2018.csv','ssv','header'));
-    // france.push(loadTable('./data/2019.csv','ssv','header'));
-    // france.push(loadTable('./data/2020.csv','ssv','header'));
-    // dataJson = loadJSON('./data/municipalites.json');
+function preload() { // voir getdata.js pour les preloads
     dataJson = loadJSON('./data/dataEP.json');
-    // france.push(loadTable('./data/2019.csv','ssv','header'));
-}
-
-function convertPublicData() {
-    villesNew = [];
-    for (let i=0;i<dataVilles.length;i++) {
-        let v = dataVilles[i].features;
-        if (v.length>0) {
-            v=v[0];
-            let p = v.properties;
-            let seek = v.properties.id;
-            let hPop = [];
-            for (let i in historique) {
-                // let h = historique[i];
-                let result = france[i].rows.filter(a => { return a.arr[0]==seek;});
-                if (result.length>0) {
-                    pop = int(result[0].arr[2].replace(/\s/g,''));
-                    hPop[i]=pop;
-                }
-            }
-            if (hPop.length>0) {
-                // console.log(result)
-                villesNew.push( {geometry:v.geometry.coordinates,city:p.city,id:p.id, pop:p.population, hist:hPop,poscode:p.postcode, x:p.x, y:p.y,importance:p.importance,score:p.score,context:p.context } )
-            }
-        }
-    }
-}
-
-function getFrance() {
-    villes=[];
-    let min_=Infinity, max_=0;
-    for (let r of france[2].rows) {
-        // console.log(r.obj)
-        pop = int(r.obj.PMUN20.replace(/\s/g,''));
-        libelle = r.obj.NCC;
-        id = r.obj.COM;
-        villes.push( pop);
-        if (pop<min_) min_ = pop;
-        if (pop>max_) max_ = pop;
-        // if (nb<1) {
-            url = 'https://api-adresse.data.gouv.fr/search/?q='+libelle+'&citycode='+id+'&type=municipality';
-            URLs.push({id:id, lib:libelle, population:pop, url:url});
-            // info = httpGet(url, 'json', (data)=> {
-            //     municipalities.push(data);
-            // });
-        // }
-        nb++;
-    }
-    villes.sort((a,b)=> {return (b-a);});
-    return [min_, max_];
 }
 
 function windowResized() {
@@ -103,14 +34,9 @@ function windowResized() {
     initQT(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
 }
 
-function getData(num) {
-    info = httpGet(URLs[num].url, 'json', (data)=> {
-        municipalities.push(data);
-    });
-}
-
 function addDept() {
     let dept = [];
+    let regions = [];
     for (let i=0; i<villes.length;i++) {
         let v = villes[i];
         let c = v.context.split(', ');
@@ -120,13 +46,23 @@ function addDept() {
         v['couleur'] = color(255,255,255);
         v['sel'] = 0;
         dept[c[0]] = c[1];
+        let rID = regions.findIndex(a => a.n==c[2]) ;
+        if ( rID== -1) {
+            let d=[c[0]];
+            regions.push({n:c[2], d:d});
+        } else {
+            let dID = regions[rID].d.findIndex(a => a==c[0] );
+            if ( dID == -1) {
+                regions[rID].d.push(c[0]);
+            }
+        }
     }
-    return dept;
+    return [dept, regions];
 }
 
-function selDept(code) {
+function selDept(code,liste) {
     let sum=0, nb=0;
-
+    let sumR=0, nbR=0;
     villes.forEach( e => { 
         if (e.codeDept==code) {
             e.couleur = color(255,255,0);
@@ -134,8 +70,15 @@ function selDept(code) {
             sum += e.hist[Annee.Id];
             nb++;
         } else {
-            e.couleur = color(255);
-            e.sel = 0;
+            let f =-1;
+            if (liste.length>0) f = liste.findIndex(a=>a==e.codeDept);
+            if (f == -1) {
+                e.couleur = color(255);
+                e.sel = 0;
+            } else {
+                e.couleur = color(20,120,255);
+                e.sel=1;
+            }
         }
         if (code==0) {
             sum += e.hist[Annee.Id];
@@ -150,26 +93,23 @@ function setup() {
     mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
     // get les data =
     villes = Object.values(dataJson);
-    let dept = addDept();
+    let [dept,regions] = addDept();
     canvas = createCanvas(10,10); // mise en place du ratio 0.59
     canvas.parent("#canvas");
     windowResized();
     rate = select("#rate");
-    // Init(33000); // initialisation des communes de manière aléatoire
-    // frameRate(3);
-    // let min_, max_;
-    // [min_, max_] = getFrance();
-    // drawVilles(min_, max_);
-    // dataVilles = Object.values(dataJson);
+    // ajouter les getdata depuis getdata.js pour reprendre les données depuis data ou site gouv
     Annee = new Annees();
-    Departements = new Departement(7*width/8,180,width/8,height/4, dept);
-    Zipf = new ZIPF(14*width/16-1,140/2-1,2*width/8,140);
+    Departements = new Departement(7*width/8,220,width/8,height/4, dept, regions);
+    Zipf = new ZIPF(14*width/16-1,180/2-1,2*width/8,140);
     Zipf.setVilles(0,villes);
     Details = new Detail(170,10,100,100);
     Details.setValues(villes[0].hist);
     btDensite = new Button(width-65,height-60,50,25);
+    ListeVille = new LISTE(0,175,200,height-175-50);
     let r = width/height;
     drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
+    Annee.setAnnee(2020);
 }
 
 function initQT(x1,x2,y1,y2) {
@@ -191,7 +131,7 @@ function initQT(x1,x2,y1,y2) {
 }
 
 function getCircle(v) {
-    return max(1,Math.log(v/800)*1.5);
+    return max(1,Math.log(v/REDUC)*RATIO);
 }
 
 function drawMunipPrev(x1,x2,y1,y2) {
@@ -255,8 +195,10 @@ function villeVariation() {
 
 function drawPoints(points, range, zR, d_) {
     let res= d_;
-    villesSel = points.length;
-    listId = max(0,min(listId,villesSel-1));
+    // villesSel = points.length;
+    ListeVille.setListe(points);
+    // listId = max(0,min(listId,villesSel-1));
+    if (points.length>0) Zipf.setFocus(points[ListeVille.sel].info.data.id);
 	for (let i=0;i<points.length;i++) {
         let p = points[i];
 		// point(p.x, p.y);
@@ -267,42 +209,11 @@ function drawPoints(points, range, zR, d_) {
         let k=1;
         if (p.info.data.sel == 1) { fill(p.info.data.couleur); stroke(p.info.data.couleur); }
         if( btDensite.value) fill(btDensite.couleur(p.info.data.densite));
-        if (i==listId) {fill(255); k=2 ;}
+        if (i==ListeVille.sel) {fill(255); k=2 ;}
         let c = getCircle(p.info.hist[Annee.Id]);
         circle(p.x,p.y,c*k);
         circle(75+(p.x-range.x)*zR,75+(p.y-range.y)*zR, 2*c*k);
         res += p.info.hist[Annee.Id];
-        if (i<NB_VILLES_LISTE) {
-            let x=10, y=i*12+180;
-            noStroke();
-            fill(color(cVert));
-            if (p.info.data.sel == 1) { fill(p.info.data.couleur) }
-            if (i==listId) {
-                fill(255);
-                Details.setValues(p.info.hist);
-                beginShape();
-                vertex(x-2,y+3);
-                vertex(x-2,y-3);
-                vertex(x+3,y);
-                endShape(CLOSE);
-                }
-            textSize(10); 
-            text(p.info.city,x+10,y);
-            // text(p.info.city+' ('+p.info.data.densite+')',x+10,y);
-            textSize(12);
-            if (i==listId) {
-                text(p.info.city+' - '+p.info.hist[Annee.Id],x, height-45);
-            }
-            if( btDensite.value) {
-                let v = p.info.data.densite;
-                fill(btDensite.couleur(v));
-                if (v>100) {
-                    beginShape(); vertex(x+4,y+3);vertex(x+10,y+3);vertex(x+7,y-3); endShape(CLOSE);
-                } else {
-                    beginShape(); vertex(x+4,y-3);vertex(x+10,y-3);vertex(x+7,y+3); endShape(CLOSE);
-                }
-            }
-        }
 	}
     return (res);    
 }
@@ -312,14 +223,15 @@ function draw() {
     // drawVilles(min_, max_);
     // let [[minX,minY],[maxX,maxY]] = getMinMax();
     let r = width/height;
-    let sum = 0;
-    villes.forEach(a=>{ sum += a.hist[Annee.Id];});
-    rate.html('execution en '+round(deltaTime)+' ms'+'    Année = '+Annee.annee+' -  pop= '+sum);
+    // let sum = 0;
+    // villes.forEach(a=>{ sum += a.hist[Annee.Id];});
+    rate.html(' Exécution en '+round(deltaTime)+' ms');
+    // rate.html('execution en '+round(deltaTime)+' ms'+'    Année = '+Annee.annee+' -  pop= '+sum);
     if (DEBUG) noLoop();
     drawMunicipalite(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y,Annee.Id);
 
     if (VERBOSE) qt.show();
-    if (LOOP) nextYear();
+    if (LOOP) Annee.nextYear();
 
     //get regions/dept
     let gR = new Rectangle(mouseX,mouseY,3,3);
@@ -329,7 +241,7 @@ function draw() {
         Departements.setFocus(dpt);
     }
 
-    selectRange = Annee.getSlider(mouseX,mouseY) | Departements.getSel(mouseX,mouseY) | btDensite.getOK(mouseX,mouseY);
+    selectRange = Annee.getSlider(mouseX,mouseY) | Departements.getSel(mouseX,mouseY) | btDensite.getOK(mouseX,mouseY) | ListeVille.getSel(mouseX, mouseY);
 
     if (!selectRange | selectFix) {
         stroke(color(cVert));
@@ -354,9 +266,12 @@ function draw() {
     Zipf.show();
     Details.show();
     btDensite.show();
+    ListeVille.show();
     textAlign(CENTER,CENTER);
     textSize(10); fill(color(cVert));noStroke();
     text('eCoucou '+eC.version, width-40, height-10);
     textSize(32);
     text('FRANCE', width/2, 22);
+    textSize(9);
+    text('d/l/b/v/zZ/g/0/⬆️⬇️/➡️⬅️', width-180, height-10);
 }

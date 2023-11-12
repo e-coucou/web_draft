@@ -43,8 +43,7 @@ function simul() {
         iter++;
     }
 }
-
-
+//-------------
 class ZIPF {
     constructor(x,y,w,h) {
         this.x = x;
@@ -52,14 +51,15 @@ class ZIPF {
         this.w = w;
         this.h = h;
         this.villes = [];
+        this.focus = -1;
     }
 
     setVilles(id,villes) {
         this.villes=[];
         for (let v of villes) {
-            this.villes.push(v.hist[id]);
+            this.villes.push({v:v.hist[id], id:v.id });
         }
-        this.villes.sort((a,b)=>{return b-a;});
+        this.villes.sort((a,b)=>{return b.v-a.v;});
         this.vCoord=[];
         let [min_, max_] = this.getMinMax();
         let cnt = this.villes.length;
@@ -67,27 +67,44 @@ class ZIPF {
         let x0 = (min_>0)?Math.log(min_):0;
         let x1 = log(max_);
         for (let i=0; i<cnt; i++) {
-            let y = mapLog(this.villes[i],x0, x1,this.h-5,0+5);
+            let y = mapLog(this.villes[i].v,x0, x1,this.y+this.h/2-5,this.y-this.h/2+5);
             let x = mapLog(i+1,0,a1,this.x-this.w/2+5,this.x+this.w/2-5);
-            this.vCoord.push({x:x,y:y});
+            this.vCoord.push({x:x,y:y,id:this.villes[i].id, v:this.villes[i].v});
         }    
+    }
+
+    setFocus(f) {
+        this.focus = f;
     }
 
     getMinMax() {
         let min_=Infinity, max_= 0;
         for (let v of this.villes) {
-            if (v>max_) max_ = v;
-            if (v<min_) min_ = v;
+            if (v.v>max_) max_ = v.v;
+            if (v.v<min_) min_ = v.v;
         }
         return [min_, max_];
     }
     
     drawVilles() {
-        fill(255);
         noStroke();
+        let [x,y,val] = [0,0,''];
         for (let v of this.vCoord) {
-            circle(v.x,v.y,2);
+            let c = 2;
+            fill(255);
+            if (v.id == this.focus) {
+                c=8;
+                fill(color(cVert));
+                [x,y,val] = [v.x, v.y, v.v];
+            }
+            circle(v.x,v.y,c);
         }
+        stroke(color(cVert));strokeWeight(1);
+        line(this.x-this.w/2,y,this.x+this.w/2,y);
+        line(x,this.y-this.h/2,x,this.y+this.h/2);
+        noStroke();fill(color(cVert));
+        textAlign(LEFT,CENTER);textSize(10);
+        text('# '+val,this.x-this.w/2+5, y-6);
     }
     
     show() {

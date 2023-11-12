@@ -2,25 +2,30 @@ const NB_VILLES_LISTE = 35;
 
 // Gestion du clavier
 function keyPressed() {
+    let r = width/height;
     if (key=='b') { LOOP =  !LOOP }
     if (key=='l') { loop(); }
-    if (key=='d') { DEBUG = ! DEBUG; }
+    if (key=='d') { DEBUG = ! DEBUG; loop(); }
     if (key=='v') { VERBOSE = ! VERBOSE; }
     if (key=='g') { btDensite.switch(); }
     if (key==' ') { Annee.nextYear(); }
+    if (key=='+') { REDUC += 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+    if (key=='-') { REDUC -= 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+    if (key=='a') { RATIO += 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+    if (key=='w') { RATIO -= 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
     if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
     if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
     if (key=='z') { zoomId = (zoomId + 1) % zoom.length ;}
     if (key=='Z') { zoomId = max(0,(zoomId - 1)) ;}
-    if (keyCode == UP_ARROW) { listId = max(0,min(listId-1,villesSel-1)); }
-    if (keyCode == DOWN_ARROW) { listId = min(listId +1, NB_VILLES_LISTE , villesSel-1) ; }
+    if (keyCode == UP_ARROW) { ListeVille.up();}
+    if (keyCode == DOWN_ARROW) { ListeVille.down(); }
     if (key=='0') { Departements.sel=0; let [sum,nb]= selDept(0); Departements.setDeptValue(sum,nb); }
 }
 
 function mousePressed() {
     if (Departements.getSel(mouseX, mouseY)) {
-        let s = Departements.newSel(mouseX,mouseY);
-        let [sum, nb] = selDept(s);
+        let [s,listeR] = Departements.newSel(mouseX,mouseY);
+        let [sum, nb] = selDept(s,listeR);
         Departements.setDeptValue(sum,nb);
     }
     btDensite.click(mouseX,mouseY);
@@ -38,12 +43,16 @@ class Annees {
         this.iter=0;
     }
 
+    setAnnee(a) {
+        this.annee=a;
+        this.updateYear();
+    }
     updateYear() {
         let next = this.getOK();
         if ( next != -1) {
             this.iter = 0;
             this.Id = next;
-            let [sum, nb] = selDept(Departements.getValue(Departements.sel));
+            let [sum, nb] = selDept(Departements.getValue(Departements.sel),Departements.selRegionDept);
             Departements.setDeptValue(sum,nb);
             Zipf.setVilles(this.Id,villes);
         }    
@@ -57,7 +66,11 @@ class Annees {
 
     prevYear() {
         this.iter = max(0, this.iter-1);
-        this.annee = max(this.Amin, this.annee-1);
+        if (this.annee == this.Amin) {
+            this.annee = this.Amax;
+        } else {
+            this.annee = this.annee-1;
+        }
         this.updateYear()
     }
 
@@ -114,7 +127,7 @@ class Annees {
 class Departement {
     Dmin = 0;
     Dmax = 97;
-    constructor(x,y,w,h,dept) {
+    constructor(x,y,w,h,dept,regions) {
         this.sel=0;
         this.focus=0;
         this.actif=0;
@@ -125,9 +138,12 @@ class Departement {
         this.h = round(tmp * 12);
         this.inc = this.w / 4;
         this.libelle = dept;
+        this.regions = regions;
         this.libelle['00'] = 'France';
         this.deptNB = 0;
         this.deptPop = 0;
+        this.regionsLib = '';
+        this.selRegionDept = [];
     }
 
     setDeptValue(sum,nb) {
@@ -151,18 +167,32 @@ class Departement {
         if (id==21) return('2B');
         if (id>21) return(id-1);
     }
-
+    getReverseValue(v) {
+        let r;
+        if ((v)<20) r=int(v);
+        if (v=='2A') r=20;
+        if (v=='2B') r=21;
+        if ((v)>20) r=int(v)+1;
+        return r;
+    }
     setFocus(d) {
-        if ((d)<20) this.actif=int(d);
-        if (d=='2A') this.actif=20;
-        if (d=='2B') this.actif=21;
-        if ((d)>20) this.actif=int(d)+1;
+        this.actif = this.getReverseValue(d);
     }
 
     newSel(x,y){
         this.sel = this.getId(x,y);
-        return (this.getValue(this.sel));
+        let d = this.getValue(this.sel);
+        if (this.sel !=0 ) {
+        let tmp = this.regions.filter(a => {  return a.d.findIndex(b => b ==d) != -1 ;})[0];
+        this.regionsLib = tmp.n;
+        this.selRegionDept = tmp.d;
+        } else {
+            this.regionsLib = '';
+            this.selRegionDept = [];
+        }
+        return [d, this.selRegionDept];
     }
+
     getSel(x,y) {
         let ok = false;
         this.focus = this.sel;
@@ -184,8 +214,8 @@ class Departement {
         textAlign(CENTER,CENTER);
         for (let i=0; i< this.Dmax; i++) {
             fill(15); stroke(color(cVert)) ;
-            if (i==this.actif) fill(0,180,255);
             if (i==this.sel | i==this.focus) fill(color(cVert));
+            if (i==this.actif) fill(0,180,255);
             let x = this.x + i%4 * this.inc;
             let y = int(i/4) * h + this.y;
             rect(x,y,this.inc,h);
@@ -196,7 +226,9 @@ class Departement {
         textAlign(LEFT,CENTER);
         text(lib,this.x-this.inc,this.y+this.h+h);
         text('Communes : '+this.deptNB,this.x-this.inc,this.y+this.h+2*h);
-        text('Popuplation: '+this.deptPop,this.x-this.inc,this.y+this.h+3*h);
+        text('Population: '+this.deptPop,this.x-this.inc,this.y+this.h+3*h);
+        // text('Regions: ',this.x-this.inc,this.y+this.h+4*h);
+        text(this.regionsLib,this.x-this.inc,this.y+this.h+4*h);
     }
 }
 
@@ -289,5 +321,90 @@ class Button {
         rect(this.x,this.y,this.w/2,this.h);
         fill(0,0,255);
         rect(this.x+this.w/2,this.y,this.w/2,this.h);
+    }
+}
+
+class LISTE {
+    constructor(x,y,w,h,liste=[]) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.sel = 0;
+        this.liste = liste;
+        this.startL = 0;
+        this.stopL = 0;
+        this.NBMAX = int(h / 12);
+        this.setMaxView(35);
+        this.inc = min(this.h / this.nbView, 12);
+    }
+
+    setMaxView(n) {
+        this.nbView = n;
+        this.stopL = this.startL + n;
+    }
+
+    setListe(l) {
+        this.liste = l;
+        this.nbView = min(this.liste.length, this.NBMAX);
+        this.startL = 0;
+        this.stopL = min(this.nbView+this.startL, this.liste.length);
+        this.inc = min(this.h / this.nbView, 12);
+        this.sel = this.contrainte(this.sel);
+    }
+
+    up() {
+        this.sel = max(0,min(this.sel-1,this.stopL-1)); 
+    }
+    down() {
+        this.sel = min(this.sel +1, this.stopL-1) ;
+    }
+
+    contrainte(v) {
+        return max(0, min(v , this.stopL-1) );
+    }
+
+    getSel(x,y) {
+        let Ok = this.getOK(x,y);
+        if (Ok) {
+            this.sel = this.contrainte(int((y - this.y) / this.inc));
+        }
+        return Ok;
+    }
+
+    getOK(x,y) {
+        return ( x>this.x & x<(this.x+this.w) & y>this.y & y<(this.y+this.h) );
+    }
+
+    show() {
+        if (this.liste.length>0) {
+            rectMode(CORNER);
+            textAlign(LEFT, CENTER);
+            for (let i = this.startL; i<this.stopL; i++) {
+                let p =this.liste[i];
+                let x = this.x+25 ;
+                let y = i * this.inc + this.y;
+                noStroke(); fill(cVert); textSize(10);
+                if (p.info.data.sel == 1) { fill(p.info.data.couleur) }
+                if (i == this.sel) { fill(255) ; }
+                text(this.liste[i].info.city,x,y);
+                if (i==this.sel) {
+                    fill(255);
+                    Details.setValues(p.info.hist);
+                    beginShape(); vertex(x-17,y+3); vertex(x-17,y-3); vertex(x-12,y); endShape(CLOSE);    
+                    textSize(12);
+                    text(p.info.city+' - '+p.info.hist[Annee.Id],this.x+10, height-45);
+                }
+                if( btDensite.value) {
+                    let v = p.info.data.densite;
+                    fill(btDensite.couleur(v));
+                    if (v>100) {
+                        beginShape(); vertex(x-10,y+3);vertex(x-2,y+3);vertex(x-6,y-3); endShape(CLOSE);
+                    } else {
+                        beginShape(); vertex(x-10,y-3);vertex(x-2,y-3);vertex(x-6,y+3); endShape(CLOSE);
+                    }
+                }
+            }
+        }
     }
 }
