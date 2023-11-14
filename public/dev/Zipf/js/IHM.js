@@ -115,12 +115,7 @@ class Annees {
         }
         let x = (this.annee-this.Amin) * inc +Offset;
         stroke(color(cVert));
-        beginShape();
-        vertex(x-3,y-3);
-        vertex(x+3,y-3);
-        vertex(x,y+3);
-        endShape(CLOSE);
-        // circle(x,y,5);
+        beginShape(); vertex(x-3,y-3); vertex(x+3,y-3); vertex(x,y+3); endShape(CLOSE);
     }
 }
 
@@ -134,7 +129,7 @@ class Departement {
         this.x = x;
         this.y = y;
         this.w = w;
-        let tmp = (this.Dmax-this.Dmin+1) / 4;
+        let tmp = (this.Dmax-this.Dmin+2) / 4;
         this.h = round(tmp * 12);
         this.inc = this.w / 4;
         this.libelle = dept;
@@ -158,7 +153,7 @@ class Departement {
     }
 
     getId(x,y) {
-        return int((x-this.x + this.inc/2)/this.inc) + int((y-this.y+6)/12) * 4;
+        return int((x-this.x)/this.inc) + int((y-this.y)/12) * 4;
     }
 
     getValue(id) {
@@ -196,7 +191,7 @@ class Departement {
     getSel(x,y) {
         let ok = false;
         this.focus = this.sel;
-        if (x>(this.x-this.inc/2) & x < (this.x+this.w-this.inc/2) & y>(this.y-6) & y<(this.y+this.h-6)) {
+        if (x>(this.x) & x < (this.x+this.w) & y>(this.y-6) & y<(this.y+this.h-6)) {
             let nb = (this.Dmax-this.Dmin+1);
             this.focus = this.getId(x,y);
             ok = true;
@@ -205,12 +200,12 @@ class Departement {
     }
 
     show() {
-        rectMode(CENTER);
+        rectMode(CORNER);
         let h = 12;
         textSize(10);
         textAlign(LEFT,CENTER);
         fill(255);noStroke();
-        text('Départements',this.x-this.inc,this.y-15);
+        text('Départements',this.x,this.y-15);
         textAlign(CENTER,CENTER);
         for (let i=0; i< this.Dmax; i++) {
             fill(15); stroke(color(cVert)) ;
@@ -220,15 +215,14 @@ class Departement {
             let y = int(i/4) * h + this.y;
             rect(x,y,this.inc,h);
             noStroke();fill(255);
-            text(this.getValue(i),x,y);
+            text(this.getValue(i),x+this.inc/2,y+h/2);
         }
         let lib = this.getLib(this.sel);
         textAlign(LEFT,CENTER);
-        text(lib,this.x-this.inc,this.y+this.h+h);
-        text('Communes : '+this.deptNB,this.x-this.inc,this.y+this.h+2*h);
-        text('Population: '+this.deptPop,this.x-this.inc,this.y+this.h+3*h);
-        // text('Regions: ',this.x-this.inc,this.y+this.h+4*h);
-        text(this.regionsLib,this.x-this.inc,this.y+this.h+4*h);
+        text(lib,this.x,this.y+this.h+2*h);
+        text('Communes : '+this.deptNB,this.x,this.y+this.h+3*h);
+        text('Population: '+this.deptPop,this.x,this.y+this.h+4*h);
+        text(this.regionsLib,this.x,this.y+this.h+5*h);
     }
 }
 
@@ -347,17 +341,24 @@ class LISTE {
     setListe(l) {
         this.liste = l;
         this.nbView = min(this.liste.length, this.NBMAX);
-        this.startL = 0;
+        // this.startL = 0;
         this.stopL = min(this.nbView+this.startL, this.liste.length);
         this.inc = min(this.h / this.nbView, 12);
         this.sel = this.contrainte(this.sel);
     }
 
     up() {
-        this.sel = max(0,min(this.sel-1,this.stopL-1)); 
+        if (this.startL!=0) {
+            this.startL = max(0, this.startL-1);
+        }
+        this.sel = max(0,min(this.sel-1,this.stopL-1));
     }
     down() {
-        this.sel = min(this.sel +1, this.stopL-1) ;
+        if (this.sel==(this.stopL-1)) {
+            this.stopL = min( this.stopL+1, this.liste.length-1);
+            this.startL = max(0,this.stopL-this.nbView);
+        }
+            this.sel = min(this.sel +1, this.stopL-1) ;
     }
 
     contrainte(v) {
@@ -367,7 +368,7 @@ class LISTE {
     getSel(x,y) {
         let Ok = this.getOK(x,y);
         if (Ok) {
-            this.sel = this.contrainte(int((y - this.y) / this.inc));
+            this.sel = this.contrainte( this.startL + int((y - this.y) / this.inc));
         }
         return Ok;
     }
@@ -383,9 +384,9 @@ class LISTE {
             for (let i = this.startL; i<this.stopL; i++) {
                 let p =this.liste[i];
                 let x = this.x+25 ;
-                let y = i * this.inc + this.y;
+                let y = (i-this.startL) * this.inc + this.y;
                 noStroke(); fill(cVert); textSize(10);
-                if (p.info.data.sel == 1) { fill(p.info.data.couleur) }
+                if (p.info.data.sel >= 1) { fill(p.info.data.couleur) }
                 if (i == this.sel) { fill(255) ; }
                 text(this.liste[i].info.city,x,y);
                 if (i==this.sel) {

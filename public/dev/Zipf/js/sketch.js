@@ -1,4 +1,4 @@
-const eC = {version: 'v2.00', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
+const eC = {version: 'v2.11', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
 let mobile;
 let DEBUG = true, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -6,8 +6,8 @@ let btDensite;
 let REDUC=800, RATIO=1.5;
 
 const a1 = Math.log(33000);
-const MIN_X= 0, MAX_X = 1438080, MIN_Y=6001357, MAX_Y = 7191821;
-const ratio = 0.15402190211273947;
+const MIN_X= -10000, MAX_X = 1000000, MIN_Y=6001357, MAX_Y = 7191821;
+// const ratio = 0.15402190211273947;
 
 let villes = [], URLs=[], dataVilles, dataJson, villesNew = []
 let iter;
@@ -19,8 +19,10 @@ let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=0;
 // let listId = 0, villesSel=0,
 let selectRange = false, selectFix=false, [selX,selY] = [0,0];
 
-let Annee, Departements, Zipf, Details, ListeVille;
+let Annee, Departements, Zipf, Details, ListeVille, listeHelp;
 let cVert = [10, 200, 150];
+
+let HELP = ['h: Help', 'd: debug', 'l: pas à pas', 'b: animation boucle', 'v: verbose', 'z/Z: Zoom +/-', 'd: gradient de densité', '0: France'];
 
 function preload() { // voir getdata.js pour les preloads
     dataJson = loadJSON('./data/dataEP.json');
@@ -28,10 +30,8 @@ function preload() { // voir getdata.js pour les preloads
 
 function windowResized() {
     let m = min(innerHeight,innerWidth);
-    let w_ = int(m*0.8) - 10;
-    resizeCanvas(innerWidth-10,innerHeight-80);
-    let r = width/height;
-    initQT(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
+    resizeCanvas(innerWidth-10,innerHeight-70);
+    Init();
 }
 
 function addDept() {
@@ -88,41 +88,46 @@ function selDept(code,liste) {
     return [sum, nb];
 }
 
-function setup() {
-	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
-    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
-    // get les data =
+function Init() {
     villes = Object.values(dataJson);
     let [dept,regions] = addDept();
-    canvas = createCanvas(10,10); // mise en place du ratio 0.59
-    canvas.parent("#canvas");
-    windowResized();
-    rate = select("#rate");
-    // ajouter les getdata depuis getdata.js pour reprendre les données depuis data ou site gouv
-    Annee = new Annees();
-    Departements = new Departement(7*width/8,220,width/8,height/4, dept, regions);
-    Zipf = new ZIPF(14*width/16-1,180/2-1,2*width/8,140);
+    let r = width/height;
+    initQT(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
+    Departements = new Departement(7*width/8-20,height/4,width/8,height/4, dept, regions);
+    Zipf = new ZIPF(3*width/4,10,width/4,height/5);
     Zipf.setVilles(0,villes);
     Details = new Detail(170,10,100,100);
     Details.setValues(villes[0].hist);
     btDensite = new Button(width-65,height-60,50,25);
     ListeVille = new LISTE(0,175,200,height-175-50);
-    let r = width/height;
+    listeHelp = new LISTE(width-180,height-50,200,15,HELP);
     drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
     Annee.setAnnee(2020);
+}
+
+function setup() {
+	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
+    mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+    // get les data =
+    canvas = createCanvas(10,10); // mise en place du ratio 0.59
+    canvas.parent("#canvas");
+    rate = select("#rate");
+    // ajouter les getdata depuis getdata.js pour reprendre les données depuis data ou site gouv
+    Annee = new Annees();
+    windowResized();
 }
 
 function initQT(x1,x2,y1,y2) {
     nb=0;
 	let boundary = new Rectangle(width/2, height/2, width/2, height/2);
 	qt = new Quadtree(boundary, 4);
-    let offsetX = map((x2-x1)/2,x1,x2,0,width/2) /2;
+    let offsetX = map((x2+x1)/2,x1,x2,0,width);
     for (let i=0;i<villes.length;i++) {
         let v = villes[i];
         if (v.x>x1 & v.x<x2 & v.y>y1 & v.y<y2) {
             nb++;
             let info = new Info(v.hist,v.city,v);
-            let x = map(v.x,x1,x2,0,width) +offsetX;
+            let x = map(v.x,x1,x2,0,width) + (width/2-offsetX/2)/2;
             let y = map(v.y,y1,y2,height,0);
             let p = new Point(x, y, null, info);
             qt.insert(p);
@@ -135,11 +140,11 @@ function getCircle(v) {
 }
 
 function drawMunipPrev(x1,x2,y1,y2) {
-    let offsetX = map((x2-x1)/2,x1,x2,0,width/2) /2;
+    let offsetX = map((x2+x1)/2,x1,x2,0,width);
     for (let i=0;i<villes.length;i++) {
         let v = villes[i];
         if (v.x>x1 & v.x<x2 & v.y>y1 & v.y<y2) {
-            let x = map(v.x,x1,x2,0,width) +offsetX;
+            let x = map(v.x,x1,x2,0,width) + (width/2-offsetX/2)/2;
             let y = map(v.y,y1,y2,height,0);
             v['display'] = {x:x,y:y};
             let d = ((v.hist[v.hist.length-1]-v.hist[0])/v.hist[0] + 1.0)*100;
@@ -167,6 +172,7 @@ function drawMunicipalite(x1,x2,y1,y2,ref) {
                 fill(btDensite.couleur(v.densite));
             }
             let c = getCircle(pop);
+            if (v.sel == 2) {fill(v.couleur);c=10}
             circle(v.display.x,v.display.y,c);
         }
     }
@@ -207,12 +213,13 @@ function drawPoints(points, range, zR, d_) {
         noStroke();
         strokeWeight(1);
         let k=1;
-        if (p.info.data.sel == 1) { fill(p.info.data.couleur); stroke(p.info.data.couleur); }
+        if (p.info.data.sel >= 1) { fill(p.info.data.couleur); stroke(p.info.data.couleur); }
         if( btDensite.value) fill(btDensite.couleur(p.info.data.densite));
         if (i==ListeVille.sel) {fill(255); k=2 ;}
         let c = getCircle(p.info.hist[Annee.Id]);
-        circle(p.x,p.y,c*k);
         circle(75+(p.x-range.x)*zR,75+(p.y-range.y)*zR, 2*c*k);
+        // if (p.info.data.sel == -1) { k=10; }
+        circle(p.x,p.y,c*k);
         res += p.info.hist[Annee.Id];
 	}
     return (res);    
@@ -274,4 +281,5 @@ function draw() {
     text('FRANCE', width/2, 22);
     textSize(9);
     text('d/l/b/v/zZ/g/0/⬆️⬇️/➡️⬅️', width-180, height-10);
+    // listeHelp.show();
 }

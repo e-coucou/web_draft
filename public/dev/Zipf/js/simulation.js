@@ -67,8 +67,8 @@ class ZIPF {
         let x0 = (min_>0)?Math.log(min_):0;
         let x1 = log(max_);
         for (let i=0; i<cnt; i++) {
-            let y = mapLog(this.villes[i].v,x0, x1,this.y+this.h/2-5,this.y-this.h/2+5);
-            let x = mapLog(i+1,0,a1,this.x-this.w/2+5,this.x+this.w/2-5);
+            let y = mapLog(this.villes[i].v,x0, x1,this.y+this.h-5,this.y+5);
+            let x = mapLog(i+1,0,a1,this.x+5,this.x+this.w-5);
             this.vCoord.push({x:x,y:y,id:this.villes[i].id, v:this.villes[i].v});
         }    
     }
@@ -100,20 +100,20 @@ class ZIPF {
             circle(v.x,v.y,c);
         }
         stroke(color(cVert));strokeWeight(1);
-        line(this.x-this.w/2,y,this.x+this.w/2,y);
-        line(x,this.y-this.h/2,x,this.y+this.h/2);
+        line(this.x,y,this.x+this.w,y);
+        line(x,this.y,x,this.y+this.h);
         noStroke();fill(color(cVert));
         textAlign(LEFT,CENTER);textSize(10);
-        text('# '+val,this.x-this.w/2+5, y-6);
+        text('# '+val,this.x+5, y-6);
     }
     
     show() {
-        rectMode(CENTER);
+        rectMode(CORNER);
         fill(0);
         stroke(color(cVert));
         rect(this.x,this.y,this.w,this.h);
         this.drawVilles();
         textAlign(LEFT,CENTER);textSize(10);noStroke();
-        text("Répartition log/log",this.x-this.w/2+5,this.y+this.h/2-10);
+        text("Répartition log/log",this.x+5,this.y+this.h-10);
     }
 }
