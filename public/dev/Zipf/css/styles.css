@@ -1,10 +1,10 @@
 body {
     margin: 0px;
-    background-color: rgb(198, 227, 199);
+    background-color: rgb(225, 234, 190);
     /* background-color:transparent; */
     /* background-image:url("../img/bk001.JPG"); */
     /* image-rendering: pixelated; */
-    color:rgb(17, 13, 71);
+    color:rgb(7, 80, 30);
     align-content: center;
     /* display: contents; */
 }
@@ -82,23 +82,23 @@ div.entete {
 
 .styled {
     border: 0;
-    line-height: 2.5;
-    margin: 5px 5px;
+    line-height: 2.0;
+    margin: 3px 3px;
     padding: 0 20px;
-    font-size: 1rem;
+    font-size: 0.7rem;
     text-align: center;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 10px;
-    background-color: rgb(23, 165, 75);
-    background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
-    box-shadow:
+    color: #0da724;
+    /* text-shadow: 1px 1px 1px #000; */
+    border-radius: 2px;
+    background-color: rgb(235, 240, 224);
+    /* background-image: linear-gradient(to top left, rgba(144, 76, 76, 0.2), rgba(235, 21, 21, 0.2) 30%, rgba(57, 26, 193, 0)); */
+    /* box-shadow:
       inset 2px 2px 3px rgba(255, 255, 255, 0.6),
-      inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+      inset -2px -2px 3px rgba(0, 0, 0, 0.6); */
   }
   
   .styled:hover {
-    background-color: rgb(2, 96, 60);
+    background-color: rgb(186, 244, 152);
   }
   .styled_2:hover {
     background-color: rgb(2, 96, 60);

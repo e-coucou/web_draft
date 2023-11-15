@@ -1,26 +1,39 @@
 const NB_VILLES_LISTE = 35;
+let ctrl = false;
 
 // Gestion du clavier
 function keyPressed() {
     let r = width/height;
-    if (key=='b') { LOOP =  !LOOP }
-    if (key=='l') { loop(); }
-    if (key=='d') { DEBUG = ! DEBUG; loop(); }
-    if (key=='v') { VERBOSE = ! VERBOSE; }
-    if (key=='g') { btDensite.switch(); }
-    if (key==' ') { Annee.nextYear(); }
-    if (key=='+') { REDUC += 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
-    if (key=='-') { REDUC -= 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
-    if (key=='a') { RATIO += 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
-    if (key=='w') { RATIO -= 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
-    if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
-    if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
-    if (key=='z') { zoomId = (zoomId + 1) % zoom.length ;}
-    if (key=='Z') { zoomId = max(0,(zoomId - 1)) ;}
-    if (keyCode == UP_ARROW) { ListeVille.up();}
-    if (keyCode == DOWN_ARROW) { ListeVille.down(); }
-    if (key=='0') { Departements.sel=0; let [sum,nb]= selDept(0); Departements.setDeptValue(sum,nb); }
+    if ( ! getOkDivers(mouseX, mouseY)) {
+        if (ctrl & key=='b') { LOOP =  !LOOP }
+        if (key=='l') { loop(); }
+        if (key=='d') { DEBUG = ! DEBUG; loop(); }
+        if (key=='v') { VERBOSE = ! VERBOSE; }
+        if (key=='g') { btDensite.switch(); }
+        if (key==' ') { Annee.nextYear(); }
+        if (key=='+') { REDUC += 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+        if (key=='-') { REDUC -= 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+        if (key=='a') { RATIO += 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+        if (key=='w') { RATIO -= 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
+        if (key=='z') { zoomId = (zoomId + 1) % zoom.length ;}
+        if (key=='Z') { zoomId = max(0,(zoomId - 1)) ;}
+        if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
+        if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
+        if (keyCode == UP_ARROW) { ListeVille.up();}
+        if (keyCode == DOWN_ARROW) { ListeVille.down(); }
+        if (key=='0') { Departements.sel=0; let [sum,nb]= selDept(0); Departements.setDeptValue(sum,nb); }
+    }
+    // redraw();
+    // console.log(key,keyCode)
+    ctrl = (keyCode == 91) || (keyCode == 17);
+    // console.log(ctrl);
 }
+
+// function mouseMoved() {
+//     // redraw();
+//     loop();
+//     iter = 0;
+// }
 
 function mousePressed() {
     if (Departements.getSel(mouseX, mouseY)) {
@@ -31,6 +44,23 @@ function mousePressed() {
     btDensite.click(mouseX,mouseY);
 
     if (!selectRange) { [selX,selY] = [mouseX,mouseY]; selectFix = ! selectFix;}
+    redraw();
+}
+
+function searchVilles() {
+    // console.log(this.value());
+    let v = this.value().toUpperCase();
+    villes.forEach(a => { a.sel=0; a.couleur=(color(255))});
+    Departements.sel = 0;
+    if (v != '') {
+        let filtre = villes.filter(a =>  (a.city.toUpperCase().indexOf(v)>-1) );
+        filtre.forEach(a=>{a.sel=2 ; a.couleur= color(0,255,0)});
+        console.log(filtre.length);
+    }
+}
+
+function getOkDivers(x,y) {
+    return (x>(7*width/8-30) & x<(width) & y>(3*height/4-30) & y<(3*height/4+30) );
 }
 
 class Annees {
@@ -209,8 +239,8 @@ class Departement {
         textAlign(CENTER,CENTER);
         for (let i=0; i< this.Dmax; i++) {
             fill(15); stroke(color(cVert)) ;
-            if (i==this.sel | i==this.focus) fill(color(cVert));
-            if (i==this.actif) fill(0,180,255);
+            if (i==this.sel | i==this.focus) fill(color(0,255,0));
+            if (i==this.actif) fill(cVert);
             let x = this.x + i%4 * this.inc;
             let y = int(i/4) * h + this.y;
             rect(x,y,this.inc,h);
@@ -311,10 +341,33 @@ class Button {
 
     show() {
         rectMode(CORNER);
-        fill(255,0,0);
+        let alpha=120;
+        if (this.value) alpha=255;
+        fill(255,0,0,alpha);
         rect(this.x,this.y,this.w/2,this.h);
-        fill(0,0,255);
+        fill(0,0,255,alpha);
         rect(this.x+this.w/2,this.y,this.w/2,this.h);
+    }
+}
+
+class barGraph {
+    constructor(x,y,w,h,min_,max_) {
+        this.x = x;
+        this.y = y;
+        this.h = h;
+        this.w = w;
+        this.min = min_;
+        this.max = max_;
+    }
+
+    anim(v) {
+        rectMode(CORNER);
+        stroke(0,255,0);fill(0);
+        rect(this.x,this.y,this.w,this.h,2);
+        noStroke();fill(color(cVert));
+        let w = v / (this.max-this.min) * (this.w-2);
+        if (w>0.7*this.w) fill(255,0,0);
+        rect(this.x+1,this.y+1,w,this.h-2)
     }
 }
 

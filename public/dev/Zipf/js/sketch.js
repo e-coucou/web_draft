@@ -1,4 +1,4 @@
-const eC = {version: 'v2.11', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
+const eC = {version: 'v2.37', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
 let mobile;
 let DEBUG = true, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -10,8 +10,8 @@ const MIN_X= -10000, MAX_X = 1000000, MIN_Y=6001357, MAX_Y = 7191821;
 // const ratio = 0.15402190211273947;
 
 let villes = [], URLs=[], dataVilles, dataJson, villesNew = []
-let iter;
-let qt, nb=0;
+let iter=0;
+let qt, nb=0, bgRate;
 // let france=[];
 // let municipalities = [];
 let min_, max_;
@@ -19,7 +19,7 @@ let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=0;
 // let listId = 0, villesSel=0,
 let selectRange = false, selectFix=false, [selX,selY] = [0,0];
 
-let Annee, Departements, Zipf, Details, ListeVille, listeHelp;
+let Annee, Departements, Zipf, Details, ListeVille, listeHelp, Search;
 let cVert = [10, 200, 150];
 
 let HELP = ['h: Help', 'd: debug', 'l: pas à pas', 'b: animation boucle', 'v: verbose', 'z/Z: Zoom +/-', 'd: gradient de densité', '0: France'];
@@ -31,6 +31,9 @@ function preload() { // voir getdata.js pour les preloads
 function windowResized() {
     let m = min(innerHeight,innerWidth);
     resizeCanvas(innerWidth-10,innerHeight-70);
+    Search.position(7*width/8-20,3*height/4+20);
+    Search.size(width/8);
+    Search.class("styled");
     Init();
 }
 
@@ -65,7 +68,7 @@ function selDept(code,liste) {
     let sumR=0, nbR=0;
     villes.forEach( e => { 
         if (e.codeDept==code) {
-            e.couleur = color(255,255,0);
+            e.couleur = color(0,255,0);
             e.sel = 1;
             sum += e.hist[Annee.Id];
             nb++;
@@ -76,7 +79,7 @@ function selDept(code,liste) {
                 e.couleur = color(255);
                 e.sel = 0;
             } else {
-                e.couleur = color(20,120,255);
+                e.couleur = color(240,240,0);
                 e.sel=1;
             }
         }
@@ -99,6 +102,7 @@ function Init() {
     Details = new Detail(170,10,100,100);
     Details.setValues(villes[0].hist);
     btDensite = new Button(width-65,height-60,50,25);
+    bgRate = new barGraph(width-65,height-80,50,12,0,150);
     ListeVille = new LISTE(0,175,200,height-175-50);
     listeHelp = new LISTE(width-180,height-50,200,15,HELP);
     drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
@@ -112,6 +116,8 @@ function setup() {
     canvas = createCanvas(10,10); // mise en place du ratio 0.59
     canvas.parent("#canvas");
     rate = select("#rate");
+    Search = createInput('');
+    Search.changed(searchVilles);
     // ajouter les getdata depuis getdata.js pour reprendre les données depuis data ou site gouv
     Annee = new Annees();
     windowResized();
@@ -213,12 +219,15 @@ function drawPoints(points, range, zR, d_) {
         noStroke();
         strokeWeight(1);
         let k=1;
-        if (p.info.data.sel >= 1) { fill(p.info.data.couleur); stroke(p.info.data.couleur); }
+        switch(p.info.data.sel) {
+            case 2: k=3;
+            case 1:  { fill(p.info.data.couleur); stroke(p.info.data.couleur); }          
+        }
+        // if (p.info.data.sel >= 1) { fill(p.info.data.couleur); stroke(p.info.data.couleur); }
         if( btDensite.value) fill(btDensite.couleur(p.info.data.densite));
         if (i==ListeVille.sel) {fill(255); k=2 ;}
         let c = getCircle(p.info.hist[Annee.Id]);
         circle(75+(p.x-range.x)*zR,75+(p.y-range.y)*zR, 2*c*k);
-        // if (p.info.data.sel == -1) { k=10; }
         circle(p.x,p.y,c*k);
         res += p.info.hist[Annee.Id];
 	}
@@ -248,7 +257,7 @@ function draw() {
         Departements.setFocus(dpt);
     }
 
-    selectRange = Annee.getSlider(mouseX,mouseY) | Departements.getSel(mouseX,mouseY) | btDensite.getOK(mouseX,mouseY) | ListeVille.getSel(mouseX, mouseY);
+    selectRange = Annee.getSlider(mouseX,mouseY) | Departements.getSel(mouseX,mouseY) | btDensite.getOK(mouseX,mouseY) | ListeVille.getSel(mouseX, mouseY) | getOkDivers(mouseX,mouseY);
 
     if (!selectRange | selectFix) {
         stroke(color(cVert));
@@ -282,4 +291,5 @@ function draw() {
     textSize(9);
     text('d/l/b/v/zZ/g/0/⬆️⬇️/➡️⬅️', width-180, height-10);
     // listeHelp.show();
+    bgRate.anim(deltaTime);
 }
