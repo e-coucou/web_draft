@@ -1,6 +1,6 @@
-const eC = {version: 'v2.40', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
+const eC = {version: 'v2.65', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
 let mobile;
-let DEBUG = true, VERBOSE = false, LOOP = false, DENSITE = false;
+let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
 let btDensite;
 let REDUC=800, RATIO=1.5;
@@ -15,7 +15,7 @@ let qt, nb=0, bgRate;
 // let france=[];
 // let municipalities = [];
 let min_, max_;
-let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=0;
+let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=3;
 // let listId = 0, villesSel=0,
 let selectRange = false, selectFix=false, [selX,selY] = [0,0];
 
@@ -101,8 +101,8 @@ function Init() {
     Zipf.setVilles(0,villes);
     Details = new Detail(170,10,100,100);
     Details.setValues(villes[0].hist);
-    btDensite = new Button(width-65,height-60,50,25);
-    bgRate = new barGraph(width-65,height-80,50,12,0,150);
+    btDensite = new Button(width-65,height-65,50,25);
+    bgRate = new barGraph(width-65,height-85,50,12,0,150);
     ListeVille = new LISTE(0,175,200,height-175-50);
     listeHelp = new LISTE(width-180,height-50,200,15,HELP);
     drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);
@@ -162,7 +162,6 @@ function drawMunipPrev(x1,x2,y1,y2) {
     }
 }
 function drawMunicipalite(x1,x2,y1,y2,ref) {
-    let r=width/height;
     let ok = Annee.getOK();
     noStroke();
     for (let i=0;i<villes.length;i++) {
@@ -183,6 +182,8 @@ function drawMunicipalite(x1,x2,y1,y2,ref) {
             }
             let c = getCircle(pop);
             if (v.sel == 2) {fill(v.couleur);c=10}
+            if (FLAT) c=1;
+            if (RAINBOW) fill(rainbow(1/10,frameCount,(v.display.x%100 + v.display.y %100)*1));
             circle(v.display.x,v.display.y,c);
         }
     }
@@ -220,14 +221,10 @@ function villeVariation() {
 
 function drawPoints(points, range, zR, d_) {
     let res= d_;
-    // villesSel = points.length;
     ListeVille.setListe(points);
-    // listId = max(0,min(listId,villesSel-1));
     if (points.length>0) Zipf.setFocus(points[ListeVille.sel].info.data.id);
 	for (let i=0;i<points.length;i++) {
         let p = points[i];
-		// point(p.x, p.y);
-        // fill(10, 200, 150);
         fill(color(cVert));
         noStroke();
         strokeWeight(1);
@@ -301,8 +298,14 @@ function draw() {
     text('eCoucou '+eC.version, width-40, height-10);
     textSize(32);
     text('FRANCE', width/2, 22);
-    textSize(9);
-    text('d/l/b/v/zZ/g/0/⬆️⬇️/➡️⬅️', width-180, height-10);
+
+    textSize(12);textAlign(LEFT,CENTER);
+    let x = width-65, y= height-30;
+    // text('d/l/b/v/zZ/g/0/⬆️⬇️/➡️⬅️', width-180, height-10);
+    etat = (!DEBUG?'🌐':'')+(FLAT?'⎯':'')+(RAINBOW?'🌈':'')+(btDensite.value?'👨‍👩‍👦‍👦':'');
+    text(etat,x,y);
+    text(searchInfo,7*width/8-55,3*height/4-7);
+
     // listeHelp.show();
     bgRate.anim(deltaTime);
 }

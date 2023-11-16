@@ -1,5 +1,17 @@
 const NB_VILLES_LISTE = 35;
 let ctrl = false;
+let FLAT = false;
+let RAINBOW = false;
+
+let searchInfo='';
+
+function rainbow(frequency,i,d) {
+    let iter = (i % 127) + d%10;
+        r = Math.floor(Math.sin(frequency*iter + 0) * (127) + 128);
+        g = Math.floor(Math.sin(frequency*iter + 2) * (127) + 128);
+        b = Math.floor(Math.sin(frequency*iter + 4) * (127) + 128);
+    return color(r,g,b);
+}
 
 // Gestion du clavier
 function keyPressed() {
@@ -17,25 +29,21 @@ function keyPressed() {
         if (key=='w') { RATIO -= 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
         if (key=='z') { zoomId = (zoomId + 1) % zoom.length ;}
         if (key=='Z') { zoomId = max(0,(zoomId - 1)) ;}
+        if (key=='f') { FLAT = ! FLAT ;}
+        if (key=='r') { RAINBOW = ! RAINBOW ;}
         if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
         if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
         if (keyCode == UP_ARROW) { ListeVille.up();}
         if (keyCode == DOWN_ARROW) { ListeVille.down(); }
         if (key=='0') { Departements.sel=0; let [sum,nb]= selDept(0); Departements.setDeptValue(sum,nb); }
     }
-    // redraw();
+    redraw();
     // console.log(key,keyCode)
     ctrl = (keyCode == 91) || (keyCode == 17);
     // console.log(ctrl);
 }
 
-// function mouseMoved() {
-//     // redraw();
-//     loop();
-//     iter = 0;
-// }
-
-function mousePressed() {
+function mouse_() {
     if (Departements.getSel(mouseX, mouseY)) {
         let [s,listeR] = Departements.newSel(mouseX,mouseY);
         let [sum, nb] = selDept(s,listeR);
@@ -46,16 +54,25 @@ function mousePressed() {
     if (!selectRange) { [selX,selY] = [mouseX,mouseY]; selectFix = ! selectFix;}
     redraw();
 }
+function mouseClicked(event) {
+    mouse_();
+}
+
+// function mousePressed() {
+//     mouse_();
+// }
 
 function searchVilles() {
     // console.log(this.value());
+    searchInfo = '';
     let v = this.value().toUpperCase();
     villes.forEach(a => { a.sel=0; a.couleur=(color(255))});
     Departements.sel = 0;
     if (v != '') {
         let filtre = villes.filter(a =>  (a.city.toUpperCase().indexOf(v)>-1) );
         filtre.forEach(a=>{a.sel=2 ; a.couleur= color(0,255,0)});
-        console.log(filtre.length);
+        searchInfo = "#"+filtre.length;
+        // console.log(filtre.length);
     }
 }
 
@@ -306,8 +323,8 @@ class Detail {
         text(this.min_,this.x+this.w+5,this.y+this.h);
         fill(color(cVert));
         text(this.values[Annee.Id]==null?0:this.values[Annee.Id],this.x+this.w+5,this.y+this.h/2);
-        stroke(color(cVert));
-        circle(this.actif.x, this.actif.y,4);
+        stroke(color(cVert));noFill();strokeWeight(2);
+        circle(this.actif.x, this.actif.y,10);
     }
 }
 
@@ -333,9 +350,11 @@ class Button {
     }
     couleur(v) {
         if (v>100) {
-            return color(255,0,0);
+            let c=map(v,100,200,50,255);
+            return color(c,0,0);
         } else {
-            return color(0,0,255);
+            let c=map(v,0,100,50,255);
+            return color(0,0,c);
         }
     }
 
