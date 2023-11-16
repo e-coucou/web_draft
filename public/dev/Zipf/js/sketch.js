@@ -1,4 +1,4 @@
-const eC = {version: 'v2.37', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
+const eC = {version: 'v2.40', release:'r1', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
 let mobile;
 let DEBUG = true, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -6,7 +6,7 @@ let btDensite;
 let REDUC=800, RATIO=1.5;
 
 const a1 = Math.log(33000);
-const MIN_X= -10000, MAX_X = 1000000, MIN_Y=6001357, MAX_Y = 7191821;
+const MIN_X= 100000, MAX_X = 1300000, MIN_Y=6001357, MAX_Y = 7191821;
 // const ratio = 0.15402190211273947;
 
 let villes = [], URLs=[], dataVilles, dataJson, villesNew = []
@@ -95,7 +95,7 @@ function Init() {
     villes = Object.values(dataJson);
     let [dept,regions] = addDept();
     let r = width/height;
-    initQT(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
+    initQT(MIN_X,MAX_X ,MIN_Y,MAX_Y);
     Departements = new Departement(7*width/8-20,height/4,width/8,height/4, dept, regions);
     Zipf = new ZIPF(3*width/4,10,width/4,height/5);
     Zipf.setVilles(0,villes);
@@ -105,7 +105,7 @@ function Init() {
     bgRate = new barGraph(width-65,height-80,50,12,0,150);
     ListeVille = new LISTE(0,175,200,height-175-50);
     listeHelp = new LISTE(width-180,height-50,200,15,HELP);
-    drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);
+    drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);
     Annee.setAnnee(2020);
 }
 
@@ -127,13 +127,14 @@ function initQT(x1,x2,y1,y2) {
     nb=0;
 	let boundary = new Rectangle(width/2, height/2, width/2, height/2);
 	qt = new Quadtree(boundary, 4);
-    let offsetX = map((x2+x1)/2,x1,x2,0,width);
+    let r =width/height;
+    let offsetX = map((x2+x1)/2,x1,x2,0,width) / r;
     for (let i=0;i<villes.length;i++) {
         let v = villes[i];
         if (v.x>x1 & v.x<x2 & v.y>y1 & v.y<y2) {
             nb++;
             let info = new Info(v.hist,v.city,v);
-            let x = map(v.x,x1,x2,0,width) + (width/2-offsetX/2)/2;
+            let x = map(v.x,x1,x2,0,width)/r + width/2 -offsetX;
             let y = map(v.y,y1,y2,height,0);
             let p = new Point(x, y, null, info);
             qt.insert(p);
@@ -146,11 +147,13 @@ function getCircle(v) {
 }
 
 function drawMunipPrev(x1,x2,y1,y2) {
-    let offsetX = map((x2+x1)/2,x1,x2,0,width);
+    let r = width/height;
+    let offsetX = map((x2+x1)/2,x1,x2,0,width) / r;
     for (let i=0;i<villes.length;i++) {
         let v = villes[i];
         if (v.x>x1 & v.x<x2 & v.y>y1 & v.y<y2) {
-            let x = map(v.x,x1,x2,0,width) + (width/2-offsetX/2)/2;
+            let x = map(v.x,x1,x2,0,width) / r + width/2 - offsetX;
+            // let x = map(v.x,x1,x2,0,width) + (width/2-offsetX/2)/2;
             let y = map(v.y,y1,y2,height,0);
             v['display'] = {x:x,y:y};
             let d = ((v.hist[v.hist.length-1]-v.hist[0])/v.hist[0] + 1.0)*100;
@@ -159,6 +162,7 @@ function drawMunipPrev(x1,x2,y1,y2) {
     }
 }
 function drawMunicipalite(x1,x2,y1,y2,ref) {
+    let r=width/height;
     let ok = Annee.getOK();
     noStroke();
     for (let i=0;i<villes.length;i++) {
@@ -182,6 +186,15 @@ function drawMunicipalite(x1,x2,y1,y2,ref) {
             circle(v.display.x,v.display.y,c);
         }
     }
+    // DEBUG INFO
+    // let offsetX = map((x2+x1)/2,x1,x2,0,width);
+    // let x = map(MIN_X,x1,x2,0,width) + (width/2-offsetX/2)/2;
+    // // let y = map(v.y,y1,y2,height,0);
+    // fill(255,0,0);
+    // circle(x,500,10);
+    // x = map(1300000,x1,x2,0,width) + (width/2-offsetX/2)/2;
+    // circle(x,500,10);
+    // console.log(offsetX)
 }
 
 function getMinMax() {
@@ -244,7 +257,7 @@ function draw() {
     rate.html(' Exécution en '+round(deltaTime)+' ms');
     // rate.html('execution en '+round(deltaTime)+' ms'+'    Année = '+Annee.annee+' -  pop= '+sum);
     if (DEBUG) noLoop();
-    drawMunicipalite(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y,Annee.Id);
+    drawMunicipalite(MIN_X, MAX_X , MIN_Y,MAX_Y,Annee.Id);
 
     if (VERBOSE) qt.show();
     if (LOOP) Annee.nextYear();
