@@ -15,7 +15,7 @@ let qt, nb=0, bgRate;
 // let france=[];
 // let municipalities = [];
 let min_, max_;
-let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=3;
+let zoom = [ 55, 34, 21, 13, 8, 5, 3, 2], zoomId=3, scaleX, scaleY, scale, surface;
 // let listId = 0, villesSel=0,
 let selectRange = false, selectFix=false, [selX,selY] = [0,0];
 
@@ -160,6 +160,12 @@ function drawMunipPrev(x1,x2,y1,y2) {
             v['densite'] = d;
         }
     }
+    let v1 = villes.filter(a => a.id=="29155")[0];
+    let v2 = villes.filter(a => a.id=="67261")[0];
+    scaleX = (v2.x-v1.x) / (v2.display.x - v1.display.x);
+    scaleY = -(v2.y-v1.y) / (v2.display.y - v1.display.y);
+    scale = (scaleX+scaleY)/2;
+    console.log(scaleX,scaleY,scale);
 }
 function drawMunicipalite(x1,x2,y1,y2,ref) {
     let ok = Annee.getOK();
@@ -284,7 +290,7 @@ function draw() {
 
         textSize(12); fill(255);noStroke();
         text('# de Communes : '+points.length, 10, height-30);
-        text('Densité : '+densite, 10, height-15);
+        text('Densité : '+densite+"p. ("+nf(densite/surface,0,1)+" hab/km2)", 10, height-15);
     }
 
     Annee.show();

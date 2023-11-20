@@ -27,8 +27,8 @@ function keyPressed() {
         if (key=='-') { REDUC -= 50; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
         if (key=='a') { RATIO += 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
         if (key=='w') { RATIO -= 0.1; drawMunipPrev(MIN_X,MIN_X + (MAX_Y-MIN_Y)*r,MIN_Y,MAX_Y);}
-        if (key=='z') { zoomId = (zoomId + 1) % zoom.length ;}
-        if (key=='Z') { zoomId = max(0,(zoomId - 1)) ;}
+        if (key=='z') { zoomId = (zoomId + 1) % zoom.length ; surface = zoom[zoomId]*zoom[zoomId]*scale*scale /1000/1000;}
+        if (key=='Z') { zoomId = max(0,(zoomId - 1)) ; surface = zoom[zoomId]*zoom[zoomId]*scale*scale/1000/1000;}
         if (key=='f') { FLAT = ! FLAT ;}
         if (key=='r') { RAINBOW = ! RAINBOW ;}
         if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
