@@ -1,11 +1,8 @@
 const eC = {version: 'v0.01', release:'r0', date:'nov/23', owner: 'rky', code:'y2H', annee:'2023', maj:'nov/23'};
 let mobile;
 let DEBUG = true;
-
-let murs = [];
-let particule;
-let seg=[];
-let itSeg=0;
+let cercles = [];
+let rectangles = [];
 
 function windowResized() {
     let m = min(innerHeight,innerWidth);
@@ -21,13 +18,6 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    if (seg.length==2 || seg.length==0) {
-        seg = [];
-        seg.push( {x:mouseX, y:mouseY});
-    } else {
-        seg.push( {x:mouseX, y:mouseY});
-        murs.push( new Segment(seg[0], seg[1]));
-    }
 }
 
 function setup() {
@@ -37,19 +27,29 @@ function setup() {
     canvas.parent("#canvas");
     windowResized();
 
-    particule = new Particule({x:width/2, y:height/2});
-    murs.push( new Segment({x:0,y:0},{x:0,y:height}));
-    murs.push( new Segment({x:0,y:0},{x:width,y:0}));
-    murs.push( new Segment({x:width,y:0},{x:width,y:height}));
-    murs.push( new Segment({x:0,y:height},{x:width,y:height}));
-    murs.push( new Segment({x:100,y:200},{x:700,y:100}));
+    cercles.push(new formCercle(new Vector(200,400),120));
+    cercles.push(new formCercle(new Vector(850,200),160));
+    cercles.push(new formCercle(new Vector(700,600),100));
+    rectangles.push(new formRect(new Vector(320,110),new Vector(120,80)));
+    rectangles.push(new formRect(new Vector(width/2,height/2),new Vector(60,40)));
 }
 
 function  draw() {
     background(52);
 
-    particule.update({x:mouseX, y:mouseY});
-    for (let mur of murs) {
-        mur.show();
+    let d=Infinity;
+    let m = new Vector(mouseX, mouseY);
+    for (let c of cercles) {
+        c.show();
+        let dd = c.SDF(m);
+        if (dd<d) d=dd;
     }
+    for (let r of rectangles) {
+        r.show();
+        let dd = r.SDF(m);
+        if (dd<d) d=dd;
+    }
+
+    fill(255,255,0,30);stroke(255,255,0);
+    circle(m.x,m.y,d);
 }
