@@ -5,15 +5,21 @@ function ligne(A, B) {
 class Ray {
     constructor(pos,angle) {
         this.pos = pos;
-        this.dir = {x: Math.cos(angle*TWO_PI/360), y: Math.sin(angle*TWO_PI/360)};
+        this.dir = new Vector ( Math.cos(angle*TWO_PI/360), Math.sin(angle*TWO_PI/360) );
     }
 
     show() {
+        let r = Vector.mult(this.dir,50);
         fill(255); stroke(255,30); strokeWeight(1);
         push();
         translate(this.pos.x, this.pos.y);
-        ligne({x:0,y:0},this.dir);
+        ligne(new Vector(0,0),r);
         pop();
+    }
+
+    getMag(d) {
+        let r = Vector.mult(this.dir,d);
+        return r;
     }
 
     update(p) {
@@ -27,7 +33,7 @@ class Ray {
     projection(segments) {
         let rec=null, dMin=Infinity;
         for (let segment of segments) {
-           let [r,p] = cast(this.pos, {x:this.dir.x+this.pos.x, y:this.dir.y+this.pos.y},segment.A, segment.B)
+           let [r,p] = cast(this.pos, new Vector(this.dir.x+this.pos.x, this.dir.y+this.pos.y),segment.A, segment.B)
             if (r) {
                 let d = this.dist(p);
                 if (d<dMin) {
@@ -49,6 +55,16 @@ function cast(A,B,C,D) {
     let t = (A.x-C.x)*(C.y-D.y) - (A.y-C.y)*(C.x-D.x); t = t/d;
     let s = (A.x-C.x)*(A.y-B.y) - (A.y-C.y)*(A.x-B.x); s = s/d;
     if (s<1 & s>0 & t>0) { 
+        let x=A.x + t*(B.x-A.x), y = A.y + t*(B.y-A.y); 
+        return [true,{x:x,y:y}];
+    }
+    return [false,null];
+}
+function castDir(A,B,C,D) {
+    let d = (A.x-B.x)*(C.y-D.y) - (A.y-B.y)*(C.x-D.x);
+    let t = (A.x-C.x)*(C.y-D.y) - (A.y-C.y)*(C.x-D.x); t = t/d;
+    let s = (A.x-C.x)*(A.y-B.y) - (A.y-C.y)*(A.x-B.x); s = s/d;
+    if (s<1 & s>0) { 
         let x=A.x + t*(B.x-A.x), y = A.y + t*(B.y-A.y); 
         return [true,{x:x,y:y}];
     }
