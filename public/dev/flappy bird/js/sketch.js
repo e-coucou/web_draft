@@ -1,4 +1,4 @@
-let TOTAL = 500;
+let TOTAL = 300;
 let w,h;
 let scene;
 let generation;
@@ -30,7 +30,7 @@ function restoreBrain() {
 
 function windowResized() {
     h =min(windowHeight,500);
-    resizeCanvas(innerWidth,h);
+    resizeCanvas(750,h);
     generation = new GA(TOTAL);
     counter=0;
     maxScore=0;
