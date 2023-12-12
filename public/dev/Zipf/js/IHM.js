@@ -16,7 +16,6 @@ function rainbow(frequency,i,d) {
 // Gestion du clavier
 function keyPressed() {
     let r = width/height;
-    if ( ! getOkDivers(mouseX, mouseY)) {
         if (ctrl & key=='b') { LOOP =  !LOOP }
         if (key=='l') { loop(); }
         if (key=='d') { DEBUG = ! DEBUG; loop(); }
@@ -36,7 +35,6 @@ function keyPressed() {
         if (keyCode == UP_ARROW) { ListeVille.up();}
         if (keyCode == DOWN_ARROW) { ListeVille.down(); }
         if (key=='0') { Departements.sel=0; let [sum,nb]= selDept(0); Departements.setDeptValue(sum,nb); }
-    }
     redraw();
     // console.log(key,keyCode)
     ctrl = (keyCode == 91) || (keyCode == 17);
