@@ -89,10 +89,13 @@ function initConvexHull(d) {
     Sud = ret.filter( a => { return (a.y()>=y);});
     hull.push(Nord[0]);
     hull.push(Nord[1]);
+    Nord.splice(0,2);
     return ret;
 }
 
 function nextHull() {
+    let p =Nord[0];
+    
     
 }
 
