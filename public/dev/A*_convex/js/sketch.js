@@ -59,6 +59,7 @@ function setup() {
         data.push(new Vector(random(20,width-20),random(20,height-20)));
     }
     data = initConvexHull(data);
+    nextHull();
 }
 
 function initQT(x1,x2,y1,y2) {
@@ -95,6 +96,8 @@ function initConvexHull(d) {
 
 function nextHull() {
     let p =Nord[0];
+    pull.push(p);
+    Nord.splice(0,1);
     
     
 }
