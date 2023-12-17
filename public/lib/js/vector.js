@@ -1,5 +1,5 @@
 class Vector {
-    constructor(a,b,c) {
+    constructor(a,b,c=0) {
         this.e = [a,b,c];
     }
     x() { return this.e[0];}
@@ -51,6 +51,9 @@ class Vector {
     }
     static dot(u,v) {
         return(u.e[0]*v.e[0]+u.e[1]*v.e[1]+u.e[2]*v.e[2]);
+    }
+    static cross(u,v,w) { // produit vectoriel
+        return( (v.e[0]-u.e[0])*(w.e[1]-u.e[1]) - (w.e[0]-u.e[0])*(v.e[1]-u.e[1]) );
     }
     static mat(u,v) {
         return new Vector ( u.e[1]*v.e[2]-u.e[2]*v.e[1] , u.e[2]*v.e[0]-u.e[0]*v.e[2] , u.e[0]*v.e[1]-u.e[1]*v.e[0] );

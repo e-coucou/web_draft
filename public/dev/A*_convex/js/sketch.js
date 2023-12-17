@@ -7,8 +7,7 @@ const cols=100, rows=cols;
 let bgRate,qt;
 let aStar;
 
-let data=[], hull=[], Nord=[], Sud=[];
-
+let hull, N=1000;
 
 function preload() { // voir getdata.js pour les preloads
     dataJson = loadJSON('./data/dataEP.json');
@@ -55,11 +54,19 @@ function setup() {
     end = searchVilles('saint-tropez');
     aStar = new Astar(start,end);
 
-    for (let i=0; i<100 ; i++) {
-        data.push(new Vector(random(20,width-20),random(20,height-20)));
+    hull = new Convex();
+
+    // for (let i=0; i<N ; i++) {
+    //     hull.add(random(20,width-20),random(20,height-20));
+    // }
+    for (let v of villes) {
+        let x = v.display.x;
+        let y = v.display.y;
+        if (x>0 && x<0.88*width && y>0 && y<height) {
+            hull.add(x,y);
+        }
     }
-    data = initConvexHull(data);
-    nextHull();
+    hull.init();
 }
 
 function initQT(x1,x2,y1,y2) {
@@ -81,32 +88,11 @@ function initQT(x1,x2,y1,y2) {
 	}
 }
 
-function initConvexHull(d) {
-    // trier les data par ordre des x
-    let ret = d.sort((a,b) => { return (a.e[0]-b.e[0]);} );
-    let y = ret[0].y(); 
-    // on separe le nord et le sud attention l'axe des Y a la tete en bas !
-    Nord = ret.filter( a => { return (a.y()<=y);});
-    Sud = ret.filter( a => { return (a.y()>=y);});
-    hull.push(Nord[0]);
-    hull.push(Nord[1]);
-    Nord.splice(0,2);
-    return ret;
-}
-
-function nextHull() {
-    let p =Nord[0];
-    pull.push(p);
-    Nord.splice(0,1);
-    
-    
-}
-
 function draw() {
     background(0);
     rate.html(' Exécution en '+round(deltaTime)+' ms');
 
-    // drawMunicipalite(MIN_X, MAX_X , MIN_Y,MAX_Y,Annee.Id); 
+    drawMunicipalite(MIN_X, MAX_X , MIN_Y,MAX_Y,Annee.Id); 
 
     // aStar.show(color(cVert,color(255,0,0)));
     // if (aStar.next()) {
@@ -116,22 +102,10 @@ function draw() {
 
     // if (VERBOSE) qt.show();
 
-    fill(255,0,0); noStroke();
-    for (let v of Nord) {
-        circle(v.x(),v.y(),4);
-    }
-    fill(0,0,255); noStroke();
-    for (let v of Sud) {
-        circle(v.x(),v.y(),4);
-    }
-    fill(0,255,0); noStroke();
-    circle(data[0].x(),data[0].y(),5);
+    hull.iter(N/10);
 
-    stroke(0,255,0);strokeWeight(2);
-    for (let i=0;i<hull.length-1;i++) {
-        line(hull[i].x(),hull[i].y(), hull[i+1].x(), hull[i+1].y());
-        circle(hull[i+1].x(),hull[i+1].y(),5);
-    }
+    // hull.showPt();
+    hull.trace();
 
     textAlign(CENTER,CENTER);
     textSize(10); fill(color(cVert));noStroke();
