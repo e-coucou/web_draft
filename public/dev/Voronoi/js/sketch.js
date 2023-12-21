@@ -3,22 +3,18 @@ let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
 const cVert = [10,200,150];
-const cols=100, rows=cols;
-let bgRate,qt;
-let aStar;
+let bgRate;
 
-let hull, N=1000;
+let germes=[], Nb=10;
 
 function preload() { // voir getdata.js pour les preloads
-    dataJson = loadJSON('./data/dataEP.json');
+    // dataJson = loadJSON('./data/dataEP.json');
 }
 
 function windowResized() {
     let m = min(innerHeight,innerWidth) * 0.92;
     resizeCanvas(m-10,m-10);
     bgRate = new barGraph(width-60,height-40,45,12,0,100);
-    villes = Object.values(dataJson);
-    initQT(MIN_X,MAX_X ,MIN_Y,MAX_Y);
 }
 
 function setup() {
@@ -29,83 +25,22 @@ function setup() {
     canvas.parent("#canvas");
     rate = select("#rate");
     windowResized();
-    Annee = new Annees();
-    drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);
-    Annee.setAnnee(2020);
-    for (let pt of villes) {
-        let inc=3;
-        let gR = new Rectangle(pt.display.x,pt.display.y,inc,inc);
-        let voisins = qt.query(gR);
-        while (voisins.length < 5) {
-            inc += 1;
-            gR = new Rectangle(pt.display.x,pt.display.y,inc,inc);
-            voisins = qt.query(gR);
-        }
-        pt.f = 0;
-        pt.g = 0;
-        pt.h = 0;
-        pt.precedent = undefined;
-        pt.voisins = voisins;
+
+    for (let i=0; i<Nb; i++) {
+        germes.push(new Vector(random(50,width-50),random(50,height-50),0));
     }
-    start = searchVilles('corps-nu');
-    // start = searchVilles('paris 15e');
-    // start = searchVilles('lyon 6e');
-    // start = searchVilles('dompierre-sur-besbre');
-    end = searchVilles('saint-tropez');
-    aStar = new Astar(start,end);
-
-    hull = new Convex();
-
-    // for (let i=0; i<N ; i++) {
-    //     hull.add(random(20,width-20),random(20,height-20));
-    // }
-    for (let v of villes) {
-        let x = v.display.x;
-        let y = v.display.y;
-        if (x>0 && x<0.88*width && y>0 && y<height) {
-            hull.add(x,y);
-        }
-    }
-    hull.init();
-}
-
-function initQT(x1,x2,y1,y2) {
-    nb=0;
-	let boundary = new Rectangle(width/2, height/2, width/2, height/2);
-	qt = new Quadtree(boundary, 4);
-    let r =width/height;
-    let offsetX = map((x2+x1)/2,x1,x2,0,width) / r;
-    for (let i=0;i<villes.length;i++) {
-        let v = villes[i];
-        if (v.x>x1 & v.x<x2 & v.y>y1 & v.y<y2) {
-            nb++;
-            let info = new Info(v.hist,v.city,v);
-            let x = map(v.x,x1,x2,0,width)/r + width/2 -offsetX;
-            let y = map(v.y,y1,y2,height,0);
-            let p = new Point(x, y, v, info);
-            qt.insert(p);
-        }
-	}
 }
 
 function draw() {
     background(0);
     rate.html(' Exécution en '+round(deltaTime)+' ms');
+    fill(0); stroke(255);
+    rect(50,50,width-100,height-100);
 
-    drawMunicipalite(MIN_X, MAX_X , MIN_Y,MAX_Y,Annee.Id); 
-
-    // aStar.show(color(cVert,color(255,0,0)));
-    // if (aStar.next()) {
-    //     aStar.show(color(cVert,color(255,0,0)));
-    //     noLoop();
-    // }
-
-    // if (VERBOSE) qt.show();
-
-    hull.iter(N/10);
-
-    // hull.showPt();
-    hull.trace();
+    fill(255);
+    for (let g of germes) {
+        circle(g.x(), g.y(),5);
+    }
 
     textAlign(CENTER,CENTER);
     textSize(10); fill(color(cVert));noStroke();
