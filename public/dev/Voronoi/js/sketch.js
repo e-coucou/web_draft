@@ -3,9 +3,10 @@ let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
 const cVert = [10,200,150];
+const offset = 50;
 let bgRate;
 
-let germes=[], Nb=10;
+let voronoi, Nb=1, D = 0;
 
 function preload() { // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
@@ -26,21 +27,28 @@ function setup() {
     rate = select("#rate");
     windowResized();
 
-    for (let i=0; i<Nb; i++) {
-        germes.push(new Vector(random(50,width-50),random(50,height-50),0));
-    }
+    voronoi = new Voronoi();
+
+    voronoi.add(new Germe ( new Vector(width/2,200,0)) );
+}
+
+function mouseClicked() {
+    voronoi.add(new Germe( new Vector(mouseX,mouseY, 0)) );
 }
 
 function draw() {
     background(0);
+    D = mouseY;
     rate.html(' Exécution en '+round(deltaTime)+' ms');
     fill(0); stroke(255);
-    rect(50,50,width-100,height-100);
+    rect(offset,offset,width-2*offset,height-2*offset);
 
-    fill(255);
-    for (let g of germes) {
-        circle(g.x(), g.y(),5);
-    }
+    stroke(255); strokeWeight(2);
+    line(offset,D,width-offset,D);
+
+
+    voronoi.update(D);
+    voronoi.show(D);
 
     textAlign(CENTER,CENTER);
     textSize(10); fill(color(cVert));noStroke();
