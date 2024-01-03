@@ -1,4 +1,4 @@
-const eC = {version: 'v1.0', release:'r0', date:'dec/23', owner: 'rky', code:'y2H', annee:'2023', maj:'dec/23'};
+const eC = {version: 'v1.03', release:'r0', date:'dec/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -43,6 +43,15 @@ function setup() {
     rate = select("#rate");
     windowResized();
 
+    reset();
+
+}
+
+function reset() {
+    joueurs = [];
+    nbTirages = 0;
+    probaF=[]; probaT=[]; corr = [[0,0],[0,0]];
+
     for (let i=0;i<(SAMPLES/2);i++) {
         joueurs.push(new Joueur('Fair',FAIR))
     }
@@ -50,7 +59,6 @@ function setup() {
         joueurs.push(new Joueur('Tricheur',TRICHE))
     }
 }
-
 function prob() {
     return 0;
 }
@@ -120,16 +128,16 @@ function draw() {
     g.setSeuilInf(FAUX_NEGATIF); g.setTitre('Tricheurs ...')
     g.show();
 
-    cor = new Correlation(corr,offset+width/6,height/2+offset,width/4);
+    cor = new Correlation(corr,offset+width/6,height/2+2*offset,Math.min(width/4,height/4));
     cor.setMax(SAMPLES/2*0.05);
     cor.setMin(SAMPLES/2*0.8);
     cor.show();
 
     let n = Math.sqrt(SAMPLES);
-    let w = int(min((width-offset)/2,(height-offset)/2) / n);
+    let w = int(min((width-offset-10)/2,(height-offset-10)/2) / n);
     for (let i=0; i<SAMPLES ; i++) {
         let x = int(i % n) * w + (width+2*offset)/2;
-        let y = int(i / n) * w + height/2;
+        let y = int(i / n) * w + (height+20)/2;
         if (anim) {
             joueurs[i].anim(x,y,w,anim_cpt);
         } else {
@@ -144,10 +152,11 @@ function draw() {
         }
     }
 
-    // textSize(12);textAlign(LEFT,CENTER);
-    // let x = width-65, y= height-30;
+    textSize(10);textAlign(LEFT,CENTER);
+    let x = offset+10, y= height-offset-15;
+    fill(255); noStroke();
     // etat = (!DEBUG?'🌐':'')+(FLAT?'⎯':'')+(RAINBOW?'🌈':'')+(btDensite.value?'👨‍👩‍👦‍👦':'');
-    // text(etat,x,y);
+    text('⏹️  ▶️',x,y);
     // text(searchInfo,7*width/8-55,3*height/4-7);
 
     bgRate.anim(deltaTime);

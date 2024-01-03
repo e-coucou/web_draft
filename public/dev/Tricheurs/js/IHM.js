@@ -15,29 +15,17 @@ function rainbow(frequency,i,d) {
 
 // Gestion du clavier
 function keyPressed() {
-    let r = width/height;
-    if ( ! getOkDivers(mouseX, mouseY)) {
         if (ctrl & key=='b') { LOOP =  !LOOP }
+        if (key==' ') { mouse_(); }
+        if (key=='r') { reset(); }
         if (key=='l') { loop(); }
         if (key=='d') { DEBUG = ! DEBUG; loop(); }
         if (key=='v') { VERBOSE = ! VERBOSE; }
-        if (key=='g') { btDensite.switch(); }
-        if (key==' ') { Annee.nextYear(); }
-        if (key=='+') { REDUC += 50; drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);}
-        if (key=='-') { REDUC -= 50; drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);}
-        if (key=='a') { RATIO += 0.1; drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);}
-        if (key=='w') { RATIO -= 0.1; drawMunipPrev(MIN_X,MAX_X,MIN_Y,MAX_Y);}
-        if (key=='z') { zoomId = (zoomId + 1) % zoom.length ; surface = zoom[zoomId]*zoom[zoomId]*scale*scale /1000/1000;}
-        if (key=='Z') { zoomId = max(0,(zoomId - 1)) ; surface = zoom[zoomId]*zoom[zoomId]*scale*scale/1000/1000;}
-        if (key=='f') { FLAT = ! FLAT ;}
-        if (key=='r') { RAINBOW = ! RAINBOW ;}
         if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
         if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
         if (keyCode == UP_ARROW) { ListeVille.up();}
         if (keyCode == DOWN_ARROW) { ListeVille.down(); }
         if (key=='0') { Departements.sel=0; let [sum,nb]= selDept(0); Departements.setDeptValue(sum,nb); }
-    }
-    redraw();
     // console.log(key,keyCode)
     ctrl = (keyCode == 91) || (keyCode == 17);
     // console.log(ctrl);
@@ -47,13 +35,13 @@ function mouse_() {
     // mouse clicked ...
     addTirage();
 }
-function mouseClicked(event) {
-    mouse_();
-}
-
-// function mousePressed() {
+// function mouseClicked(event) {
 //     mouse_();
 // }
+
+function mousePressed() {
+    mouse_();
+}
 
 class Button {
     constructor(x,y,w,h) {
