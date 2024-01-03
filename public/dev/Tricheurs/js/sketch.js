@@ -55,7 +55,7 @@ function prob() {
     return 0;
 }
 
-function mouseClicked() {
+function addTirage() {
     probaF=[], probaT=[];
     for (let i=0; i<=nbTirages; i++) {
 

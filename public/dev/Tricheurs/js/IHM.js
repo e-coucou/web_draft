@@ -45,6 +45,7 @@ function keyPressed() {
 
 function mouse_() {
     // mouse clicked ...
+    addTirage();
 }
 function mouseClicked(event) {
     mouse_();
