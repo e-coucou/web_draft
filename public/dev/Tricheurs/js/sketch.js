@@ -1,9 +1,11 @@
-const eC = {version: 'v1.03', release:'r0', date:'dec/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
+const eC = {version: 'v1.11', release:'r0', date:'dec/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
+let wEP,hEP;
+const pEP = 50;
 
 const cVert = [10,200,150];
-const offset = 50;
+const offset = 5;
 let bgRate;
 
 let startTime, endTime;
@@ -32,6 +34,8 @@ function windowResized() {
     let hm = innerHeight * 0.92;
     resizeCanvas(wm-10,hm-10);
     bgRate = new barGraph(width-60,height-40,45,12,0,100);
+    wEP = width-2*offset;
+    hEP = height - 2*offset - pEP;
 }
 
 function setup() {
@@ -75,10 +79,9 @@ function addTirage() {
     }
     let cpt=0, seuil=-1;
     for (let i=0;i<probaF.length;i++) {
-        if (cpt>0.95) {seuil=i; break;}
+        if (cpt>FAUX_POSITIF) {seuil=i; break;}
         cpt += probaF[i];
     }
-    // console.log(seuil);
     // on effectue le tirage ...
     for (let j of joueurs) {
         j.add(seuil);
@@ -102,7 +105,7 @@ function draw() {
     background(0);
     rate.html(' Exécution en '+round(deltaTime)+' ms');
     fill(0); stroke(255);
-    rect(offset,offset,width-offset,height-2*offset);
+    rect(offset,offset,wEP,hEP);
 
     // for (let i =0; i<joueurs.length;i++) {
     //     let j = joueurs[i];
@@ -119,29 +122,32 @@ function draw() {
     maxY1 = Math.max(...probaF); 
     maxY2 = Math.max(...probaT);
     let maxY = Math.max(maxY1,maxY2);
-    let g = new Graphe(probaF, offset+10,offset+10,width-(offset+20),height/5);
+    let marge=10;
+    let g = new Graphe(probaF, offset+marge,offset+marge,wEP-2*marge,hEP/5);
     g.setMaxY(maxY);
     g.setSeuilSup(FAUX_POSITIF);g.setTitre('Joueurs Normaux')
     g.show();
-    g = new Graphe(probaT, offset+10,offset+10+170,width-(offset+20),height/5);
+    g = new Graphe(probaT, offset+marge,offset+2*marge+hEP/5,wEP-2*marge,hEP/5);
     g.setMaxY(maxY);
     g.setSeuilInf(FAUX_NEGATIF); g.setTitre('Tricheurs ...')
     g.show();
 
-    cor = new Correlation(corr,offset+width/6,height/2+2*offset,Math.min(width/4,height/4));
-    cor.setMax(SAMPLES/2*0.05);
-    cor.setMin(SAMPLES/2*0.8);
+    w = Math.min(wEP/4,hEP/4);
+    cor = new Correlation(corr,offset+wEP/6,hEP/2+w/2,w);
+    cor.setMax(SAMPLES/2*(1-FAUX_POSITIF));
+    cor.setMin(SAMPLES/2*(1-FAUX_NEGATIF));
     cor.show();
 
     let n = Math.sqrt(SAMPLES);
-    let w = int(min((width-offset-10)/2,(height-offset-10)/2) / n);
+    w = (min((width-offset-10)/2,(3*hEP/5-5*marge)));
+    inc = int( w/ n);
     for (let i=0; i<SAMPLES ; i++) {
-        let x = int(i % n) * w + (width+2*offset)/2;
-        let y = int(i / n) * w + (height+20)/2;
+        let x = int(i % n) * inc + (width/2 + (wEP/2-w)/2);
+        let y = int(i / n) * inc + (2*hEP/5 + (3*hEP/5-w +5*marge)/2); //offset + 4*marge);
         if (anim) {
-            joueurs[i].anim(x,y,w,anim_cpt);
+            joueurs[i].anim(x,y,inc,anim_cpt);
         } else {
-            joueurs[i].show(x,y,w);
+            joueurs[i].show(x,y,inc);
         }
     }
     if (anim) {
