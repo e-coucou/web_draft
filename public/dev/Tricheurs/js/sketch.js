@@ -1,4 +1,4 @@
-const eC = {version: 'v1.11', release:'r0', date:'dec/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
+const eC = {version: 'v1.30', release:'r1', date:'dec/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 let wEP,hEP;
@@ -30,9 +30,9 @@ function preload() { // voir getdata.js pour les preloads
 }
 
 function windowResized() {
-    let wm = innerWidth * 0.92;
+    let wm = innerWidth * 1;
     let hm = innerHeight * 0.92;
-    resizeCanvas(wm-10,hm-10);
+    resizeCanvas(wm-0,hm-0);
     bgRate = new barGraph(width-60,height-40,45,12,0,100);
     wEP = width-2*offset;
     hEP = height - 2*offset - pEP;
@@ -158,18 +158,14 @@ function draw() {
         }
     }
 
-    textSize(10);textAlign(LEFT,CENTER);
-    let x = offset+10, y= height-offset-15;
+    textSize(32);textAlign(LEFT,CENTER);
+    let x = offset+10, y= height-offset-20;
     fill(255); noStroke();
     // etat = (!DEBUG?'🌐':'')+(FLAT?'⎯':'')+(RAINBOW?'🌈':'')+(btDensite.value?'👨‍👩‍👦‍👦':'');
     text('⏹️  ▶️',x,y);
     // text(searchInfo,7*width/8-55,3*height/4-7);
 
     bgRate.anim(deltaTime);
-    // if (iter>1000) {
-    //     iter=0;
-    //     sites = [];
-    // }
 }
 
 
