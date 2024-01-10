@@ -32,7 +32,7 @@ function keyPressed() {
 
 function mouse_() {
     // mouse clicked ...
-    addTirage();
+    forward();
 }
 // function mouseClicked(event) {
 //     mouse_();

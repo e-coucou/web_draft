@@ -16,6 +16,7 @@ const FAUX_NEGATIF = 0.2, FAUX_POSITIF = 0.95;
 let probaF=[], probaT=[], corr = [[0,0],[0,0]];
 
 let anim=false, anim_cpt=0;
+let btReset,btTirage;
 
 function start() {
     startTime = new Date();
@@ -36,6 +37,8 @@ function windowResized() {
     bgRate = new barGraph(width-60,height-40,45,12,0,100);
     wEP = width-2*offset;
     hEP = height - 2*offset - pEP;
+    let x = offset+10, y= height-offset-20;
+    btReset = new Button(x,y,32,32);
 }
 
 function setup() {
@@ -46,7 +49,6 @@ function setup() {
     canvas.parent("#canvas");
     rate = select("#rate");
     windowResized();
-
     reset();
 
 }
@@ -106,6 +108,8 @@ function draw() {
     rate.html(' Exécution en '+round(deltaTime)+' ms');
     fill(0); stroke(255);
     rect(offset,offset,wEP,hEP);
+
+    btReset.show();
 
     // for (let i =0; i<joueurs.length;i++) {
     //     let j = joueurs[i];
