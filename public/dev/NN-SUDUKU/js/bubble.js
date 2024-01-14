@@ -6,6 +6,7 @@ class Bubble {
         this.size = t;
         this.min = min;
         this.max=max;
+        this.wide = max-min;
         this.bubble = [];
         this.init();
     }
@@ -20,12 +21,13 @@ class Bubble {
         for (let t=0; t<this.n;t++) {
             let cx = x0 + r/2 * Math.cos(a);
             let cy = y0 + r/2 * Math.sin(a);
-            let iT;
-            switch(t) {
-                case 0 : iT = [1.,0.,0.]; break;
-                case 1 : iT = [0.,1.,0.]; break;
-                case 2 : iT = [0.,0.,1.]; break;
-            }
+            let iT = Array.from(tf.oneHot([t], this.n).dataSync());
+            // switch(t) {
+            //     case 0 : iT = [1.,0.,0.,0.]; break;
+            //     case 1 : iT = [0.,1.,0.,0.]; break;
+            //     case 2 : iT = [0.,0.,1.,0.]; break;
+            //     case 3 : iT = [0.,0.,0.,1.]; break;
+            // }
             for (let i =0; i<this.size;i++) {
                 let aI = Math.random()*TWO_PI;
                 let rI = Math.random()*r0;
@@ -50,6 +52,8 @@ class Bubble {
     }
 
     show() {
+        stroke(cVert);
+        rect(this.min,this.min,this.wide, this.wide);
         noStroke();
         for (let b of this.bubble) {
             let c = color(couleurs[b.c]);

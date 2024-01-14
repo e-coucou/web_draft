@@ -1,3 +1,6 @@
+// Bibli NN
+// les valeurs d'entrées doivent etre normalisées
+
 class NeuralNetwork {
 	constructor (Inb,Hnb,Onb) {
 		if (Inb instanceof NeuralNetwork) {
@@ -28,7 +31,7 @@ class NeuralNetwork {
 		this.h_o;
 		this.h_i;
 		this.o;
-		this.learning_rate = 0.2;
+		this.learning_rate = 0.05;
 		this.affNtw = true;
 		this.w = 200;
 		this.h = 150;

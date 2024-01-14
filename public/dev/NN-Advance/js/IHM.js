@@ -25,7 +25,7 @@ function keyPressed() {
         if (keyCode == UP_ARROW) { ListeVille.up();}
         if (keyCode == DOWN_ARROW) { ListeVille.down(); }
         if (key=='c') { colorie(); }
-        if (key=='n') { colorieNN(); }
+        if (key=='t') { tfVisualisation(); }
     // console.log(key,keyCode)
     ctrl = (keyCode == 91) || (keyCode == 17);
     // console.log(ctrl);

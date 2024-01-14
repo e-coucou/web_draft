@@ -15,25 +15,27 @@ function rainbow(frequency,i,d) {
 // Gestion du clavier
 function keyPressed() {
         if (ctrl & key=='b') { LOOP =  !LOOP }
-        if (key==' ') { mouse_(); }
+        // if (key==' ') { prediction(); }
         if (key=='r') { reset(); }
         if (key=='l') { loop(); }
         if (key=='d') { DEBUG = ! DEBUG; loop(); }
         if (key=='v') { VERBOSE = ! VERBOSE; }
-        if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
-        if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
-        if (keyCode == UP_ARROW) { ListeVille.up();}
-        if (keyCode == DOWN_ARROW) { ListeVille.down(); }
-        if (key=='c') { colorie(); }
-        if (key=='n') { colorieNN(); }
+        // if (keyCode == RIGHT_ARROW) { Annee.nextYear(); }
+        // if (keyCode == LEFT_ARROW) { Annee.prevYear(); }
+        if (keyCode == UP_ARROW) { train_set.pageUP();}
+        if (keyCode == DOWN_ARROW) { train_set.pageDOWN(); }
+        if (key=='t') { tfVisualisation(); }
     // console.log(key,keyCode)
     ctrl = (keyCode == 91) || (keyCode == 17);
     // console.log(ctrl);
+    loop();
 }
 
 function mouse_() {
     // mouse clicked ...
-    forward();
+    tf.tidy( () => {
+        prediction();
+    });
 }
 // function mouseClicked(event) {
 //     mouse_();
@@ -41,6 +43,7 @@ function mouse_() {
 
 function mousePressed() {
     mouse_();
+    loop();
 }
 
 class Button {

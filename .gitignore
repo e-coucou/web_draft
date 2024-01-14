@@ -131,3 +131,5 @@ dist
 
 pi-billion.txt
 pi_million.txt
+public/dev/NN-SUDUKU/data/mnist_train.csv
+public/dev/NN-SUDUKU/data/mnist_test.csv
