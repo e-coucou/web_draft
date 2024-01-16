@@ -122,3 +122,21 @@ div.entete {
       inset -2px -2px 3px rgba(0, 0, 0, 0.6);
   }
   
+
+    .styled_Couleur {
+    border: 1;
+    line-height: 8.5px;
+    width: 7rem;
+    margin: 5px 5px;
+    padding: 5px 12px;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #032108;
+    text-shadow: 1px 1px 1px #c7b0b0;
+    border-radius: 1px;
+    background-color: rgb(255, 255, 255);
+    /* background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0)); */
+    /* box-shadow:
+      inset 1px 1px 1px rgba(255, 255, 255, 0.6),
+      inset -1px -1px 1px rgba(0, 0, 0, 0.6); */
+  }

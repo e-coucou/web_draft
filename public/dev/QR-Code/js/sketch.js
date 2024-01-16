@@ -1,8 +1,8 @@
-const eC = {version: 'v1.01', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'oct/23'};
+const eC = {version: 'v1.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 const caracteres = [{l:1,h:9,A:{l:9},N:{l:10},B:{l:8}},{l:10,h:26,A:{l:11},N:{l:12},B:{l:16}},{l:27,h:40,A:{l:13},N:{l:14},B:{l:16}}];
-const couleurs = {Standard:[0,0,0], Noir:[0,0,0],Rouge:[180,50,0],Vert:[50,120,0], Bleu:[0,50,120]};
+const couleurs = {Standard:[0,0,0], Noir:[0,0,0],Custom:[0,0,0],Rouge:[180,50,0],Vert:[50,120,0], Bleu:[0,50,120]};
 const templates = [{t:'blank',v:0,m:'A'},{t:'VCARD', v:1, m:'B'},{t:'WIFI', v:2,m:'B'},{t:'SMS', v:3,m:'B'},{t:'eMAIL', v:4, m:'B'}];
 let codePoly = [];
 let padding = [0,0,7,7,7,7,7,0,0,0,0,0,0,0,3,3,3,3,3,3,3,4,4,4,4,4,4,4,3,3,3,3,3,3,3,0,0,0,0,0,0];
@@ -75,6 +75,7 @@ function windowResized() {
     texte.position(x_,h_);
     texte.style('width',w_+padding+'px');
     couleur.position(windowWidth-couleur.elt.offsetWidth-padding,1);
+    couleurCusto.position(windowWidth-couleur.elt.offsetWidth-2*padding-couleurCusto.elt.offsetWidth,1);
 }
 function loadData() {
     for (let i=0; i<Object.keys(qr_json).length;i++) {
@@ -103,8 +104,10 @@ function chgType() {
     loop();
 }
 function chgCouleur() {
+    couleurActive = couleurCusto.value();
     switch (couleur.value()) {
         case 'Standard':
+        case 'Custom':
         case 'Noir':
             select('body').style('background-color',color(200,200,200));
             selectAll('.styled_2').forEach(a=> {a.style('background-color',color(120,120,120))});
@@ -139,6 +142,12 @@ function newTemplate() {
     message = template;
     message_l = template.bytes.length;
     bestVersion();
+}
+function newCouleur(){
+    // console.log(couleurCusto.elt.value);
+    couleur.value('Custom');
+    couleurActive = couleurCusto.value();
+    loop();
 }
 function newMessage()  {
     message={bytes:[],txt:''};
@@ -198,9 +207,15 @@ function setOptions() {
     upload.parent('selection');
     upload.class('styled_2');
 
-    texte = createElement('textarea','eCoucou 2023');
+    texte = createElement('textarea','maj-> jan/24 : option colorCustom 😉 !');
     texte.input(newMessage);
     texte.parent('selection');
+
+    couleurCusto = createElement('textarea','#ff2266');
+    couleurCusto.input(newCouleur);
+    couleurCusto.parent('selection');
+    couleurCusto.class('styled_Couleur');
+    couleurActive = couleurCusto.value();
 
     couleur = createSelect();
     couleur.parent('selection');
@@ -306,7 +321,11 @@ function draw() {
                     if (couleur.value()=='Standard') {
                         fill(0);
                     } else {
-                        fill(couleurs[couleur.value()][0]+g*((a>d)?a:-a),couleurs[couleur.value()][1]+g*((b>d)?b:-b),couleurs[couleur.value()][2]+g*((c>d)?c:-c));noStroke() ;
+                        if (couleur.value()=='Custom') {
+                            fill(color(couleurActive))
+                        } else {
+                            fill(couleurs[couleur.value()][0]+g*((a>d)?a:-a),couleurs[couleur.value()][1]+g*((b>d)?b:-b),couleurs[couleur.value()][2]+g*((c>d)?c:-c));noStroke() ;
+                        }
                     } break;
                 case 1: fill(255);noStroke() ; break;
                 case 2: fill(0,0,255);noStroke() ; break;
