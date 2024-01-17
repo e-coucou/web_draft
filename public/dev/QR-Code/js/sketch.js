@@ -171,7 +171,7 @@ function newMessage()  {
 }
 
 function uploadImage(file) {
-    console.log(file)
+    // console.log(file)
     logo=loadImage(file.data,loop);
 }
 
@@ -223,7 +223,7 @@ function setOptions() {
     texte.input(newMessage);
     texte.parent('selection');
 
-    couleurCusto = createElement('textarea','#ff2266');
+    couleurCusto = createElement('textarea','#20C0F0');
     couleurCusto.input(newCouleur);
     couleurCusto.parent('selection');
     couleurCusto.class('styled_Couleur');
