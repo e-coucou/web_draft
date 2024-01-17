@@ -15,7 +15,7 @@ let grille=[], dim, largeur, w;
 let code, base=104+104;
 let qrType, qrInfo;
 let message, message_l;
-let btOptimise, btSave, logo, upload, texte, couleur, mobile;
+let btOptimise, btSave, logo, upload, texte, couleur, mobile, couleurActive, getImage;
 let tpt=[], template;
 
 function preload() {
@@ -72,8 +72,10 @@ function windowResized() {
     upload.position(x_,h_);h_ += upload.height + padding;
     upload.style('width',w_+'px');
     selTemplate.position(x_,h_);h_ += selTemplate.height + padding;
-    texte.position(x_,h_);
+    texte.position(x_,h_);h_ += texte.height + padding;
     texte.style('width',w_+padding+'px');
+    getImage.position(x_,h_);h_ += getImage.height + padding;
+    getImage.style('width',w_+'px');
     couleur.position(windowWidth-couleur.elt.offsetWidth-padding,1);
     couleurCusto.position(windowWidth-couleur.elt.offsetWidth-2*padding-couleurCusto.elt.offsetWidth,1);
 }
@@ -167,6 +169,12 @@ function newMessage()  {
     }
     bestVersion();
 }
+
+function uploadImage(file) {
+    console.log(file)
+    logo=loadImage(file.data,loop);
+}
+
 function getFile(file) {
     message={bytes:[],txt:''};
     for (let c of file.data) {
@@ -206,6 +214,10 @@ function setOptions() {
     upload = createFileInput(getFile);
     upload.parent('selection');
     upload.class('styled_2');
+
+    getImage = createFileInput(uploadImage);
+    getImage.parent('selection');
+    getImage.class('styled_2');
 
     texte = createElement('textarea','maj-> jan/24 : option colorCustom 😉 !');
     texte.input(newMessage);
