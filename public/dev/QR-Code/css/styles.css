@@ -37,6 +37,14 @@ div.right {
     text-align: end;
     font-family: 'Courier New', Courier, monospace;
 }
+.version {
+    position: absolute;
+    left: 5px;
+    bottom: 10px;
+    color: black;
+    font-size: 0.6rem;
+    font-family: 'Courier New', Courier, monospace;
+}
 input {
     background-color: rgb(208, 237, 228);
     color: rgb(6, 77, 38);

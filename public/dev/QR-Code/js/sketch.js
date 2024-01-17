@@ -1,4 +1,4 @@
-const eC = {version: 'v1.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
+const eC = {version: 'v1.2', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023', maj:'jan/24'};
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 const caracteres = [{l:1,h:9,A:{l:9},N:{l:10},B:{l:8}},{l:10,h:26,A:{l:11},N:{l:12},B:{l:16}},{l:27,h:40,A:{l:13},N:{l:14},B:{l:16}}];
@@ -219,7 +219,7 @@ function setOptions() {
     getImage.parent('selection');
     getImage.class('styled_2');
 
-    texte = createElement('textarea','maj-> jan/24 : option colorCustom 😉 !');
+    texte = createElement('textarea','jan/24 : Custom Image/Color 😉 !');
     texte.input(newMessage);
     texte.parent('selection');
 
@@ -320,6 +320,14 @@ function createQR(level_) {
 function draw() {
     background(255);
     createQR(level);
+    let taille = 0.2;
+    let ratio = logo.width/logo.height;
+    switch(type){
+        case 'H' : taille=0.32; break;
+        case 'Q' : taille=0.28; break;
+        case 'M' : taille=0.23; break;
+        case 'L' : taille=0.20; break;
+    }
     // dessine le QR-Code
     for (let i=0; i<dim ; i++ ) {
         for (let j=0; j<dim ; j++) {
@@ -348,10 +356,12 @@ function draw() {
                 rect(x+e,y+e,largeur-2*e,largeur-2*e);
             } else {
                 if (version>3) {
-                    let l =  round(width*0.2 / largeur /2 ) ;
-                    let st = dim/2 - l -1;
-                    let end = dim/2 + l;
-                    if (i>st && i<end && j>st && j<end) fill(255);
+                    let l =  round(width*taille / largeur /2 ) ;
+                    let stX = dim/2 - l -1;
+                    let endX = dim/2 + l;
+                    let stY = dim/2 - round(l/ratio) -1;
+                    let endY = dim/2 + round(l/ratio);
+                    if (i>stX && i<endX && j>stY && j<endY) fill(255);
                 }
                 rect(x+e,y+e,largeur-2*e,largeur-2*e,a,b,c,d);
             }
@@ -359,14 +369,6 @@ function draw() {
     }
     if (version > 3 && couleur.value()!= 'Standard' ){
         imageMode(CENTER);
-        let ratio = logo.width/logo.height;
-        let taille = 0.2;
-        switch(type){
-            case 'H' : taille=0.32; break;
-            case 'Q' : taille=0.28; break;
-            case 'M' : taille=0.23; break;
-            case 'L' : taille=0.20; break;
-        }
         image(logo,width/2,height/2,taille*width,taille*width/ratio);
     }
     noLoop()
