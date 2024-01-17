@@ -359,7 +359,15 @@ function draw() {
     }
     if (version > 3 && couleur.value()!= 'Standard' ){
         imageMode(CENTER);
-        image(logo,width/2,height/2,0.2*width,0.2*width);
+        let ratio = logo.width/logo.height;
+        let taille = 0.2;
+        switch(type){
+            case 'H' : taille=0.32; break;
+            case 'Q' : taille=0.28; break;
+            case 'M' : taille=0.23; break;
+            case 'L' : taille=0.20; break;
+        }
+        image(logo,width/2,height/2,taille*width,taille*width/ratio);
     }
     noLoop()
 }
