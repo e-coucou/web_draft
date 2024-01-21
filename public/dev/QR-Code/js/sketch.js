@@ -252,6 +252,9 @@ function setup() {
     canvas = createCanvas(10,10); // mise en place du ratio 0.59
     canvas.parent("#canvas");
 
+    vx=select("#vx"); vx.html('⌖ '+eC.version+' '+eC.release+' >'+eC.maj+'<');
+    cr=select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
+
     loadData();
     logTable();
     createPoly();

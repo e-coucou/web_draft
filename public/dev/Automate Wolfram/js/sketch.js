@@ -1,4 +1,4 @@
-const eC = {version: 'v1.00', release:'r0', date:'jan/24', owner: 'rky', code:'y2I', annee:'2024', maj:'jan/24'};
+const eC = {version: 'v1.30', release:'r0', date:'jan/24', owner: 'rky', code:'y2I', annee:'2024', maj:'jan/24'};
 
 // import * as su from './suduku.js';
 
@@ -16,8 +16,8 @@ let bgRate;
 let startTime, endTime, courbe1;
 let grille = [];
 let inc;
-let rule = 30;
-const nbCase = 201;
+let rule = 30, ruleIn;
+const nbCase = 151;
 
 function start() {
     startTime = new Date();
@@ -38,6 +38,7 @@ function windowResized() {
     wEP = width-2*offset;
     hEP = height - 2*offset - pEP;
     let x = offset+10, y= height-offset-20;
+    ruleIn.position(windowWidth-20-ruleIn.elt.offsetWidth,1);
 }
 
 function setup() {
@@ -47,13 +48,16 @@ function setup() {
     canvas = createCanvas(10,10); // mise en place du ratio 0.59
     canvas.parent("#canvas");
     rate = select("#rate");
+    vx=select("#vx"); vx.html('⌖ '+eC.version+' '+eC.release+' >'+eC.maj+'<');
+    cr=select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
+    inputRule();
     windowResized();
     reset();
     // frameRate(10)
 }
 
 function reset() {
-    inc = int(wEP / nbCase);
+    inc = (wEP-2) / nbCase;
     grille = [];
     ligne = [];
     for (let i = 0; i<nbCase ; i++) {
@@ -64,25 +68,41 @@ function reset() {
     ligne[int(nbCase/2)]=1;
 }
 
+function inputRule() {
+    ruleIn = createElement('textarea','30');
+    ruleIn.input(changeRule);
+    ruleIn.parent('selection');
+    ruleIn.class('styled_Couleur');
+    rule = int(ruleIn.value());
+}
+
+function changeRule() {
+    let r = int(ruleIn.value());
+    if (!r) {r=0;};
+    r= r%256;
+    newRule(r);
+}
+
 function newLigne() {
     let nLigne = [];
     let ligne = grille[grille.length-1];
-    if (grille.length>1) {
-        let pLigne = grille[grille.length-2];
-        nLigne[0] = pLigne[1];
-    } else nLigne[0]=0;
-    for (let i=1; i<ligne.length-1 ; i++) {
-        let v = ligne[i-1]*4 + 2*ligne[i] + ligne[i+1];
+    // if (grille.length>1) {
+    //     let pLigne = grille[grille.length-2];
+    //     nLigne[0] = pLigne[1];
+    // } else nLigne[0]=0;
+    for (let i=0; i<ligne.length ; i++) {
+        let v = ligne[(i-1+nbCase)%nbCase]*4 + 2*ligne[i] + ligne[(i+1)%nbCase];
         let b = (rule & Math.pow(2,v)) ? 1 : 0;
         nLigne.push(b);
     }
     // nLigne.push(ligne[ligne.length-1]);
-    nLigne.push(0);
+    // nLigne.push(0);
     grille.push(nLigne);
 }
 
 function newRule(x) {
     rule = x;
+    ruleIn.value(x);
     reset();
 }
 
@@ -96,18 +116,20 @@ function draw() {
     fill(0); stroke(255);
     rect(offset,offset,wEP,hEP);
     //------
-    let offX = (wEP - nbCase*inc)/2;
+    let offX = (wEP - nbCase*inc)/2 +1;
+    fill(255); stroke(120);
     for (let j=0; j<grille.length; j++) {
         let ligne = grille[j]
             let y = j*inc + offset+1;
         for (let i = 0; i<nbCase ; i++) {
             let x = i*inc + offset+offX;
-            stroke(120); noFill();
-            if (ligne[i]==1) fill(255);
-            rect(x,y,inc,inc);
+            // stroke(120); noFill();
+            if (ligne[i]==1) {
+                rect(x,y,inc,inc);
+            }
         }
     }
-    if (grille.length < int(hEP/inc) ) { 
+    if (grille.length < int(wEP/inc/2+1)  && hEP > (grille.length*inc)) { 
         newLigne();
     }
     //----

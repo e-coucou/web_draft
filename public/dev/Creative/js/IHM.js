@@ -33,7 +33,6 @@ function keyPressed() {
 
 function mouse_() {
     // mouse clicked ...
-    nextRule();
 }
 // function mouseClicked(event) {
 //     mouse_();
@@ -96,7 +95,7 @@ class barGraph {
     }
 
     anim(v) {
-        rectMode(CORNER);
+        rectMode(CORNER);strokeWeight(1);
         stroke(cVert);fill(0,0);
         rect(this.x,this.y,this.w,this.h,2);
         noStroke();fill(color(cVert));
