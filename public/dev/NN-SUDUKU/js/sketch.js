@@ -1,4 +1,4 @@
-const eC = {version: 'v1.00', release:'r1', date:'jan/24', owner: 'rky', code:'y2I', annee:'2024', maj:'jan/24'};
+const eC = {version: 'v0.01', release:'r0', date:'feb/24', owner: 'rky', code:'y2I', annee:'2024', maj:'feb/24'};
 
 // import * as su from './suduku.js';
 
@@ -38,7 +38,7 @@ function end() {
 
 function preload() { // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
-    train_csv = loadTable('./data/mnist_train.csv','csv','header');
+    // train_csv = loadTable('./data/mnist_train.csv','csv','header');
     // test_csv = loadTable('./data/mnist_test.csv','csv','header');
 }
 
@@ -59,11 +59,12 @@ function windowResized() {
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
-    // get les data =
     canvas = createCanvas(10,10); // mise en place du ratio 0.59
     canvas.parent("#canvas");
     rate = select("#rate");
     windowResized();
+    vx=select("#vx"); vx.html('⌖ '+eC.version+' '+eC.release+' >'+eC.maj+'<');
+    cr=select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
     reset();
 }
 
@@ -79,22 +80,22 @@ function prediction() {
 }
 
 function reset() {
-    // suduku = new Suduku(1,20,20,100);
-    // suduku.init();
+    suduku = new Suduku(1,20,20,100);
+    suduku.init();
 
-    train_set = new dataSet(train_csv.rows,20,10,wEP-20,hEP);
+    // train_set = new dataSet(train_csv.rows,20,10,wEP-20,hEP);
 
     rate.html('Construction du DataSet ...');
     start();
-    train_csv = '';
-    train_set.build(10000);
+    // train_csv = '';
+    // train_set.build(10000);
     let tps=end();
     console.log('conversion: ',tps);
     message = 'DataSet construit en '+tps+'ms';
     rate.html(message);
-    start();
-    initTF();
-    trainModel();
+    // start();
+    // initTF();
+    // trainModel();
 }
 
 async function train(i,o) {
@@ -145,9 +146,9 @@ function draw() {
     rect(offset,offset,wEP,hEP);
     //------
 
-    // suduku.show();
+    suduku.show();
 
-    train_set.show()
+    // train_set.show()
 
     // if (modelTrain) {
     //     courbe1 = new Courbe(modelLoss,bubbles.max+10,10,width-bubbles.max-20,height/4);

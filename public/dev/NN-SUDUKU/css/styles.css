@@ -6,6 +6,7 @@ body {
     /* image-rendering: pixelated; */
     color:rgb(7, 80, 30);
     align-content: center;
+    text-align: center;
     /* display: contents; */
 }
 a {
@@ -20,8 +21,8 @@ a {
 }
 .right {
     position: absolute;
-    /* top: 50px;
-    left: 60px; */
+    top: 0px;
+    /* left: 60px; */
     background-color: #fff;
 }
 div.right {
@@ -32,6 +33,23 @@ div.right {
     margin: 5px;
     text-align: center;
     /* padding: 10px; */
+}
+.copyright {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    color: black;
+    font-size: 0.6rem;
+    text-align: end;
+    font-family: 'Courier New', Courier, monospace;
+}
+.version {
+    position: absolute;
+    left: 5px;
+    bottom: 10px;
+    color: black;
+    font-size: 0.6rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 input {
