@@ -16,13 +16,11 @@
           <div class="Layout-module--content">
             <div class="Topbar-module">
               <header class="Topbar-module--root">
-                <div class="Topbar-module--clock"> 🇫🇷 </div>
-                <div class="Topbar-module--date">e-coucou</div>
+                <div class="Topbar-module--clock">🐣</div>
+                <div class="Topbar-module--date" id="idDate"></div>
                     <a href="./dev/Evolution/"><img class="Topbar-module--img" src="./img/ecoucou.png" /></a>
-                    <a href="./dev/Automate Wolfram/"><img class="Topbar-module--img" src="./img/wolfram.png" /></a>
-                    <a href="./dev/Creative/"><img class="Topbar-module--img" src="./img/creative.png" /></a>
                     <a href="./dev/QR-Code/"><img class="Topbar-module--img" src="./img/QR-Code.gif" /></a>
-                <div class="Topbar-module--clock">ℹ️</div>
+                <div class="Topbar-module--clock">🇫🇷</div>
                 <!-- <nav>
                   <ul>
                     <li><a href="./dev/Evolution/"><img class="menu" src="./img/p5_0.png" /></a></li>
@@ -33,18 +31,29 @@
                 </nav> -->
               </header>
             </div>
-            <main>
-              <!-- <section>
-                <h3>Particules</h3>
-
-              </section> -->
+            <div class="challenge-module--simplestep"></div>
+            <main class="Main-module--root">
+              <section class="Section-module--root">
+                <div>Particules</div>
+              </section>
             </main>
-            <footer>
-              <p>eCoucou</p>
-              <p>(c) 2024</p>
+            <div class="challenge-module--simplestep"></div>
+            <footer class="Footer-module--root">
+              <div>e-Coucou</div>
+              <div>javascript</div>
+              <div>© 2024</div>
               </footer>
           </div>
         </div>
       </div>
    </body>
+  <script>
+    var date = new Date();
+    var dateString = date.toISOString('fr-FR');
+      document.getElementById("idDate").innerHTML=dateString.substring(0,10).replaceAll('-','/');
+    function getDate() {
+      document.getElementById("idDate").innerHTML=dateString.left(10);
+      console.log(date.toLocaleString('fr-FR'));
+    }
+  </script>
 </html>

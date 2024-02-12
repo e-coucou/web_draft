@@ -1,15 +1,15 @@
 :root {
-    --border: 2px solid rgb(232, 222, 228);
+    --color-main: #d7d4d4;
+    --color-second: #383839;
+    --color-fondclair: #F5F5F5;
+    --color-fondfonce: #777575;
+    --color-maintext: #746f6f;
+
+    --border: 1px solid var(--color-fondclair);
     --baseline: 50px;
     --baseline-box:calc(var(--baseline) - 8px);
     --baseline-img:calc(var(--baseline) - 4px);
     --box-padding: 13px;
-
-    --color-main: #FF507D;
-    --color-second: #4885E1;
-    --color-fondclair: #F5F5F5;
-    --color-fondfonce: #333333;
-    --color-maintext: #666666;
 }
 
 body {
@@ -37,7 +37,7 @@ body {
     background-position:0 -1px;
     /* background-size:100% 0px; */
     background-size:100% var(--baseline);
-    border-right:var(--border);
+    /* border-right:var(--border); */
     min-height:100vh
 }
 
@@ -47,7 +47,7 @@ body {
     /* height:var(--baseline-2x) */
 }
 .Topbar-module--root{
-    background-color: var(--color-main);
+    background-color: var(--color-second);
     /* background-color:var(--gray-light); */
     color:var(--color-maintext);
     /* color:var(--gray-dark); */
@@ -57,19 +57,21 @@ body {
     justify-content:space-between;
     position:relative;
     flex-wrap:wrap;
-    border-right:var(--border);
-    position:fixed;width:calc(100% - var(--baseline-box));
+    /* border-right:var(--border); */
+    position:fixed;
+    width:calc(100% - var(--baseline-box));
     /* width:calc(100% - var(--container-spacing-horizontal)*2) */
     z-index:100;
 }
 .Topbar-module--clock{
     font-size: 2em;
+    border-right: var(--border);
 }
 .Topbar-module--clock,
 .Topbar-module--date
 /* .Topbar-module--img  */
 {
-    border-bottom:var(--border);
+    /* border-bottom:var(--border); */
     border-left: var(--border);
     line-height:var(--baseline-box);
     padding: 0 10px; /* top/bottom right/left*/
@@ -81,15 +83,90 @@ body {
 }
 .Topbar-module--img{
     /* padding-top: 2px; */
-    border-left: var(--border);
-    border-bottom: var(--border);
+    border: var(--border);
+    /* border-bottom: var(--border); */
     /* flex:1; */
     line-height: 0px;
     /* padding: 0 var(--box-padding); */
     width: var(--baseline-img);
     height: var(--baseline-img);
 }
+.challenge-module--simpleSep{
+    border-bottom:3px solid #666;
+    border-bottom:var(--border);
+    border-left:3px solid #666;
+    border-left:var(--border);
+    height:50px;
+    height:var(--baseline)
+}
 
+.Main-module--root {
+    background-color: var(--color-main);
+    color:var(--color-maintext);
+    /* display:flex; */
+    font-family:GT Maru Mono,monospace;
+    justify-content:space-between;
+    /* position:relative; */
+    flex-wrap:wrap;
+    padding: 0 5px;
+    /* border-right:var(--border); */
+    border: var(--border);
+    /* position:fixed; */
+    /* width:calc(100% - var(--baseline-box)); */
+    /* height: var(--baseline); */
+
+    /* width:calc(100% - var(--container-spacing-horizontal)*2) */
+    z-index:100;
+}
+.Section-module--left {
+    background-color: var(--color-main);
+    color:var(--color-maintext);
+    display:flex;
+    font-family:GT Maru Mono,monospace;
+    justify-content:space-between;
+    /* position:relative; */
+    flex-wrap:wrap;
+    /* border: var(--border); */
+    /* position:fixed; */
+    /* width:calc(100% - var(--baseline-box)); */
+    /* height: var(--baseline); */
+
+    /* width:calc(100% - var(--container-spacing-horizontal)*2) */
+    z-index:100;
+}
+
+.Footer-module--root {
+    background-color: var(--color-second);
+    color:var(--color-maintext);
+    display:flex;flex-wrap:wrap;
+    font-family:GT Maru Mono,monospace;
+    font-size: 10px;
+    justify-content:space-between;
+    /* position:relative; */
+    flex-wrap:wrap;
+    padding: 0 5px;
+    border:var(--border);
+    /* line-height:15px; */
+    position:fixed;
+    bottom: 0;
+    width:calc(100% - var(--baseline));
+    /* width:calc(100% - var(--container-spacing-horizontal)*2) */
+    /* height: var(--baseline); */
+    z-index:100;
+}
+.Breadcrumbs-module--root--0664f{
+    border-bottom:1px solid #666;
+    border-bottom:var(--border);
+    border-left:1px solid #666;
+    border-left:var(--border);
+    display:flex;flex-wrap:wrap;
+    font-family:GT Maru Mono,monospace;font-family:var(--maru-mono);
+    font-size:15px;font-size:var(--maru-medium);line-height:49px;
+    line-height:var(--baseline-box);padding:0 25px;
+    padding:0 var(--box-padding)
+}
+
+/* ceci sont les anciens modules  */
 .xx {
     border-right:1px solid #666;border-right:var(--border);position:fixed;
     width:calc(100% - 100px);width:calc(100% - var(--container-spacing-horizontal)*2);z-index:100
