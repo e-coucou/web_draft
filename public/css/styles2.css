@@ -1,15 +1,17 @@
 :root {
-    --color-main: #d7d4d4;
-    --color-second: #383839;
-    --color-fondclair: #F5F5F5;
-    --color-fondfonce: #777575;
-    --color-maintext: #746f6f;
+    --color-main: #202020;
+    --color-second: #000000;
+    --color-fondclair: hsl(0, 0%, 96%);
+    --color-fondfonce: #151515;
+    --color-maintext: #ffffff;
 
     --border: 1px solid var(--color-fondclair);
     --baseline: 50px;
     --baseline-box:calc(var(--baseline) - 8px);
     --baseline-img:calc(var(--baseline) - 4px);
     --box-padding: 13px;
+
+    --menu-len: 35%;
 }
 
 body {
@@ -106,31 +108,40 @@ body {
     /* display:flex; */
     font-family:GT Maru Mono,monospace;
     justify-content:space-between;
-    /* position:relative; */
-    flex-wrap:wrap;
-    padding: 0 5px;
-    /* border-right:var(--border); */
-    border: var(--border);
-    /* position:fixed; */
-    /* width:calc(100% - var(--baseline-box)); */
-    /* height: var(--baseline); */
-
-    /* width:calc(100% - var(--container-spacing-horizontal)*2) */
-    z-index:100;
-}
-.Section-module--left {
-    background-color: var(--color-main);
-    color:var(--color-maintext);
-    display:flex;
-    font-family:GT Maru Mono,monospace;
-    justify-content:space-between;
-    /* position:relative; */
     flex-wrap:wrap;
     /* border: var(--border); */
-    /* position:fixed; */
-    /* width:calc(100% - var(--baseline-box)); */
-    /* height: var(--baseline); */
-
+    z-index:100;
+}
+.Section-module--titre {
+    font-family:GT Maru Mono,monospace;
+    justify-content:space-between;
+    font-size: 1.5em;
+    flex-wrap:wrap;
+    padding: 10px 5px;
+    width: calc(98% - var(--menu-len));
+    border: var(--border);
+    z-index: 100;
+}
+.Section-module--description {
+    font-family:GT Maru Mono,monospace;
+    justify-content:space-between;
+    font-size: 0.7em;
+    flex-wrap:wrap;
+    padding: 5px 5px;
+    width: calc(98% - var(--menu-len));
+    border: var(--border);
+    z-index: 100;
+}
+.Section-module--img {
+    /* background-color: var(--color-main);
+    color:var(--color-maintext); */
+    display:flex;
+    /* font-family:GT Maru Mono,monospace; */
+    /* justify-content:space-between; */
+    /* flex-wrap:wrap; */
+    padding: 5px 5px;
+    border: var(--border);
+    width: calc(98% - var(--menu-len));
     /* width:calc(100% - var(--container-spacing-horizontal)*2) */
     z-index:100;
 }
