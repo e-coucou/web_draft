@@ -13,7 +13,14 @@
 
     --menu-len: 35%;
 }
-
+/* @media screen and (max-width: 800px) { */
+    /* body { */
+        /* max-width: 800px; */
+        /* padding: 0 calc( ((width-800)/2)); */
+        /* padding: 0 100px; */
+        /* --baseline-box:calc(200px - 8px); */
+    /* } */
+/* } */
 body {
     margin: 0px;
     box-sizing: border-box;
@@ -27,7 +34,7 @@ body {
 }
 
 .Layout-module--container{
-    margin:0 auto;max-width:1600px;
+    margin:0 auto;
     /* max-width:var(--container-max-width); */
     padding:0 20px;
     /* padding:0 var(--container-spacing-horizontal) 0 var(--container-spacing-horizontal) */
