@@ -195,8 +195,8 @@ body {
     display:flex;
     flex-direction:column;
     /* height:500px; */
-    /* height:var(--baseline-10x); */
-    /* overflow-y:auto */
+    height:calc(var(--baseline)*10);
+    overflow-y:auto;
     button {
         color:white;
         background-color: var(--color-main);

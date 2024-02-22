@@ -25,5 +25,47 @@
     {"href":"./dev/Solaire/","title":"Systeme Solaire","src":"./img/solaire.png","description":"infos","category":"Animation"},
     {"href":"./dev/SuperShape/","title":"Super Shape","src":"./img/superShape.png","description":"infos","category":"Animation"},
     {"href":"./dev/Water Ripple/","title":"Watter Ripple","src":"./img/water ripple.png","description":"infos","category":"Animation"},
-    {"href":"./dev/Lissajou/","title":"Courbes de Lissajous","src":"./img/lissajou.png","description":"infos","category":"Animation"}
+    {"href":"./dev/Lissajou/","title":"Courbes de Lissajous","src":"./img/lissajou.png","description":"infos","category":"Animation"},
+    {"href":"./dev/Asteroides/","title":"Astéroides","src":"./img/asteroide.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Dynamites/","title":"Dynamites","src":"./img/Dynamites.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Casse Briques/","title":"Casse Briques","src":"./img/briques.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/LifeGame/","title":"Jeu de la Vie","src":"./img/lifegame.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Monty Hall/","title":"Monty Hall","src":"./img/montyhall.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/PushPush/","title":"Pouce-Pouce","src":"./img/pushpush.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Space Invaders/","title":"Space Invaders","src":"./img/spaceInvaders.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Voiture/","title":"Voiture MiniP","src":"./img/voiture.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/2a004/","title":"Jeux de la vie Canon","src":"./img/A004.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Agar.IO/","title":"Agar","src":"./img/agar.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/tictactoe/","title":"Tic Tac Toe","src":"./img/tictactoe.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Puissance 4/","title":"Puissance 4","src":"./img/puissance4.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/PinBall/","title":"Flipper","src":"./img/ecoucou.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Langton Fourmis/","title":"Fourmis de Langton","src":"./img/Langton.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Suduku/","title":"SUDUKU","src":"./img/ecoucou.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Tricheurs/","title":"Tricheurs","src":"./img/tricheurs.png","description":"infos","category":"Jeux"},
+
+    {"href":"./dev/Buffon PI/","title":"Aiguilles de Buffon","src":"./img/Buffon.png","description":"infos","category":"PI"},
+    {"href":"./dev/Collision/","title":"PI -> Collision ","src":"./img/collision.png","description":"infos","category":"PI"},
+    {"href":"./dev/PI/","title":"PI visualisation","src":"./img/pi.png","description":"infos","category":"PI"},
+    {"href":"./dev/PI Leibniz/","title":"PI approximation de Leibniz","src":"./img/piLeibniz.png","description":"infos","category":"PI"},
+    {"href":"./dev/PI Spirale/","title":"PI visu en Spirale","src":"./img/PI spirale.png","description":"infos","category":"PI"},
+
+
+    {"href":"./dev/Perceptron/","title":"Perceptron","src":"./img/perceptron.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/Genetic Algo/","title":"Algorithme Génétique","src":"./img/genetic.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/flappy bird/","title":"Flappy Bird","src":"./img/flappybird.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/NN-classif/","title":"Classification","src":"./img/NNTri.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/Tensor/","title":"Tensors","src":"./img/tensor.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/NN-Advance/","title":"Classification","src":"./img/NNAdvance.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/NN-SUDUKU/","title":"Solve Suduku","src":"./img/ecoucou.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/NN-MNIST/","title":"MNIST Database","src":"./img/mnist.png","description":"infos","category":"Neurone"},
+    {"href":"./dev/NN-TTF/","title":"TTF Predictions","src":"./img/ecoucou.png","description":"infos","category":"Neurone"},
+
+    {"href":"./dev/Dragon Curve/","title":"Dragon Curve","src":"./img/Dragon.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/Fougeres/","title":"Fougeres","src":"./img/fougeres.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/Fractal Koch/","title":"Fractales de Koch","src":"./img/Koch.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/Fractals cyclic/","title":"Fractales Cycliques","src":"./img/cyclic.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/hibert/","title":"Hibert","src":"./img/hibert.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/Mandelbrot/","title":"Mandelbrot","src":"./img/mandelbrot.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/Mandelbrot2/","title":"Espace de Mandelbrot","src":"./img/mandelbrot_test.png","description":"infos","category":"Fractales"}
+
 ]
