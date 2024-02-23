@@ -3,7 +3,7 @@ const eC = {version: 'v0.01', release:'r0', date:'feb/24', owner: 'rky', code:'y
 let app_json;
 let menu;
 
-let couleur = { Divers: '#E8F5E9', Animation:'#C8E6C9', Jeux:'#A5D6A7', PI:'#81C784', Neurone:'#66BB6A', Fractales:'#4CAF50'}; //43A047//388E3C//2E7D32//1B5E20
+let couleur = { Divers: '#1B5E20', Animation:'#388E3C', Jeux:'#43A047', PI:'#81C784', Neurone:'#66BB6A', Fractales:'#4CAF50'}; //E8F5E9//C8E6C9//A5D6A7//43A047//388E3C//2E7D32//1B5E20
 //B9F6CA//69F0AE//00E676//00C853
 // let couleur = { Divers: '#137C8B', Animation:'#709CA7', Jeux:'#B8CBD0', PI:'#7A90A4', Neurone:'#344D59', Fractales:'#111'};
 // let couleur = { Divers: '#ff0000', Animation:'#00ff00', Jeux:'#00ffff', PI:'#ff00ff', Neurone:'#ffff00', Fractales:'#0000ff'};
@@ -38,7 +38,7 @@ function setup() {
         let b = createButton(t);
         b.mouseClicked(btClick);
         b.id(n);
-        b.style("background",couleur[app_json[n].category]);
+        // b.style("background-color",couleur[app_json[n].category]);
         menu.child(b);
     }
     update(int(random(nb)));

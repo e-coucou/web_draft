@@ -1,9 +1,15 @@
 :root {
-    --color-main: #202020;
-    --color-second: #000000;
-    --color-fondclair: hsl(0, 0%, 96%);
-    --color-fondfonce: #151515;
-    --color-maintext: #ffffff;
+
+    --color-main: #356859;
+    --color-second: #fd5523;
+    --color-fondclair: #b9e4c9;
+    --color-fondfonce: #37966f;
+    --color-maintext: #fffbe6;
+    /* --color-main: #202020; */
+    /* --color-second: #000000; */
+    /* --color-fondclair: hsl(0, 0%, 96%); */
+    /* --color-fondfonce: #151515; */
+    /* --color-maintext: #ffffff; */
 
     --border: 1px solid var(--color-fondclair);
     --baseline: 50px;
@@ -25,7 +31,7 @@ body {
     margin: 0px;
     box-sizing: border-box;
     display: block;
-    background-color: var(--color-fondfonce);
+    background-color: var(--color-fondclair);
     float: none;
     line-height: 25px;
     position: static;
@@ -56,7 +62,7 @@ body {
     /* height:var(--baseline-2x) */
 }
 .Topbar-module--root{
-    background-color: var(--color-second);
+    background-color: var(--color-main);
     /* background-color:var(--gray-light); */
     color:var(--color-maintext);
     /* color:var(--gray-dark); */
@@ -121,6 +127,7 @@ body {
     position: relative;
     flex-direction: column;
     flex-basis: 100%;
+    background-color: var(--color-fondfonce);
     /* width: auto; */
     z-index:100;
 }
@@ -146,6 +153,7 @@ body {
     padding: 5px 5px;
     border: var(--border);
     justify-content: center;
+    background-color: var(--color-fondclair);
     /* width: 90%; */
     /* width: calc(98% - var(--menu-len)); */
     /* height: var(--baseline-img); */
@@ -182,11 +190,11 @@ body {
     flex-direction:column;
     /* padding: 0 5px; */
     border-bottom: var(--border);
-    line-height: 55px;
     button {
-    color:white;
+    color:var(--color-maintext);
     background-color: var(--color-fondfonce);
     line-height: 55px;
+    font-size: 2em;
     }
 }
 .Section-menu--root{
@@ -198,23 +206,24 @@ body {
     height:calc(var(--baseline)*10);
     overflow-y:auto;
     button {
-        color:white;
+        /* color:white; */
         background-color: var(--color-main);
-        line-height: 30px;
+        color: var(--color-maintext);
+        line-height: 20px;
         border-bottom: var(--border);
     }
     button:hover {
-        color:var(--color-main);
-        background-color: var(--color-fondclair);
+        color:var(--color-maintext);
+        background:var(--color-second);
     }
     button.selected {
         color:var(--color-main);
-        background-color: var(--color-fondfonce);
+        background-color:var(--color-second);
     }
 }
 
 .Footer-module--root {
-    background-color: var(--color-second);
+    background-color: var(--color-main);
     color:var(--color-maintext);
     display:flex;flex-wrap:wrap;
     font-family:GT Maru Mono,monospace;
