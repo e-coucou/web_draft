@@ -5,7 +5,7 @@
     "description":"Forecasting ... " } ,
     {"href":"./dev/QR-Code/","title":"QR Code","src":"./img/QR-Code.gif","category":"Divers",
     "description":"Programme permettant la création de QR-Code.<br>Fonctionnalités : <br>" },
-    {"href":"./dev/ASCII Image/","title":"Image ASCII","src":"./img/ASCII_image.png","description":"infos","category":"Animation"},
+    {"href":"./dev/ASCII Image/","title":"Image ASCII","src":"./img/ASCII_image.png","description":"Encryptage d'une image avec des caratères ASCII<br>Le principe est le suivant :<br> - coder l'image en luminosité<br> - créer une phrase ASCII avec des caractères allant du plus clair au plus foncé<br> - remplacer la luminosité par le caractère correspondant<br> - afficher l'image en mode text monochrome.","category":"Animation"},
     {"href":"./dev/A014/","title":"Rosace","src":"./img/A014.png","description":"infos","category":"Animation"},
     {"href":"./dev/Circle/","title":"Cercles","src":"./img/circle.png","description":"infos","category":"Animation"},
     {"href":"./dev/Animation/","title":"Animation","src":"./img/animation.png","description":"infos","category":"Animation"},

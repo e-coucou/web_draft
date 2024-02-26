@@ -18,6 +18,7 @@
     --box-padding: 13px;
 
     --menu-len: 35%;
+    --free-window: calc(100vh - 140px);
 }
 /* @media screen and (max-width: 800px) { */
     /* body { */
@@ -140,6 +141,7 @@ body {
 }
 .Section-module--description {
     font-size: 0.7em;
+    line-height: 15px;
     /* display: flex; */
     /* flex-direction: column; */
     padding: 5px 5px;
@@ -203,11 +205,12 @@ body {
     display:flex;
     flex-direction:column;
     /* height:500px; */
-    height:calc(var(--baseline)*10);
+    /* height:calc(var(--baseline)*10); */
+    height: calc(var(--free-window));
     overflow-y:auto;
     button {
         /* color:white; */
-        background-color: var(--color-main);
+        /* background-color: var(--color-main); */
         color: var(--color-maintext);
         line-height: 20px;
         border-bottom: var(--border);
@@ -242,6 +245,26 @@ body {
     z-index:100;
 }
 
+.Divers {
+    background-color: #1B5E20;
+}
+.Animation {
+    background-color: #388E3C;
+}
+.Jeux {
+    background-color: #43A047;
+}
+.PI {
+    background-color: #81C784;
+}
+.Neurone {
+    background-color: #66BB6A;
+}
+.Fractales {
+    background-color: #4CAF50;
+}
+
+/* Fractales:'#4CAF50'}; //E8F5E9//C8E6C9//A5D6A7//43A047//388E3C//2E7D32//1B5E20 */
 
 /* }@media (max-width:600px){ */
 
