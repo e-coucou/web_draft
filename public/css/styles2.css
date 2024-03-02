@@ -20,6 +20,7 @@
     --padding: 0px;
     --screen-max: 960px;
     --border-image: 30px;
+    --border-main: 5px;
 }
 @media screen and (width > 960px) {
     body {
@@ -45,7 +46,7 @@ body {
 .Layout-module--container{
     margin:0 auto;
     /* max-width:var(--container-max-width); */
-    padding:0 5px;
+    padding:0 var(--border-main);
     /* padding:0 var(--container-spacing-horizontal) 0 var(--container-spacing-horizontal) */
 }
 
@@ -73,7 +74,7 @@ body {
     position:relative;
     flex-wrap:wrap;
     position:fixed;
-    width:calc(100% - var(--baseline-box));
+    width:calc(100vw - 2*var(--border-main));
     z-index:100;
 }
 .Topbar-module--clock{
@@ -239,11 +240,14 @@ body {
     /* position:relative; */
     flex-wrap:wrap;
     padding: 0 5px;
-    border:var(--border);
+    /* border:var(--border); */
     /* line-height:15px; */
+    height: calc(var(--baseline) / 2);
+    /* line-height: 0px; */
     position:fixed;
     bottom: 0;
-    width:calc(100% - var(--baseline));
+    /* width:calc(100vw - 2*var(--border-main)); */
+    width:calc(100vw - 4*var(--border-main));
     /* width:calc(100% - var(--container-spacing-horizontal)*2) */
     /* height: var(--baseline); */
     z-index:100;
