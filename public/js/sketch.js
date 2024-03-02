@@ -39,8 +39,8 @@ function setup() {
         b.mouseClicked(btClick);
         b.id(n);
         // b.style("background-color",couleur[app_json[n].category]);
-        b.class([app_json[n].category]);
-        b.attribute('value','selected');
+        // b.class([app_json[n].category]);
+        // b.attribute('value','selected');
         menu.child(b);
     }
     update(int(random(nb)));
