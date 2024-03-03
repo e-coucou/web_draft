@@ -1,0 +1,17 @@
+VS Code Extension
+
+* code runner
+- tabnine
+- live server
+* excel viewer
+- code tour
+* todo
+* material icon
+- draw io
+- polacode
+* spell checker
+* prettier
+- vibrancy
+
+//TODO: help
+//FIXME: coucou

@@ -7,6 +7,7 @@
     --color-fondfonce: #6200EE;
     --color-maintext: #000000;
     --color-titretext: #ffffff;
+    --color-select: #cc4207;
 
     --border: 1px solid var(--color-fondclair);
     --baseline: 50px;
@@ -216,19 +217,43 @@ body {
 }
 .Section-menu--root button {
         /* color:white; */
-        background-color: var(--color-main);
+        display: flex;
+        /* background-color: var(--color-main); */
         color: var(--color-titretext);
-        line-height: 30px;
+        line-height: 1.2em;
         border-bottom: var(--border);
     }
 .Section-menu--root button:hover {
         color:var(--color-maintext);
         background:var(--color-second);
     }
-    /* button.selected {
-        color:var(--color-main);
-        background-color:var(--color-second);
-    } */
+
+.Section-menu--button-sel {
+        color: var(--color-titretext);
+        background-color: var(--color-select);
+}
+.Section-menu--button {
+        color: var(--color-titretext);
+        background-color: var(--color-main);
+}
+
+.Section-menu--Icon {
+    /* height: 30px; */
+    padding-left: 5px;
+    text-align: center;
+    align-self: center;
+}
+
+.Section-menu--Titre {
+    text-align: left;
+    align-self: center;
+    flex-grow: 1;
+    padding-left: 10px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    height: auto;
+}
+
 
 .Footer-module--root {
     background-color: var(--color-main);
@@ -253,6 +278,23 @@ body {
     z-index:100;
 }
 
+/* .TimestampTimeline-module--icon--e9f19{height:50px;height:var(--baseline)}
+.TimestampTimeline-module--icon--e9f19 svg{height:12.5px;height:var(--baseline-1of4)}
+.TimestampTimeline-module--icon--e9f19 path{fill:#3c3c3c;fill:var(--gray-dark)}
+.TimestampTimeline-module--time--288d1{flex:0 0 auto;height:50px;height:var(--baseline)}
+.TimestampTimeline-module--title--7dcca{text-align:left}
+.TimestampTimeline-module--message--a2bf0,
+.TimestampTimeline-module--title--7dcca{color:#3c3c3c;color:var(--gray-dark);flex-grow:1;height:50px;height:var(--baseline);line-height:12.5px;line-height:var(--baseline-1of4)}
+.TimestampTimeline-module--message--a2bf0{display:flex;justify-content:center}
+.TimestampTimeline-module--red--f4ae7{border-bottom:1px solid #f16164;border-bottom:var(--border-red);border-left:1px solid #f16164;border-left:var(--border-red)}
+.TimestampTimeline-module--red--f4ae7 
+.TimestampTimeline-module--icon--e9f19 path{fill:#f16164;fill:var(--red)}
+.TimestampTimeline-module--red--f4ae7 
+.TimestampTimeline-module--time--288d1{color:#f16164;color:var(--red)}
+.TimestampTimeline-module--cyan--12e48{border-bottom:1px solid #2dc5f4;border-bottom:var(--border-cyan);border-left:1px solid #2dc5f4;border-left:var(--border-cyan)}
+.TimestampTimeline-module--cyan--12e48 
+.TimestampTimeline-module--icon--e9f19 path{fill:#2dc5f4;fill:var(--cyan)}
+.TimestampTimeline-module--cyan--12e48  */
 /* .Divers {
     background-color: #1B5E20;
 }
@@ -271,10 +313,6 @@ body {
 .Fractales {
     background-color: #4CAF50;
 } */
-
-/* Fractales:'#4CAF50'}; //E8F5E9//C8E6C9//A5D6A7//43A047//388E3C//2E7D32//1B5E20 */
-
-/* }@media (max-width:600px){ */
 
 
 /*
