@@ -47,7 +47,7 @@ function restart(t=decompte) {
 	btnSt.select = run;
 }
 
-function mouseClicked() {
+function mousePressed() {
 	if (mouseY>height/2) {
 		for (let bt of btn) {
 			if (bt.click(mouseX, mouseY)) {
