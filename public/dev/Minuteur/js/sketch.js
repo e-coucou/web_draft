@@ -1,5 +1,4 @@
-// const w = 60;
-// const h = w/4;
+const eC = {version: 'v1.0', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 
 let compteur;
 let decompte=10;
@@ -15,6 +14,10 @@ function windowResized() {
 	canvas = createCanvas(innerWidth,innerHeight);
 	let h = Math.min(width/7,height/7);
 	compteur.resize(width/2,height/2,h,3);
+	for (let n=0;n<btn_txt.length;n++) {
+		btn[n].resize(width/8*(n+1),5*height/6,width/10,height/7);
+	}
+	btnSt.resize(width/2,height/6,width/2,height/8) ;
 }
 
 function setup() {
@@ -22,10 +25,10 @@ function setup() {
 	let h = Math.min(width/7,height/7);
 	compteur = new Afficheur(width/2,height/2,h,3);
 	for (let n=0;n<btn_txt.length;n++) {
-		btn.push( new Bouton(width/8*(n+1),height-100,width/10,80,btn_txt[n], btn_value[n]) );
+		btn.push( new Bouton(width/8*(n+1),5*height/6,width/10,height/7,btn_txt[n], btn_value[n]) );
 	}
 	btn[0].select=true;
-	btnSt = new Bouton(width/2,100,width/2,80,"Start/Stop", 1) ;
+	btnSt = new Bouton(width/2,height/6,width/2,height/8,"Start/Stop", 1) ;
 }
 
 function keyPressed() {
@@ -77,6 +80,11 @@ function draw() {
 		bt.show();
 	}
 	btnSt.show();
+
+	//----
+    textAlign(CENTER,CENTER);
+    textSize(10); fill(color(255));noStroke();
+    text('eCoucou '+eC.version, width-40, height-10);
 }
 
 //---------------------------------------------------------
@@ -156,13 +164,17 @@ class Afficheur {
 
 class Bouton {
 	constructor(x,y,w,h,txt,value) {
+		this.resize(x,y,w,h);
+		this.txt=txt;
+		this.value = value;
+		this.select=false;
+	}
+
+	resize(x,y,w,h) {
 		this.x=x;
 		this.y=y;
 		this.w=w;
 		this.h=h;
-		this.txt=txt;
-		this.value = value;
-		this.select=false;
 	}
 
 	choix(c) {
