@@ -1,10 +1,10 @@
-const eC = {version: 'v0.01', release:'r0', date:'feb/24', owner: 'rky', code:'y2I', annee:'2024', maj:'feb/24'};
+const eC = {version: 'v0.1', release:'r0', date:'feb/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 
 let app_json;
 let menu;
 let selectID;
 
-let couleur = { Divers: '#1B5E20', Animation:'#388E3C', Jeux:'#43A047', PI:'#81C784', Neurone:'#66BB6A', Fractales:'#4CAF50'}; //E8F5E9//C8E6C9//A5D6A7//43A047//388E3C//2E7D32//1B5E20
+let icons = { Divers: '🐣', Animation:'📽️', Jeux:'🛝', PI:'𝛑', Neurone:'🔂', Fractales:'☸️', Particules:'🌐', Data:'📈', Mathematiques:'⌨️', Neige:'❅',Algorithmes:'〄'}; //E8F5E9//C8E6C9//A5D6A7//43A047//388E3C//2E7D32//1B5E20
 //B9F6CA//69F0AE//00E676//00C853
 // let couleur = { Divers: '#137C8B', Animation:'#709CA7', Jeux:'#B8CBD0', PI:'#7A90A4', Neurone:'#344D59', Fractales:'#111'};
 // let couleur = { Divers: '#ff0000', Animation:'#00ff00', Jeux:'#00ffff', PI:'#ff00ff', Neurone:'#ffff00', Fractales:'#0000ff'};
@@ -22,7 +22,6 @@ function update(id) {
             btn.class('Section-menu--button');
         }
     });
-    console.log(bt);
     let title = select("#title");
     title.html(app_json[id].title);
     let desc = select("#description");
@@ -47,7 +46,7 @@ function setup() {
     for (let n=0;n<nb;n++) {
         let t = app_json[n].title;
         let b = createButton('');
-        let spanIcon = createElement('span','⚛️');
+        let spanIcon = createElement('span',icons[app_json[n].category]);
         let spanTitre = createElement('span',t);
         b.mouseClicked(btClick);
         b.id(n);
