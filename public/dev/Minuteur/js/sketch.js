@@ -182,7 +182,7 @@ class Bouton {
 			fill('#3700B3');
 		}
 		rect(this.x,this.y,this.w,this.h,10);
-		textSize(this.h/2);
+		textSize(Math.min(this.h/2,this.w/2));
 		textAlign(CENTER,CENTER);
 		fill(255);
 		text(this.txt,this.x,this.y)

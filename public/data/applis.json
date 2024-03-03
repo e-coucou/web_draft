@@ -5,7 +5,7 @@
     "description":"Forecasting ... " } ,
     {"href":"./dev/QR-Code/","title":"QR Code","src":"./img/QR-Code.gif","category":"Divers",
     "description":"Programme permettant la création de QR-Code.<br>Fonctionnalités : <br>" },
-    {"href":"./dev/Minuteur","title":"Minuteur","src":"./img/ecoucou.png","category":"Divers",
+    {"href":"./dev/Minuteur","title":"Minuteur","src":"./img/minuteur.png","category":"Divers",
     "description":"Programme permettant la création de QR-Code.<br>Fonctionnalités : <br>" },
 
 
