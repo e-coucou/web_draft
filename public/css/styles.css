@@ -1,10 +1,22 @@
+:root {
+
+    --color-main: #3700B3;
+    --color-main-clair: #f0e7fa;
+    --color-second: #63DAC5;
+    --color-fondclair: #ffffff;
+    --color-fondfonce: #6200EE;
+    --color-maintext: #000000;
+    --color-titretext: #ffffff;
+    --color-error: #b00020;
+}
+
 body {
     margin: 0px;
 }
 
 div.canvas {
     border-style: dashed;
-    border-color:  rgb(6, 77, 38);
+    border-color:  var(--color-fondfonce);
     border-width: 5px;
     /* margin: 10px;
     padding: 3px; */
@@ -17,19 +29,19 @@ div.canvas {
 
 input {
     background-color: rgb(208, 237, 228);
-    color: rgb(6, 77, 38);
+    color: var(--color-fondfonce);
     font-weight: bold;
 }
 .entete {
-    background-color: rgb(5, 67, 46);
+    background-color: var(--color-main);
     display: flex;
     border-style: solid;
-    border-color: aquamarine;
+    border-color: var(--color-main-clair);
     border-width: 2px;
 }
 div.main {
     border-style: solid;
-    border-color: aquamarine;
+    border-color: var(--color-main-clair);
     border-width: 2px;
 }
 img {
@@ -46,14 +58,14 @@ div.entete {
     height: 72px;
     font-size: 1.6em;
     font-weight: bold;
-    color: azure;
+    color: var(--color-main-clair);
     /* width: 100%; */
 }
 .conteneur {
     display: inline-flex;
     padding: 10px;
     border-style: solid;
-    border-color: aquamarine;
+    border-color: var(--color-main-clair);
     border-width: 1px;
     align-items: center;
 }

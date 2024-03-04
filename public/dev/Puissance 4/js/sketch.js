@@ -1,3 +1,4 @@
+const eC = {version: 'v1.0', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let size_w=7;
 let size_h=6;
 let grid = [];
@@ -10,6 +11,13 @@ let AI = 'X';
 let scores = {O:-10, X:10, PAT:2};
 
 let iter, infoScore=[];
+let couleurFond = '#6200EE';
+let couleurVide = '#63DAC5';
+let couleurJoueur = '#b00020';
+let couleurAI = '#ffffff';
+// let couleurFond = '#018786';
+
+let canvas;
 
 function play(i) {
     for(let j=size_h-1; j>=0; --j) {
@@ -194,9 +202,14 @@ function next() {
         grid[j][i] = AI;
     }
 }
+function windowResized() {
+    canvas.resize(innerWidth-10, innerHeight-200);
+    w = width / size_w;
+    h = height / size_h;
+}
 
 function setup() {
-    canvas = createCanvas(700,600);
+    canvas = createCanvas(innerWidth-10,innerHeight-200);
     canvas.parent("#canvas");
     for (let j=0; j<size_h; j++) {
         let ligne = [];
@@ -220,15 +233,15 @@ function show() {
     noStroke();
     for (let j=0; j<size_h; j++) {
         for (let i=0; i<size_w; i++) {
-            let r=w/1.5;
+            let r=Math.min(w,h)/1.5;
             switch (grid[j][i]){
-                case 'O': fill(255,0,0);
+                case 'O': fill(couleurJoueur);
                     break;
-                case 'X': fill(255,255,255);
+                case 'X': fill(couleurAI);
                     break;
                 default: 
-                    fill(220,255,220,80);
-                    r=w/2;
+                    fill(couleurVide);
+                    r=Math.min(w,h)/2;
                     break;
             }
             circle((i+0.5)*w, (j+0.5)*h, r);
@@ -236,7 +249,7 @@ function show() {
     }
     textAlign(CENTER,CENTER);
     textSize(12);
-    fill(40,100,10,100);
+    fill(couleurFond);
     // fill(51);
     for (let s=0; s<size_w ; s++) {
         let p = infoScore[s];
@@ -248,11 +261,16 @@ function show() {
 }
 
 function draw() {
-    background(200);
+    background(couleurFond);
     show();
     let g = victoire();
     if (g != null) {
         console.log(g);
         noLoop();
     }
+
+    //----
+    textAlign(CENTER,CENTER);
+    textSize(10); fill(color(255));noStroke();
+    text('eCoucou '+eC.version, width-40, height-10);
 }
