@@ -123,6 +123,7 @@
     {"href":"./dev/A*_France/","title":"A* Pathfinding France","src":"./img/aStar.png","description":"","category":"Algorithmes"},
     {"href":"./dev/A*_convex/","title":"A* Convex Hull France","src":"./img/convexHull.png","description":"","category":"Algorithmes"},
     {"href":"./dev/Voronoi/","title":"Voronoi","src":"./img/voronoi.png","description":"","category":"Algorithmes"},
+    {"href":"./dev/Voronoi  v0/","title":"Voronoi","src":"./img/voronio2.png","description":"","category":"Algorithmes"},
     {"href":"./dev/Automate Hexa/","title":"Wolfram Automate","src":"./img/wolfram.png","description":"","category":"Algorithmes"},
 
     {"href":"./dev/Neige/","title":"Neige","src":"./img/neige.png","description":"","category":"Neige"},

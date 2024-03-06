@@ -6,7 +6,7 @@ let startTime, endTime;
 let particules =[];
 let barycentres = [];
 let delaunay;
-let moto;
+let image;
 
 function start() {
     startTime = new Date();
@@ -19,12 +19,12 @@ function end() {
 function preload() {
     // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
-    moto = loadImage('./img/minip.jpg');
+    image = loadImage('./img/kimenjoong.jpg');
 }
 
 function windowResized() {
     // let m = min(innerHeight,innerWidth) * 0.92;
-    // resizeCanvas(m-10,m-10);
+    resizeCanvas(image.width,image.height);
 }
 
 function getVoronoi() {
@@ -42,11 +42,11 @@ function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
     // get les data =
-    canvas = createCanvas(800,451); // mise en place du ratio 0.59
+    canvas = createCanvas(334,319); // mise en place du ratio 0.59
     canvas.parent("#canvas");
     rate = select("#rate");
 
-    // windowResized();
+    windowResized();
 
     // for (let i=0;i<1000;i++) {
     //     particules.push( new Particule(random(width),random(height)));
@@ -55,8 +55,8 @@ function setup() {
     for (let i=0;i<10000;i++) {
         let x = random(width);
         let y = random(height);
-        let couleur = moto.get(x,y);
-        if (random(120) > brightness(couleur)) {
+        let couleur = image.get(x,y);
+        if (random(95) > brightness(couleur)) {
             particules.push( new Particule(x,y));
         } else { i--;}
     }
@@ -90,22 +90,32 @@ function draw() {
     const polygones = voronoi.cellPolygons();
     const cells = Array.from(polygones);
 
-    // stroke(0); noFill();strokeWeight(1);
-    // for (let p of cells) {
-    //     beginShape();
-    //     for (let i=0;i<p.length;i++) {
-    //         vertex(p[i][0],p[i][1]);
-    //     }
-    //     endShape();
-    // }
-
-    barycentres=[]
+    stroke(0);strokeWeight(1);
+    let i=0;
     for (let p of cells) {
-        // barycentres.push(getBarycentre_v0(p));
-        barycentres.push(getBarycentre(p));
-        // noFill();
-        // stroke(255,0,0); strokeWeight(3);
-        // point(barycentre.x,barycentre.y);
+        fill(particules[i].couleur);
+        beginShape();
+        for (let i=0;i<p.length;i++) {
+            vertex(p[i][0],p[i][1]);
+        }
+        endShape();
+        i++;
+    }
+
+    choix=1;
+    switch(choix) {
+        case 0 :
+            for (let p of cells) {
+                // barycentres.push(getBarycentre_v0(p));
+                barycentres.push(getBarycentre(p));
+                // noFill();
+                // stroke(255,0,0); strokeWeight(3);
+                // point(barycentre.x,barycentre.y);
+            }
+            break;
+        case 1:
+            barycentres = getFitting(cells.length);
+            break;
     }
 
     for (let i=0;i<particules.length;i++) {
@@ -113,7 +123,7 @@ function draw() {
     }
 
     textAlign(CENTER,CENTER);
-    textSize(10); fill("#ffffff");noStroke();
+    textSize(10); fill("#000000");noStroke();
     text('eCoucou '+eC.version, width-40, height-10);
 
 }
@@ -130,6 +140,7 @@ function convertD3(points) {
 class Particule {
     constructor(x,y) {
         this.pos = createVector(x,y);
+        this.couleur = color(0,0,0);
     }
 
     update() {
@@ -141,9 +152,13 @@ class Particule {
         this.pos.lerp(v,r);
     }
 
+    setColor(r,g,b) {
+        this.couleur = color(r,g,b);
+    }
+
     show() {
         // fill("#63DAC5");noStroke();
-        stroke(0); strokeWeight(3);
+        stroke(this.couleur); strokeWeight(1);
         point(this.pos.x, this.pos.y);
         // circle(this.pos.x,this.pos.y,3);
     }
@@ -174,4 +189,64 @@ function getBarycentre(poly) {
     aire /= 2;
     barycentre.div(6 * aire);
     return barycentre;
+}
+
+function getFitting(nbCells) {
+    let barycentres = new Array(nbCells);
+    let poids = new Array(nbCells).fill(0);
+    let couleurs = new Array(nbCells);
+    for (let i=0;i<nbCells;i++) {
+        barycentres[i] = createVector(0,0);
+        couleurs[i] = new Couleur(0,0,0);
+    }
+    image.loadPixels()
+    let delaunayIndex = 0;
+    for (let i=0;i<width;i++) {
+        for (let j=0;j<height;j++) {
+            let id = (i+ j*width)*4;
+            let r = image.pixels[id + 0];
+            let g = image.pixels[id + 1];
+            let b = image.pixels[id + 2];
+            let luminance = (0.2126*r+0.7152*g+0.0722*b);
+            let poid = (1 - luminance/255);
+            delaunayIndex = delaunay.find(i,j, delaunayIndex);
+            barycentres[delaunayIndex].x += poid * i;
+            barycentres[delaunayIndex].y += poid * j;
+            poids[delaunayIndex] += poid;
+
+            couleurs[delaunayIndex].add(r,g,b);
+        }
+    }
+
+    for (let i=0; i<nbCells ; i++) {
+        particules[i].couleur = couleurs[i].getC();
+        if (poids[i] != 0) {
+            barycentres[i].div(poids[i]);
+        } else barycentres[i] = particules[i].pos.copy();
+    }
+
+    return barycentres;
+}
+
+class Couleur {
+    constructor(r,g,b) {
+        this.n = 0;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+
+    add(r,g,b) {
+        this.r += r;
+        this.g += g;
+        this.b += b;
+        this.n += 1;
+    }
+    
+    getC() {
+        this.r /= this.n;
+        this.g /= this.n;
+        this.b /= this.n;
+        return color(int(this.r), int(this.g), int(this.b));
+    }
 }
