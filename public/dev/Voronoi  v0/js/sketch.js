@@ -19,7 +19,7 @@ function end() {
 function preload() {
     // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
-    image = loadImage('./img/kimenjoong.jpg');
+    image = loadImage('./img/kitten.jpg');
 }
 
 function windowResized() {
@@ -116,6 +116,18 @@ function draw() {
         case 1:
             barycentres = getFitting(cells.length);
             break;
+        case 2 :
+            for (let p of cells) {
+                barycentres.push(getBarycentre_v0(p));
+            }
+            break;
+        case 3 :
+            for (let p of cells) {
+                noFill();
+                stroke(255,0,0); strokeWeight(3);
+                point(barycentre.x,barycentre.y);
+            }
+            break;
     }
 
     for (let i=0;i<particules.length;i++) {
@@ -140,7 +152,7 @@ function convertD3(points) {
 class Particule {
     constructor(x,y) {
         this.pos = createVector(x,y);
-        this.couleur = color(0,0,0);
+        this.couleur = color(255,255,255);
     }
 
     update() {
