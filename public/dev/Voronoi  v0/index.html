@@ -19,9 +19,17 @@
         <img class="conteneur" src="../../img/ecoucou.png"></img>
         <div class="conteneur">VORONOI</div>
       </div>
-    <div class="center" id="selection"></div>
-    <div class="center" id="canvas"></div>
-    <div id="rate">Time execution (us) : </div>
+      <div class="center" id="selection"></div>
+      <div class="center" id="canvas"></div>
+      <div>
+        <select name="select" id="id_choix">
+          <label>Choix du mode</label>
+          <option value="0">Centre</option>
+          <option value="1">Stippling</option>
+          <option value="2">Barycentre</option>
+        </select>
+      </div>
+      <div id="rate">Time execution (us) : </div>
     <!-- <input class="styled" id="reset" type="button" value="Reset">
     <input class="styled" id="RS" type="button" value="Start/Stop"> -->
   </body>

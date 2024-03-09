@@ -7,6 +7,7 @@ let particules =[];
 let barycentres = [];
 let delaunay;
 let image;
+let sel_Choix, choix=0;
 
 function start() {
     startTime = new Date();
@@ -19,7 +20,7 @@ function end() {
 function preload() {
     // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
-    image = loadImage('./img/kitten.jpg');
+    image = loadImage('./img/moto.jpg');
 }
 
 function windowResized() {
@@ -38,6 +39,11 @@ function convertPoints(part) {
     }
     return arr;
 }
+
+function selChoix(evt) {
+    const val = evt.target.index;
+    if (val) choix=val;
+}
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
@@ -45,6 +51,8 @@ function setup() {
     canvas = createCanvas(334,319); // mise en place du ratio 0.59
     canvas.parent("#canvas");
     rate = select("#rate");
+    sel_Choix = select("#id_choix");
+    sel_Choix.mousePressed(selChoix);
 
     windowResized();
 
@@ -102,11 +110,10 @@ function draw() {
         i++;
     }
 
-    choix=1;
     switch(choix) {
         case 0 :
+            for (p of particules) { p.couleur=color(0);}
             for (let p of cells) {
-                // barycentres.push(getBarycentre_v0(p));
                 barycentres.push(getBarycentre(p));
                 // noFill();
                 // stroke(255,0,0); strokeWeight(3);
@@ -114,7 +121,7 @@ function draw() {
             }
             break;
         case 1:
-            barycentres = getFitting(cells.length);
+            barycentres = getStippling(cells.length);
             break;
         case 2 :
             for (let p of cells) {
@@ -152,7 +159,7 @@ function convertD3(points) {
 class Particule {
     constructor(x,y) {
         this.pos = createVector(x,y);
-        this.couleur = color(255,255,255);
+        this.couleur = color(0,0,255);
     }
 
     update() {
@@ -170,7 +177,7 @@ class Particule {
 
     show() {
         // fill("#63DAC5");noStroke();
-        stroke(this.couleur); strokeWeight(1);
+        stroke(this.couleur); strokeWeight(2);
         point(this.pos.x, this.pos.y);
         // circle(this.pos.x,this.pos.y,3);
     }
@@ -203,7 +210,7 @@ function getBarycentre(poly) {
     return barycentre;
 }
 
-function getFitting(nbCells) {
+function getStippling(nbCells) {
     let barycentres = new Array(nbCells);
     let poids = new Array(nbCells).fill(0);
     let couleurs = new Array(nbCells);
