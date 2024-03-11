@@ -6,7 +6,7 @@ let startTime, endTime;
 let particules =[];
 let barycentres = [];
 let delaunay;
-let image;
+let img;
 let sel_Choix, choix=0;
 
 function start() {
@@ -20,12 +20,12 @@ function end() {
 function preload() {
     // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
-    image = loadImage('./img/moto.jpg');
+    img = loadImage('./img/joconde.jpg');
 }
 
 function windowResized() {
     // let m = min(innerHeight,innerWidth) * 0.92;
-    resizeCanvas(image.width,image.height);
+    resizeCanvas(img.width,img.height);
 }
 
 function getVoronoi() {
@@ -41,8 +41,8 @@ function convertPoints(part) {
 }
 
 function selChoix(evt) {
-    const val = evt.target.index;
-    if (val) choix=val;
+    // console.log(sel_Choix.value())
+    choix=int(sel_Choix.value());
 }
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
@@ -52,7 +52,7 @@ function setup() {
     canvas.parent("#canvas");
     rate = select("#rate");
     sel_Choix = select("#id_choix");
-    sel_Choix.mousePressed(selChoix);
+    sel_Choix.changed(selChoix);
 
     windowResized();
 
@@ -63,7 +63,7 @@ function setup() {
     for (let i=0;i<10000;i++) {
         let x = random(width);
         let y = random(height);
-        let couleur = image.get(x,y);
+        let couleur = img.get(x,y);
         if (random(95) > brightness(couleur)) {
             particules.push( new Particule(x,y));
         } else { i--;}
@@ -84,56 +84,58 @@ function draw() {
 
     stroke(255);strokeWeight(1);noFill();
     getVoronoi();
-    // const {points,triangles} = delaunay;
-
-    // for (let i=0;i<triangles.length;i+=3 ) {
-    //     // fill(color(random(255),random(255),random(255)));
-    //     const t0 = 2 * triangles[i + 0];
-    //     const t1 = 2 * triangles[i + 1];
-    //     const t2 = 2 * triangles[i + 2];
-    //     // triangle(points[t0],points[t0+1],points[t1],points[t1+1],points[t2],points[t2+1]);
-    // }
 
     const voronoi = delaunay.voronoi([0,0,width,height]);
     const polygones = voronoi.cellPolygons();
     const cells = Array.from(polygones);
 
-    stroke(0);strokeWeight(1);
-    let i=0;
-    for (let p of cells) {
-        fill(particules[i].couleur);
-        beginShape();
-        for (let i=0;i<p.length;i++) {
-            vertex(p[i][0],p[i][1]);
+    if (choix<=1 & choix!=4) {
+        strokeWeight(1);
+        if (choix==1) { noStroke();} else {stroke(0);}
+        let i=0;
+        for (let p of cells) {
+            fill(particules[i].couleur);
+            beginShape();
+            for (let i=0;i<p.length;i++) {
+                vertex(p[i][0],p[i][1]);
+            }
+            endShape();
+            i++;
         }
-        endShape();
-        i++;
     }
 
     switch(choix) {
         case 0 :
-            for (p of particules) { p.couleur=color(0);}
+            for (p of particules) { p.couleur=color(255);}
             for (let p of cells) {
                 barycentres.push(getBarycentre(p));
-                // noFill();
-                // stroke(255,0,0); strokeWeight(3);
-                // point(barycentre.x,barycentre.y);
             }
             break;
         case 1:
             barycentres = getStippling(cells.length);
             break;
         case 2 :
+            for (p of particules) { p.couleur=color(0);}
             for (let p of cells) {
                 barycentres.push(getBarycentre_v0(p));
             }
             break;
         case 3 :
-            for (let p of cells) {
-                noFill();
-                stroke(255,0,0); strokeWeight(3);
-                point(barycentre.x,barycentre.y);
+            const {points,triangles} = delaunay;
+            // fill(0);
+            stroke(0);
+            strokeWeight(1);
+
+            for (let i=0;i<triangles.length;i+=3 ) {
+                fill(color(random(130,140),random(150,200),random(80,90)));
+                const t0 = 2 * triangles[i + 0];
+                const t1 = 2 * triangles[i + 1];
+                const t2 = 2 * triangles[i + 2];
+                triangle(points[t0],points[t0+1],points[t1],points[t1+1],points[t2],points[t2+1]);
             }
+            break;
+        case 4 :
+            image(img,0,0);
             break;
     }
 
@@ -218,14 +220,14 @@ function getStippling(nbCells) {
         barycentres[i] = createVector(0,0);
         couleurs[i] = new Couleur(0,0,0);
     }
-    image.loadPixels()
+    img.loadPixels()
     let delaunayIndex = 0;
     for (let i=0;i<width;i++) {
         for (let j=0;j<height;j++) {
             let id = (i+ j*width)*4;
-            let r = image.pixels[id + 0];
-            let g = image.pixels[id + 1];
-            let b = image.pixels[id + 2];
+            let r = img.pixels[id + 0];
+            let g = img.pixels[id + 1];
+            let b = img.pixels[id + 2];
             let luminance = (0.2126*r+0.7152*g+0.0722*b);
             let poid = (1 - luminance/255);
             delaunayIndex = delaunay.find(i,j, delaunayIndex);

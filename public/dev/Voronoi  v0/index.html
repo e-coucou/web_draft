@@ -16,7 +16,9 @@
    <!-- <body style="margin: 0; overflow: hidden;"> -->
     <body>
       <div class="entete">
-        <img class="conteneur" src="../../img/ecoucou.png"></img>
+        <a href="../../index.html">
+          <img class="conteneur" src="../../img/ecoucou.png"></img>
+        </a>
         <div class="conteneur">VORONOI</div>
       </div>
       <div class="center" id="selection"></div>
@@ -24,9 +26,11 @@
       <div>
         <select name="select" id="id_choix">
           <label>Choix du mode</label>
-          <option value="0">Centre</option>
+          <option value="0">Voronoi</option>
           <option value="1">Stippling</option>
           <option value="2">Barycentre</option>
+          <option value="3">Delaunay</option>
+          <option value="4">Original</option>
         </select>
       </div>
       <div id="rate">Time execution (us) : </div>
