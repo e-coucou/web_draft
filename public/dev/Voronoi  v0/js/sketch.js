@@ -8,6 +8,9 @@ let barycentres = [];
 let delaunay;
 let img;
 let sel_Choix, choix=0;
+let sel_Image, choixImage='./img/joconde.jpg';
+let imgOK = false;
+let definition = 10000;
 
 function start() {
     startTime = new Date();
@@ -20,7 +23,27 @@ function end() {
 function preload() {
     // voir getdata.js pour les preloads
     // dataJson = loadJSON('./data/dataEP.json');
-    img = loadImage('./img/joconde.jpg');
+    // img = loadImage('./img/joconde.jpg');
+}
+
+function loadFichier(fichier) {
+    imgOK = false;
+    img = loadImage(fichier, updateFichier);
+}
+
+function updateFichier() {
+    windowResized();
+    particules=[];
+    barycentres=[];
+    for (let i=0;i<definition;i++) {
+        let x = random(width);
+        let y = random(height);
+        let couleur = img.get(x,y);
+        if (random(95) > brightness(couleur)) {
+            particules.push( new Particule(x,y));
+        } else { i--;}
+    }
+    imgOK = true;
 }
 
 function windowResized() {
@@ -29,7 +52,7 @@ function windowResized() {
 }
 
 function getVoronoi() {
-       delaunay = new d3.Delaunay(convertPoints(particules)); 
+    delaunay = new d3.Delaunay(convertPoints(particules)); 
 }
 
 function convertPoints(part) {
@@ -41,9 +64,14 @@ function convertPoints(part) {
 }
 
 function selChoix(evt) {
-    // console.log(sel_Choix.value())
     choix=int(sel_Choix.value());
 }
+
+function selImage(evt) {
+    choixImage= sel_Image.value();
+    loadFichier(choixImage);
+}
+
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
@@ -53,21 +81,13 @@ function setup() {
     rate = select("#rate");
     sel_Choix = select("#id_choix");
     sel_Choix.changed(selChoix);
-
-    windowResized();
+    sel_Image = select("#id_image");
+    sel_Image.changed(selImage);
 
     // for (let i=0;i<1000;i++) {
     //     particules.push( new Particule(random(width),random(height)));
     // }
-
-    for (let i=0;i<10000;i++) {
-        let x = random(width);
-        let y = random(height);
-        let couleur = img.get(x,y);
-        if (random(95) > brightness(couleur)) {
-            particules.push( new Particule(x,y));
-        } else { i--;}
-    }
+    loadFichier(choixImage);
 
 }
 
@@ -89,58 +109,60 @@ function draw() {
     const polygones = voronoi.cellPolygons();
     const cells = Array.from(polygones);
 
-    if (choix<=1 & choix!=4) {
-        strokeWeight(1);
-        if (choix==1) { noStroke();} else {stroke(0);}
-        let i=0;
-        for (let p of cells) {
-            fill(particules[i].couleur);
-            beginShape();
-            for (let i=0;i<p.length;i++) {
-                vertex(p[i][0],p[i][1]);
-            }
-            endShape();
-            i++;
-        }
-    }
-
-    switch(choix) {
-        case 0 :
-            for (p of particules) { p.couleur=color(255);}
-            for (let p of cells) {
-                barycentres.push(getBarycentre(p));
-            }
-            break;
-        case 1:
-            barycentres = getStippling(cells.length);
-            break;
-        case 2 :
-            for (p of particules) { p.couleur=color(0);}
-            for (let p of cells) {
-                barycentres.push(getBarycentre_v0(p));
-            }
-            break;
-        case 3 :
-            const {points,triangles} = delaunay;
-            // fill(0);
-            stroke(0);
+    if (imgOK) {
+        if (choix<=1 & choix!=4) {
             strokeWeight(1);
-
-            for (let i=0;i<triangles.length;i+=3 ) {
-                fill(color(random(130,140),random(150,200),random(80,90)));
-                const t0 = 2 * triangles[i + 0];
-                const t1 = 2 * triangles[i + 1];
-                const t2 = 2 * triangles[i + 2];
-                triangle(points[t0],points[t0+1],points[t1],points[t1+1],points[t2],points[t2+1]);
+            if (choix==1) { noStroke();} else {stroke(0);}
+            let i=0;
+            for (let p of cells) {
+                fill(particules[i].couleur);
+                beginShape();
+                for (let i=0;i<p.length;i++) {
+                    vertex(p[i][0],p[i][1]);
+                }
+                endShape();
+                i++;
             }
-            break;
-        case 4 :
-            image(img,0,0);
-            break;
-    }
+        }
 
-    for (let i=0;i<particules.length;i++) {
-        particules[i].lerp(barycentres[i],0.1);
+        switch(choix) {
+            case 0 :
+                for (p of particules) { p.couleur=color(255);}
+                for (let p of cells) {
+                    barycentres.push(getBarycentre(p));
+                }
+                break;
+            case 1:
+                barycentres = getStippling(cells.length);
+                break;
+            case 2 :
+                for (p of particules) { p.couleur=color(0);}
+                for (let p of cells) {
+                    barycentres.push(getBarycentre_v0(p));
+                }
+                break;
+            case 3 :
+                const {points,triangles} = delaunay;
+                // fill(0);
+                stroke(0);
+                strokeWeight(1);
+
+                for (let i=0;i<triangles.length;i+=3 ) {
+                    fill(color(random(130,140),random(150,200),random(80,90)));
+                    const t0 = 2 * triangles[i + 0];
+                    const t1 = 2 * triangles[i + 1];
+                    const t2 = 2 * triangles[i + 2];
+                    triangle(points[t0],points[t0+1],points[t1],points[t1+1],points[t2],points[t2+1]);
+                }
+                break;
+            case 4 :
+                image(img,0,0);
+                break;
+        }
+
+        for (let i=0;i<particules.length;i++) {
+            particules[i].lerp(barycentres[i],0.1);
+        }
     }
 
     textAlign(CENTER,CENTER);
