@@ -20,6 +20,7 @@ class Cercle {
 
     in(x,y) {
         // let o = new Complex(x,y);
+        if (this.recur) return false;
         let d = dist(this.centre.re,this.centre.im,x,y);
         return (d<=this.r);
     }

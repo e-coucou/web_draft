@@ -36,7 +36,7 @@ function init(c, nouv=true) {
         cercles = [];
         cercles.push(c);
     }
-    let r = random(100,cercles[0].r);
+    let r = random(100,c.r);
     let v = p5.Vector.random2D();
     v.setMag(c.r - r);
     let c1 = (new Cercle(1/r,c.x+v.x,c.y+v.y));
@@ -118,7 +118,7 @@ function draw() {
         c.show();
     }
 
-    nextGen();
+    if (queue.length>0) nextGen();
 
     textAlign(CENTER,CENTER);
     textSize(10); fill("#000000");noStroke();
