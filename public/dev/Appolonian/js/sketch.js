@@ -1,4 +1,4 @@
-const eC = {version: 'v0.1', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
+const eC = {version: 'v1.0', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -6,7 +6,7 @@ let startTime, endTime;
 
 let cercles = [];
 let queue = [];
-let c0;
+let c0, level=0;
 const epsilon = 0.1;
 
 function start() {
@@ -33,17 +33,23 @@ function init(c, nouv=true) {
     queue = [];
     c.setRecur();
     if (nouv) {
+        level = 0;
         cercles = [];
         cercles.push(c);
+    } else {
+        level += 1;
+        c.level = level;
+        c.k = -c.k; // le cercle initial à une curvature négative !!
     }
-    let r = random(100,c.r);
+    let min_ = min(100,c.r*0.65);
+    let r = random(min_,c.r*0.85);
     let v = p5.Vector.random2D();
     v.setMag(c.r - r);
-    let c1 = (new Cercle(1/r,c.x+v.x,c.y+v.y));
+    let c1 = (new Cercle(1/r,c.x+v.x,c.y+v.y,level));
     r=v.mag();
     v.rotate(PI);
     v.setMag(c.r - r);
-    let c2 = (new Cercle(1/r,c.x+v.x,c.y+v.y));
+    let c2 = (new Cercle(1/r,c.x+v.x,c.y+v.y,level));
     cercles.push(c1);
     cercles.push(c2);
     queue.push([c, c1, c2]);
@@ -60,7 +66,7 @@ function setup() {
     cr=select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
     windowResized();
 
-    c0 = new Cercle(-1/width*2,width/2, height/2);
+    c0 = new Cercle(-1/width*2,width/2, height/2,level); // le cercle initial à une curvature négative
     init(c0);
 }
 
@@ -74,11 +80,13 @@ function mousePressed() {
 }
 
 function isValid(c,t) {
-    if (c.r<2) return false;
+    if (c.r<1) return false;
     for (let o of cercles) {
-        let d = c.dist(o);
-        let deltaR = Math.abs(c.r - o.r);
-        if (d<epsilon && deltaR<epsilon) return false;
+        if (o.level == level) {
+            let d = c.dist(o);
+            let deltaR = Math.abs(c.r - o.r);
+            if (d<epsilon && deltaR<epsilon) return false;
+        }
     }
     if (!isTangent(c,t[0])) return false;
     if (!isTangent(c,t[1])) return false;
@@ -105,7 +113,6 @@ function nextGen() {
             }
         }
     }
-    console.log(newQ)
     queue=newQ;
 }
 
@@ -146,9 +153,9 @@ function DescartesComplex(t) {
     racine = racine.sqrt().scalar(2);
 
     let ret = [];
-    ret.push( new Cercle(k4[0], somme.add(racine).scalar(1/k4[0]).re, somme.add(racine).scalar(1/k4[0]).im));
-    ret.push( new Cercle(k4[0], somme.sub(racine).scalar(1/k4[0]).re, somme.sub(racine).scalar(1/k4[0]).im));
-    ret.push( new Cercle(k4[1], somme.add(racine).scalar(1/k4[1]).re, somme.add(racine).scalar(1/k4[1]).im));
-    ret.push( new Cercle(k4[1], somme.sub(racine).scalar(1/k4[1]).re, somme.sub(racine).scalar(1/k4[1]).im));
+    ret.push( new Cercle(k4[0], somme.add(racine).scalar(1/k4[0]).re, somme.add(racine).scalar(1/k4[0]).im, level));
+    ret.push( new Cercle(k4[0], somme.sub(racine).scalar(1/k4[0]).re, somme.sub(racine).scalar(1/k4[0]).im, level));
+    ret.push( new Cercle(k4[1], somme.add(racine).scalar(1/k4[1]).re, somme.add(racine).scalar(1/k4[1]).im, level));
+    ret.push( new Cercle(k4[1], somme.sub(racine).scalar(1/k4[1]).re, somme.sub(racine).scalar(1/k4[1]).im, level));
     return ret;
 }

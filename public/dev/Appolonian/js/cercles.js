@@ -1,5 +1,13 @@
+function rainbow(frequency,i,d) {
+    let iter = (i % 127) + d%10;
+        r = Math.floor(Math.sin(frequency*iter + 0) * (127) + 128);
+        g = Math.floor(Math.sin(frequency*iter + 2) * (127) + 128);
+        b = Math.floor(Math.sin(frequency*iter + 4) * (127) + 128);
+    return color(r,g,b);
+}
+
 class Cercle {
-    constructor(k, x ,y) {
+    constructor(k, x ,y, l=0) {
         this.k = k;
         this.r = Math.abs(1/k);
         this.x = x;
@@ -7,6 +15,8 @@ class Cercle {
         this.centre = new Complex(x,y);
         this.couleur=color(random(255),random(255),random(255));
         this.recur=false;
+        this.level = l;
+        this.nb = cercles.length-1;
     }
 
     setRecur() {
@@ -26,8 +36,10 @@ class Cercle {
     }
 
     show() {
+        if (!this.recur) {
+            this.couleur = rainbow(100000,this.nb,1);
+        }
         fill(this.couleur);
-        // stroke(this.couleur);
         noStroke();
         strokeWeight(1);
         circle(this.centre.re,this.centre.im,this.r*2);
