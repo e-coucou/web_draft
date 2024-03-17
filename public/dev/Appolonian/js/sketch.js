@@ -1,4 +1,4 @@
-const eC = {version: 'v1.0', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
+const eC = {version: 'v1.1', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 

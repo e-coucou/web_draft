@@ -47,6 +47,8 @@
     {"href":"./dev/Langton Fourmis/","title":"Fourmis de Langton","src":"./img/Langton.png","description":"infos","category":"Jeux"},
     {"href":"./dev/Suduku/","title":"SUDUKU","src":"./img/ecoucou.png","description":"infos","category":"Jeux"},
     {"href":"./dev/Tricheurs/","title":"Tricheurs","src":"./img/tricheurs.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/2048/","title":"2048","src":"./img/2048.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/wordle/","title":"Wordle - Le MOT","src":"./img/wordle.png","description":"infos","category":"Jeux"},
 
     {"href":"./dev/Buffon PI/","title":"Aiguilles de Buffon","src":"./img/Buffon.png","description":"infos","category":"PI"},
     {"href":"./dev/Collision/","title":"PI -> Collision ","src":"./img/collision.png","description":"infos","category":"PI"},
@@ -123,8 +125,8 @@
     {"href":"./dev/A*/","title":"A* Pathfinding","src":"./img/astar_.png","description":"","category":"Algorithmes"},
     {"href":"./dev/A*_France/","title":"A* Pathfinding France","src":"./img/aStar.png","description":"","category":"Algorithmes"},
     {"href":"./dev/A*_convex/","title":"A* Convex Hull France","src":"./img/convexHull.png","description":"","category":"Algorithmes"},
-    {"href":"./dev/Voronoi/","title":"Voronoi","src":"./img/voronoi.png","description":"","category":"Algorithmes"},
-    {"href":"./dev/Voronoi  v0/","title":"Voronoi","src":"./img/voronio2.png","description":"","category":"Algorithmes"},
+    {"href":"./dev/Voronoi/","title":"Voronoi - tracé","src":"./img/voronoi.png","description":"","category":"Algorithmes"},
+    {"href":"./dev/Voronoi  v0/","title":"Voronoi - Stippling","src":"./img/voronio2.png","description":"Utilisation des triangulations de Delaunay pour construire les polygones de Voronoi.<br>Ces calculs permettent d'appliquer une transformation de type STIPPLING aux images sélectionnées","category":"Algorithmes"},
     {"href":"./dev/Automate Wolfram/","title":"Wolfram Automate","src":"./img/wolfram.png","description":"","category":"Algorithmes"},
 
     {"href":"./dev/Neige/","title":"Neige","src":"./img/neige.png","description":"","category":"Neige"},

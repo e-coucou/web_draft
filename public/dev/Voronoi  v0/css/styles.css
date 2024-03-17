@@ -32,8 +32,27 @@ body {
     /* image-rendering: pixelated; */
     color:rgb(7, 80, 30);
     align-content: center;
+    text-align: center;
     /* display: contents; */
 }
+.copyright {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    color: black;
+    font-size: 0.6rem;
+    text-align: end;
+    font-family: 'Courier New', Courier, monospace;
+}
+.version {
+    position: absolute;
+    left: 5px;
+    bottom: 10px;
+    color: black;
+    font-size: 0.6rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 a {
     color: rgb(0, 78, 42);
 }
