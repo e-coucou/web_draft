@@ -70,13 +70,17 @@ function setup() {
     init(c0);
 }
 
-function mouseClicked() {
+function mousePressed() {
     let newC = c0;
     for (let c of cercles) {
         if (c.in(mouseX,mouseY))
         newC = c;
     }
     init(newC,(newC==c0));
+}
+
+function touchPressed() {
+    mousePressed();
 }
 
 function isValid(c,t) {
