@@ -48,7 +48,7 @@
     {"href":"./dev/Suduku/","title":"SUDUKU","src":"./img/ecoucou.png","description":"infos","category":"Jeux"},
     {"href":"./dev/Tricheurs/","title":"Tricheurs","src":"./img/tricheurs.png","description":"infos","category":"Jeux"},
     {"href":"./dev/2048/","title":"2048","src":"./img/2048.png","description":"infos","category":"Jeux"},
-    {"href":"./dev/wordle/","title":"Wordle - Le MOT","src":"./img/wordle.png","description":"infos","category":"Jeux"},
+    {"href":"./dev/Wordle/","title":"Wordle - Le MOT","src":"./img/wordle.png","description":"infos","category":"Jeux"},
 
     {"href":"./dev/Buffon PI/","title":"Aiguilles de Buffon","src":"./img/Buffon.png","description":"infos","category":"PI"},
     {"href":"./dev/Collision/","title":"PI -> Collision ","src":"./img/collision.png","description":"infos","category":"PI"},
