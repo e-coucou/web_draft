@@ -70,7 +70,7 @@ function setup() {
     init(c0);
 }
 
-function mousePressed() {
+function mouseClicked() {
     let newC = c0;
     for (let c of cercles) {
         if (c.in(mouseX,mouseY))
