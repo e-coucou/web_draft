@@ -70,26 +70,27 @@ function setup() {
     init(c0);
 }
 
-function mouse_() {
+function mouse_(x,y) {
     let newC = c0;
     for (let c of cercles) {
-        if (c.in(mouseX,mouseY))
+        if (c.in(x,y))
         newC = c;
     }
     init(newC,(newC==c0));
-
+}
+function touchStarted() {
+    mouseSelection=true;
+    let fs =fullscreen();
+    // console.log(fs);
+    // if (!fs) { fullscreen(true);}
+    mouse_(touches[0].x, touches[0].y);
 }
 
-function mousePressed() {
-    mouse_();
-}
-
-function touchPressed() {
-    mouse_();
-}
-
+// function mousePressed() {
+//     mouse_();
+// }
 function mouseClicked() {
-    mouse_();
+    mouse_(mouseX,mouseY);
 }
 
 function isValid(c,t) {
