@@ -56,6 +56,7 @@
     {"href":"./dev/PI Leibniz/","title":"PI approximation de Leibniz","src":"./img/piLeibniz.png","description":"infos","category":"PI"},
     {"href":"./dev/PI Spirale/","title":"PI visu en Spirale","src":"./img/PI spirale.png","description":"infos","category":"PI"},
     {"href":"./dev/Appolonian/","title":"PI cercles de Descartes","src":"./img/appolonian.png","description":"infos","category":"PI"},
+    {"href":"./dev/Spirale Prime/","title":"SPirale des Nombres Premiers","src":"./img/ecoucou.png","description":"infos","category":"PI"},
 
 
     {"href":"./dev/Perceptron/","title":"Perceptron","src":"./img/perceptron.png","description":"infos","category":"Neurone"},
