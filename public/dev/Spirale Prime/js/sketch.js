@@ -1,4 +1,4 @@
-const eC = {version: 'v0.1', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
+const eC = {version: 'v0.2', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -58,6 +58,27 @@ function mouseClicked() {
     mouse_(mouseX,mouseY);
 }
 
+function spirale(s,coul,arr) {
+    stroke(coul);
+    strokeWeight(2);
+    // let l = width/2;
+    const lim = points.length/s-1;
+    for (let v=1;v<=s;v++) {
+        let next=false;
+        for (let t of arr) {
+            if (v%t === 0) next=true;
+        }
+        if (next) {
+        // if ((v%2)!=0 & (v%5)!=0 & (v%2)!=0 & (v%71)!=0) {
+            for(let i =1;i<lim;i++) {
+            // line(width/2,height/2,l + l*cos(-primes[i]), l + l*sin(-primes[i]));
+                line(points[v+s*(i-1)].x,points[v+s*(i-1)].y,points[v+s*(i)].x,points[v+s*(i)].y);
+            }
+        }
+    }
+
+}
+
 function draw() {
     background(0);
     rate.html(' Exécution en '+round(deltaTime)+' ms');
@@ -66,22 +87,12 @@ function draw() {
             points.push(new Points(iter++,width/2, height/2,width/2));
         }
     }
+
+    spirale(710,color(200,200,0,50),[]);
+    spirale(44,color(100,200,100,50),[2,11]);
+
     for (p of points) {
         p.show();
-    }
-
-    stroke(200,200,0,150);
-    strokeWeight(1);
-    let l = width/2;
-    const s=710;
-    const lim = points.length/s-1;
-    for (let v=1;v<=s;v++) {
-        if ((v%2)!=0 & (v%5)!=0 & (v%2)!=0 & (v%71)!=0) {
-            for(let i =1;i<lim;i++) {
-            // line(width/2,height/2,l + l*cos(-primes[i]), l + l*sin(-primes[i]));
-                line(points[v+s*(i-1)].x,points[v+s*(i-1)].y,points[v+s*(i)].x,points[v+s*(i)].y);
-            }
-        }
     }
 
     textAlign(CENTER,CENTER);
@@ -138,8 +149,8 @@ class Points {
         this.cx = cx;
         this.cy = cy;
         this.r = r;
-        this.x = cx + n * Math.cos(-n)/1000; // * r / 300;
-        this.y = cy + n * Math.sin(-n)/1000; // * r / 1000;
+        this.x = cx + n * Math.cos(-n)/100; // * r / 300;
+        this.y = cy + n * Math.sin(-n)/100; // * r / 1000;
         this.prime = this.isPrime();
     }
 
@@ -157,7 +168,7 @@ class Points {
             strokeWeight(1);
             point(this.x,this.y);
             noFill();
-            strokeWeight(1);
+            strokeWeight(2);
             // text(this.n,this.x,this.y);
         }
     }
