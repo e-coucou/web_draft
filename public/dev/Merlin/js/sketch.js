@@ -77,18 +77,18 @@ function mouse_(x,y) {
     carre.play(x,y);
 }
 
-function touchStarted() {
-    mouseSelection=true;
-    let fs =fullscreen();
-    console.log(fs);
-    // if (!fs) { fullscreen(true);}
-    // mouse_(touches[0].x, touches[0].y);
-}
+// function touchStarted() {
+//     mouseSelection=true;
+//     let fs =fullscreen();
+//     console.log(fs);
+//     // if (!fs) { fullscreen(true);}
+//     // mouse_(touches[0].x, touches[0].y);
+// }
 
 // function mousePressed() {
 //     mouse_();
 // }
-function mouseClicked() {
+function mousePressed() {
     mouse_(mouseX,mouseY);
 }
 
