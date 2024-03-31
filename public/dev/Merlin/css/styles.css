@@ -9,6 +9,7 @@
     --color-maintext: #000000;
     --color-titretext: #ffffff;
     --color-error: #b00020;
+    --color-victoire: #f65105;
 
     --border: 1px solid var(--color-fondclair);
     --baseline: 50px;
@@ -168,7 +169,7 @@ div.entete {
     line-height: 4.5px;
     margin: 5px 5px;
     padding: 5px 12px;
-    font-size: 0.8rem;
+    font-size: 1.1rem;
     text-align: center;
     color: var(--color-fondclair);
     text-shadow: 1px 1px 1px var(--color-second-fonce);

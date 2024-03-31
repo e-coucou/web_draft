@@ -1,10 +1,10 @@
-const eC = {version: 'v1.1', release:'r2', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
+const eC = {version: 'v2.0', release:'r2', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
 let startTime, endTime;
 
-const N=3;
+let N=3;
 let carre;
 let btReplay, btReset, btSolve;
 
@@ -34,8 +34,7 @@ function windowResized() {
     btSolve.position(innerWidth/2+width*0.15,height*0.92);
     btSolve.style('width', width*0.2);
     btSolve.style('height', height*0.05);
-
-    carre = new Merlin(N,width*0.9,0.05*width);
+    carre.reSize(width*0.9,0.05*width);
 
 }
 
@@ -46,7 +45,11 @@ function fctReset() {
     carre.init();
 }
 function fctSolve() {
-    carre.solve();
+    carre.switchSol();
+}
+function swap() {
+    N = N==5 ? 3:5;
+    windowResized();
 }
 
 function setup() {
@@ -59,39 +62,38 @@ function setup() {
     vx=select("#vx"); vx.html('⌖ '+eC.version+' '+eC.release+' >'+eC.maj+'<');
     cr=select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
 
-    btReplay = createButton("Replay");
+    btReplay = createButton("↩️ Replay");
     btReplay.mousePressed(fctReplay);
     btReplay.parent("#canvas");
     btReplay.class("styled_2");
-    btReset = createButton("Reset");
+    btReset = createButton("🔁 Reset");
     btReset.mousePressed(fctReset);
     btReset.class("styled_2");
     btReset.parent("#canvas");
-    btSolve = createButton("Solution");
+    btSolve = createButton("🔎 Solution");
     btSolve.mousePressed(fctSolve);
     btSolve.class("styled_2");
     btSolve.parent("#canvas");
+
+    carre = new Merlin(N,width*0.9,0.05*width);
 
     windowResized();
 
 }
 
 function mouse_(x,y) {
-    // nextP(x,y);
     carre.play(x,y);
 }
 
 function touchStarted() {
     mouseSelection=true;
     let fs =fullscreen();
-    // console.log(fs);
-    // if (!fs) { fullscreen(true);}
-    mouse_(touches[0].x, touches[0].y);
+    if (!fs) { fullscreen(true);}
+    if (mobile) {
+        mouse_(touches[0].x, touches[0].y);
+    }
 }
 
-// function mousePressed() {
-//     mouse_();
-// }
 function mouseClicked() {
     mouse_(mouseX,mouseY);
 }
