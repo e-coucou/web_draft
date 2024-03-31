@@ -88,7 +88,7 @@ function mouse_(x,y) {
 function touchStarted() {
     mouseSelection=true;
     let fs =fullscreen();
-    if (!fs) { fullscreen(true);}
+    // if (!fs) { fullscreen(true);}
     if (mobile) {
         mouse_(touches[0].x, touches[0].y);
     }
