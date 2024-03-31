@@ -63,7 +63,7 @@ class Merlin {
             // this.Carre[i]=[];
             for (let j=0;j<this.N;j++) {
                 // this.Carre[i][j] = (random()>0.5)
-                this.Carre.push(random()>0.8);
+                this.Carre.push(random()>0.5);
                 this.Pressed.push(0);
                 this.keySol.push(0);
             }
