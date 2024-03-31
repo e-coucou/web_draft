@@ -1,4 +1,4 @@
-const eC = {version: 'v0.1', release:'r0', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
+const eC = {version: 'v1.1', release:'r2', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -25,6 +25,18 @@ function preload() {
 function windowResized() {
     let m = min(innerHeight,innerWidth) * 0.92;
     resizeCanvas(m,m);
+    btReplay.position(innerWidth/2-width*0.1,height*0.92);
+    btReplay.style('width', width*0.2);
+    btReplay.style('height', height*0.05);
+    btReset.position(innerWidth/2-width*0.35,height*0.92);
+    btReset.style('width', width*0.2);
+    btReset.style('height', height*0.05);
+    btSolve.position(innerWidth/2+width*0.15,height*0.92);
+    btSolve.style('width', width*0.2);
+    btSolve.style('height', height*0.05);
+
+    carre = new Merlin(N,width*0.9,0.05*width);
+
 }
 
 function fctReplay() {
@@ -49,26 +61,18 @@ function setup() {
 
     btReplay = createButton("Replay");
     btReplay.mousePressed(fctReplay);
+    btReplay.parent("#canvas");
     btReplay.class("styled_2");
     btReset = createButton("Reset");
     btReset.mousePressed(fctReset);
     btReset.class("styled_2");
+    btReset.parent("#canvas");
     btSolve = createButton("Solution");
     btSolve.mousePressed(fctSolve);
     btSolve.class("styled_2");
+    btSolve.parent("#canvas");
 
     windowResized();
-
-    btReplay.position(width/2,height*0.97);
-    btReplay.style('width', width*0.2);
-    btReplay.style('height', height*0.05);
-    btReset.position(1*width/4,height*0.97);
-    btReset.style('width', width*0.2);
-    btReset.style('height', height*0.05);
-    btSolve.position(3*width/4,height*0.97);
-    btSolve.style('width', width*0.2);
-    btSolve.style('height', height*0.05);
-    carre = new Merlin(N,width*0.9,0.05*width);
 
 }
 
@@ -77,18 +81,18 @@ function mouse_(x,y) {
     carre.play(x,y);
 }
 
-// function touchStarted() {
-//     mouseSelection=true;
-//     let fs =fullscreen();
-//     console.log(fs);
-//     // if (!fs) { fullscreen(true);}
-//     // mouse_(touches[0].x, touches[0].y);
-// }
+function touchStarted() {
+    mouseSelection=true;
+    let fs =fullscreen();
+    // console.log(fs);
+    // if (!fs) { fullscreen(true);}
+    mouse_(touches[0].x, touches[0].y);
+}
 
 // function mousePressed() {
 //     mouse_();
 // }
-function mousePressed() {
+function mouseClicked() {
     mouse_(mouseX,mouseY);
 }
 
