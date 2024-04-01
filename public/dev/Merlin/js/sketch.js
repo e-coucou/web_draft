@@ -1,4 +1,4 @@
-const eC = {version: 'v2.0', release:'r2', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
+const eC = {version: 'v2.1', release:'r2', date:'mar/24', owner: 'rky', code:'y2I', annee:'2024', maj:'mar/24'};
 let mobile;
 let DEBUG = false, VERBOSE = false, LOOP = false, DENSITE = false;
 
@@ -6,7 +6,7 @@ let startTime, endTime;
 
 let N=3;
 let carre;
-let btReplay, btReset, btSolve;
+let btReplay, btReset, btSolve, btSwap;
 
 function start() {
     startTime = new Date();
@@ -34,6 +34,9 @@ function windowResized() {
     btSolve.position(innerWidth/2+width*0.15,height*0.92);
     btSolve.style('width', width*0.2);
     btSolve.style('height', height*0.05);
+    btSwap.position(innerWidth/2+width*0.40,height*0.92);
+    btSwap.style('width', width*0.05);
+    btSwap.style('height', height*0.05);
     carre.reSize(width*0.9,0.05*width);
 
 }
@@ -42,13 +45,18 @@ function fctReplay() {
     carre.rePlay();
 }
 function fctReset() {
-    carre.init();
+    carre.reset();
 }
 function fctSolve() {
     carre.switchSol();
 }
 function swap() {
-    N = N==5 ? 3:5;
+    switch(N) {
+        case 3:
+        case 4: N = N+1; break;
+        case 5: N=3; break;
+    }
+    carre = new Merlin(N,width*0.9,0.05*width);
     windowResized();
 }
 
@@ -74,6 +82,10 @@ function setup() {
     btSolve.mousePressed(fctSolve);
     btSolve.class("styled_2");
     btSolve.parent("#canvas");
+    btSwap = createButton("☢️");
+    btSwap.mousePressed(swap);
+    btSwap.class("styled_2");
+    btSwap.parent("#canvas");
 
     carre = new Merlin(N,width*0.9,0.05*width);
 

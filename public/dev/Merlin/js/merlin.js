@@ -11,7 +11,16 @@ class Merlin {
         this.nb = 0;
         this.keySol=[];
         this.showSol=false;
-        this.init();
+        
+        this.reset();
+    }
+
+    reset() {
+        let i = 100;
+        do {
+            i--;
+        } while ( i>0 & !this.init())
+        this.try = 100-i;
     }
 
     reSize(w, c) {
@@ -31,6 +40,8 @@ class Merlin {
         let n = Math.pow(2, this.Carre.length);
         let mess=[];
         this.keySol.fill(0);
+        this.Solution=0;
+        this.bestSol=0;
         let oldKey = [...this.Pressed], oldNB = this.nb;
         for (let i=0; i<n ; i++ ) {
             mess = [];
@@ -48,11 +59,15 @@ class Merlin {
                     this.keySol[k]=1;
                 }
                 this.bestSol=this.keySol.reduce((a,v)=>{return a=a+v;},0);
+                this.Pressed = [...oldKey];
+                this.nb=oldNB;
+                this.Game = false;
+                return true;
             }
         }
-        // this.Carre = [...this.Init];
         this.Pressed = [...oldKey];
         this.nb=oldNB;
+        return false;
     }
 
     init() {
@@ -63,16 +78,18 @@ class Merlin {
             // this.Carre[i]=[];
             for (let j=0;j<this.N;j++) {
                 // this.Carre[i][j] = (random()>0.5)
-                this.Carre.push(random()>0.5);
+                this.Carre.push(random()>0.75);
                 this.Pressed.push(0);
                 this.keySol.push(0);
             }
         }
         this.Init = [...this.Carre];
         this.nb = 0;
-        this.game();
-        this.solve();
+        this.game();        
         this.showSol=false;
+        if (this.N<5) {
+            return this.solve();
+        } else return true;
     }
 
     getID(x,y) {
