@@ -92,7 +92,7 @@ function Fermat(p) {
     if (PowMod(p-1,2,p) == 1) {
         return true;
     } else { return false; }
-}
+}  
 
 function draw() {
     background("#f0e7fa");
