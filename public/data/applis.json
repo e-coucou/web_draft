@@ -80,6 +80,7 @@
     {"href":"./dev/hibert/","title":"Hibert","src":"./img/hibert.png","description":"infos","category":"Fractales"},
     {"href":"./dev/Mandelbrot/","title":"Mandelbrot","src":"./img/mandelbrot.png","description":"infos","category":"Fractales"},
     {"href":"./dev/Mandelbrot2/","title":"Espace de Mandelbrot","src":"./img/mandelbrot_test.png","description":"infos","category":"Fractales"},
+    {"href":"./dev/Pentagone/","title":"Pentagone","src":"./img/Pentagone.png","description":"infos","category":"Fractales"},
 
     {"href":"./dev/Particules/","title":"Particules agitées","src":"./img/particules.png","description":"","category":"Particules"},
     {"href":"./dev/Particules2/","title":"Particules jet","src":"./img/particules_2.png","description":"","category":"Particules"},
@@ -106,6 +107,7 @@
     {"href":"./dev/Maths/","title":"Geometrie","src":"./img/maths.png","description":"","category":"Mathematiques"},
     {"href":"./dev/RayRender/","title":"Ray rendering","src":"./img/rayrender.png","description":"","category":"Mathematiques"},
     {"href":"./dev/Cycloide/","title":"Cycloide","src":"./img/cycloide.png","description":"","category":"Mathematiques"},
+    {"href":"./dev/Emprunt/","title":"Emprunt Bancaire","src":"./img/ecoucou.png","description":"","category":"Mathematiques"},
 
     {"href":"./dev/Bezier/","title":"Courbes de Bézier","src":"./img/bezier.png","description":"","category":"Algorithmes"},
     {"href":"./dev/A005/","title":"Paysage montagne","src":"./img/A005.png","description":"","category":"Algorithmes"},
