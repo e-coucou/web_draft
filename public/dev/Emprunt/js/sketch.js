@@ -36,6 +36,18 @@ function end() {
 function windowResized() {
     let m = min(innerHeight,innerWidth) * 0.92;
     resizeCanvas(m,m);
+
+    h=int(height/2);
+    w= width/2 - 2*padding;
+    maxR = 6000.0;
+
+    yOff = int(height*3/4);
+    xOff = 0+padding;
+    xScale = w/N/12
+    yScale = h/maxR;
+
+    Update(xOff, yOff,yScale,w);
+    UpdateBien(Bien);
 }
 
 function setup() {
@@ -47,7 +59,6 @@ function setup() {
     rate = select("#rate");
     vx=select("#vx"); vx.html('⌖ '+eC.version+' '+eC.release+' >'+eC.maj+'<');
     cr=select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
-    windowResized();
 
     getCapital = new BARMOUSE();
     getAnnee = new BARMOUSE(CURSEUR);
@@ -56,17 +67,7 @@ function setup() {
     getBien = new BARMOUSE();
     getApport = new BARMOUSE();
 
-    h=500;
-    w= width/2 - 2*padding;
-    maxR = 6000.0;
-
-    yOff = height-250;
-    xOff = 0+padding;
-    xScale = w/N/12
-    yScale = h/maxR;
-
-    Update(xOff, yOff,yScale,w);
-    UpdateBien(Bien);
+    windowResized();
 }
 
 function mouse_(x,y) {
@@ -158,7 +159,7 @@ function draw() {
     let [m,V,I,A] = computeTable();
     let Interet = I.reduce((a,b) => {return (a+b);});
 
-    yOff = height-250;
+    yOff = int(height*3/4);
     xOff = 0+padding;
     xScale = w/N/12
     
