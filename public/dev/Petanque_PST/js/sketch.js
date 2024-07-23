@@ -335,6 +335,7 @@ function setup() {
         }
         a_ = false;
     }
+
     // frameRate(1);
     selA = annees.length-1;
     setDateSel(selA);

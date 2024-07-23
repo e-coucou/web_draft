@@ -1,5 +1,5 @@
 function clearButtons() {
-    btTournoi.setOff(),btInfo.setOff();btGraphe.setOff();btListe.setOff();btZoom.setOff();
+    btTournoi.setOff(),btInfo.setOff();btGraphe.setOff();btListe.setOff();btZoom.setOff(),btFiltre.setOff();
 }
 function showButtons() {
     fill(color(couleur.txt));
@@ -12,6 +12,7 @@ function showButtons() {
     btNotice.show(mode);
     btELO.show(mode);
     btZoom.show(mode);
+    btFiltre.show(mode);
     for (c of btAnnee) { c.show(mode); }
     // for (c of btCouleur) { c.show(mode); }
     // for (c of btPM) { c.show(mode); }
@@ -49,6 +50,7 @@ function redimButtons() {
     }
     btNav[0].redim(width*8.5/10,height-r-padding-3,14);
     btNav[1].redim(width*9.5/10,height-r-padding-3,14);
+    btFiltre.redim(width*8.5/10,height-r-padding-3,14);
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
         i = int(i);
@@ -102,6 +104,7 @@ function createButtons() {
     // inter = int((height-120)/initJoueurs.length);
     btNav.push(new BoutonC('◀️',width*8/10,height-r-padding,14,[2,4,5],false));
     btNav.push(new BoutonC('▶️',width*9/10,height-r-padding,14,[0,2,3,4,5],false));
+    btFiltre = new BoutonC('🌐',width*8/10,height-r-padding,14,[0,3],false);
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
         i = int(i);

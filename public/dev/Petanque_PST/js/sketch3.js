@@ -1,5 +1,5 @@
-const eC = {version: 'v1.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
-let param, run=false;
+const eC = {version: 'v2.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+let param, run=false,enCours=2024;
 let joueurs = [];
 let initJoueurs = [];
 let equipes = [];
@@ -11,7 +11,7 @@ let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
 let id = 0, idSel;
-let mode = 1, debug = 0, mode_prev;
+let mode = 1, debug = 0, mode_prev, filtreJ=false;
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=true;
@@ -21,9 +21,10 @@ let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
 let btHTML;
 let couleur_sel=0, couleur , btCouleur=[], btAnnee=[], btPhase=[], btPoule=[];
-let btPM = [], btNav = [];
+let btPM = [], btNav = [], btFiltre;
 let mouseSelection=false;
 let couleur_arr =[
+    {bk:'#000000', dm:'#cccccc', cur:'#444444', sel:'#ff3333', txt:'#ffffff'},
     {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8'},
     {sel:'#FF5733',bk:'#581845',dm:'#900C3F',cur:'#C70039',tt:'#FFC300',txt:'#DAF7A6'},
     {txt:'#cad2c5', sel:'#84a98c', cur:'#52796f', dm:'#354f52', bk:'#2f3e46'},
@@ -76,6 +77,7 @@ function update_PM(n) {
         case 6 : if (d) { param.ELO.bonusSeuil -= HH; } else {param.ELO.bonusSeuil += HH;}; break;
         case 7 : if (d) { param.ELO.bonus -= LL; } else {param.ELO.bonus += LL;}; break;
     }
+
     calculELO(false);
     update();
 }
@@ -252,7 +254,7 @@ function draw() {
         background(220);
         noStroke();
         switch (mode) {
-            case 3:
+            case 3: // mode Graphe
                 btGraphe.setOn();
                 drawGraphe();
                 break;
@@ -263,7 +265,14 @@ function draw() {
             case 2:
                 run=false; btNav[1].txt = '▶️' ; run=false;
                 btZoom.setOn();
-                joueurs[id].fiche(padding,15,width-2*padding,matchs);
+                if (joueurs[id].id != 0) {
+                    joueurs[id].fiche(padding,15,width-2*padding,matchs);
+                } else {
+                    x=padding; y=15 ; s=10 ;w_=width-2*padding;
+                    rect(x+s,y-13,w_-s,26);
+                    fill(255); textAlign(LEFT,CENTER); textSize(16);
+                    text('_____ / Joueur Neutre',x+2*s,y);
+                }
                 break;
             case 4:
             case 5:
@@ -278,7 +287,7 @@ function draw() {
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
         text(mode,10,height-10);
-        text('eCoucou '+eC.version+' '+eC.annee,width*4/5,height-8);
+        text('eCoucou '+eC.version+' ['+eC.annee+']',width*4/5,height-8);
         for (let i=0; i<touchStarted.length;i++) {
             text(touches[0].x+'/'+touches[0].y,20,height-50);
         }

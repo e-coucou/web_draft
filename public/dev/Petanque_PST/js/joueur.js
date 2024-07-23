@@ -102,7 +102,7 @@ class Joueur {
             if (a>b) {
                 fill(255,0,0);
             } else {
-                fill(55);
+                fill(120,150,150);
             }
         }
     }
@@ -156,20 +156,22 @@ class Joueur {
     }
     draw(idx,n,w,h, elo=this.ELO) {
         noStroke();
-        let x = padding + (w / 40 * (elo-20));
+        let x = -3*padding + (w / param.ELO.init * (elo-param.ELO.init/2));
         let dy = h/n;
         let y = 79 + dy*(int(idx)-0.5);
-        let r = 2 + this.match/3;
+        let r = 2 + this.match/2.2;
         this.getColor();
         circle(x,y,r);
         fill(255);
+        let v = this.annees.filter((e) => {return (e==annee);})[0];
+        if (!v) fill(150,180,180);
         textAlign(LEFT,CENTER);
         textSize(12);
         let txt=this.nom.substring(0,20)+' ';
         for (let i=0;i<this.victoire;i++) {
             txt += '🏆';
         }
-        text(txt,x+5,y);
+        text(txt,x+8,y);
         // text(this.nom.substring(0,20),x+5,y);
     }
 

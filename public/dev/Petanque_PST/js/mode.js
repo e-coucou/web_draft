@@ -74,11 +74,28 @@ function drawListe() {
     text('po',x_+4*dx+dx/2, y_);
     text('co',x_+5*dx+dx/2, y_);
     // text('---'+inter+'----',100,height-50);
-    for (let i in joueurs) {
-        let idx = int(joueurs[i].hist[index].c);
-        let elo = joueurs[i].hist[index].elo;
+    let eJoueurs = joueurs.filter(a=>{return a.id!=0;});
+    if (filtreJ) {
+        eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
+    }
+    // if (eJoueurs.length > 0) {
+    //     console.log(eJoueurs)
+    //     inter = int((height-140)/eJoueurs.length);
+    // }
+    for (let i in eJoueurs) {
+        let idx = int(eJoueurs[i].hist[index].c);
+        let elo = eJoueurs[i].hist[index].elo;
         // iDs[i] = idx;
-        joueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo);
+        if (eJoueurs[i].id != 0) {
+            eJoueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo);
+        } else {
+            let x= padding, y = inter*(i)+y_+dy_, s=8, dy=inter-2;
+            fill(color(couleur.bk));
+            rect(x+s,y-dy/2,w_-s,dy);
+            fill(255);
+            textAlign(LEFT,CENTER);
+            textSize(max(int(dy/2),11));
+        }
     }    
     drawDateBar();
 }
@@ -116,10 +133,16 @@ function showMatch(id_) {
 function drawGraphe() {
     fill(color(couleur.bk));
     rect(padding,79,width-2*padding,height-175);
-    for (let i in joueurs) {
-        let idx = int(joueurs[i].hist[index].c);
-        let elo = joueurs[i].hist[index].elo;
-        joueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-175,elo);
+    let eJoueurs = joueurs.filter(a=>{return a.id!=0;});
+    if (filtreJ) {
+        eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
+    }
+    for (let i in eJoueurs) {
+        let idx = int(eJoueurs[i].hist[index].c);
+        let elo = eJoueurs[i].hist[index].elo;
+        if (eJoueurs[i].id != 0) {
+            eJoueurs[i].draw(idx,initJoueurs.length,width-2*padding,height-175,elo);
+        }
     }
     drawDateBar();
     showMatch(index);

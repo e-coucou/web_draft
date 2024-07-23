@@ -82,6 +82,27 @@
 {"E1":27,"E2":28,"Sc1":13,"Sc2":12,"type":"Finale d'Honneur","annee":2023,"poule":"","k":0},
 {"E1":24,"E2":29,"Sc1":13,"Sc2":5,"type":"Toute petite Finale","annee":2023,"poule":"","k":2},
 {"E1":31,"E2":25,"Sc1":13,"Sc2":10,"type":"Petite Finale","annee":2023,"poule":"","k":4},
-{"E1":26,"E2":30,"Sc1":13,"Sc2":5,"type":"Finale","annee":2023,"poule":"","k":6}
+{"E1":26,"E2":30,"Sc1":13,"Sc2":5,"type":"Finale","annee":2023,"poule":"","k":6},
+
+{"E1":32,"E2":34,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Gassin"},
+{"E1":36,"E2":38,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Gassin"},
+{"E1":32,"E2":38,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Gassin"},
+{"E1":34,"E2":36,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Gassin"},
+{"E1":36,"E2":32,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Gassin"},
+{"E1":34,"E2":38,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Gassin"},
+{"E1":33,"E2":35,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Ramatuelle"},
+{"E1":37,"E2":39,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Ramatuelle"},
+{"E1":33,"E2":39,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Ramatuelle"},
+{"E1":37,"E2":35,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Ramatuelle"},
+{"E1":33,"E2":37,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Ramatuelle"},
+{"E1":35,"E2":39,"Sc1":0,"Sc2":0,"type":"Poule","annee":2024,"poule":"Ramatuelle"},
+{"E1":34,"E2":39,"Sc1":0,"Sc2":0,"type":"Demi","annee":2024,"poule":"", "tableau":"Principal"},
+{"E1":38,"E2":33,"Sc1":0,"Sc2":0,"type":"Demi","annee":2024,"poule":"", "tableau":"Principal"},
+{"E1":32,"E2":35,"Sc1":0,"Sc2":0,"type":"Demi","annee":2024,"poule":"", "tableau":"Honneur"},
+{"E1":36,"E2":37,"Sc1":0,"Sc2":0,"type":"Demi","annee":2024,"poule":"", "tableau":"Honneur"},
+{"E1":35,"E2":36,"Sc1":0,"Sc2":0,"type":"Finale d'Honneur","annee":2024,"poule":"","k":0},
+{"E1":32,"E2":37,"Sc1":0,"Sc2":0,"type":"Toute petite Finale","annee":2024,"poule":"","k":2},
+{"E1":39,"E2":33,"Sc1":0,"Sc2":0,"type":"Petite Finale","annee":2024,"poule":"","k":4},
+{"E1":34,"E2":38,"Sc1":0,"Sc2":0,"type":"Finale","annee":2024,"poule":"","k":6}
 
 ]

@@ -99,6 +99,9 @@ function checkDots(mX, mY) {
             let id_ = floor((mX-padding) / ((width-2*padding) / matchs.length));
             updateMatch(id_);
         }
+        if (btFiltre.isIn(mX,mY,mode)) {filtreJ = !(filtreJ);
+            btFiltre.txt='🌐'; if (filtreJ) {btFiltre.txt='🔢';}
+        }
         // if (mode == 3) {
         //     let id_ = floor((mY-82)/joueurs.length);
         //     console.log(id_,'/',mY)
