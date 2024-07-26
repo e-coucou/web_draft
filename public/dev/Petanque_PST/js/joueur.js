@@ -106,7 +106,7 @@ class Joueur {
             }
         }
     }
-    show(idx, x_, y_, w_, elo=this.ELO) {
+    show(idx, x_, y_, w_, elo=this.ELO,num) {
         let x= x_, y = y_, s=8;
         let dy = inter-2;
         noStroke();
@@ -123,7 +123,7 @@ class Joueur {
             text(round(idx)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
         } else {
             textStyle(BOLD);
-            text(nf(idx,2,0)+"/ "+this.nom, x, y); x+=3.5*dx;
+            text(nf(num,2,0)+"/ "+this.nom, x, y); x+=3.5*dx;
             textAlign(CENTER,CENTER);
             fill(color(couleur.cur));
             rect(x+1,y-dy/2+1,dx-2,dy-2);

@@ -87,7 +87,7 @@ function drawListe() {
         let elo = eJoueurs[i].hist[index].elo;
         // iDs[i] = idx;
         if (eJoueurs[i].id != 0) {
-            eJoueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo);
+            eJoueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo,int(i)+1);
         } else {
             let x= padding, y = inter*(i)+y_+dy_, s=8, dy=inter-2;
             fill(color(couleur.bk));
