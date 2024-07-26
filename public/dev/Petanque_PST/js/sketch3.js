@@ -1,4 +1,22 @@
 const eC = {version: 'v2.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+
+// const lib = require("https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCwsXvdYCtmwqHCdd0MQkFky1w53M_SKns",
+  authDomain: "rky-001.firebaseapp.com",
+  databaseURL: "https://rky-001.firebaseio.com",
+  projectId: "rky-001",
+  storageBucket: "rky-001.appspot.com",
+  messagingSenderId: "719166388179",
+  appId: "1:719166388179:web:8d68aab6ef6a1f241fe126",
+  measurementId: "G-Z2ZXH0TZ0J"
+};
+const app = firebase.initializeApp(firebaseConfig);
+
 let param, run=false,enCours=2024;
 let joueurs = [];
 let initJoueurs = [];
@@ -171,6 +189,8 @@ function preload() {
     img_finale.push({a:2023,i:img}); //1024x768
     img=loadImage("./img/2022.JPG");
     img_finale.push({a:2022,i:img}); //1024x768
+    let database = firebase.database();
+    dbData  = database.ref('voitures');
 }
 function readNotice() {
     btHTML = select("#retour1");
