@@ -74,7 +74,7 @@ function drawListe() {
     text('po',x_+4*dx+dx/2, y_);
     text('co',x_+5*dx+dx/2, y_);
     // text('---'+inter+'----',100,height-50);
-    let eJoueurs = joueurs.filter(a=>{return a.id!=0;});
+    eJoueurs = joueurs.filter(a=>{return a.id!=0;});
     if (filtreJ) {
         eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
     }
@@ -133,7 +133,7 @@ function showMatch(id_) {
 function drawGraphe() {
     fill(color(couleur.bk));
     rect(padding,79,width-2*padding,height-175);
-    let eJoueurs = joueurs.filter(a=>{return a.id!=0;});
+    eJoueurs = joueurs.filter(a=>{return a.id!=0;});
     if (filtreJ) {
         eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
     }

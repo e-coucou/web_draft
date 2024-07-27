@@ -77,9 +77,10 @@ function checkDots(mX, mY) {
         // selection d'un joueur dans la liste
         if (mX>(padding) && mX<(width-padding) && (mode==0) ) {
             let id_ = round((mY - 85-18) / inter); // y_ + dy_
-            if ( id_<0 || id_>=joueurs.length) {
+            if ( id_<0 || id_>=eJoueurs.length) {
                 mode=0;
             } else {
+                // id = eJoueurs[id_].id;
                 id = id_;
                 mode_prev = mode;
                 mode = 2;
