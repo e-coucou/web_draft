@@ -1,4 +1,4 @@
-const eC = {version: 'v3.0', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+const eC = {version: 'v3.0', release:'r1', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 
 // const lib = require("https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js");
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";

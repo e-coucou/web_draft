@@ -53,13 +53,21 @@ function drawParam() {
             break;
         case 6:
             y = 20;
-            dy = height*0.8/j_json.length;
+            dy = height*0.85/j_json.length * 2;
             text('Saisie des joueurs année en cours',x,y);
-            y += 35;
+            textSize(dy/2.25);
+            y += 45;
+            let c=0;
             j_json.forEach(e => {
                 let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
                 if (e.id>0) {
-                    text(e.nom+" - "+joueur.rank,x+10,y); y += dy;
+                    text(e.nom+" - "+joueur.rank,x+10 + c*width/2,y);
+                    if (c===1) {
+                        y += dy;
+                        c = 0;
+                    } else {
+                        c = 1;
+                    }
                 }
             });
     // for (let i in eJoueurs) {
