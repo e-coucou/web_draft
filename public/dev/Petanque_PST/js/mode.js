@@ -6,6 +6,8 @@
 // 4 :
 // 5 :
 // 6 :
+
+const eC_Etat = ['','Tir.','Pt.']
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -52,16 +54,38 @@ function drawParam() {
             }
             break;
         case 6:
-            y = 20;
+            y = 20, x=0;
             dy = height*0.85/j_json.length * 2;
+            let w_ = (width-2*padding)/2;
             text('Saisie des joueurs année en cours',x,y);
             textSize(dy/2.25);
             y += 45;
-            let c=0;
+            let c=0, s=8;
             j_json.forEach(e => {
                 let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
                 if (e.id>0) {
-                    text(e.nom+" - "+joueur.rank,x+10 + c*width/2,y);
+                    let m = e.eC;
+                    switch (m) {
+                        case 0:
+                        case undefined:
+                            m=0;
+                            fill(color(couleur.dm));
+                            rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
+                            fill(0);
+                            break;
+                        case 1:
+                            fill(color(couleur.cur));
+                            rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
+                            fill(255,0,0)
+                            // fill(color(couleur.bk));
+                            break;
+                        case 2:
+                            fill(color(couleur.sel));
+                            rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
+                            fill(0,255,0)
+                            break;
+                    }
+                    text(e.nom+" - "+joueur.rank+' -> '+eC_Etat[m],x+12 + c*width/2,y);
                     if (c===1) {
                         y += dy;
                         c = 0;
