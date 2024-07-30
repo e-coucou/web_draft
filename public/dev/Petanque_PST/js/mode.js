@@ -1,3 +1,11 @@
+// MODE
+// 0 :
+// 1 :
+// 2 :
+// 3 :
+// 4 :
+// 5 :
+// 6 :
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -43,6 +51,43 @@ function drawParam() {
                 y += dy;
             }
             break;
+        case 6:
+            y = 20;
+            dy = height*0.8/j_json.length;
+            text('Saisie des joueurs année en cours',x,y);
+            y += 35;
+            j_json.forEach(e => {
+                let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
+                if (e.id>0) {
+                    text(e.nom+" - "+joueur.rank,x+10,y); y += dy;
+                }
+            });
+    // for (let i in eJoueurs) {
+    //     let idx = int(eJoueurs[i].hist[index].c);
+    //     let elo = eJoueurs[i].hist[index].elo;
+    //     // iDs[i] = idx;
+    //     if (eJoueurs[i].id != 0) {
+    //         eJoueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo,int(i)+1);
+    //     } else {
+    //         let x= padding, y = inter*(i)+y_+dy_, s=8, dy=inter-2;
+    //         fill(color(couleur.bk));
+    //         rect(x+s,y-dy/2,w_-s,dy);
+    //         fill(255);
+    //         textAlign(LEFT,CENTER);
+    //         textSize(max(int(dy/2),11));
+    //     }
+    // }    
+            break;
+        case 7:
+            text('Saisie des équipes',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
+            break;
+        case 8:
+            text('Saisie des résultats',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
+            break;
+        case 9:
+            text('Saisie',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
+            break;
+
     }
     // y = 100;
 }

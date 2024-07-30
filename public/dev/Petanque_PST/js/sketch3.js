@@ -1,4 +1,4 @@
-const eC = {version: 'v2.5', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+const eC = {version: 'v3.0', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 
 // const lib = require("https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js");
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
@@ -25,6 +25,7 @@ let matchs = [];
 let annees = [];
 let inter; // intervalle entre deux ligne sur fiche joueur
 let j_json, e_json, m_json, t_json;
+let dbJoueurs,dbTypes,dbMatchs,dbTeam;
 let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
@@ -62,6 +63,22 @@ let couleur_arr =[
     {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc'} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+apiKey: "AIzaSyCwsXvdYCtmwqHCdd0MQkFky1w53M_SKns",
+authDomain: "rky-001.firebaseapp.com",
+databaseURL: "https://rky-001.firebaseio.com",
+projectId: "rky-001",
+storageBucket: "rky-001.appspot.com",
+messagingSenderId: "719166388179",
+appId: "1:719166388179:web:37a35693f330b7a31fe126",
+measurementId: "G-DMS745VTTR"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig); // old
+
 
 function update() {
     switch(categories) {
@@ -101,6 +118,7 @@ function update_PM(n) {
     update();
 }
 function update_Nav(n) {
+    console.log(n)
     switch (mode) {
         case 2:
             switch(int(n)) {
@@ -114,8 +132,19 @@ function update_Nav(n) {
             if (run) { btNav[1].txt = '▶️' ; run=false;} 
                 else { btNav[1].txt = '⏸️' ; run= true; }
             break;
-        case 4 : mode = 5; break;
-        case 5 : mode = 4; break;
+        case 4 : 
+        case 5 : 
+        case 6 :
+        case 7 :
+        case 8 :
+        case 9 :  //
+            let nMode =5;
+            if (n==1) {
+                mode = (mode - 3) % nMode + 4 ;
+            } else {
+                mode = (mode - 5 + nMode) % nMode + (4);
+            }
+            break;
     }
 }
 function updateMatch(id_) {
@@ -179,10 +208,22 @@ function keyPressed() {
 }
 function preload() {
     param = loadJSON("./data/param.json");
-    j_json = loadJSON("./data/joueurs.json");
-    e_json = loadJSON("./data/equipes.json");
-    m_json = loadJSON("./data/matchs.json");
-    t_json = loadJSON("./data/type.json");
+    // old from fichiers
+        // j_json = loadJSON("./data/joueurs.json");
+        // e_json = loadJSON("./data/equipes.json");
+        // m_json = loadJSON("./data/matchs.json");
+        // t_json = loadJSON("./data/type.json");
+    // new from dataBase : update realtime
+    let database = firebase.database();
+    dbJoueurs  = database.ref('joueurs');
+    dbTypes  = database.ref('types');
+    dbMatchs  = database.ref('matchs');
+    dbTeam  = database.ref('equipes');
+    dbJoueurs.on("value", getDataJ, errData);
+    dbTypes.on("value", getDataT, errData);
+    dbMatchs.on("value", getDataM, errData);
+    dbTeam.on("value", getDataE, errData);
+
     img_gassin = loadImage("./img/gassin.png"); //130x143
     img_ramatuelle = loadImage("./img/ramatuelle.png"); //130x143
     img_saint_tropez = loadImage("./img/saint-tropez.png"); //130x143
@@ -190,9 +231,8 @@ function preload() {
     img_finale.push({a:2023,i:img}); //1024x768
     img=loadImage("./img/2022.JPG");
     img_finale.push({a:2022,i:img}); //1024x768
-    // let database = firebase.database();
-    // dbData  = database.ref('voitures');
 }
+
 function readNotice() {
     btHTML = select("#retour1");
     btHTML.mousePressed(HTMLRetour);
@@ -221,6 +261,7 @@ function readELO() {
 //     if (!fs) { fullscreen(true);}
 // }
 
+
 function windowResized() {
     let h_ = innerHeight*0.98;
     let w_ = min(0.59*h_, innerWidth);
@@ -229,8 +270,8 @@ function windowResized() {
     let y_ = (windowHeight - height) / 2;
     select('canvas').position(x_, y_+10);
     // canvas.position(x_, y_+10);
-    redimButtons();
-    mouseSelection=true;
+    if (run) redimButtons();
+    // mouseSelection=true;
 }
 
 function setup() {
@@ -242,28 +283,12 @@ function setup() {
     let x = (windowWidth - width) / 2;
     let y = (windowHeight - height) / 2;
     canvas.position(x, y+10);
-  
-    for (let i in j_json) {
-        let j = j_json[i];
-        initJoueurs.push( new Joueur(j.nom,j.id));
-    }
-    for (let i in e_json) {
-        let e = e_json[i];
-        equipes.push( new Equipe(e.nom,initJoueurs[e.J1],initJoueurs[e.J2],e.annee));
-    }
-    nbMatchs = Object.keys(m_json).length ;
-    calculELO(true);
-    poule = poules[0];
-    createButtons();
-    // setDateSel(annees.length-1);
-    setDateSel(annees.length-2); // on selectionne 2023
-    select("#notice").style('display','none');
+      select("#notice").style('display','none');
     select("#ELO").style('display','none');
     select('#start').style('display','none');
-    update_color(0);
     windowResized();
-    // mouseSelection=true;
 }
+
 function draw() {
     if (run) {
         if (frameCount % 30 == 0) {
@@ -273,7 +298,7 @@ function draw() {
         }
     }
     if (mouseSelection) {
-        background(220);
+        background(255);
         noStroke();
         switch (mode) {
             case 3: // mode Graphe
@@ -298,6 +323,9 @@ function draw() {
                 break;
             case 4:
             case 5:
+            case 6:
+            case 7:
+            case 8:
                 run=false; btNav[1].txt = '▶️' ; run=false;
                 btInfo.setOn();
                 drawParam(); break;

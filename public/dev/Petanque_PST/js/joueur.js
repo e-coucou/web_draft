@@ -113,6 +113,7 @@ class Joueur {
         this.getColor();
         rect(x,y-dy/2,s-1,dy);
         fill(color(couleur.bk));
+            // fill("#ff0000")
         rect(x+s,y-dy/2,w_-s,dy);
         fill(255);
         textAlign(LEFT,CENTER);
@@ -120,10 +121,10 @@ class Joueur {
         let dx = w_/12;
         x += 2*s;
         if (debug == 1) {
-            text(round(idx)+"/ "+this.nom+" ["+nf(elo,0,1)+"] "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
+            text(round(idx)+"/ "+this.nom+" ["+nf(elo,0,1)+"] (id="+this.id+") "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
         } else {
             textStyle(BOLD);
-            text(nf(num,2,0)+"/ "+this.nom, x, y); x+=3.5*dx;
+            text(nf(num,2,0)+"/ "+this.nom+" ("+this.id+")", x, y); x+=3.5*dx;
             textAlign(CENTER,CENTER);
             fill(color(couleur.cur));
             rect(x+1,y-dy/2+1,dx-2,dy-2);
@@ -189,7 +190,7 @@ class Joueur {
         textSize(16);
         let tmp='';
         for (let i=0;i<(this.victoire);i++) { tmp += '🏆';}
-        text(this.rank+'/ '+this.nom+' ('+nf(this.ELO,0,1)+')',x+2*s,y);
+        text(this.rank+'/ '+this.nom+' ['+nf(this.ELO,0,1)+'] {id='+this.id+"}",x+2*s,y);
         textAlign(RIGHT,CENTER);
         textSize(14);
         text(tmp,x+w_,y);

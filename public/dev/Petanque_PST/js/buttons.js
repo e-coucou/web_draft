@@ -74,13 +74,13 @@ function createButtons() {
     let y = height-r-padding;
     let l = (width-4*padding)/4;
     // btTournoi = new Switch('Tournoi',right,y,l,r,[0,1,3],true);
-    btTournoi = new BoutonC('🏆',width*1/10,height-r-padding,r,[0,1,2,3,4,5],true); btTournoi.setH(14);
-    btGraphe = new BoutonC('📈',width*4/10,height-r-padding,r,[0,1,2,3,4,5],false); btGraphe.setH(14);
-    btListe = new BoutonC('🗄️',width*2.5/10,height-r-padding,r,[0,1,2,3,4,5],false); btListe.setH(14);
-    btZoom = new BoutonC('🔍',width*7/10,height-r-padding,r,[0,1,2,3,4,5],false); btZoom.setH(14);
+    btTournoi = new BoutonC('🏆',width*1/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],true); btTournoi.setH(14);
+    btGraphe = new BoutonC('📈',width*4/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btGraphe.setH(14);
+    btListe = new BoutonC('🗄️',width*2.5/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btListe.setH(14);
+    btZoom = new BoutonC('🔍',width*7/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btZoom.setH(14);
     l = (width-padding)/4;
     // btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);
-    btInfo = new BoutonC('⚙️',width*5.5/10,y,r,[0,1,2,3,4,5]);btInfo.setH(14);
+    btInfo = new BoutonC('⚙️',width*5.5/10,y,r,[0,1,2,3,4,5,6,7,8,9]);btInfo.setH(14);
     btNotice = new Bouton('Notice',width/3,20,width/3-2,[4,5],false);
     btELO = new Bouton('ELO explication !',2*width/3,20,width/3-2,[4,5],false);
     btELO.setH(12); btNotice.setH(12);
@@ -102,8 +102,8 @@ function createButtons() {
         x += l;
     }
     // inter = int((height-120)/initJoueurs.length);
-    btNav.push(new BoutonC('◀️',width*8/10,height-r-padding,14,[2,4,5],false));
-    btNav.push(new BoutonC('▶️',width*9/10,height-r-padding,14,[0,2,3,4,5],false));
+    btNav.push(new BoutonC('◀️',width*8/10,height-r-padding,14,[2,4,5,6,7,8,9],false));
+    btNav.push(new BoutonC('▶️',width*9/10,height-r-padding,14,[0,2,3,4,5,6,7,8,9],false));
     btFiltre = new BoutonC('🌐',width*8/10,height-r-padding,14,[0,3],false);
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
