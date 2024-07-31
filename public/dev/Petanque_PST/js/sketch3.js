@@ -1,21 +1,4 @@
-const eC = {version: 'v3.2', release:'r1', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
-
-// const lib = require("https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js");
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
-
-// Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCwsXvdYCtmwqHCdd0MQkFky1w53M_SKns",
-//   authDomain: "rky-001.firebaseapp.com",
-//   databaseURL: "https://rky-001.firebaseio.com",
-//   projectId: "rky-001",
-//   storageBucket: "rky-001.appspot.com",
-//   messagingSenderId: "719166388179",
-//   appId: "1:719166388179:web:8d68aab6ef6a1f241fe126",
-//   measurementId: "G-Z2ZXH0TZ0J"
-// };
-// const app = firebase.initializeApp(firebaseConfig);
+const eC = {version: 'v3.2', release:'r3', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 
 let param, run=false,enCours=2024;
 let joueurs = [], eJoueurs=[];
@@ -34,7 +17,7 @@ let mode = 1, debug = 0, mode_prev, filtreJ=true; // on filtre les joueurs actif
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=true;
-let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btZoom;
+let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btZoom, btEquipe;
 let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];
@@ -44,23 +27,23 @@ let btPM = [], btNav = [], btFiltre;
 let mouseSelection=false;
 const selColor = "#88ccA0"
 let couleur_arr =[
-    {bk:'#000000', dm:'#cccccc', cur:'#444444', sel:'#81ba9a', txt:'#ffffff'},
-    {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8'},
-    {sel:'#FF5733',bk:'#581845',dm:'#900C3F',cur:'#C70039',tt:'#FFC300',txt:'#DAF7A6'},
-    {txt:'#cad2c5', sel:'#84a98c', cur:'#52796f', dm:'#354f52', bk:'#2f3e46'},
-    {txt:'#dad7cd', sel:'#a3b18a', cur:'#588157', dm:'#3a5a40', bk:'#344e41'},
-    {bk:'#22223b', dm:'#4a4e69', cur:'#9a8c98', sel:'#c9ada7', txt:'#f2e9e4'},
-    {bk:'#0A3214', cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[180,220,0]} ,
-    {bk:'#01161e', dm:'#124559', cur:'#598392', sel:'#aec3b0', txt:'#eff6e0'},
-    {bk:'#a20021', dm:'#f52f57', cur:'#f79d5c', sel:'#f3752b', txt:'#ededf4'},
+    {bk:'#000000', dm:'#cccccc', cur:'#444444', sel:'#81ba9a', txt:'#ffffff',err:"#ff0000"},
+    {bk:'#03045e', dm:'#0077b6', cur:'#00b4d8', sel:'#90e0ef', txt:'#caf0f8',err:"#ff0000"},
+    {sel:'#FF5733',bk:'#581845',dm:'#900C3F',cur:'#C70039',tt:'#FFC300',txt:'#DAF7A6',err:"#ff0000"},
+    {txt:'#cad2c5', sel:'#84a98c', cur:'#52796f', dm:'#354f52', bk:'#2f3e46',err:"#ff0000"},
+    {txt:'#dad7cd', sel:'#a3b18a', cur:'#588157', dm:'#3a5a40', bk:'#344e41',err:"#ff0000"},
+    {bk:'#22223b', dm:'#4a4e69', cur:'#9a8c98', sel:'#c9ada7', txt:'#f2e9e4',err:"#ff0000"},
+    {bk:'#0A3214', cur:[50,200,50], dm:[50,120,50] , txt:[200,255,200], sel:[180,220,0],err:"#ff0000"} ,
+    {bk:'#01161e', dm:'#124559', cur:'#598392', sel:'#aec3b0', txt:'#eff6e0',err:"#ff0000"},
+    {bk:'#a20021', dm:'#f52f57', cur:'#f79d5c', sel:'#f3752b', txt:'#ededf4',err:"#ff0000"},
     // {bk:'#230007', txt:'#d7cf07', sel:'#d98324', cur:'#a40606', dm:'#5a0002'},
-    {txt:'#89d2dc', sel:'#6564db', cur:'#232ed1', dm:'#101d42', bk:'#0d1317'},
+    {txt:'#89d2dc', sel:'#6564db', cur:'#232ed1', dm:'#101d42', bk:'#0d1317',err:"#ff0000"},
     // {dm:'#20bf55', bk:'#0b4f6c', sel:'#01baef', txt:'#fbfbff', cur:'#757575'},
-    {bk:'#1d3461', dm:'#1f487e', cur:'#376996', sel:'#6290c8', txt:'#92accc'},
+    {bk:'#1d3461', dm:'#1f487e', cur:'#376996', sel:'#6290c8', txt:'#92accc',err:"#ff0000"},
     // {bk:'#084b83', dm:'#42bfdd', cur:'#bbe6e4', sel:'#ffe45e', txt:'#ff66b3'}, //f0f6f6
-    {bk:'#22577a', dm:'#38a3a5', cur:'#57cc99', sel:'#60cd79', txt:'#c7f9cc'},
+    {bk:'#22577a', dm:'#38a3a5', cur:'#57cc99', sel:'#60cd79', txt:'#c7f9cc',err:"#ff0000"},
     // {bk:'#140a32', sel:'#FFC300', dm:'#FF5733' , txt:[5,46,67], cur:'#DAF7A6'},
-    {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc'} ]
+    {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc',err:"#ff0000"} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
 
@@ -78,7 +61,6 @@ measurementId: "G-DMS745VTTR"
 
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig); // old
-
 
 function update() {
     switch(categories) {

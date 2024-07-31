@@ -7,7 +7,7 @@
 // 5 :
 // 6 :
 
-const eC_Etat = ['','Tireur','Pointeur']
+const eC_Etat = ['',' [🔫]',' [🪩]']
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -34,7 +34,7 @@ function drawParam() {
         case 5:
             y = 80; x1 = 3*width/4;
             let y_ = y;
-            textSize(dy/2.7);
+            textSize(dy/2.5);
             for (let i in couleur_arr) {
                 i = int(i);
                 fill(color(couleur_arr[i].bk));rect(x1-80,y-7,15,14);text('Palette '+i+((i==couleur_sel)?'   ➡️':''),x,y);
@@ -57,14 +57,15 @@ function drawParam() {
             y = 20, x=0;
             dy = height*0.85/j_json.length * 2;
             let w_ = (width-2*padding)/2;
-            fill(color(couleur.bk));
-            rect(padding,5,width-2*padding,30);
-            fill(color(couleur.txt));
             let t = j_json.filter(a => {return a.eC==1;}).length;
             let p = j_json.filter(a => {return a.eC==2;}).length;
+            fill(color(couleur.bk));
+            if ((p!=8) || (t!=8)) { fill(color(couleur.err));}
+            rect(padding,5,width-2*padding,30);
+            fill(color(couleur.txt));
             textAlign(CENTER,CENTER);
             text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
-            textSize(dy/2.7); textAlign(LEFT,CENTER);
+            textSize(dy/2.5); textAlign(LEFT,CENTER);
             y += 45;
             let c=0, s=8;
             j_json.forEach(e => {
@@ -92,7 +93,7 @@ function drawParam() {
                             fill(255)
                             break;
                     }
-                    text(e.nom+" - "+joueur.rank+' -> '+eC_Etat[m],x+12 + c*width/2,y);
+                    text(e.nom+eC_Etat[m],x+12 + c*width/2,y);
                     if (c===1) {
                         y += dy;
                         c = 0;
@@ -106,7 +107,10 @@ function drawParam() {
             y = 20, x=0;
             dy = height*0.85/(16+1);
             let w_ = (width-2*padding)/2;
+            let t = j_json.filter(j => {return j.eC==1});
+            let p = j_json.filter(j => {return j.eC==2});
             fill(color(couleur.bk));
+            if ((p.length!=8) || (t.length!=8)) { fill(color(couleur.err));}
             rect(padding,5,width-2*padding,30);
             fill(color(couleur.txt));
             textAlign(CENTER,CENTER);textSize(dy/2.5); 
@@ -114,8 +118,6 @@ function drawParam() {
             textAlign(LEFT,CENTER);
             y += 45;
             let c=0, s=8;
-            let t = j_json.filter(j => {return j.eC==1});
-            let p = j_json.filter(j => {return j.eC==2});
             let t_rk = t.sort((a,b)=>{return (a.rk-b.rk);});
             let p_rk = p.sort((a,b)=>{return (a.rk-b.rk);});
             let tA = t_rk.slice(0,4);
@@ -127,7 +129,7 @@ function drawParam() {
                 fill(color(couleur.cur));
                 rect(x+s,y-dy/2,w_-s,dy-2);
                 fill(255);
-                text(j.nom+" - "+joueur.rank,x+12,y);
+                text(' (🪩) '+j.nom+' ['+joueur.rank+']',x+12,y);
                 y += dy;
             })
             y = 65;
@@ -136,7 +138,7 @@ function drawParam() {
                 fill(color(couleur.cur));
                 rect(x+s+w_,y-dy/2,w_-s,dy-2);
                 fill(255);
-                text(j.nom+" - "+joueur.rank,x+12 + width/2,y);
+                text('(🔫) '+j.nom+' ['+joueur.rank+']',x+12 + width/2,y);
                 y += dy;
             })
             //tirage au sort ...
@@ -165,20 +167,26 @@ function drawParam() {
                 eq.j2 = j2;
                 eqs.push(eq);
             }
-            fill(color(couleur.bk));
-            rect(padding,y+2-dy/2,width-2*padding,dy);
-            fill(color(couleur.txt));
+            let y_=y;
+            let texte = 'Composition possible ... pour '+enCours;
             textAlign(CENTER,CENTER);
-            text('Composition possible ...',width/2,y+2);
-            textSize(dy/2.5);
-            y = y + dy + 10;
-            eqs.forEach(j => {
-                fill(color(couleur.sel));
-                rect(w_/3,y-dy/2,w_*4/3,dy-2);
-                fill(255);
-                text(j.j1.nom+" / "+j.j2.nom, width/2,y);
-                y += dy;
-            })
+            if ((p.length!=8) || (t.length!=8)) { 
+                fill(color(couleur.err)); texte = 'COMPOSITION IMPOSSIBLE !';                
+            } else {
+                textSize(dy/2.5);
+                y = y + dy + 10;
+                eqs.forEach(j => {
+                    fill(color(couleur.sel));
+                    rect(w_/3,y-dy/2,w_*4/3,dy-2);
+                    fill(255);
+                    text(j.j1.nom+" / "+j.j2.nom, width/2,y);
+                    y += dy;
+                })
+                fill(color(couleur.bk));
+            }
+            rect(padding,y_+2-dy/2,width-2*padding,dy);
+            fill(color(couleur.txt));
+            text(texte,width/2,y_+2);
         }
             break;
         case 8:
