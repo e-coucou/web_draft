@@ -46,3 +46,19 @@ function reInit() {
     redimButtons();
     mouseSelection = true;
 }
+
+
+
+function updateSelJoueur(id_) {
+    let updates={};
+    let j = j_json[id_];
+    if (j.eC === undefined) {
+        j.eC = 1;
+    } else {
+        j.eC = (j.eC + 1) % 3;
+    }
+    updates['/'+id_] = j;
+    dbJoueurs.update(updates);
+
+    // console.log(id_, j_json[id_]);
+}

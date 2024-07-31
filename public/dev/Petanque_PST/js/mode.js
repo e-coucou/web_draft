@@ -7,7 +7,7 @@
 // 5 :
 // 6 :
 
-const eC_Etat = ['','Tir.','Pt.']
+const eC_Etat = ['','Tireur','Pointeur']
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -57,8 +57,14 @@ function drawParam() {
             y = 20, x=0;
             dy = height*0.85/j_json.length * 2;
             let w_ = (width-2*padding)/2;
-            text('Saisie des joueurs année en cours',x,y);
-            textSize(dy/2.25);
+            fill(color(couleur.bk));
+            rect(padding,5,width-2*padding,30);
+            fill(color(couleur.txt));
+            let t = j_json.filter(a => {return a.eC==1;}).length;
+            let p = j_json.filter(a => {return a.eC==2;}).length;
+            textAlign(CENTER,CENTER);
+            text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
+            textSize(dy/3); textAlign(LEFT,CENTER);
             y += 45;
             let c=0, s=8;
             j_json.forEach(e => {
@@ -76,13 +82,13 @@ function drawParam() {
                         case 1:
                             fill(color(couleur.cur));
                             rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
-                            fill(255,0,0)
+                            fill(color(couleur.txt));
                             // fill(color(couleur.bk));
                             break;
                         case 2:
                             fill(color(couleur.sel));
                             rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
-                            fill(0,255,0)
+                            fill(255)
                             break;
                     }
                     text(e.nom+" - "+joueur.rank+' -> '+eC_Etat[m],x+12 + c*width/2,y);

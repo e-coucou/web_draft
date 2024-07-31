@@ -86,6 +86,18 @@ function checkDots(mX, mY) {
                 mode = 2;
             }
         }
+        // selection d'un joueur dans la liste pour l'année en cours
+        if (mX>(43) && mX<(width-padding) && (mode==6) ) {
+            let dy = height*0.85/j_json.length * 2;
+            let id_ = 2 * round((mY - 65) / dy) + ((mX>width/2)?2:1); // y_ + dy_
+            if ( id_<0 || id_>=initJoueurs.length) {
+                // console.log('rien')
+                return;
+            } else {
+                // id = eJoueurs[id_].id;
+                updateSelJoueur(id_);
+            }
+        }
         if (btZoom.isIn(mX,mY,mode)) { mode=2;clearButtons();btZoom.setOn(); return;}
         if (btGraphe.isIn(mX,mY,mode)) {
             mode_prev = mode;

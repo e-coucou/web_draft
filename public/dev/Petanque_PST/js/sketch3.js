@@ -118,7 +118,6 @@ function update_PM(n) {
     update();
 }
 function update_Nav(n) {
-    console.log(n)
     switch (mode) {
         case 2:
             switch(int(n)) {
