@@ -87,7 +87,7 @@ function checkDots(mX, mY) {
             }
         }
         // selection d'un joueur dans la liste pour l'année en cours
-        if (mX>(43) && mX<(width-padding) && (mode==6) ) {
+        if (mX>(padding) && mX<(width-padding) && mY>65 && (mode==6) ) {
             let dy = height*0.85/j_json.length * 2;
             let id_ = 2 * round((mY - 65) / dy) + ((mX>width/2)?2:1); // y_ + dy_
             if ( id_<0 || id_>=initJoueurs.length) {
@@ -99,6 +99,7 @@ function checkDots(mX, mY) {
             }
         }
         if (btZoom.isIn(mX,mY,mode)) { mode=2;clearButtons();btZoom.setOn(); return;}
+        if (btEquipe.isIn(mX,mY,mode)) { console.log('update team') ; updateTeam(); return;}
         if (btGraphe.isIn(mX,mY,mode)) {
             mode_prev = mode;
             clearButtons();
@@ -120,4 +121,8 @@ function checkDots(mX, mY) {
         //     console.log(id_,'/',mY)
         // }
     }    
+}
+
+function updateTeam() {
+    return;
 }

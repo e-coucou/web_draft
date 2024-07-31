@@ -1,4 +1,4 @@
-const eC = {version: 'v3.2', release:'r3', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+const eC = {version: 'v3.2', release:'r4', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 
 let param, run=false,enCours=2024;
 let joueurs = [], eJoueurs=[];
