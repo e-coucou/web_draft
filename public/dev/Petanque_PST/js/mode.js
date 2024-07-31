@@ -69,6 +69,7 @@ function drawParam() {
             let c=0, s=8;
             j_json.forEach(e => {
                 let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
+                e.rk = joueur.rank;
                 if (e.id>0) {
                     let m = e.eC;
                     switch (m) {
@@ -100,24 +101,85 @@ function drawParam() {
                     }
                 }
             });
-    // for (let i in eJoueurs) {
-    //     let idx = int(eJoueurs[i].hist[index].c);
-    //     let elo = eJoueurs[i].hist[index].elo;
-    //     // iDs[i] = idx;
-    //     if (eJoueurs[i].id != 0) {
-    //         eJoueurs[i].show(idx, padding, inter*(i)+y_+dy_, w_,elo,int(i)+1);
-    //     } else {
-    //         let x= padding, y = inter*(i)+y_+dy_, s=8, dy=inter-2;
-    //         fill(color(couleur.bk));
-    //         rect(x+s,y-dy/2,w_-s,dy);
-    //         fill(255);
-    //         textAlign(LEFT,CENTER);
-    //         textSize(max(int(dy/2),11));
-    //     }
-    // }    
             break;
-        case 7:
-            text('Saisie des équipes',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
+        case 7:{
+            y = 20, x=0;
+            dy = height*0.85/(16+1);
+            let w_ = (width-2*padding)/2;
+            fill(color(couleur.bk));
+            rect(padding,5,width-2*padding,30);
+            fill(color(couleur.txt));
+            textAlign(CENTER,CENTER);
+            text('Constitutions des Equipes',width/2,y);
+            textSize(dy/3); textAlign(LEFT,CENTER);
+            y += 45;
+            let c=0, s=8;
+            let t = j_json.filter(j => {return j.eC==1});
+            let p = j_json.filter(j => {return j.eC==2});
+            let t_rk = t.sort((a,b)=>{return (a.rk-b.rk);});
+            let p_rk = p.sort((a,b)=>{return (a.rk-b.rk);});
+            let tA = t_rk.slice(0,4);
+            let tB = t_rk.slice(4);
+            let pA = p_rk.slice(0,4);
+            let pB = p_rk.slice(4);
+            p.forEach(j => {
+                let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
+                fill(color(couleur.cur));
+                rect(x+s,y-dy/2,w_-s,dy-2);
+                fill(255);
+                text(j.nom+" - "+joueur.rank,x+12,y);
+                y += dy;
+            })
+            y = 65;
+            t.forEach(j => {
+                let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
+                fill(color(couleur.cur));
+                rect(x+s+w_,y-dy/2,w_-s,dy-2);
+                fill(255);
+                text(j.nom+" - "+joueur.rank,x+12 + width/2,y);
+                y += dy;
+            })
+            //tirage au sort ...
+            let eqs = [];
+            for (let i = 0; i < 4;i++) {
+                let eq={j1:0,j2:0};
+                let j1 = random(pA);
+                let i1 = pA.indexOf(j1);
+                pA.splice(i1,1);
+                let j2 = random(tB);
+                let i2 = tB.indexOf(j2);
+                tB.splice(i2,1);
+                eq.j1 = j1;
+                eq.j2 = j2;
+                eqs.push(eq);
+            }
+            for (let i = 0; i < 4;i++) {
+                let eq={j1:0,j2:0};
+                let j1 = random(pB);
+                let i1 = pB.indexOf(j1);
+                pB.splice(i1,1);
+                let j2 = random(tA);
+                let i2 = tA.indexOf(j2);
+                tA.splice(i2,1);
+                eq.j1 = j1;
+                eq.j2 = j2;
+                eqs.push(eq);
+            }
+            fill(color(couleur.bk));
+            rect(padding,5,width-2*padding,30);
+            fill(color(couleur.txt));
+            textAlign(CENTER,CENTER);
+            text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
+            textSize(dy/3);
+            y = y + dy + 10;
+            eqs.forEach(j => {
+                fill(color(couleur.sel));
+                rect(w_/3,y-dy/2,w_*4/3,dy-2);
+                fill(255);
+                text(j.j1.nom+" / "+j.j2.nom, width/2,y);
+                y += dy;
+            })
+        }
             break;
         case 8:
             text('Saisie des résultats',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
