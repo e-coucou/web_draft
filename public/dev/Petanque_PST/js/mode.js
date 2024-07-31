@@ -13,7 +13,7 @@ function drawParam() {
     let x = 30, x1 = width/2;
     let y = 80;
     let dy = height*0.8/couleur_arr.length;
-    textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(dy/4); textStyle(NORMAL);
+    textAlign(LEFT,CENTER); fill(color(couleur.bk)); textSize(dy/2.9); textStyle(NORMAL);
     switch(mode) {
         case 4:
             text('Score initial ELO :',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
@@ -34,7 +34,7 @@ function drawParam() {
         case 5:
             y = 80; x1 = 3*width/4;
             let y_ = y;
-            textSize(dy/4);
+            textSize(dy/2.7);
             for (let i in couleur_arr) {
                 i = int(i);
                 fill(color(couleur_arr[i].bk));rect(x1-80,y-7,15,14);text('Palette '+i+((i==couleur_sel)?'   ➡️':''),x,y);
@@ -64,7 +64,7 @@ function drawParam() {
             let p = j_json.filter(a => {return a.eC==2;}).length;
             textAlign(CENTER,CENTER);
             text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
-            textSize(dy/3); textAlign(LEFT,CENTER);
+            textSize(dy/2.7); textAlign(LEFT,CENTER);
             y += 45;
             let c=0, s=8;
             j_json.forEach(e => {
@@ -109,9 +109,9 @@ function drawParam() {
             fill(color(couleur.bk));
             rect(padding,5,width-2*padding,30);
             fill(color(couleur.txt));
-            textAlign(CENTER,CENTER);
+            textAlign(CENTER,CENTER);textSize(dy/2.5); 
             text('Constitutions des Equipes',width/2,y);
-            textSize(dy/3); textAlign(LEFT,CENTER);
+            textAlign(LEFT,CENTER);
             y += 45;
             let c=0, s=8;
             let t = j_json.filter(j => {return j.eC==1});
@@ -166,11 +166,11 @@ function drawParam() {
                 eqs.push(eq);
             }
             fill(color(couleur.bk));
-            rect(padding,5,width-2*padding,30);
+            rect(padding,y+2-dy/2,width-2*padding,dy);
             fill(color(couleur.txt));
             textAlign(CENTER,CENTER);
-            text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
-            textSize(dy/3);
+            text('Composition possible ...',width/2,y+2);
+            textSize(dy/2.5);
             y = y + dy + 10;
             eqs.forEach(j => {
                 fill(color(couleur.sel));
