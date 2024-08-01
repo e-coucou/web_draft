@@ -107,7 +107,7 @@ function drawParam() {
             break;
         case 7:{
             y = 20, x=0;
-            dy = height*0.85/(16+1);
+            dy = height*0.85/(16+2);
             eqs=[];
             let w_ = (width-2*padding)/2;
             let t = j_json.filter(j => {return j.eC==1});
