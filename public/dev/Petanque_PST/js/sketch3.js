@@ -1,4 +1,4 @@
-const eC = {version: 'v3.5', release:'r1', date:'jul/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
+const eC = {version: 'v3.5', release:'r2', date:'jul/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
 
 let param, run=false,enCours=2024;
 let joueurs = [], eJoueurs=[];
@@ -292,6 +292,7 @@ function draw() {
             case 2:
                 run=false; btNav[1].txt = '▶️' ; run=false;
                 btZoom.setOn();
+                if (eJoueurs.length==0) {eJoueurs=initJoueurs.slice();}
                 if (eJoueurs[id].id != 0) {
                     eJoueurs[id].fiche(padding,15,width-2*padding,matchs);
                 } else {
