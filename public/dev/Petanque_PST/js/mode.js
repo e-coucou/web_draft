@@ -108,10 +108,9 @@ function drawParam() {
         case 7:{
             y = 20, x=0;
             dy = height*0.85/(16+2);
-            eqs=[];
             let w_ = (width-2*padding)/2;
-            let t = j_json.filter(j => {return j.eC==1});
-            let p = j_json.filter(j => {return j.eC==2});
+            let t = j_json.filter(j => {return j.eC==1}).sort((a,b)=>{return (a.rk-b.rk);});
+            let p = j_json.filter(j => {return j.eC==2}).sort((a,b)=>{return (a.rk-b.rk);});
             fill(color(couleur.bk));
             if ((p.length!=8) || (t.length!=8)) { fill(color(couleur.err));}
             rect(padding,5,width-2*padding,30);
@@ -121,12 +120,6 @@ function drawParam() {
             textAlign(LEFT,CENTER);
             y += 45;
             let c=0, s=8;
-            let t_rk = t.sort((a,b)=>{return (a.rk-b.rk);});
-            let p_rk = p.sort((a,b)=>{return (a.rk-b.rk);});
-            let tA = t_rk.slice(0,4);
-            let tB = t_rk.slice(4);
-            let pA = p_rk.slice(0,4);
-            let pB = p_rk.slice(4);
             p.forEach(j => {
                 let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
                 fill(color(couleur.cur));
@@ -144,31 +137,7 @@ function drawParam() {
                 text('(🔫) '+j.nom+' ['+joueur.rank+']',x+12 + width/2,y);
                 y += dy;
             })
-            //tirage au sort ...
-            for (let i = 0; i < 4;i++) {
-                let eq={j1:0,j2:0};
-                let j1 = random(pA);
-                let i1 = pA.indexOf(j1);
-                pA.splice(i1,1);
-                let j2 = random(tB);
-                let i2 = tB.indexOf(j2);
-                tB.splice(i2,1);
-                eq.j1 = j1;
-                eq.j2 = j2;
-                eqs.push(eq);
-            }
-            for (let i = 0; i < 4;i++) {
-                let eq={j1:0,j2:0};
-                let j1 = random(pB);
-                let i1 = pB.indexOf(j1);
-                pB.splice(i1,1);
-                let j2 = random(tA);
-                let i2 = tA.indexOf(j2);
-                tA.splice(i2,1);
-                eq.j1 = j1;
-                eq.j2 = j2;
-                eqs.push(eq);
-            }
+
             let y_=y;
             let texte = 'Composition possible ... pour '+enCours;
             textAlign(CENTER,CENTER);

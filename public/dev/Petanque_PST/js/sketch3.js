@@ -1,4 +1,4 @@
-const eC = {version: 'v3.3', release:'r1', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+const eC = {version: 'v3.5', release:'r1', date:'jul/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
 
 let param, run=false,enCours=2024;
 let joueurs = [], eJoueurs=[];
@@ -317,7 +317,7 @@ function draw() {
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
         text(mode,10,height-10);
-        text('eCoucou '+eC.version+' ['+eC.annee+']',width*4/5,height-8);
+        text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width*3/4,height-8);
         for (let i=0; i<touchStarted.length;i++) {
             text(touches[0].x+'/'+touches[0].y,20,height-50);
         }

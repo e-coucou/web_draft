@@ -361,7 +361,9 @@ class Match {
             gain = - D/ param.ELO.seuil;
             v=0;
         }
-        this.equipes[0].eq.update(gain*P*Kf,v);
-        this.equipes[1].eq.update(-gain*P*Kf,-v);
+        if ((this.equipes[0].sc!=0) && (this.equipes[1].sc !=0)) {
+            this.equipes[0].eq.update(gain*P*Kf,v);
+            this.equipes[1].eq.update(-gain*P*Kf,-v);
+        }
     }
 }

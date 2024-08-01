@@ -93,3 +93,41 @@ function resetTeam() {
     }
     dbTeam.update(updates);
 }
+
+function randomTeam() {
+    //tirage au sort ...
+    resetTeam();
+    let t = j_json.filter(j => {return j.eC==1});
+    let p = j_json.filter(j => {return j.eC==2});
+    t.sort((a,b)=>{return (a.rk-b.rk);});
+    p.sort((a,b)=>{return (a.rk-b.rk);});
+    let tA = t.slice(0,4);
+    let tB = t.slice(4);
+    let pA = p.slice(0,4);
+    let pB = p.slice(4);
+    eqs=[];
+    for (let i = 0; i < 4;i++) {
+        let eq={j1:0,j2:0};
+        let j1 = random(pA);
+        let i1 = pA.indexOf(j1);
+        pA.splice(i1,1);
+        let j2 = random(tB);
+        let i2 = tB.indexOf(j2);
+        tB.splice(i2,1);
+        eq.j1 = j1;
+        eq.j2 = j2;
+        eqs.push(eq);
+    }
+    for (let i = 0; i < 4;i++) {
+        let eq={j1:0,j2:0};
+        let j1 = random(pB);
+        let i1 = pB.indexOf(j1);
+        pB.splice(i1,1);
+        let j2 = random(tA);
+        let i2 = tA.indexOf(j2);
+        tA.splice(i2,1);
+        eq.j1 = j1;
+        eq.j2 = j2;
+        eqs.push(eq);
+    }    
+}
