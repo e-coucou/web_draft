@@ -1,4 +1,5 @@
 let start = 0x0F, startOnce=true;
+let eq=['A','B','C','D','E','F','G','H'];
 
 function launch(code) {
     start = start & code;
@@ -61,4 +62,34 @@ function updateSelJoueur(id_) {
     dbJoueurs.update(updates);
 
     // console.log(id_, j_json[id_]);
+}
+
+function updateTeam() {
+    let id_ = (enCours-2020)*8;
+    let updates = {};
+    let eId = 0;
+    eqs.forEach(a => {
+        e = e_json[int(id_+eId)];
+        e.J1=a.j1.id;
+        e.J2=a.j2.id;
+        e.annee = enCours;
+        e.nom = eq[eId];
+        updates['/'+int(eId+id_)] = e;
+        eId += 1;
+    });
+    dbTeam.update(updates);
+}
+
+function resetTeam() {
+    let id_ = (enCours-2020)*8;
+    let updates = {};
+    for (let eId=0;eId<8;eId++) {
+        e = e_json[int(id_+eId)];
+        e.J1=0;
+        e.J2=0;
+        e.annee = enCours;
+        e.nom = eq[eId];
+        updates['/'+int(eId+id_)] = e;
+    }
+    dbTeam.update(updates);
 }

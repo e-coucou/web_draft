@@ -7,7 +7,9 @@
 // 5 :
 // 6 :
 
-const eC_Etat = ['',' [🔫]',' [🪩]']
+const eC_Etat = ['',' [🔫]',' [🪩]'];
+let eqs = [];
+
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -106,6 +108,7 @@ function drawParam() {
         case 7:{
             y = 20, x=0;
             dy = height*0.85/(16+1);
+            eqs=[];
             let w_ = (width-2*padding)/2;
             let t = j_json.filter(j => {return j.eC==1});
             let p = j_json.filter(j => {return j.eC==2});
@@ -142,7 +145,6 @@ function drawParam() {
                 y += dy;
             })
             //tirage au sort ...
-            let eqs = [];
             for (let i = 0; i < 4;i++) {
                 let eq={j1:0,j2:0};
                 let j1 = random(pA);

@@ -99,7 +99,8 @@ function checkDots(mX, mY) {
             }
         }
         if (btZoom.isIn(mX,mY,mode)) { mode=2;clearButtons();btZoom.setOn(); return;}
-        if (btEquipe.isIn(mX,mY,mode)) { console.log('update team') ; updateTeam(); return;}
+        if (btEquipe.isIn(mX,mY,mode)) { updateTeam(); return;}
+        if (btResetEquipe.isIn(mX,mY,mode)) { resetTeam(); return;}
         if (btGraphe.isIn(mX,mY,mode)) {
             mode_prev = mode;
             clearButtons();
@@ -121,8 +122,4 @@ function checkDots(mX, mY) {
         //     console.log(id_,'/',mY)
         // }
     }    
-}
-
-function updateTeam() {
-    return;
 }

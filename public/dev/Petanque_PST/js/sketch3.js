@@ -1,4 +1,4 @@
-const eC = {version: 'v3.2', release:'r4', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+const eC = {version: 'v3.3', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 
 let param, run=false,enCours=2024;
 let joueurs = [], eJoueurs=[];
@@ -17,7 +17,6 @@ let mode = 1, debug = 0, mode_prev, filtreJ=true; // on filtre les joueurs actif
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=true;
-let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btZoom, btEquipe;
 let debounce=0;
 let img_gassin, img_ramatuelle, img_saint_tropez;
 let img_finale=[];

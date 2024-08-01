@@ -1,5 +1,8 @@
+let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btZoom, btEquipe, btResetEquipe;
+
 function clearButtons() {
-    btTournoi.setOff(),btInfo.setOff();btGraphe.setOff();btListe.setOff();btZoom.setOff(),btFiltre.setOff();btEquipe.setOff();
+    btTournoi.setOff(),btInfo.setOff();btGraphe.setOff();btListe.setOff();
+    btZoom.setOff(),btFiltre.setOff();btEquipe.setOff();btResetEquipe.setOff();
 }
 function showButtons() {
     fill(color(couleur.txt));
@@ -13,6 +16,7 @@ function showButtons() {
     btELO.show(mode);
     btZoom.show(mode);
     btEquipe.show(mode);
+    btResetEquipe.show(mode);
     btFiltre.show(mode);
     for (c of btAnnee) { c.show(mode); }
     // for (c of btCouleur) { c.show(mode); }
@@ -38,7 +42,8 @@ function redimButtons() {
     btGraphe.redim(width*(1+2*inc)/10,y,r);
     btInfo.redim(width*(1+3*inc)/10,y,r);
     btZoom.redim(width*(1+4*inc)/10,y,r);
-    btEquipe.redim(width*(1+5*inc)/10,height/4*3,r);
+    btEquipe.redim(width-padding-2*r,height/5*3,r);
+    btResetEquipe.redim(width-padding-2*r,height/5*4,r);
     btNotice.redim(width/3,20,width/3-2);
     btELO.redim(2*width/3,20,width/3-2);
     btELO.setH(12); btNotice.setH(12);
@@ -80,7 +85,8 @@ function createButtons() {
     btGraphe = new BoutonC('📈',width*4/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btGraphe.setH(14);
     btListe = new BoutonC('🗄️',width*2.5/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btListe.setH(14);
     btZoom = new BoutonC('🔍',width*7/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btZoom.setH(14);
-    btEquipe = new BoutonC('↩️',width*7/10,height-r-padding,r,[7],false); btEquipe.setH(14);
+    btEquipe = new BoutonC('🆕',width*7/10,height-r-padding,r,[7],false); btEquipe.setH(14);
+    btResetEquipe = new BoutonC('🔁',width*7/10,height-r-padding,r,[7],false); btEquipe.setH(14);
     l = (width-padding)/4;
     // btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);
     btInfo = new BoutonC('⚙️',width*5.5/10,y,r,[0,1,2,3,4,5,6,7,8,9]);btInfo.setH(14);
