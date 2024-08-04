@@ -4,13 +4,14 @@ function calculELO(new_ = true) {
     if ( !new_) { for (let e of equipes) e.resetELO();}
     matchs = [];
     let a_ = false;
+    annees = getAnnees('annee',m_json,'a');
     for (let i in m_json) {
         let m = m_json[i];
         matchs.push( new Match(i,equipes[m.E1],equipes[m.E2],m.Sc1,m.Sc2,m.type, m.annee, m.poule,m.k,m.tableau));
         initJoueurs.sort( (a,b) => { return (b.ELO - a.ELO) ;});
         if (m.type == "Finale") {
             a_=true;
-            if (new_) annees.push({a:m.annee,m:int(i)});
+            // if (new_) annees.push({a:m.annee,m:int(i)});
         }
         for (let j in initJoueurs) {
             initJoueurs[j].setClst(j,a_,m.annee);
@@ -19,6 +20,13 @@ function calculELO(new_ = true) {
     }
     joueurs = initJoueurs.slice();
 }
+
+function getAnnees(key, array, keyRet) {
+    var keys = array.map(function (value) { return value[key]; });
+    var arrRet = array.map(function (value,index){ return {a:value[key], m: index}; });
+    return arrRet.filter(function (value, index ){ return keys.lastIndexOf(value[keyRet]) === index });
+}
+
 class Joueur {
     constructor(nom_, id_) {
         this.nom=nom_;
