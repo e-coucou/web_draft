@@ -56,112 +56,168 @@ function drawParam() {
             }
             break;
         case 6:
-            y = 20, x=0;
-            dy = height*0.85/j_json.length * 2;
-            let w_ = (width-2*padding)/2;
-            let t = j_json.filter(a => {return a.eC==1;}).length;
-            let p = j_json.filter(a => {return a.eC==2;}).length;
-            fill(color(couleur.bk));
-            if ((p!=8) || (t!=8)) { fill(color(couleur.err));}
-            rect(padding,5,width-2*padding,30);
-            fill(color(couleur.txt));
-            textAlign(CENTER,CENTER);
-            text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
-            textSize(dy/2.5); textAlign(LEFT,CENTER);
-            y += 45;
-            let c=0, s=8;
-            j_json.forEach(e => {
-                let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
-                e.rk = joueur.rank;
-                if (e.id>0) {
-                    let m = e.eC;
-                    switch (m) {
-                        case 0:
-                        case undefined:
-                            m=0;
-                            fill(color(couleur.dm));
-                            rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
-                            fill(0);
-                            break;
-                        case 1:
-                            fill(color(couleur.cur));
-                            rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
-                            fill(color(couleur.txt));
-                            // fill(color(couleur.bk));
-                            break;
-                        case 2:
-                            fill(color(couleur.sel));
-                            rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
-                            fill(255)
-                            break;
+            {
+                y = 20, x=0;
+                dy = height*0.85/j_json.length * 2;
+                let w_ = (width-2*padding)/2;
+                let t = j_json.filter(a => {return a.eC==1;}).length;
+                let p = j_json.filter(a => {return a.eC==2;}).length;
+                fill(color(couleur.bk));
+                if ((p!=8) || (t!=8)) { fill(color(couleur.err));}
+                rect(padding,5,width-2*padding,30);
+                fill(color(couleur.txt));
+                textAlign(CENTER,CENTER);
+                text('Sélection des Pointeurs ['+p+'] et des Tireurs ['+t+']',width/2,y);
+                textSize(dy/2.5); textAlign(LEFT,CENTER);
+                y += 45;
+                let c=0, s=8;
+                j_json.forEach(e => {
+                    let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
+                    e.rk = joueur.rank;
+                    if (e.id>0) {
+                        let m = e.eC;
+                        switch (m) {
+                            case 0:
+                            case undefined:
+                                m=0;
+                                fill(color(couleur.dm));
+                                rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
+                                fill(0);
+                                break;
+                            case 1:
+                                fill(color(couleur.cur));
+                                rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
+                                fill(color(couleur.txt));
+                                // fill(color(couleur.bk));
+                                break;
+                            case 2:
+                                fill(color(couleur.sel));
+                                rect(x+s+c*w_,y-dy/2,w_-s,dy-2);
+                                fill(255)
+                                break;
+                        }
+                        text(e.nom+eC_Etat[m],x+12 + c*width/2,y);
+                        if (c===1) {
+                            y += dy;
+                            c = 0;
+                        } else {
+                            c = 1;
+                        }
                     }
-                    text(e.nom+eC_Etat[m],x+12 + c*width/2,y);
-                    if (c===1) {
-                        y += dy;
-                        c = 0;
-                    } else {
-                        c = 1;
-                    }
-                }
-            });
+                });
+            }
             break;
-        case 7:{
-            y = 20, x=0;
-            dy = height*0.85/(16+2);
-            let w_ = (width-2*padding)/2;
-            let t = j_json.filter(j => {return j.eC==1}).sort((a,b)=>{return (a.rk-b.rk);});
-            let p = j_json.filter(j => {return j.eC==2}).sort((a,b)=>{return (a.rk-b.rk);});
-            fill(color(couleur.bk));
-            if ((p.length!=8) || (t.length!=8)) { fill(color(couleur.err));}
-            rect(padding,5,width-2*padding,30);
-            fill(color(couleur.txt));
-            textAlign(CENTER,CENTER);textSize(dy/2.5); 
-            text('Constitutions des Equipes',width/2,y);
-            textAlign(LEFT,CENTER);
-            y += 45;
-            let c=0, s=8;
-            p.forEach(j => {
-                let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
-                fill(color(couleur.cur));
-                rect(x+s,y-dy/2,w_-s,dy-2);
-                fill(255);
-                text(' (🪩) '+j.nom+' ['+joueur.rank+']',x+12,y);
-                y += dy;
-            })
-            y = 65;
-            t.forEach(j => {
-                let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
-                fill(color(couleur.cur));
-                rect(x+s+w_,y-dy/2,w_-s,dy-2);
-                fill(255);
-                text('(🔫) '+j.nom+' ['+joueur.rank+']',x+12 + width/2,y);
-                y += dy;
-            })
-
-            let y_=y;
-            let texte = 'Composition possible ... pour '+enCours;
-            textAlign(CENTER,CENTER);
-            if ((p.length!=8) || (t.length!=8)) { 
-                fill(color(couleur.err)); texte = 'COMPOSITION IMPOSSIBLE !';                
-            } else {
-                textSize(dy/2.5);
-                y = y + dy + 10;
-                eqs.forEach(j => {
-                    fill(color(couleur.sel));
-                    rect(w_/3,y-dy/2,w_*4/3,dy-2);
+        case 7:
+            {
+                y = 20, x=0;
+                dy = height*0.85/(16+2);
+                let w_ = (width-2*padding)/2;
+                let t = j_json.filter(j => {return j.eC==1}).sort((a,b)=>{return (a.rk-b.rk);});
+                let p = j_json.filter(j => {return j.eC==2}).sort((a,b)=>{return (a.rk-b.rk);});
+                fill(color(couleur.bk));
+                if ((p.length!=8) || (t.length!=8)) { fill(color(couleur.err));}
+                rect(padding,5,width-2*padding,30);
+                fill(color(couleur.txt));
+                textAlign(CENTER,CENTER);textSize(dy/2.5); 
+                text('Constitutions ALEATOIRE des Equipes',width/2,y);
+                textAlign(LEFT,CENTER);
+                y += 45;
+                let c=0, s=8;
+                p.forEach(j => {
+                    let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
+                    fill(color(couleur.cur));
+                    rect(x+s,y-dy/2,w_-s,dy-2);
                     fill(255);
-                    text(j.j1.nom+" / "+j.j2.nom, width/2,y);
+                    text(' (🪩) '+j.nom+' ['+joueur.rank+']',x+12,y);
                     y += dy;
                 })
-                fill(color(couleur.bk));
+                y = 65;
+                t.forEach(j => {
+                    let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
+                    fill(color(couleur.cur));
+                    rect(x+s+w_,y-dy/2,w_-s,dy-2);
+                    fill(255);
+                    text('(🔫) '+j.nom+' ['+joueur.rank+']',x+12 + width/2,y);
+                    y += dy;
+                })
+
+                let y_=y;
+                let texte = 'Composition possible ... pour '+enCours;
+                textAlign(CENTER,CENTER);
+                if ((p.length!=8) || (t.length!=8)) { 
+                    fill(color(couleur.err)); texte = 'COMPOSITION IMPOSSIBLE !';                
+                } else {
+                    textSize(dy/2.5);
+                    y = y + dy + 10;
+                    eqs.forEach(j => {
+                        fill(color(couleur.sel));
+                        rect(w_/3,y-dy/2,w_*4/3,dy-2);
+                        fill(255);
+                        text(j.j1.nom+" / "+j.j2.nom, width/2,y);
+                        y += dy;
+                    })
+                    fill(color(couleur.bk));
+                }
+                rect(padding,y_+2-dy/2,width-2*padding,dy);
+                fill(color(couleur.txt));
+                text(texte,width/2,y_+2);
             }
-            rect(padding,y_+2-dy/2,width-2*padding,dy);
-            fill(color(couleur.txt));
-            text(texte,width/2,y_+2);
-        }
             break;
         case 8:
-            text('Saisie des résultats',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
+            {
+                y = 20, x=0;
+                dy = height*0.85/(16+2);
+                let w_ = (width-2*padding)/2;
+                tEC = j_json.filter(j => {return j.eC==1}).sort((a,b)=>{return (a.rk-b.rk);});
+                pEC = j_json.filter(j => {return j.eC==2}).sort((a,b)=>{return (a.rk-b.rk);});
+                fill(color(couleur.bk));
+                if ((pEC.length!=8) || (tEC.length!=8)) { fill(color(couleur.err));}
+                rect(padding,5,width-2*padding,30);
+                fill(color(couleur.txt));
+                textAlign(CENTER,CENTER);textSize(dy/2.5); 
+                text('Constitutions des Equipes',width/2,y);
+                textAlign(LEFT,CENTER);
+                y += 45;
+                let c=0, s=8;
+                pEC.forEach(j => {
+                    let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
+                    fill(color(couleur.cur));
+                    if (j.eCSel === 1) {fill(color(couleur.sel));}
+                    rect(x+s,y-dy/2,w_-s,dy-2);
+                    fill(255);
+                    text(' (🪩) '+j.nom+' ['+joueur.rank+'] /'+j.id,x+12,y);
+                    y += dy;
+                });
+                y = 65;
+                tEC.forEach(j => {
+                    let joueur = initJoueurs.filter(e=>{ return j.id==e.id;})[0];
+                    fill(color(couleur.cur));
+                    if (j.eCSel === 1) {fill(color(couleur.sel));}
+                    rect(x+s+w_,y-dy/2,w_-s,dy-2);
+                    fill(255);
+                    text('(🔫) '+j.nom+' ['+joueur.rank+'] / '+j.id,x+12 + width/2,y);
+                    y += dy;
+                });
+                let y_=y;
+                let texte = 'Composition en cours ... '+enCours;
+                textAlign(CENTER,CENTER);
+                if ((pEC.length!=8) || (tEC.length!=8)) { 
+                    fill(color(couleur.err)); texte = 'COMPOSITION IMPOSSIBLE !';                
+                } else {
+                    textSize(dy/2.5);
+                    y = y + dy + 10;
+                    eqs.forEach(j => {
+                        fill(color(couleur.sel));
+                        rect(w_/3,y-dy/2,w_*4/3,dy-2);
+                        fill(255);
+                        text(j.j1.nom+" / "+j.j2.nom, width/2,y);
+                        y += dy;
+                    })
+                    fill(color(couleur.bk));
+                }
+                rect(padding,y_+2-dy/2,width-2*padding,dy);
+                fill(color(couleur.txt));
+                text(texte,width/2,y_+2);            }
             break;
         case 9:
             text('Saisie',x,y); text(param.ELO.init+' pts',x1,y); y += dy;

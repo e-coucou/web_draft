@@ -19,6 +19,7 @@ function calculELO(new_ = true) {
         a_ = false;
     }
     joueurs = initJoueurs.slice();
+    setRank();
 }
 
 function getAnnees(key, array, keyRet) {

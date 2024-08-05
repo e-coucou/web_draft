@@ -1,5 +1,6 @@
 let start = 0x0F, startOnce=true;
 let eq=['A','B','C','D','E','F','G','H'];
+let eqEC=[], tEC=[], pEC=[], idEqSel=0;
 
 function launch(code) {
     start = start & code;
@@ -63,7 +64,64 @@ function updateSelJoueur(id_) {
 
     // console.log(id_, j_json[id_]);
 }
+function resetSel() {
+    let updates = {};
+    j_json.forEach(e => {
+        let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
+        e.eCSel = 0;
+        updates['/'+int(e.id)] = e;
+    });
+    dbJoueurs.update(updates);
+}
+function GetJoueur(id_) {
+    console.log("id "+id_,eqEC);
+    let updates={};
+    let j;
+    if (id_%2===0) {
+        j = pEC[int(id_/2)];
+    } else {
+        j = tEC[int(id_/2)];
+    }
+    console.log(j)
+    let idJ = j.id;
+    let c = eqEC.length;
+    switch (c) {
+        case 2: eqEC=[];
+        case 0: 
+            eqEC.push(idJ);
+            // j.eq = 'A';
+            // updates['/'+idJ] = j;
+            // dbJoueurs.update(updates);
+            break;
+        case 1: if (j_json[idJ].eC === j_json[eqEC[0]].eC)
+            {   return;
+            } else {
+                eqEC.push(idJ);
+        let eq={j1:0,j2:0};
+        eq.j1 = j_json[eqEC[0]];
+        eq.j2 = j_json[eqEC[1]];
+        eqs.push(eq);
+                // j.eq = 'A';
+                // updates['/'+idJ] = j;
+                // dbJoueurs.update(updates);
+            }
+            break;
+    }
+    j.eCSel = (j.eCSel===undefined || j.eCSel===0)?1:0;
+    updates['/'+idJ] = j;
+    dbJoueurs.update(updates);
 
+    console.log(idJ, j_json[idJ]);
+}
+function setRank() {
+    let updates = {};
+    j_json.forEach(e => {
+        let joueur = initJoueurs.filter(j=>{ return j.id==e.id;})[0];
+        e.rk = joueur.rank;
+        updates['/'+int(e.id)] = e;
+    });
+    dbJoueurs.update(updates);
+}
 function updateTeam() {
     let id_ = (enCours-2020)*8;
     let updates = {};
@@ -79,8 +137,13 @@ function updateTeam() {
     });
     dbTeam.update(updates);
 }
+function resetTeamSel() {
+    resetSel();
+    resetTeam();
+}
 
 function resetTeam() {
+    eqs = [];
     let id_ = (enCours-2020)*8;
     let updates = {};
     for (let eId=0;eId<8;eId++) {

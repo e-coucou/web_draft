@@ -87,8 +87,8 @@ function createButtons() {
     btGraphe = new BoutonC('📈',width*4/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btGraphe.setH(14);
     btListe = new BoutonC('🗄️',width*2.5/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btListe.setH(14);
     btZoom = new BoutonC('🔍',width*7/10,height-r-padding,r,[0,1,2,3,4,5,6,7,8,9],false); btZoom.setH(14);
-    btEquipe = new BoutonC('⏺️',width*7/10,height-r-padding,r,[7],false); btEquipe.setH(14);
-    btResetEquipe = new BoutonC('🆕',width*7/10,height-r-padding,r,[7],false); btResetEquipe.setH(14);
+    btEquipe = new BoutonC('⏺️',width*7/10,height-r-padding,r,[7,8],false); btEquipe.setH(14);
+    btResetEquipe = new BoutonC('🆕',width*7/10,height-r-padding,r,[7,8],false); btResetEquipe.setH(14);
     btRandom = new BoutonC('🔁',width*7/10,height-r-padding,r,[7],false); btRandom.setH(14);
     l = (width-padding)/4;
     // btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);

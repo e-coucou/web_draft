@@ -87,8 +87,8 @@ function checkDots(mX, mY) {
             }
         }
         // selection d'un joueur dans la liste pour l'année en cours
-        if (mX>(padding) && mX<(width-padding) && mY>65 && (mode==6) ) {
-            let dy = height*0.85/j_json.length * 2;
+        dy = height*0.85/j_json.length * 2;
+        if (mX>(padding) && mX<(width-padding) && mY>(65-dy/2) && (mode==6) ) {
             let id_ = 2 * round((mY - 65) / dy) + ((mX>width/2)?2:1); // y_ + dy_
             if ( id_<0 || id_>=initJoueurs.length) {
                 // console.log('rien')
@@ -98,9 +98,21 @@ function checkDots(mX, mY) {
                 updateSelJoueur(id_);
             }
         }
+        // selection des equipes pointeurs/tireurs pour l'année en cours ..
+        dy = height*0.85/(16+2);
+        if (mX>(padding) && mX<(width-padding) && mY>(65-dy/2) && mY<(65+9*dy) && (mode==8) ) {
+            let id_ = 2*round((mY - 65) / dy) + ((mX>width/2)?2:1) - 1; // y_ + dy_
+            if ( id_<0 || id_>=16) {
+                // console.log('rien')
+                return;
+            } else {
+                // id = eJoueurs[id_].id;
+                GetJoueur(id_);
+            }
+        }        
         if (btZoom.isIn(mX,mY,mode)) { mode=2;clearButtons();btZoom.setOn(); return;}
         if (btEquipe.isIn(mX,mY,mode)) { updateTeam(); return;}
-        if (btResetEquipe.isIn(mX,mY,mode)) { resetTeam(); return;}
+        if (btResetEquipe.isIn(mX,mY,mode)) { if (mode==7) {resetTeam()} else {resetTeamSel()}; return;}
         if (btRandom.isIn(mX,mY,mode)) { randomTeam(); return;}
         if (btGraphe.isIn(mX,mY,mode)) {
             mode_prev = mode;
