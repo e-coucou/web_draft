@@ -38,7 +38,7 @@ function redimButtons() {
     let l = (width-4*padding)/4;
     l = (width-padding)/4;
     // btRetour.redim(center,y,l);
-    let inc=1.1;
+    let inc=1.25;
     btTournoi.redim(width*(1+0*inc)/10,y,r);
     btListe.redim(width*(1+1*inc)/10,y,r);
     btGraphe.redim(width*(1+2*inc)/10,y,r);
