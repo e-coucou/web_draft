@@ -239,13 +239,15 @@ class Joueur {
             dy += 16;
             let t = this.team[i];
             let m = matchs_[t.matchId];
-            let e1 = t.idEq, e2= (t.idEq+1) %2;
-            let vs = m.equipes[e2].eq;
-            let res = (m.equipes[e1].sc > m.equipes[e2].sc)?'Gagnée':'Perdue';
-            let sc = '  ('+m.equipes[e1].sc+'-'+m.equipes[e2].sc+')';
-            let vs_t = ' vs ('+vs.nom+') '+ vs.tireur.nom+'/'+vs.pointeur.nom;
-            text(t.annee+' ('+t.team+') -'+t.cat+' avec '+t.coeq.nom,x+s,y+dy); dy+=16;
-            text('"'+m.type+'" '+res+sc+vs_t,x+2*s,y+dy);
+            if (m != undefined) {
+                let e1 = t.idEq, e2= (t.idEq+1) %2;
+                let vs = m.equipes[e2].eq;
+                let res = (m.equipes[e1].sc > m.equipes[e2].sc)?'Gagnée':'Perdue';
+                let sc = '  ('+m.equipes[e1].sc+'-'+m.equipes[e2].sc+')';
+                let vs_t = ' vs ('+vs.nom+') '+ vs.tireur.nom+'/'+vs.pointeur.nom;
+                text(t.annee+' ('+t.team+') -'+t.cat+' avec '+t.coeq.nom,x+s,y+dy); dy+=16;
+                text('"'+m.type+'" '+res+sc+vs_t,x+2*s,y+dy);
+            }
         }
         dy += 18;
         text('Matchs :',x,y+dy);

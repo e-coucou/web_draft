@@ -1,4 +1,4 @@
-const eC = {version: 'v4.0', release:'r0', date:'aug/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
+const eC = {version: 'v4.1', release:'r0', date:'aug/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
 
 let param, run=false,enCours=2024;
 let joueurs = [], eJoueurs=[];
@@ -124,6 +124,8 @@ function update_Nav(n) {
             } else {
                 mode = (mode - 5 + nMode) % nMode + (4);
             }
+            break;
+        case 10:
             break;
     }
 }
@@ -252,6 +254,9 @@ function windowResized() {
     // canvas.position(x_, y_+10);
     if (run) redimButtons();
     // mouseSelection=true;
+    score1.position(width/2+x_,height/13*12);
+    score1.size(width/15);
+    score1.class("styled2");
 }
 
 function setup() {
@@ -266,6 +271,8 @@ function setup() {
       select("#notice").style('display','none');
     select("#ELO").style('display','none');
     select('#start').style('display','none');
+    score1 = createInput(0,'number');
+    // score1.changed(searchVilles);
     windowResized();
 }
 
@@ -314,6 +321,9 @@ function draw() {
                 run=false; btNav[1].txt = '▶️' ; run=false;
                 btTournoi.setOn();
                 drawTournois(0,40,width, height-100,annee); break;
+            case 10:
+                drawEncours();
+                break;
         }
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);

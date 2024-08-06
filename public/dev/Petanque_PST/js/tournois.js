@@ -1,5 +1,6 @@
 const iconPhase = [' 🐣', ' 🍺', ' 🏆'];
 const medaille = ['🥇 ','🥈 ','🥉 ','','','','','🎖️ '];
+let score1;
 
 function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     if (sc1>=sc2) {
@@ -110,7 +111,11 @@ function drawPoule(x,y,w,h_,data) {
         drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dt,w2);
     }
     if (phase=="Finale") {
-        let img = img_finale.filter( a => { return a.a==p[0].annee});
+        let img=[];
+        if (p.length>0) {
+            img = img_finale.filter( a => { return a.a==p[0].annee});
+            // console.log(img)
+        }
         if (img[0] != undefined)  { tint(255,100); image(img[0].i,padding,y+4.5*dt,w,w/10*7); tint(255,255);}
         let r = clastFinale(p);
         r.sort((a,b) => { return b.pt-a.pt;})

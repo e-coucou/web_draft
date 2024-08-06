@@ -55,6 +55,12 @@ function checkDots(mX, mY) {
             mode=0;
             return;
         }
+        if (btEncours.isIn(mX,mY,mode)) { 
+            clearButtons();
+            btEncours.setOn();
+            mode=10;
+            return;
+        }
         // selection Bouton de retour
         // if (btRetour.isIn(mX,mY,mode)) {  mode=mode_prev; toggle=true; btTournoi.setOff(); return; }
         // slecture de la notice / read ELO explication
