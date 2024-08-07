@@ -100,6 +100,13 @@ function preload() {
     dbTypes.update(t_json);
   }
 
+  function matchId() {
+    let l = Object.keys(m_json).length
+    for (let i = 0; i < l ; i++) {
+      m_json[i].id = int(i);
+    }
+  }
+
 
 //   const analytics = getAnalytics(app);
 

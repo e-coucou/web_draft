@@ -116,6 +116,18 @@ function checkDots(mX, mY) {
                 GetJoueur(id_);
             }
         }        
+        // selection des scores pour l'année en cours ..
+        dy = height*0.85/(22);
+        let nb=matchs.filter(s => {return s.annee==enCours}).length;
+        if (mX>(padding) && mX<(width-padding) && mY>(50+dy/2) && mY<(50+(nb+1)*dy) && (mode==10) ) {
+            let id_ = round((mY - 50) / dy) - 1;
+            if ( id_<0 || id_>=nb) {
+                // console.log('rien')
+                return;
+            } else {
+                GetScore(int(id_));
+            }
+        }        
         if (btZoom.isIn(mX,mY,mode)) { mode=2;clearButtons();btZoom.setOn(); return;}
         if (btEquipe.isIn(mX,mY,mode)) { updateTeam(); return;}
         if (btResetEquipe.isIn(mX,mY,mode)) { if (mode==7) {resetTeam()} else {resetTeamSel()}; return;}

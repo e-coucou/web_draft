@@ -339,7 +339,7 @@ function drawEncours() {
     rect(padding,79,width-2*padding,height-175);
     let m_sel = matchs.filter(s => {return s.annee==enCours})
     y = 50;
-    dy = height*0.85/(21);
+    dy = height*0.85/(22);
     let s2 = width * 0.07 +1;
     let w2 = width/2 - s2 -padding;
     // let dt = h / p.length / 3;
@@ -348,7 +348,7 @@ function drawEncours() {
     for (let i in m_sel) {
         i = int(i);
         let m = m_sel[i];
-        console.log(m)
+        // console.log(m)
         let e1 = m.equipes[0].eq;
         let e2 = m.equipes[1].eq;
         let sc1 = m.equipes[0].sc, sc2=m.equipes[1].sc;

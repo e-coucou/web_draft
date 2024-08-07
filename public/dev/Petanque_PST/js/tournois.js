@@ -1,6 +1,6 @@
 const iconPhase = [' 🐣', ' 🍺', ' 🏆'];
 const medaille = ['🥇 ','🥈 ','🥉 ','','','','','🎖️ '];
-let score1;
+let score1,score2;
 
 function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     if (sc1>=sc2) {
@@ -187,4 +187,45 @@ function drawTournois(x_, y_ , w_, h_ ,a_) {
         // if (p=='Ramatuelle') { image(img_ramatuelle,x-dx/2+7,y-8,13,14);}
     } else { poule='';}
         drawPoule(x,y_,w_,h_,m);
+}
+
+function ClstEncour() {
+    ClstEncourPoule('Gassin',0);
+    ClstEncourPoule('Ramatuelle',1);
+    let id_f = 99-1;
+    ClstEncourDemi('Principal',0,id_f)
+    id_f = 99-3
+    ClstEncourDemi('Honneur',0,id_f)
+}
+
+function ClstEncourPoule(poule_,eq_) {
+    let p = matchs.filter( r => { return ( r.type.indexOf('Poule') != -1 && r.poule==poule_ && r.annee==enCours); });
+    let r =ClstPoule(p);
+    let id_ = 99 - 7;
+    let i = 0;
+    r.forEach(b=>
+        {
+            let eq = equipes.filter(a=> { return(a.nom==b.n && a.annee==enCours)})[0];
+            matchs[id_+i].equipes[eq_].eq=eq;
+            i+=1;
+        }
+    )
+
+}
+
+function ClstEncourDemi(tableau_,eq_,id_) {
+    let q = matchs.filter( r => { return ( r.type.indexOf('Demi') != -1 && r.tableau.indexOf(tableau_) != -1 && r.annee==enCours); });
+    q.forEach(
+        (m,id) => {
+            // console.log(m,id)
+            if (m.equipes[0].sc > m.equipes[1].sc) {
+                matchs[id_+1].equipes[id].eq=m.equipes[0].eq;
+                matchs[id_].equipes[id].eq=m.equipes[1].eq;
+            } else {
+                matchs[id_+1].equipes[id].eq=m.equipes[1].eq;
+                matchs[id_].equipes[id].eq=m.equipes[0].eq;
+            }
+        }
+    )
+
 }

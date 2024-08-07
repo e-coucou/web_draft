@@ -1,6 +1,6 @@
-const eC = {version: 'v4.1', release:'r1', date:'aug/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
+const eC = {version: 'v5.0', release:'r0', date:'aug/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
 
-let param, run=false,enCours=2024;
+let param, run=false,enCours=2024, firstStart=true;
 let joueurs = [], eJoueurs=[];
 let initJoueurs = [];
 let equipes = [];
@@ -252,11 +252,14 @@ function windowResized() {
     let y_ = (windowHeight - height) / 2;
     select('canvas').position(x_, y_+10);
     // canvas.position(x_, y_+10);
-    if (run) redimButtons();
+    if ( firstStart) {firstStart=false;} else { console.log("coucou"); redimButtons(); run=true; mouseSelection=true;}
     // mouseSelection=true;
-    score1.position(width/2+x_,height/13*12);
+    score1.position(width/2+x_-40,height/13*12);
     score1.size(width/15);
     score1.class("styled2");
+    score2.position(width/2+x_,height/13*12);
+    score2.size(width/15);
+    score2.class("styled2");
 }
 
 function setup() {
@@ -272,11 +275,15 @@ function setup() {
     select("#ELO").style('display','none');
     select('#start').style('display','none');
     score1 = createInput(0,'number');
-    // score1.changed(searchVilles);
+    score2 = createInput(0,'number');
+    score1.changed(updateScore);
+    score2.changed(updateScore);
     windowResized();
 }
 
 function draw() {
+    ClstEncour();
+    if (mode!=10) {score1.hide();score2.hide();}
     if (run) {
         if (frameCount % 30 == 0) {
             index = (index+1) % matchs.length;

@@ -1,6 +1,7 @@
 let start = 0x0F, startOnce=true;
 let eq=['A','B','C','D','E','F','G','H'];
 let eqEC=[], tEC=[], pEC=[], idEqSel=0;
+let m_Encours=undefined;
 
 function launch(code) {
     start = start & code;
@@ -136,6 +137,22 @@ function updateTeam() {
         eId += 1;
     });
     dbTeam.update(updates);
+
+    resetScore();
+
+}
+
+function resetScore() {
+    let updates = {};
+    let m = m_json.filter(a=>{return a.annee==enCours;});
+    m.forEach(
+        (e,i)=>{
+            e.Sc1=0; e.Sc2=0;
+            updates['/'+int(e.id)] = e;
+        }
+    )
+    dbMatchs.update(updates);
+
 }
 function resetTeamSel() {
     resetSel();
@@ -143,6 +160,7 @@ function resetTeamSel() {
 }
 
 function resetTeam() {
+    resetScore();
     eqs = [];
     let id_ = (enCours-2020)*8;
     let updates = {};
@@ -193,4 +211,36 @@ function randomTeam() {
         eq.j2 = j2;
         eqs.push(eq);
     }    
+}
+
+function GetScore(id_) {
+    m_Encours = matchs.filter(s => {return s.annee==enCours})[id_];
+    score1.show();
+    score2.show();
+    score1.value(int(m_Encours.equipes[0].sc));
+    score2.value(int(m_Encours.equipes[1].sc));
+    let y = 50;
+    let s2 = width * 0.07 +1;
+    // let w2 = width/2 - s2 -padding;
+    let mid = innerWidth/2;
+    let dt = height*0.85/(22);
+    score1.position(mid-s2,y+(id_+1.3)*dt);
+    score2.position(mid,y+(id_+1.3)*dt);
+    // console.log(m_Encours);
+}
+
+function updateScore(d_) {
+    // console.log(d_)
+    // console.log(score1.value(), score2.value());
+    // console.log(m_Encours.id)
+    // m_Encours.equipes[0].sc=score1.value();
+    // m_Encours.equipes[0].sc=score1.value();
+    let updates = {};
+    let id_ = m_Encours.id;
+    let m = m_json[id_];
+    m.Sc1 = int(score1.value());
+    m.Sc2 = int(score2.value());
+    updates['/'+id_] = m;
+    dbMatchs.update(updates);
+
 }
