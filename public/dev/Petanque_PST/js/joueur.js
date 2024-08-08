@@ -288,9 +288,10 @@ class Joueur {
 }
 
 class Equipe {
-    constructor(nom_,j1, j2, annee_) {
+    constructor(nom_,j1, j2, annee_,id=0) {
         this.tireur = j1;
         this.pointeur = j2;
+        this.id=id;
         this.nom = nom_;
         this.ELOm = (j1.ELO + j2.ELO ) /2;
         this.tireur.setTireur(annee_,j2,this.nom);

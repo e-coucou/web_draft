@@ -40,7 +40,6 @@ function ClstPoule(data) {
             clt.push(a);
         }
     }
-    // console.log(a);
     let u1 = [...new Set(clt.map(a => a.n ))];
     let b = [];
     u1.forEach( a => {  let res =  clt.filter( c => {return (c.n==a)}) ; b.push(res); } );
@@ -52,11 +51,36 @@ function ClstPoule(data) {
         let d = b[i].reduce((a,b) =>{ return a+b.d}, 0);
         r.push({n:u1[i], p:p , c:c, s:s, d:d})
     }
-    r.sort((a,b) => {return b.p - a.p;});
-    r.sort((a,b) => {return b.d - a.d;});
-    r.sort((a,b) => {return b.s - a.s;});
+    // console.log(data);
+    if (r.length > 0) {
+        if (annee<2024) {
+            r.sort((a,b) => {return b.p - a.p;});
+            r.sort((a,b) => {return b.d - a.d;});
+            r.sort((a,b) => {return b.s - a.s;});
+        } else {
+            r.sort((a,b) => {return b.s - a.s;});
+            for (let i = 0;i<3;i++)
+            r = newClt(data,r,i,i+1);
+        }
+    }
     return r;
-
+}
+function newClt(data,r,x,y) {
+    if (r[x].s == r[y].s) {
+        // console.log('inverser 1/2', r[0].n, r[1].n, r[1]);
+        let m = data.filter(a=> { return ((a.equipes[0].eq.nom == r[x].n && 
+            a.equipes[1].eq.nom == r[y].n) || (a.equipes[1].eq.nom == r[x].n && 
+            a.equipes[0].eq.nom == r[y].n) 
+        )})[0];
+        s1 = m.equipes.filter(a=> { return ((a.eq.nom == r[x].n))})[0].sc;
+        s2 = m.equipes.filter(a=> { return ((a.eq.nom == r[y].n))})[0].sc;
+        if (s1<s2) {
+            tmp = r[x];
+            r[x] = r[y];
+            r[y] = tmp;
+        }
+    }
+    return r;
 }
 function clastFinale(data){
     let clt = [];
@@ -114,7 +138,6 @@ function drawPoule(x,y,w,h_,data) {
         let img=[];
         if (p.length>0) {
             img = img_finale.filter( a => { return a.a==p[0].annee});
-            // console.log(img)
         }
         if (img[0] != undefined)  { tint(255,100); image(img[0].i,padding,y+4.5*dt,w,w/10*7); tint(255,255);}
         let r = clastFinale(p);
@@ -198,15 +221,35 @@ function ClstEncour() {
     ClstEncourDemi('Honneur',0,id_f)
 }
 
+function updateMatchs(a) {
+    let m_a = matchs.filter(j=>{return j.annee==a; });
+    let updates = {};
+    m_a.forEach(Elt => {
+        let m =m_json[int(Elt.id)];
+        m.E1 = int(Elt.equipes[0].eq.id);
+        m.E2 = int(Elt.equipes[1].eq.id);
+        updates['/'+Elt.id] = m;
+        
+    });
+    console.log(updates);
+    dbMatchs.update(updates);
+}
+
 function ClstEncourPoule(poule_,eq_) {
     let p = matchs.filter( r => { return ( r.type.indexOf('Poule') != -1 && r.poule==poule_ && r.annee==enCours); });
     let r =ClstPoule(p);
+    // console.log(r)
     let id_ = 99 - 7;
     let i = 0;
     r.forEach(b=>
         {
             let eq = equipes.filter(a=> { return(a.nom==b.n && a.annee==enCours)})[0];
-            matchs[id_+i].equipes[eq_].eq=eq;
+            if (eq_ != 1) {
+                matchs[id_+i].equipes[eq_].eq=eq;
+            } else {
+                let i_ = i - (i%2) + (i+1)%2;
+                matchs[id_+i_].equipes[eq_].eq=eq;
+            }
             i+=1;
         }
     )
@@ -217,7 +260,6 @@ function ClstEncourDemi(tableau_,eq_,id_) {
     let q = matchs.filter( r => { return ( r.type.indexOf('Demi') != -1 && r.tableau.indexOf(tableau_) != -1 && r.annee==enCours); });
     q.forEach(
         (m,id) => {
-            // console.log(m,id)
             if (m.equipes[0].sc > m.equipes[1].sc) {
                 matchs[id_+1].equipes[id].eq=m.equipes[0].eq;
                 matchs[id_].equipes[id].eq=m.equipes[1].eq;

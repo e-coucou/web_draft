@@ -37,7 +37,7 @@ function errData(err) {
 function reInit() {
     matchs = [], initJoueurs = [], equipes = [], joueurs = [], eJoueurs=[], annees=[];
     j_json.forEach(j => { initJoueurs.push( new Joueur(j.nom,j.id));});
-    e_json.forEach(e => { equipes.push( new Equipe(e.nom,initJoueurs[e.J1],initJoueurs[e.J2],e.annee));});
+    e_json.forEach(e => { equipes.push( new Equipe(e.nom,initJoueurs[e.J1],initJoueurs[e.J2],e.annee,e.id));});
     nbMatchs = Object.keys(m_json).length ;
     calculELO(true);
     if ( startOnce) {
