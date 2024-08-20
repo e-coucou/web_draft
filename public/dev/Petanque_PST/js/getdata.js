@@ -43,7 +43,7 @@ function reInit() {
     if ( startOnce) {
         update_color(0);
         createButtons();
-        setDateSel(annees.length-2); // on selectionne 2023
+        setDateSel(annees.length-1); // on selectionne 2023
         startOnce = false;
     }
     redimButtons();
