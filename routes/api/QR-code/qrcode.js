@@ -133,8 +133,8 @@ router.get("/", async (req,res) => {
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
     info_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/information.json', "utf8"));
 
-    // let _texte = "http://draft.e-coucou.com";
-    let _texte = "BEGIN:VCARD VERSION:4.0 FN:Eric Plaidy N:Plaidy;Eric;;M.; EMAIL;TYPE=INTERNET:eric.plaidy@adisseo.com TEL;TYPE=CELL:+33 6 2662 1093 BDAY:19650513 item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92  160;FR;Immeuble Antony Parc II\n10 place du General de Gaulle\nANTONY\n92160\nFR item1.X-ABLabel:HeadQuarter item2.URL:https://www.adisseo.com item2.X-ABLabel:Web TITLE:Purchasing Director Europe CATEGORIES:Purchasing;Director;Raw Materials;Methionine  GENDER:M LANG:FR-fr ROLE:Director ORG:Adisseo;Purchasing;Europe END:VCARD"
+     let _texte = "http://draft.e-coucou.com";
+//    let _texte = "BEGIN:VCARD VERSION:4.0 FN:Eric Plaidy N:Plaidy;Eric;;M.; EMAIL;TYPE=INTERNET:eric.plaidy@adisseo.com TEL;TYPE=CELL:+33 6 2662 1093 BDAY:19650513 item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92  160;FR;Immeuble Antony Parc II\n10 place du General de Gaulle\nANTONY\n92160\nFR item1.X-ABLabel:HeadQuarter item2.URL:https://www.adisseo.com item2.X-ABLabel:Web TITLE:Purchasing Director Europe CATEGORIES:Purchasing;Director;Raw Materials;Methionine  GENDER:M LANG:FR-fr ROLE:Director ORG:Adisseo;Purchasing;Europe END:VCARD"
 //    let _texte = "BEGIN:VCARD FN:Eric Plaidy ceci est un essai VERSION:4.0 END VCARD"
     newMessage(_texte);
     message_l = message.bytes.length;
