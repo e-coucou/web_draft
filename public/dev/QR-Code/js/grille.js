@@ -87,7 +87,7 @@ function mask(x,y,v,n) {
 }
 
 function addData(mask_) {
-    // console.log('addData',mask_)
+    console.log('addData',mask_);
     let x = dim-1, y=dim-1;
     let dir = { x:-1 , y:0 , d:-1};
     function move() {
@@ -120,6 +120,7 @@ function addData(mask_) {
             console.log('ca devrait pas arriver');
         }
     }
+    console.log(grille);
 }
 function removeZ(arr) {
     while (arr[0] == 0) {

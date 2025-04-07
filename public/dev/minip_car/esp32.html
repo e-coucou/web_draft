@@ -1,0 +1,297 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, viewport-fit=cover"/> 
+    <title>Minip car</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.1/p5.min.js"></script>
+    <style>
+        body {
+            height: 100%;
+            overflow:hidden;
+            width: 100%;
+            position: absolute;
+            background-color: #000000;
+            color:rgb(78, 221, 123);
+        }
+        .copyright {
+            position: absolute;
+            right: 20px;
+            bottom: 15px;
+            color: rgb(255, 255, 255);
+            font-size: 0.6rem;
+            text-align: end;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .version {
+            position: absolute;
+            left: 5px;
+            bottom: 15px;
+            color: rgb(255, 255, 255);
+            font-size: 0.6rem;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #background-video {
+            display: grid;
+            height: 100vh;
+            width: 100vw;
+            object-fit: cover;
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            align-items: center;
+            justify-items: center;
+            z-index: -1;
+        }
+        .styled {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            border: 0;
+            line-height: 1em;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            text-align: right;
+            color: #fff;
+            text-shadow: 1px 1px 1px #000;
+            border-radius: 2px;
+            background-color: rgb(50, 110, 72);
+            box-shadow:
+            inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+            inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+  </head>
+    <body>
+      <div id="background-video">
+        <!-- <img id="stream" src=""></img> -->
+      </div>
+      <div class="center" id="canvas"></div>
+    <div class="copyright" id="cr">© eCoucou 12/2024</div>
+    <div class="version" id="vx">⌖ 0.1 r0</div>
+    <input class="styled" id="RS" type="button" value="Video On/Off">
+    <main>
+    <script>
+      var host = document.location.hostname;
+      var streamURL = 'http://'+host+':81/stream';
+      var baseHost = document.location.origin;
+      var baseURL = 'http://'+host;
+      var repGet;
+      let sketch = function(p) {
+        const eC = {version: 'v2.0', release:'r0', date:'dec/24', owner: 'rky', code:'y2I', annee:'2024', maj:'dec/24'};
+        let vx,cr;
+        let phares, feux, vit, dir;
+        let canvas;
+        let btn, videoAdd,bck, videoToggle=false;
+        p.windowResized = function() {
+            p.resizeCanvas(innerWidth-30,innerHeight-30);
+            phares.setPos(100,p.height*0.3,60,20);
+            feux.setPos(100,p.height*0.4,60,20);
+            vit.setPos(p.width/2+p.width/4,20,p.width/4,p.height-40);
+            dir.setPos(p.width/8,p.height/2,p.width/2-p.width/6,p.height/2-40);
+        }
+        p.setup = function() {
+            console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
+            mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+            canvas = p.createCanvas(500,500);
+            canvas.parent("#canvas");
+            vx=p.select("#vx"); vx.html('⌖ '+eC.version+' '+eC.release+' >'+eC.maj+'<');
+            cr=p.select("#cr"); cr.html('(ツ) © eCoucou '+eC.annee);
+            bck=p.select("#background-video");
+            btn=p.select("#RS");
+            btn.mousePressed(videoRS);
+            phares = new Switch(110,p.height*0.27,60,20,false,'Phares');
+            feux = new Switch(110,p.height*0.43,60,20,false,'Feux');
+            vit = new Slider(p.width/2,20,p.width/2,p.height-40,true);
+            dir = new Slider(p.width/8,p.height/2,p.width/2-p.width/6,p.height/2-40, false);
+            p.windowResized();
+        }
+        function videoRS(){
+            if (videoToggle) {
+                videoAdd=p.select("#stream");
+                videoAdd.remove();
+            } else {
+                videoAdd = p.createElement("img");
+                videoAdd.attribute("id","stream");
+                videoAdd.attribute("src",streamURL);
+                videoAdd.parent(bck);
+            }
+            videoToggle = !videoToggle;
+        }
+        function sendCmd(cmd, val) {
+            urlCMD = baseURL+'/ep?cmd='+cmd+"&value="+val;
+            p.httpGet(urlCMD, function(response) {
+                repGet = response;
+            });
+        }
+        p.draw = function() {
+            p.textAlign(p.LEFT,p.CENTER);
+            p.noStroke();p.fill(255);p.textSize(p.width*0.05)
+            p.text("MiniP's car",p.width/12,p.height/7);
+
+            phares.show();
+            feux.show();
+            vit.onSlider(p.mouseX,p.mouseY);
+            if (vit.updt) { 
+                sendCmd("speed",p.int(vit.val*2-100));
+                vit.reset();
+            }
+            vit.show();
+            dir.onSlider(p.mouseX,p.mouseY);
+            if (dir.updt) { 
+                sendCmd("dir",p.int(dir.val*2-100));
+                dir.reset();
+            }
+            dir.show();
+        }
+        function mouse_(x,y) {
+            if (phares.onSwitch(x,y)) {
+                phares.flipflop();
+                sendCmd("avant",phares.state*100)
+            }
+            if (feux.onSwitch(x,y)) {
+                feux.flipflop();
+                sendCmd("arriere",feux.state*100)
+            }
+        }
+        p.touchStarted = function() {
+            mouseSelection=true;
+            let fs =p.fullscreen();
+            // console.log(fs);
+            // if (!fs) { fullscreen(true);}
+            mouse_(p.touches[0].x, p.touches[0].y);
+        }
+        p.mousePressed = function() {
+            mouse_(p.mouseX,p.mouseY);
+        }
+        // p.mouseClicked = function() {
+        //     mouse_(p.mouseX,p.mouseY);
+        // }
+        class Switch {
+            constructor(x,y,w,h,t=false,name='switch') {
+                this.x = x;
+                this.y = y;
+                this.w = h*2;
+                this.h = h;
+                this.state = t;
+                this.name = name;
+            }
+            setPos(x,y,w,h) {
+                this.x = x;
+                this.y = y;
+                this.w = h*2;
+                this.h = h;
+            }
+            flipflop() {
+                this.state = !(this.state);
+            }
+            onSwitch(x,y) {
+                if (x>(this.x-this.h) && x<(this.x+this.h) && y>(this.y-this.h/2) && y<(this.y+this.h/2)) {
+                    return true;
+                }
+                return false;
+            }
+            show() {
+                p.ellipseMode(p.CENTER);
+                p.rectMode(p.CENTER);
+                let offset = this.h/2;;
+                if (this.state) {
+                    p.fill(40,200,60);
+                    p.rect(this.x,this.y,this.w,this.h,this.h);
+                    p.fill(255);
+                    p.circle(this.x+offset,this.y,this.h-2);
+                } else {
+                    offset *= -1;;
+                    p.fill(100,80,80);
+                    p.rect(this.x,this.y,this.w,this.h,this.h);
+                    p.fill(255);
+                    p.circle(this.x+offset,this.y,this.h-2);
+                }
+                p.textAlign(p.LEFT,p.CENTER),
+                p.textSize(p.width*0.03);
+                p.noStroke();p.fill(255);
+                p.text(this.name,this.x+this.w+5,this.y);
+            }
+        }
+        class Slider {
+            constructor(x,y,w,h,t) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+                this.in = false;
+                this.pos = p.createVector(x+w/2,y+h/2);
+                this.t = t; //vertical
+                this.val = 50.;
+                this.reset();
+                this.c=p.createVector(this.x+this.h+this.w/2,this.y+this.h/2);
+                if (!t) {
+                    this.c=p.createVector(this.x+this.w/2,this.y+this.w+this.h/2);
+                }
+            }
+            setPos(x,y,w,h) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+                this.pos = p.createVector(x+w/2,y+h/2);
+                this.c=p.createVector(this.x+this.h+this.w/2,this.y+this.h/2);
+                if (!this.t) {
+                    this.c=p.createVector(this.x+this.w/2,this.y+this.w+this.h/2);
+                }
+            }
+            reset() {
+                this.updt = false;
+            }
+            onSlider(x,y) {
+                this.in = false;
+                this.reset();
+                if (x>this.x && x<this.x+this.w && y>this.y && y<this.y+this.h) {
+                    this.in = true;
+                    this.updt=true;
+                    if (this.t) {
+                        let v = (y - this.y)/this.h*100.;
+                        v = p.round(v/10.)/10.;
+                        this.val = v * 100.;
+                        this.pos.y = this.y + v * this.h;
+                        let xp = this.c.x-p.sqrt(this.h*this.h-p.pow((0.5-v)*this.h,2));
+                        this.pos.x = xp;
+                    } else {
+                        this.pos.y = this.y + this.h/2;
+                        let v = (x - this.x)/this.w*100.;
+                        v = p.round(v/10.)/10.;
+                        this.val = v * 100.;
+                        this.pos.x = this.x + v * this.w;
+                        this.pos.y  = this.c.y-p.sqrt(this.w*this.w-p.pow((0.5-v)*this.w,2));
+                    }
+                }
+            }
+            show() {
+                p.rectMode(p.CORNER);
+                p.noFill();
+                p.stroke(200,20);p.strokeWeight(0.23*p.height);
+                if (this.t) {
+                    p.circle(this.c.x,this.c.y,this.h*2);
+                    p.strokeWeight(1);p.stroke(220,30);
+                    p.circle(this.c.x,this.c.y,this.h*2);
+                } else {
+                    p.circle(this.c.x,this.c.y,this.w*2);
+                    p.strokeWeight(1);p.stroke(220,30);
+                    p.circle(this.c.x,this.c.y,this.w*2);
+                }
+                p.fill(30,200,120);
+                p.noStroke();
+                if (this.in) {
+                    p.strokeWeight(4);
+                    p.stroke(30,150,100);
+                } else { p.noStroke();}
+                p.circle(this.pos.x,this.pos.y,0.2*p.height);
+            }
+        }        
+      }
+      let myp5 = new p5(sketch);
+      </script>
+      </main>
+      </body>
+    </html>
