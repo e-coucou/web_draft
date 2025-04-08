@@ -81,12 +81,17 @@ function createQR(level_) {
     grille.addData(level_, code.blockBin); // mask=0 - prevoir une boucle avec evalution
     grille.addString(info);
 }
-function createPNG() {
+function createPNG(COLOR) {
     const width = (dim+2)*DIM;
     const height = (dim+2)*DIM;
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
+
+    let base_color ='#000000';
+    if (COLOR) {base_color = COLOR;}
+
+    console.log(base_color);
 
 //    context.fillStyle = "#764abc";
     context.fillStyle = "#ffffff";
@@ -107,7 +112,7 @@ function createPNG() {
 
         for (let i=0; i<dim; i++) {
             for (let j=0; j<dim; j++) {
-                color = '#000000';
+                color = base_color;
                 switch(grille.grille[i][j]) {
                     case 1: color = '#ffffff'; break;
                     case -1: color = '#ff0000'; break;
@@ -129,7 +134,7 @@ router.get("/vcard", async (req,res) => {
     //     return res.status(200).json(qr_json);
     // });
 
-    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction} = req.query;
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, QUAL, COLOR, WEB} = req.query;
 
     let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
         ROLE:${titre}\nEND:VCARD\n`);
@@ -146,7 +151,7 @@ router.get("/vcard", async (req,res) => {
 // ORG:Adisseo;Purchasing;Europe
 // END:VCARD
 // ‘
-    console.log(val);
+//    console.log(val);
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
@@ -154,9 +159,10 @@ router.get("/vcard", async (req,res) => {
 
 //    tpl = fs.readFileSync("./routes/api/QR-code/tpl/vcard.txt", "utf8");
 
-//    console.log(tpl);
 //     let _texte = "http://draft.e-coucou.com";
-     let _texte = val;
+    
+    if (QUAL) {type = QUAL;}
+    let _texte = val;
     newMessage(_texte);
     message_l = message.bytes.length;
 
@@ -173,14 +179,17 @@ router.get("/vcard", async (req,res) => {
     // bestVersion();
 
     createQR(level);
-    let img = createPNG();
+    let img = createPNG(COLOR);
 
 //    res.status(200).json(grille.grille);
     imageName = "image.png";
-    //res.status(200).send(`<img src="../../images/${imageName}">`);
+    if (WEB) {
+        res.status(200).send(`<img src="../../images/${imageName}">`);
+    } else {
+        res.status(200).send(img);
+    }
 
 //    res.status(200).json({message: "fonctions API -> QR-CODE by eCoucou"}).json(qr_json);
-    res.status(200).send(img);
 })
 
 
