@@ -131,7 +131,7 @@ router.get("/vcard", async (req,res) => {
 
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction} = req.query;
 
-    let val = (`BEGIN:VCARD\nVERSION:4.0 \nFN:${prenom} ${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=CELL:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
+    let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
         ROLE:${titre}\nEND:VCARD\n`);
 // TEL;TYPE=CELL:+33 6 2662 1093
 // item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92160;FR;
@@ -177,9 +177,10 @@ router.get("/vcard", async (req,res) => {
 
 //    res.status(200).json(grille.grille);
     imageName = "image.png";
-    res.status(200).send(`<img src="../../images/${imageName}">`);
+    //res.status(200).send(`<img src="../../images/${imageName}">`);
 
 //    res.status(200).json({message: "fonctions API -> QR-CODE by eCoucou"}).json(qr_json);
+    res.status(200).send(img);
 })
 
 
