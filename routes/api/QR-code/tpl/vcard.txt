@@ -1,0 +1,17 @@
+BEGIN:VCARD
+VERSION:4.0
+FN:Eric Plaidy
+N:Plaidy;Eric;;M.;
+EMAIL;TYPE=INTERNET:eric.plaidy@adisseo.com
+TEL;TYPE=CELL:+33 6 2662 1093
+item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92160;FR;
+item1.X-ABLabel:HeadQuarter
+item2.URL:https://www.adisseo.com
+item2.X-ABLabel:Web
+TITLE:Purchasing Director Europe
+CATEGORIES:Purchasing;Director;Raw Materials;Methionine 
+GENDER:M
+LANG:FR-fr
+ROLE:Director
+ORG:Adisseo;Purchasing;Europe
+END:VCARD

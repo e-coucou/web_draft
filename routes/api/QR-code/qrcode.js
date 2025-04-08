@@ -122,20 +122,41 @@ function createPNG() {
     return buffer;
 }
 
-router.get("/", async (req,res) => {
+router.get("/vcard", async (req,res) => {
     // await fs.readFile('./routes/api/QR-code/data/block.json', (err, data) => {
     //     if (err) { return res.status(500).send(err); }
     //     qr_json = data;
     //     return res.status(200).json(qr_json);
     // });
+
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction} = req.query;
+
+    let val = (`BEGIN:VCARD\nVERSION:4.0 \nFN:${prenom} ${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=CELL:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
+        ROLE:${titre}\nEND:VCARD\n`);
+// TEL;TYPE=CELL:+33 6 2662 1093
+// item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92160;FR;
+// item1.X-ABLabel:HeadQuarter
+// item2.URL:https://www.adisseo.com
+// item2.X-ABLabel:Web
+// TITLE:Purchasing Director Europe
+// CATEGORIES:Purchasing;Director;Raw Materials;Methionine 
+// GENDER:M
+// LANG:FR-fr
+// ROLE:Director
+// ORG:Adisseo;Purchasing;Europe
+// END:VCARD
+// ‘
+    console.log(val);
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
     info_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/information.json', "utf8"));
 
-     let _texte = "http://draft.e-coucou.com";
-//    let _texte = "BEGIN:VCARD VERSION:4.0 FN:Eric Plaidy N:Plaidy;Eric;;M.; EMAIL;TYPE=INTERNET:eric.plaidy@adisseo.com TEL;TYPE=CELL:+33 6 2662 1093 BDAY:19650513 item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92  160;FR;Immeuble Antony Parc II\n10 place du General de Gaulle\nANTONY\n92160\nFR item1.X-ABLabel:HeadQuarter item2.URL:https://www.adisseo.com item2.X-ABLabel:Web TITLE:Purchasing Director Europe CATEGORIES:Purchasing;Director;Raw Materials;Methionine  GENDER:M LANG:FR-fr ROLE:Director ORG:Adisseo;Purchasing;Europe END:VCARD"
-//    let _texte = "BEGIN:VCARD FN:Eric Plaidy ceci est un essai VERSION:4.0 END VCARD"
+//    tpl = fs.readFileSync("./routes/api/QR-code/tpl/vcard.txt", "utf8");
+
+//    console.log(tpl);
+//     let _texte = "http://draft.e-coucou.com";
+     let _texte = val;
     newMessage(_texte);
     message_l = message.bytes.length;
 
@@ -145,11 +166,9 @@ router.get("/", async (req,res) => {
     // setOptions();
     // setVersion();
     let valide = qrcode.filter(a => { return (a.d > (message_l+1) && a.t==type); });
-   version = valide[0].v;
+    version = valide[0].v;
     dim = ((version-1)*4) + 21;
-   console.log(version)
-//    setVersion();
-   type = valide[0].t;
+    type = valide[0].t;
     encodeMess();
     // bestVersion();
 
@@ -158,7 +177,7 @@ router.get("/", async (req,res) => {
 
 //    res.status(200).json(grille.grille);
     imageName = "image.png";
-    res.status(200).send(`<img src="../images/${imageName}">`);
+    res.status(200).send(`<img src="../../images/${imageName}">`);
 
 //    res.status(200).json({message: "fonctions API -> QR-CODE by eCoucou"}).json(qr_json);
 })
