@@ -181,8 +181,8 @@ router.get("/vcard", async (req,res) => {
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
-            res.setHeader("Content-Type", "image/png");
-            res.status(200).end(img);
+            res.writeHead(200, {"Content-Type": "image/png", "Content-Length" : img.length });
+            res.end(img);
         } else {
             res.status(200).send(`<img src="../../images/${imageName}">`);
         }
