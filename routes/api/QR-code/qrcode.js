@@ -91,8 +91,6 @@ function createPNG(COLOR) {
     let base_color ='#000000';
     if (COLOR) {base_color = COLOR;}
 
-    console.log(base_color);
-
 //    context.fillStyle = "#764abc";
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
@@ -126,7 +124,6 @@ function createPNG(COLOR) {
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
     return buffer;
 }
-
 router.get("/vcard", async (req,res) => {
     // await fs.readFile('./routes/api/QR-code/data/block.json', (err, data) => {
     //     if (err) { return res.status(500).send(err); }
@@ -136,8 +133,8 @@ router.get("/vcard", async (req,res) => {
 
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, QUAL, COLOR, WEB} = req.query;
 
-    let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
-        ROLE:${titre}\nEND:VCARD\n`);
+    let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.LABEL:ELISE\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
+        ORG:ADISSEO\nROLE:${titre}\nEND:VCARD\n`);
 // TEL;TYPE=CELL:+33 6 2662 1093
 // item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92160;FR;
 // item1.X-ABLabel:HeadQuarter
@@ -151,7 +148,6 @@ router.get("/vcard", async (req,res) => {
 // ORG:Adisseo;Purchasing;Europe
 // END:VCARD
 // ‘
-//    console.log(val);
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
