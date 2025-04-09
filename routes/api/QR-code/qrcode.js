@@ -180,7 +180,12 @@ router.get("/vcard", async (req,res) => {
 //    res.status(200).json(grille.grille);
     imageName = "image.png";
     if (WEB) {
-        res.status(200).send(`<img src="../../images/${imageName}">`);
+        if (WEB==1) {
+            res.setHeader("Content-Type", "image/png");
+            res.status(200).end(img);
+        } else {
+            res.status(200).send(`<img src="../../images/${imageName}">`);
+        }
     } else {
         res.status(200).send(img);
     }
