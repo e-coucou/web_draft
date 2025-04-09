@@ -122,7 +122,7 @@ function createPNG(COLOR) {
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
-    return buffer;
+    return Buffer.from(buffer,"base64");
 }
 router.get("/vcard", async (req,res) => {
     // await fs.readFile('./routes/api/QR-code/data/block.json', (err, data) => {
