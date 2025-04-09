@@ -133,8 +133,8 @@ router.get("/vcard", async (req,res) => {
 
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, QUAL, COLOR, WEB} = req.query;
 
-    let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.LABEL:ELISE\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
-        ORG:ADISSEO\nROLE:${titre}\nEND:VCARD\n`);
+    let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:Adisseo\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
+        ROLE:${titre}\nEND:VCARD\n`);
 // TEL;TYPE=CELL:+33 6 2662 1093
 // item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92160;FR;
 // item1.X-ABLabel:HeadQuarter
