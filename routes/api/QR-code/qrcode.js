@@ -135,10 +135,10 @@ function createPNG(COLOR) {
                     case -1: color = '#ff0000'; break;
                 }
                 context.fillStyle = color;
-            //    context.strokeStyle =color;
+               context.strokeStyle =color;
                 context.beginPath();
-                context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM-0.25, DIM-0.25, [a,b,c,d]);
-            //  context.stroke();
+                context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM, DIM, [a,b,c,d]);
+             context.stroke();
                 context.fill();
             }
         }
