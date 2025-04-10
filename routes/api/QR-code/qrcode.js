@@ -8,7 +8,7 @@ const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
-const DIM = 3;
+let DIM = 3;
 
 let qr_json, alphabet,loc_json, info_json;
 let qrcode = [], qrinfo = [], grille;
@@ -131,7 +131,7 @@ router.get("/vcard", async (req,res) => {
     //     return res.status(200).json(qr_json);
     // });
 
-    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, QUAL, COLOR, WEB} = req.query;
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, QUAL, COLOR, WEB, PIXEL} = req.query;
 
     let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:Adisseo\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
         ROLE:${titre}\nEND:VCARD\n`);
@@ -158,6 +158,7 @@ router.get("/vcard", async (req,res) => {
 //     let _texte = "http://draft.e-coucou.com";
     
     if (QUAL) {type = QUAL;}
+    if (PIXEL) {DIM = PIXEL;}
     let _texte = val;
     newMessage(_texte);
     message_l = message.bytes.length;
