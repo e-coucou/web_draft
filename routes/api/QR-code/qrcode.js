@@ -16,7 +16,21 @@ let dim, code, image;
 let version = 5, type='Q', level = 4, mode = 'B';
 let message, message_l;
 
-
+function hex2Rgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+function rgb2Hex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 function loadData() {
     for (let i=0; i<Object.keys(qr_json).length;i++) {
         let m = qr_json[i];
@@ -107,16 +121,25 @@ function createPNG(COLOR) {
 // if (text[1]) context.fillText(text[1], 600, titleY + lineHeight);
 
         let color;
+        let a,b,c,d,g;
 
         for (let i=0; i<dim; i++) {
             for (let j=0; j<dim; j++) {
-                color = base_color;
+                a=Math.floor(Math.random()*10); b=Math.floor(Math.random()*10); c= Math.floor(Math.random()*10); d=Math.floor(Math.random()*10);
+                g=Math.floor(Math.random()*5+1);
+                let cRGB = hex2Rgb(base_color);
+                let coul = { r:Math.trunc(cRGB.r+g*((a>d)?a:-a)), g:Math.trunc(cRGB.g+g*((b>d)?b:-b)), b: Math.trunc(cRGB.b+g*((c>d)?c:-c)) };
+                color = rgb2Hex(coul.r,coul.g,coul.b);
                 switch(grille.grille[i][j]) {
                     case 1: color = '#ffffff'; break;
                     case -1: color = '#ff0000'; break;
                 }
                 context.fillStyle = color;
-                context.fillRect((i+1)*DIM, (j+1)*DIM, DIM, DIM);
+            //    context.strokeStyle =color;
+                context.beginPath();
+                context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM-0.25, DIM-0.25, [a,b,c,d]);
+            //  context.stroke();
+                context.fill();
             }
         }
 
@@ -135,19 +158,7 @@ router.get("/vcard", async (req,res) => {
 
     let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:Adisseo\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
         ROLE:${titre}\nEND:VCARD\n`);
-// TEL;TYPE=CELL:+33 6 2662 1093
-// item1.ADR:;10 place du General de Gaulle;Immeuble Antony Parc II;ANTONY;;92160;FR;
-// item1.X-ABLabel:HeadQuarter
-// item2.URL:https://www.adisseo.com
-// item2.X-ABLabel:Web
-// TITLE:Purchasing Director Europe
-// CATEGORIES:Purchasing;Director;Raw Materials;Methionine 
-// GENDER:M
-// LANG:FR-fr
-// ROLE:Director
-// ORG:Adisseo;Purchasing;Europe
-// END:VCARD
-// ‘
+
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
