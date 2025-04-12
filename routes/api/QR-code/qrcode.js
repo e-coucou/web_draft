@@ -6,6 +6,7 @@ const { createCanvas } = require("canvas");
 const { Polynome, logTable, createPoly } = require("./js/reed_salomon");
 const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
+const { evaluate } = require("./js/penalites");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
@@ -95,17 +96,23 @@ function createQR(level_) {
     grille.addData(level_, code.blockBin); // mask=0 - prevoir une boucle avec evalution
     grille.addString(info);
 }
-function createPNG(COLOR) {
+function optimise() {
+    let best =Infinity,sel=0;
+    for (let i=0;i<8;i++) {
+        createQR(i);
+        let tmp = evaluate(grille.grille,grille.dim);
+        // console.log(i,tmp,best);
+        if (tmp<best) { best = tmp; sel = i ;} 
+    }
+    return (sel);
+}
+function createPNG(base_color) {
     const width = (dim+2)*DIM;
     const height = (dim+2)*DIM;
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
 
-    let base_color ='#000000';
-    if (COLOR) {base_color = COLOR;}
-
-//    context.fillStyle = "#764abc";
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
 
@@ -148,62 +155,61 @@ function createPNG(COLOR) {
     return Buffer.from(buffer,"base64");
 }
 router.get("/vcard", async (req,res) => {
-    // await fs.readFile('./routes/api/QR-code/data/block.json', (err, data) => {
-    //     if (err) { return res.status(500).send(err); }
-    //     qr_json = data;
-    //     return res.status(200).json(qr_json);
-    // });
 
-    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, QUAL, COLOR, WEB, PIXEL} = req.query;
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, QUAL, COLOR, WEB, PIXEL, LEVEL} = req.query;
 
-    let val = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
+    let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
         ROLE:${titre}\nEND:VCARD\n`);
 
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
     info_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/information.json', "utf8"));
-
-//    tpl = fs.readFileSync("./routes/api/QR-code/tpl/vcard.txt", "utf8");
-
-//     let _texte = "http://draft.e-coucou.com";
     
     if (QUAL) {type = QUAL;}
     if (PIXEL) {DIM = PIXEL;}
-    let _texte = val;
+    if (LEVEL && LEVEL>-1 && LEVEL<8) {level = LEVEL;}
+    let base_color ='#000000';
+    if (COLOR) {base_color = COLOR;}
+
     newMessage(_texte);
     message_l = message.bytes.length;
-
     loadData();
     logTable();
     createPoly();
-    // setOptions();
-    // setVersion();
     let valide = qrcode.filter(a => { return (a.d > (message_l+1) && a.t==type); });
     version = valide[0].v;
     dim = ((version-1)*4) + 21;
     type = valide[0].t;
     encodeMess();
-    // bestVersion();
 
-    createQR(level);
-    let img = createPNG(COLOR);
+    if (LEVEL && LEVEL!=-1) {
+        createQR(level);
+    } else {
+        level = optimise();
+        createQR(level);
+    }
 
-//    res.status(200).json(grille.grille);
+    image = createPNG(base_color);
+
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
-            res.writeHead(200, {"Content-Type": "image/png", "Content-Length" : img.length });
-            res.end(img);
+            res.writeHead(200, {"Content-Type": "image/png", "Content-Length" : image.length });
+            res.end(image);
         } else {
-            res.status(200).send(`<img src="../../images/${imageName}">`);
+            res.status(200).send(`<H3 style="color: ${base_color}">Voici votre QR-Code</H3><p>Optimisation Level [${level}]</p><hr><img style="height: 80%" src="../../images/${imageName}"><br><p>by eCoucou 2025</p>`);
         }
     } else {
-        res.status(200).send(img);
+        res.status(200).send(image);
     }
 
 //    res.status(200).json({message: "fonctions API -> QR-CODE by eCoucou"}).json(qr_json);
 })
+
+router.get("/info", async (req,res) => {
+   res.status(200).json({level: level, type: type, version: version});
+});
 
 
 module.exports = router;

@@ -1,4 +1,4 @@
-function condition_1() {
+function condition_1(grille,dim) {
     let cnt=0;
     for (let i=0;i<dim;i++) {
         let v00=grille[i][0];
@@ -22,7 +22,7 @@ function condition_1() {
     // console.log('cd1:',cnt);
     return cnt;
 }
-function condition_2() {
+function condition_2(grille,dim) {
     let cnt=0;
     for (let i=0; i<dim-1 ; i++) {
         for (let j=0; j<dim-1;j++) {
@@ -36,7 +36,7 @@ function condition_2() {
     // console.log(cnt);
     return cnt;
 }
-function condition_3() {
+function condition_3(grille,dim) {
     const p0 = '01000101111';
     const p1 = '11110100010';
     let cnt = 0;
@@ -60,7 +60,7 @@ function condition_3() {
     // console.log(cnt);
     return cnt;
 }
-function condition_4() {
+function condition_4(grille,dim) {
     let cnt=0;
     let d=0;
     for (let i =0; i<dim;i++) {
@@ -68,19 +68,19 @@ function condition_4() {
             d += grille[i][j];
         }
     }
-    let p = int(100 * d / dim /dim);
-    let m = abs(50 - round(p/5) * 5)/5;
-    let M = abs(50 - (round(p/5)+1) * 5)/5;
-    cnt = min(m,M)*10;
+    let p = Math.floor(100 * d / dim /dim);
+    let m = Math.abs(50 - Math.round(p/5) * 5)/5;
+    let M = Math.abs(50 - (Math.round(p/5)+1) * 5)/5;
+    cnt = Math.min(m,M)*10;
     // console.log(cnt,d,p,m,M);
     return cnt;
 }
 
-function evaluate() {
-    let cnt = condition_1();
-    cnt += condition_2();
-    cnt += condition_3();
-    cnt += condition_4();
+function evaluate(grille,dim) {
+    let cnt = condition_1(grille,dim);
+    cnt += condition_2(grille,dim);
+    cnt += condition_3(grille,dim);
+    cnt += condition_4(grille,dim);
     return cnt;
 }
 
@@ -94,7 +94,7 @@ function optimise() {
     }
     return (sel);
 }
-exports.bestVersion = function() {
+bestVersion = function() {
     let valide = qrcode.filter(a => { return (a.d > (message_l+1) && a.t==type); });
     version = valide[0].v;
     setVersion();
@@ -107,3 +107,5 @@ exports.bestVersion = function() {
     // console.log(version, type, level);
     loop();
 }
+
+module.exports = {evaluate};
