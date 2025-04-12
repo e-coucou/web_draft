@@ -106,7 +106,7 @@ function optimise() {
     }
     return (sel);
 }
-function createPNG(base_color) {
+function createPNG(base_color,contraste,standard) {
     const width = (dim+2)*DIM;
     const height = (dim+2)*DIM;
 
@@ -136,16 +136,21 @@ function createPNG(base_color) {
                 g=Math.floor(Math.random()*5+1);
                 let cRGB = hex2Rgb(base_color);
                 let coul = { r:Math.trunc(cRGB.r+g*((a>d)?a:-a)), g:Math.trunc(cRGB.g+g*((b>d)?b:-b)), b: Math.trunc(cRGB.b+g*((c>d)?c:-c)) };
-                color = rgb2Hex(coul.r,coul.g,coul.b);
+                if (contraste || standard) {
+                    color = base_color;
+                } else {
+                    color = rgb2Hex(coul.r,coul.g,coul.b);
+                }
                 switch(grille.grille[i][j]) {
                     case 1: color = '#ffffff'; break;
                     case -1: color = '#ff0000'; break;
                 }
                 context.fillStyle = color;
-               context.strokeStyle =color;
+                context.strokeStyle =color;
                 context.beginPath();
+                if (standard) {a=0;b=0;c=0;d=0}
                 context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM, DIM, [a,b,c,d]);
-             context.stroke();
+                context.stroke();
                 context.fill();
             }
         }
@@ -156,7 +161,7 @@ function createPNG(base_color) {
 }
 router.get("/vcard", async (req,res) => {
 
-    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, QUAL, COLOR, WEB, PIXEL, LEVEL} = req.query;
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
 
     let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:https://www.adisseo.com\nitem2.X-ABLabel:Web\nTITLE:${fonction}\nLANG:FR-fr
         ROLE:${titre}\nEND:VCARD\n`);
@@ -190,7 +195,7 @@ router.get("/vcard", async (req,res) => {
         level = optimise();
         createQR(level);
     }
-    image = createPNG(base_color);
+    image = createPNG(base_color,CONTRASTE&1,STANDARD&1);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -209,11 +214,15 @@ router.get("/vcard", async (req,res) => {
 router.get("/info", async (req,res) => {
    res.status(200).json({
         api: "QR-Code",
-        version: "1.0",
+        version: "1.1",
         auteur : "eCoucou",
         annee: 2025,
         QR_Code: {level: level, type: type, version: version, optimisation: option}}
     );
+});
+
+router.get("/doc", async (req,res) => {
+   res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?></a><div>")
 });
 
 
