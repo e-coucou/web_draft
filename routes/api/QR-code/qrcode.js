@@ -221,6 +221,7 @@ router.get("/info", async (req,res) => {
         version: "1.1",
         auteur : "eCoucou",
         annee: 2025,
+        documentation: "/api/qrcode/doc",
         QR_Code: {level: level, type: type, version: version, optimisation: option}}
     );
 });
