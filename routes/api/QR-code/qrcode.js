@@ -207,7 +207,13 @@ router.get("/vcard", async (req,res) => {
 })
 
 router.get("/info", async (req,res) => {
-   res.status(200).json({level: level, type: type, version: version, optimisation: option});
+   res.status(200).json({
+        api: "QR-Code",
+        version: "1.0",
+        auteur : "eCoucou",
+        annee: 2025,
+        QR_Code: {level: level, type: type, version: version, optimisation: option}}
+    );
 });
 
 
