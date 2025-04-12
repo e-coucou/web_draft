@@ -38,7 +38,7 @@
           <li><a><i>&ltnom=&gt</i></a><a> <b>NOM</b> [encodage FN:John DOE et N:DOE;John;;M.;  ex <i>nom</i>=DOE</a></li>
           <li><a><i>&ltprenom=&gt</i></a><a> <b>PRENOM</b> [encodage FN:John DOE  ex <i>prenom</i>=John]</a></li>
           <li><a><i>&ltgenre=&gt</i></a><a> <b>GENRE</b> tout est possible : M., Mme, Mr, Dr, ... [encodage N:DOE;John;;M.;  ex <i>genre</i>=M.]</a></li>
-          <li><a><i>&ltemail=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltemail=&gt</i></a><a> <b>Adresse MAIL valide</b>  [encodage EMAIL;TYPE=INTERNET:john.doe@my.net  ex <i>email</i>=john.doe@my.net]</a></li>
           <li><a><i>&ltmobile=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
           <li><a><i>&ltfonction=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
           <li><a><i>&ltorganisation=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
@@ -46,12 +46,12 @@
           <li><a><i>&ltsite=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
           <li><a><i>&ltadresse=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
           <br><b>Les élements de configuration du QR-Code</b>
-          <li><a><i>&ltQUAL=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
-          <li><a><i>&ltCOLOR=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
-          <li><a><i>&ltLEVEL=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
-          <li><a><i>&ltPIXEL=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
-          <li><a><i>&ltCONTRASTE=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
-          <li><a><i>&ltSTANDARD=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltQUAL=&gt</i></a><a> <b>QUALITE</b> permet de définir la performance de l'algorithlme de recouvrement :  L=7%, M=15%, Q=25%, H=30%</a></li>
+          <li><a><i>&ltCOLOR=&gt</i></a><a> <b>COULEUR</b>  La couleur du QR-Code en codage #rrggbb [ex <i>COLOR</i>=#235467]</a></li>
+          <li><a><i>&ltLEVEL=&gt</i></a><a> <b>NIVEAU</b>  Il existe 8 niveaux de codage [0..7] qui permet d'avoir un codage des pixels, vous pouvez choisir le votre ou laisser l'API optimiser en mettant -1 [ ex <i>LEVEL</i>=-1]</a></li>
+          <li><a><i>&ltPIXEL=&gt</i></a><a> <b>NOMBRE</b>  Idéalement entre 6 et 12 mais à vous de choisir, cela représente la largeur de chaque point en pixel [ ex <i>PIXEL</i>=11]</a></li>
+          <li><a><i>&ltCONTRASTE=&gt</i></a><a> <b>CONTRASTE</b> si=1 il n'y aura pas de variation des points/pixels. En clair on augmente le contraste du QR-Code [ ex <i>CONTRASTE</i>=1]</a></li>
+          <li><a><i>&ltSTANDARD=&gt</i></a><a> <b>STANDARD</b> si=1, les points seront des carrés parfaits, sinon les bodes seront arrondis aléatoirement [ ex <i>STANDARD</i>=0]</a></li>
           </ul>
         </li>
         <br>
@@ -63,6 +63,7 @@
           VERSION:4.0<br>
           FN:John DOE<br>
           N:DOE;John;;M.;<br>
+          EMAIL;TYPE=INTERNET:john.doe@my.net<br>
           END
           </a>
         </ul>
