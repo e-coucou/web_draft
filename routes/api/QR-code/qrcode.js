@@ -169,7 +169,7 @@ router.get("/vcard", async (req,res) => {
     if (QUAL) {type = QUAL;}
     if (PIXEL) {DIM = PIXEL;}
     if (LEVEL && LEVEL>-1 && LEVEL<8)
-        {option = false; level = Math.round(LEVEL);}
+        {option = false; level = Math.round(LEVEL);} else {option = true;}
     let base_color ='#000000';
     if (COLOR) {base_color = COLOR;}
 
