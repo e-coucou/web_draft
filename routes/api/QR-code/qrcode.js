@@ -14,7 +14,7 @@ let DIM = 3;
 let qr_json, alphabet,loc_json, info_json;
 let qrcode = [], qrinfo = [], grille;
 let dim, code, image;
-let version = 5, type='Q', level = 4, mode = 'B';
+let version = 5, type='Q', level = 4, mode = 'B', option=false;
 let message, message_l;
 
 function hex2Rgb(hex) {
@@ -168,7 +168,8 @@ router.get("/vcard", async (req,res) => {
     
     if (QUAL) {type = QUAL;}
     if (PIXEL) {DIM = PIXEL;}
-    if (LEVEL && LEVEL>-1 && LEVEL<8) {level = LEVEL;}
+    if (LEVEL && LEVEL>-1 && LEVEL<8)
+        {option = false; level = Math.round(LEVEL);}
     let base_color ='#000000';
     if (COLOR) {base_color = COLOR;}
 
@@ -183,22 +184,20 @@ router.get("/vcard", async (req,res) => {
     type = valide[0].t;
     encodeMess();
 
-    if (LEVEL && LEVEL!=-1) {
+    if (!option) {
         createQR(level);
     } else {
         level = optimise();
         createQR(level);
     }
-
     image = createPNG(base_color);
-
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
             res.writeHead(200, {"Content-Type": "image/png", "Content-Length" : image.length });
             res.end(image);
         } else {
-            res.status(200).send(`<H3 style="color: ${base_color}">Voici votre QR-Code</H3><p>Optimisation Level [${level}]</p><hr><img style="height: 80%" src="../../images/${imageName}"><br><p>by eCoucou 2025</p>`);
+            res.status(200).send(`<H3 style="color: ${base_color}">Voici votre QR-Code</H3><p>Optimisation Level [${level}]</p><hr><img style="height: 60%" src="../../images/${imageName}"><br><p>by eCoucou 2025</p>`);
         }
     } else {
         res.status(200).send(image);
@@ -208,7 +207,7 @@ router.get("/vcard", async (req,res) => {
 })
 
 router.get("/info", async (req,res) => {
-   res.status(200).json({level: level, type: type, version: version});
+   res.status(200).json({level: level, type: type, version: version, optimisation: option});
 });
 
 
