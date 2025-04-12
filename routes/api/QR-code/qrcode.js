@@ -139,7 +139,10 @@ function createPNG(base_color,contraste,standard) {
                 if (contraste || standard) {
                     color = base_color;
                 } else {
-                    color = rgb2Hex(coul.r,coul.g,coul.b);
+                    const r = Math.max(0,Math.min(255,coul.r));
+                    const g = Math.max(0,Math.min(255,coul.g));
+                    const b = Math.max(0,Math.min(255,coul.b));
+                    color = rgb2Hex(r,g,b);
                 }
                 switch(grille.grille[i][j]) {
                     case 1: color = '#ffffff'; break;
@@ -222,7 +225,7 @@ router.get("/info", async (req,res) => {
 });
 
 router.get("/doc", async (req,res) => {
-   res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?></a><div>")
+   res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
 
 
