@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 const router = express.Router();
 const { createCanvas } = require("canvas");
 
@@ -225,7 +226,9 @@ router.get("/info", async (req,res) => {
 });
 
 router.get("/doc", async (req,res) => {
-   res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
+    console.log("dirname",__dirname);
+   res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
+//    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
 
 

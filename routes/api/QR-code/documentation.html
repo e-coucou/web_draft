@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=yes, initial-scale=1 viewport-fit=cover"/> 
+    <!-- , minimal-ui" /> -->
+    <title>QR-Code</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script> -->
+    <!-- <script type= "text/javascript">
+      document.cookie = "testCookie=test ok";
+      if (document.cookie.indexOf("testCookie") != -1) {
+          if (!(document.cookie.indexOf("start") != -1)) {
+              window.location="start.html";
+          }
+      }
+      </script> -->
+      <!-- <script src="js/penalites.js"></script> -->
+<link href="../../css/styles_documentation.css" rel="stylesheet">
+  </head>
+   <!-- <body style="margin: 0; overflow: hidden;"> -->
+    <body>
+      <div class="entete">
+        <img class="conteneur" src="../../img/ecoucou.png"></img>
+        <div class="conteneur">QR-Code Documentation</div>
+        <!-- <div class="conteneur">vCard</div> -->
+      </div>
+    <div class="center">
+      <h3><b>/vCard?</b> [Carte de Visite]</h3>
+    </div>
+    <div class="right">
+    <!--  nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query; -->
+      <b>Root commande : /api/qrcode/vcard?</b>
+      <ul>
+        <li>Liste des commandes qui doivent être séparées par &. (ex: cmd1=param1<b>&</b>cmd2=param2)
+          <ul>
+          <br><b>Identification du Titulaire de la Carte de Visite [vCard]</b>
+          <li><a><i>&ltnom=&gt</i></a><a> <b>NOM</b> [encodage FN:John DOE et N:DOE;John;;M.;  ex <i>nom</i>=DOE</a></li>
+          <li><a><i>&ltprenom=&gt</i></a><a> <b>PRENOM</b> [encodage FN:John DOE  ex <i>prenom</i>=John]</a></li>
+          <li><a><i>&ltgenre=&gt</i></a><a> <b>GENRE</b> tout est possible : M., Mme, Mr, Dr, ... [encodage N:DOE;John;;M.;  ex <i>genre</i>=M.]</a></li>
+          <li><a><i>&ltemail=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltmobile=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltfonction=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltorganisation=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <br><b>L'adresse physique</b>
+          <li><a><i>&ltsite=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltadresse=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <br><b>Les élements de configuration du QR-Code</b>
+          <li><a><i>&ltQUAL=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltCOLOR=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltLEVEL=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltPIXEL=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltCONTRASTE=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          <li><a><i>&ltSTANDARD=&gt</i></a><a> <b>X</b>  [encodage N:DOE;John;;M.;  ex <i>x</i>=x]</a></li>
+          </ul>
+        </li>
+        <br>
+        <li>
+        Example de Fichier
+        <br>
+        <ul>
+          <a>BEGIN:VCARD<br>
+          VERSION:4.0<br>
+          FN:John DOE<br>
+          N:DOE;John;;M.;<br>
+          END
+          </a>
+        </ul>
+      </li>
+      </ul>
+    </div>
+    <div class="copyright" id="cr">eCoucou 2025</div>
+    <div class="version" id="vx">(v) 0.1 r0</div>
+  </body>
+</html
