@@ -135,3 +135,9 @@ public/dev/NN-SUDUKU/data/mnist_train.csv
 public/dev/NN-SUDUKU/data/mnist_test.csv
 public/dev/NN-MNIST/data/mnist_test.csv
 public/dev/NN-MNIST/data/mnist_train.csv
+/dataconnect-generated/js/default-connector/angular/esm
+/dataconnect-generated/js/default-connector/angular
+/dataconnect-generated/js
+/dataconnect/connector
+/dataconnect
+routes/api/QR-code/data/rky-metrics-cred.json

@@ -9,6 +9,9 @@ const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
 
+// const {firebaseUpload} = require('./js/firebaseDB')
+const database = require("./js/realtime");
+
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
 
@@ -163,13 +166,23 @@ function createPNG(base_color,contraste,standard) {
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
+async function logMetrics(source, type, level, qualite, version, option  ) {
+    const data = {
+        type: type,
+        level: level,
+        version: version,
+        qualite: qualite,
+        option: option,
+        time: new Date().getTime()
+    }
+    let ref = database.ref(source);
+    ref.push(data)
+    .then(()=> { console.log("Metrics Logged"); })
+    .catch(err => {console.log(err); });
+}
 router.get("/vcard", async (req,res) => {
-
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
-
-    let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr
-        ROLE:${titre}\nEND:VCARD\n`);
-
+    let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
@@ -211,10 +224,8 @@ router.get("/vcard", async (req,res) => {
     } else {
         res.status(200).send(image);
     }
-
-//    res.status(200).json({message: "fonctions API -> QR-CODE by eCoucou"}).json(qr_json);
+    logMetrics("qrcode","vCard", level, type, version, option );
 })
-
 router.get("/info", async (req,res) => {
    res.status(200).json({
         api: "QR-Code",
@@ -225,12 +236,26 @@ router.get("/info", async (req,res) => {
         QR_Code: {level: level, type: type, version: version, optimisation: option}}
     );
 });
-
 router.get("/doc", async (req,res) => {
     console.log("dirname",__dirname);
    res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
 //    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
+router.get("/metrics",async(req,res) => {
+    const ref = database.ref("qrcode");
+
+    let countVal = 0;
+    ref.once('value')
+        .then((snap)=> { 
+            const db = Object.entries(snap.val());
+            const count =  (db.filter(item=>{
+                const k=item[1];
+                return (k.type == 'vCard');
+            })).length;
+            res.status(200).json({nb:count}); })
+        .catch(err => { res.status(400).send(err);})
+});
 
 
+//-- Export module et fonctions
 module.exports = router;

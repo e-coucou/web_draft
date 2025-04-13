@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "rky-001-metrics",
+    "public": "public"
+  },
+    "emulators": {
+    "dataconnect": {
+      "dataDir": "dataconnect/.dataconnect/pgliteData"
+    }
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  }
+}
