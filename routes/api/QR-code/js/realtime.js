@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 
-const serviceAccount = require("../data/rky-metrics-cred.json");
+const serviceAccount = require("../data/rky-metrics-credential.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
