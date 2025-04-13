@@ -224,7 +224,7 @@ router.get("/vcard", async (req,res) => {
     } else {
         res.status(200).send(image);
     }
-    logMetrics("qrcode","vCard", level, type, version, option );
+    // logMetrics("qrcode","vCard", level, type, version, option );
 })
 router.get("/info", async (req,res) => {
    res.status(200).json({
