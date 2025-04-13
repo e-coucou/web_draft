@@ -10,7 +10,7 @@ const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
 
 // const {firebaseUpload} = require('./js/firebaseDB')
-const database = require("./js/realtime");
+// const database = require("./js/realtime");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
