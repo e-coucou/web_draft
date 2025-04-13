@@ -142,3 +142,6 @@ public/dev/NN-MNIST/data/mnist_train.csv
 /dataconnect
 routes/api/QR-code/data/rky-metrics-cred.json
 yarn.lock
+routes/api/QR-code/data/rky-metrics-credential.json
+routes/api/QR-code/data/rky-metrics-credential.json
+routes/api/QR-code/data/rky-metrics-credential.json
