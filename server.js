@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+console.log(process.env.PORT)
+
 var express = require('express');
 // const {initFireDB} = require("./routes/api/QR-code/js/firebaseDB");
 
