@@ -1,10 +1,10 @@
 const admin = require("firebase-admin");
 
-const serviceAccount = require("../data/rky-metrics-credential.json");
+const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_CREDENTIALS_BASE64, 'base64').toString('utf8'));
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://rky-metrics-default-rtdb.europe-west1.firebasedatabase.app"
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
 });
 
 let database = admin.database();
