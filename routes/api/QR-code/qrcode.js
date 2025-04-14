@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const router = express.Router();
 const { createCanvas } = require("canvas");
+const { Parser } = require('json2csv');
 
 const { Polynome, logTable, createPoly } = require("./js/reed_salomon");
 const { Encodeur, Binary } = require("./js/encodeur");
@@ -21,6 +22,15 @@ let dim, code, image;
 let version = 5, type='Q', level = 4, mode = 'B', option=false;
 let message, message_l;
 
+function formatTimestamp(ts) {
+  const date = new Date(Number(ts));
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear()).slice(2);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
 function hex2Rgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -243,8 +253,6 @@ router.get("/doc", async (req,res) => {
 });
 router.get("/metrics",async(req,res) => {
     const ref = database.ref("qrcode");
-
-    let countVal = 0;
     ref.once('value')
         .then((snap)=> { 
             const db = Object.entries(snap.val());
@@ -254,6 +262,55 @@ router.get("/metrics",async(req,res) => {
             })).length;
             res.status(200).json({nb:count}); })
         .catch(err => { res.status(400).send(err);})
+});
+
+let dataArray;
+
+router.get("/mtest", async(req,res) => {
+  const snapshot = await database.ref('qrcode').once('value');
+  const allData = snapshot.val();
+
+  // Filtrer uniquement les objets avec type == "vCard"
+  const filtered = Object.entries(allData)
+    .filter(([_, v]) => v.type === "vCard")
+    .map(([id, v]) => ({ id, ...v }));
+    dataArray = Object.entries(filtered).map(([id, item]) => ({
+    id,
+    ...item
+    }));
+        const formattedData = dataArray.map(item => ({
+    ...item,
+    timeFormatted: formatTimestamp(item.time),
+    timeRaw: item.time
+    }));
+    
+
+  res.render(path.join(__dirname,'./tpl/metrics_loop.html'), { data: formattedData });
+});
+
+// Route pour exporter en CSV
+router.get('/export', (req, res) => {
+  // Données que tu veux exporter
+  const dataToExport = dataArray;
+
+  // Crée un objet Parser
+  const json2csvParser = new Parser();
+  const csv = json2csvParser.parse(dataToExport);
+
+  // Envoie le fichier CSV en réponse
+  res.header('Content-Type', 'text/csv');
+  res.attachment('data_export.csv');
+  res.send(csv);
+});
+
+router.get('/data', (req, res) => {
+  const limit = 10; // Nombre d'éléments par bloc
+  const startIndex = req.query.start || 0; // Commence à partir de l'index donné (par défaut 0)
+
+  // Slice pour récupérer un "blocs" de données
+  const nextData = dataArray.slice(startIndex, startIndex + limit);
+
+  res.json(nextData); // Envoie le "bloc" sous forme JSON
 });
 
 

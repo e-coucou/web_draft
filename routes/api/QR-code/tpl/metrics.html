@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Données Firebase</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+  <h2>Données type "vCard"</h2>
+  <table id="dataTable" class="display">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Level</th>
+        <th>Option</th>
+        <th>Qualité</th>
+        <th>Time</th>
+        <th>Valeur</th>
+        <th>Type</th>
+        <th>Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(item => { %>
+        <tr>
+          <td><%= item.id %></td>
+          <td><%= item.level %></td>
+          <td><%= item.option %></td>
+          <td><%= item.qualite %></td>
+          <td><%= item.time ?? "" %></td>
+          <td><%= item.Valeur ?? "" %></td>
+          <td><%= item.type %></td>
+          <td><%= item.version %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      $('#dataTable').DataTable();
+    });
+  </script>
+</body>
+</html>

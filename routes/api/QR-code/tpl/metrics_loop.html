@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Liste Infinie</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #loading {
+      text-align: center;
+      margin: 20px;
+    }
+
+/* Positionner le bouton d'export en bas à droite */
+.export-btn {
+  position: fixed;
+  bottom: 20px;  /* À 20px du bas de la fenêtre */
+  right: 20px;   /* À 20px du côté droit de la fenêtre */
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Couleur de fond verte */
+  color: white; /* Texte en blanc */
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000; /* S'assurer que le bouton est toujours visible */
+}
+
+.export-btn:hover {
+  background-color: #45a049; /* Couleur de fond plus foncée au survol */
+}
+
+    #data-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #data-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+  #data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+  }
+
+  #data-table th, #data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  #data-table thead input {
+    width: 95%;
+    padding: 4px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  #data-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #data-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+  #data-table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  th.sorted-column {
+  border-left: 2px solid #ddd;
+  background-color: #f4f4f4;
+}
+
+</style>
+</head>
+<body>
+  <button class="export-btn" onclick="window.location.href='/api/qrcode/export'">Exporter vers Excel (CSV)</button>
+
+  <table id="data-table">
+    <thead>
+  <tr>
+    <th><input type="text" onkeyup="filterTable(0)" placeholder="Filtrer ID" /></th>
+    <th><input type="text" onkeyup="filterTable(1)" placeholder="Filtrer Level" /></th>
+    <th><input type="text" onkeyup="filterTable(2)" placeholder="Filtrer Option" /></th>
+    <th><input type="text" onkeyup="filterTable(3)" placeholder="Filtrer Qualité" /></th>
+    <th><input type="text" onkeyup="filterTable(4)" placeholder="Filtrer Temps" /></th>
+    <th><input type="text" onkeyup="filterTable(5)" placeholder="Filtrer Type" /></th>
+    <th><input type="text" onkeyup="filterTable(6)" placeholder="Filtrer Version" /></th>
+  </tr>
+    <tr>
+    <th>ID <span id="arrow-0"></span></th>
+    <th>Level <span id="arrow-1"></span></th>
+    <th>Option <span id="arrow-2"></span></th>
+    <th>Qualité <span id="arrow-3"></span></th>
+    <th>Time <span id="arrow-4"></span></th>
+    <th>Type <span id="arrow-5"></span></th>
+    <th>Version <span id="arrow-6"></span></th>
+  </tr>
+    </thead>
+    <tbody>
+      <% data.forEach(item => { %>
+        <tr>
+          <td><%= item.id %></td>
+          <td><%= item.level %></td>
+          <td><%= item.option %></td>
+          <td><%= item.qualite %></td>
+          <td><%= item.timeFormatted %></td>
+            <!-- <td><script>document.write(formatTimestamp(<%= item.time %>));</script></td> -->
+          <td><%= item.type %></td>
+          <td><%= item.version %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <div id="loading">Chargement...</div>
+
+  <script>
+    let start = <%= data.length %>;
+    const limit = 10;
+
+    $(window).scroll(function() {
+      if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+        loadMoreData();
+      }
+    });
+
+    function loadMoreData() {
+      $('#loading').show();
+
+      $.get(`/data?start=${start}`, function(newData) {
+        if (newData.length > 0) {
+          newData.forEach(item => {
+            $('#data-table tbody').append(`
+              <tr>
+                <td>${item.id}</td>
+                <td>${item.level}</td>
+                <td>${item.option}</td>
+                <td>${item.qualite}</td>
+                <td>${item.time}</td>
+                <td>${item.type}</td>
+                <td>${item.version}</td>
+              </tr>
+            `);
+          });
+
+          start += limit;
+        }
+        $('#loading').hide();
+      });
+    }
+    function filterTable(columnIndex) {
+        let input = document.querySelectorAll("thead input")[columnIndex];
+        let filter = input.value.toUpperCase();
+        let table = document.getElementById("data-table");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 2; i < rows.length; i++) { // skip header rows
+        let cells = rows[i].getElementsByTagName("td");
+        if (cells[columnIndex]) {
+            let text = cells[columnIndex].textContent || cells[columnIndex].innerText;
+            rows[i].style.display = text.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+        }
+        }
+    }    
+  document.addEventListener("DOMContentLoaded", () => {
+    const headers = document.querySelectorAll("#data-table thead tr:last-child th");
+    headers.forEach((header, index) => {
+      header.style.cursor = "pointer";
+      header.addEventListener("click", () => sortTable(index));
+    });
+  });
+
+
+  let currentSortedColumn = null;
+  let sortDirection = null; // true = asc, false = desc
+
+  function sortTable(colIndex) {
+    const table = document.getElementById("data-table");
+    const rows = Array.from(table.rows).slice(2); // skip filter + header
+console.log(sortDirection, currentSortedColumn,colIndex)
+    // Inverser si on clique la même colonne
+    if (currentSortedColumn === colIndex) {
+      sortDirection = !sortDirection;
+    } else {
+      sortDirection = true;
+      currentSortedColumn = colIndex;
+    }
+
+    // Nettoyer les flèches
+    for (let i = 0; i < table.rows[0].cells.length; i++) {
+      const arrow = document.getElementById(`arrow-${i}`);
+      if (arrow) arrow.innerText = '';
+    }
+
+    // Mettre la flèche active
+    const arrow = document.getElementById(`arrow-${colIndex}`);
+    if (arrow) arrow.innerText = sortDirection ? '▲' : '▼';
+
+    // Trier les lignes
+    rows.sort((a, b) => {
+      const cellA = a.cells[colIndex];
+      const cellB = b.cells[colIndex];
+
+      const rawA = cellA.dataset.value || cellA.innerText.trim();
+      const rawB = cellB.dataset.value || cellB.innerText.trim();
+
+      // Forcer conversion numérique si possible
+      const valA = isNaN(rawA) ? rawA : Number(rawA);
+      const valB = isNaN(rawB) ? rawB : Number(rawB);
+
+      if (typeof valA === "number" && typeof valB === "number") {
+        return sortDirection ? valA - valB : valB - valA;
+      } else {
+        return sortDirection
+          ? valA.toString().localeCompare(valB)
+          : valB.toString().localeCompare(valA);
+      }
+    });
+
+    // Réinsérer les lignes
+    rows.forEach(row => table.tBodies[0].appendChild(row));
+  }
+
+  function formatTimestamp(ts) {
+    const date = new Date(Number(ts));
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth()+1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(2);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }  
+  </script>
+</body>
+</html>

@@ -7,6 +7,9 @@ var express = require('express');
 // const {initFireDB} = require("./routes/api/QR-code/js/firebaseDB");
 
 var app = express();
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 require('dotenv').config();
 
 var server = app.listen(process.env.PORT || 3000);
