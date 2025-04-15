@@ -10,6 +10,9 @@ const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
 
+const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("./js/crypto-aes");
+const SECRET_KEY = process.env.SECRET_KEY;
+
 // const {firebaseUpload} = require('./js/firebaseDB')
 const database = require("./js/realtime");
 
@@ -251,41 +254,39 @@ router.get("/doc", async (req,res) => {
    res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
 //    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
-router.get("/metrics",async(req,res) => {
-    const ref = database.ref("qrcode");
-    ref.once('value')
-        .then((snap)=> { 
-            const db = Object.entries(snap.val());
-            const count =  (db.filter(item=>{
-                const k=item[1];
-                return (k.type == 'vCard');
-            })).length;
-            res.status(200).json({nb:count}); })
-        .catch(err => { res.status(400).send(err);})
-});
+// router.get("/metrics",async(req,res) => {
+//     const ref = database.ref("qrcode");
+//     ref.once('value')
+//         .then((snap)=> { 
+//             const db = Object.entries(snap.val());
+//             const count =  (db.filter(item=>{
+//                 const k=item[1];
+//                 return (k.type == 'vCard');
+//             })).length;
+//             res.status(200).json({nb:count}); })
+//         .catch(err => { res.status(400).send(err);})
+// });
 
 let dataArray;
 
-router.get("/mtest", async(req,res) => {
-  const snapshot = await database.ref('qrcode').once('value');
-  const allData = snapshot.val();
+router.get("/metrics", async(req,res) => {
+    const snapshot = await database.ref('qrcode').once('value');
+    const allData = snapshot.val();
 
-  // Filtrer uniquement les objets avec type == "vCard"
-  const filtered = Object.entries(allData)
-    .filter(([_, v]) => v.type === "vCard")
-    .map(([id, v]) => ({ id, ...v }));
-    dataArray = Object.entries(filtered).map(([id, item]) => ({
-    id,
-    ...item
+    // Filtrer uniquement les objets avec type == "vCard"
+    const filtered = Object.entries(allData)
+        .filter(([_, v]) => v.type === "vCard")
+        .map(([id, v]) => ({ id, ...v }));
+    dataArray = Object.entries(filtered).map(([id, item]) => ({ id,...item }));
+    const formattedData = dataArray.map(item => ({
+        ...item,
+        timeFormatted: formatTimestamp(item.time),
+        timeRaw: item.time
     }));
-        const formattedData = dataArray.map(item => ({
-    ...item,
-    timeFormatted: formatTimestamp(item.time),
-    timeRaw: item.time
-    }));
+    const count = formattedData.length;
+    console.log("nb entries", count);
     
-
-  res.render(path.join(__dirname,'./tpl/metrics_loop.html'), { data: formattedData });
+    res.render(path.join(__dirname,'./tpl/metrics_loop.html'), { data: formattedData });
 });
 
 // Route pour exporter en CSV
@@ -313,6 +314,17 @@ router.get('/data', (req, res) => {
   res.json(nextData); // Envoie le "bloc" sous forme JSON
 });
 
+router.get('/cypher', (req,res) => {
+    const mess = 'Mon message très secret';
+    const cypher = encrypt(mess, SECRET_KEY);
+    res.send(cypher);
+});
+
+router.get('/cypherjson', (req,res) => {
+    const mess = 'Mon message très secret';
+    const cypher = encryptToCompactJSON(mess, SECRET_KEY);
+    res.send(cypher);
+});
 
 //-- Export module et fonctions
 module.exports = router;

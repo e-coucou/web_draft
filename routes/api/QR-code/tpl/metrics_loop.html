@@ -4,28 +4,67 @@
   <title>Liste Infinie</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
+    body {
+        font-size: 1.7vw;
+    }
     #loading {
       text-align: center;
       margin: 20px;
     }
+    @media (max-width: 600px) {
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
 
+    .footer-copyright {
+        font-size: 10px;
+        right: 10px;
+        bottom: 5px;
+        text-align: right;
+        max-width: 100%;
+    }
+
+    .export-btn, .record-count {
+        width: auto;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+    }
 /* Positionner le bouton d'export en bas à droite */
-.export-btn {
+.footer-bar {
   position: fixed;
-  bottom: 20px;  /* À 20px du bas de la fenêtre */
-  right: 20px;   /* À 20px du côté droit de la fenêtre */
-  padding: 10px 20px;
-  background-color: #4CAF50; /* Couleur de fond verte */
-  color: white; /* Texte en blanc */
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  z-index: 1000; /* S'assurer que le bouton est toujours visible */
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
 }
 
+/* Styles identiques pour les deux éléments */
+.record-count, .export-btn {
+  font-size: 12px;
+  height: 36px;
+  padding: 0 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  /* background-color: rgb(127,255,212); */
+  background-color: rgb(0,87,53);
+  color: white;
+}
+
+/* Spécifique au bouton */
+.export-btn {
+  border: none;
+  cursor: pointer;
+}
 .export-btn:hover {
-  background-color: #45a049; /* Couleur de fond plus foncée au survol */
+  background-color: #1c8021; /* Couleur de fond plus foncée au survol */
 }
 
     #data-table tbody tr:nth-child(even) {
@@ -35,7 +74,7 @@
     #data-table tbody tr:nth-child(odd) {
         background-color: #ffffff;
     }
-  #data-table {
+#data-table {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
@@ -63,23 +102,54 @@
   }
 
   #data-table th {
-    background-color: #4CAF50;
+  background-color: rgb(0,87,53);
+    /* background-color: #4CAF50; */
     color: white;
   }
   th.sorted-column {
-  border-left: 2px solid #ddd;
-  background-color: #f4f4f4;
+    border-left: 2px solid #ddd;
+    background-color: #f4f4f4;
+  }
+table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff; /* ou même gris clair si tu veux */
+  z-index: 10;
+}
+.footer-copyright {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  font-size: 10px;
+  color: #50c862;
+  z-index: 500;
+  padding-bottom: 6px;
 }
 
+table thead th {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  min-width: 600px;
+}
+ 
 </style>
 </head>
 <body>
+<div class="footer-bar">
   <button class="export-btn" onclick="window.location.href='/api/qrcode/export'">Exporter vers Excel (CSV)</button>
-
+  <p id="recordCount" class="record-count">0 enregistrements</p>
+</div>
+<div class="table-wrapper">
   <table id="data-table">
     <thead>
   <tr>
-    <th><input type="text" onkeyup="filterTable(0)" placeholder="Filtrer ID" /></th>
+    <!-- <th><input type="text" onkeyup="filterTable(0)" placeholder="Filtrer ID" /></th> -->
     <th><input type="text" onkeyup="filterTable(1)" placeholder="Filtrer Level" /></th>
     <th><input type="text" onkeyup="filterTable(2)" placeholder="Filtrer Option" /></th>
     <th><input type="text" onkeyup="filterTable(3)" placeholder="Filtrer Qualité" /></th>
@@ -88,7 +158,7 @@
     <th><input type="text" onkeyup="filterTable(6)" placeholder="Filtrer Version" /></th>
   </tr>
     <tr>
-    <th>ID <span id="arrow-0"></span></th>
+    <!-- <th>ID <span id="arrow-0"></span></th> -->
     <th>Level <span id="arrow-1"></span></th>
     <th>Option <span id="arrow-2"></span></th>
     <th>Qualité <span id="arrow-3"></span></th>
@@ -100,7 +170,7 @@
     <tbody>
       <% data.forEach(item => { %>
         <tr>
-          <td><%= item.id %></td>
+          <!-- <td><%= item.id %></td> -->
           <td><%= item.level %></td>
           <td><%= item.option %></td>
           <td><%= item.qualite %></td>
@@ -112,8 +182,12 @@
       <% }) %>
     </tbody>
   </table>
+</div>
 
   <div id="loading">Chargement...</div>
+  <div class="footer-copyright">
+    © 2025 e-Coucou.
+  </div>
 
   <script>
     let start = <%= data.length %>;
@@ -133,7 +207,6 @@
           newData.forEach(item => {
             $('#data-table tbody').append(`
               <tr>
-                <td>${item.id}</td>
                 <td>${item.level}</td>
                 <td>${item.option}</td>
                 <td>${item.qualite}</td>
@@ -169,8 +242,9 @@
       header.style.cursor = "pointer";
       header.addEventListener("click", () => sortTable(index));
     });
+    const count = document.querySelectorAll("table tbody tr").length;
+    document.getElementById("recordCount").textContent = `${count} enregistrements`;
   });
-
 
   let currentSortedColumn = null;
   let sortDirection = null; // true = asc, false = desc
@@ -194,7 +268,7 @@ console.log(sortDirection, currentSortedColumn,colIndex)
     }
 
     // Mettre la flèche active
-    const arrow = document.getElementById(`arrow-${colIndex}`);
+    const arrow = document.getElementById(`arrow-${colIndex+1}`); //index+1 car col ID non affiche
     if (arrow) arrow.innerText = sortDirection ? '▲' : '▼';
 
     // Trier les lignes
