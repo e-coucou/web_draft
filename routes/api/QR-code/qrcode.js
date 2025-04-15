@@ -91,7 +91,6 @@ function createQR(level_) {
     // init de la grille
     grille = new Grille(dim, version, loc_json[version]);
     let info = quality.find(a=>{return (a.t == type)}).i.slice(); // mode Q
-    // console.log('xxxxxxxx',quality.find(a=>{return (a.t == type)}))
     mask_ = new Binary(level_,3); mask_.encode();
     let maskP = mask_.code;
     info.push(...maskP); // mask 0
@@ -118,7 +117,6 @@ function optimise() {
     for (let i=0;i<8;i++) {
         createQR(i);
         let tmp = evaluate(grille.grille,grille.dim);
-        // console.log(i,tmp,best);
         if (tmp<best) { best = tmp; sel = i ;} 
     }
     return (sel);
@@ -179,14 +177,16 @@ function createPNG(base_color,contraste,standard) {
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
-async function logMetrics(source, type, level, qualite, version, option  ) {
+async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
+    const cypher = encryptToCompactJSON(_txt,SECRET_KEY);
     const data = {
         type: type,
         level: level,
         version: version,
         qualite: qualite,
         option: option,
-        time: new Date().getTime()
+        time: new Date().getTime(),
+        vcard: cypher
     }
     let ref = database.ref(source);
     ref.push(data)
@@ -237,7 +237,7 @@ router.get("/vcard", async (req,res) => {
     } else {
         res.status(200).send(image);
     }
-    logMetrics("qrcode","vCard", level, type, version, option );
+    logMetrics("qrcode","vCard", level, type, version, option, _texte );
 })
 router.get("/info", async (req,res) => {
    res.status(200).json({
@@ -250,7 +250,6 @@ router.get("/info", async (req,res) => {
     );
 });
 router.get("/doc", async (req,res) => {
-    console.log("dirname",__dirname);
    res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
 //    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
@@ -284,7 +283,6 @@ router.get("/metrics", async(req,res) => {
         timeRaw: item.time
     }));
     const count = formattedData.length;
-    console.log("nb entries", count);
     
     res.render(path.join(__dirname,'./tpl/metrics_loop.html'), { data: formattedData });
 });

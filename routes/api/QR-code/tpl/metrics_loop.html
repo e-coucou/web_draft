@@ -5,7 +5,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
-        font-size: 1.7vw;
+        font-size: 1.9vw;
     }
     #loading {
       text-align: center;
@@ -16,6 +16,12 @@
         flex-direction: column;
         align-items: flex-end;
         gap: 10px;
+    }
+    @media (min-width: 768px) {
+        .table-wrapper {
+            max-height: none;
+            overflow-y: visible;
+        }
     }
 
     .footer-copyright {
@@ -130,6 +136,8 @@ table thead th {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .table-wrapper {
+  max-height: 90vh;
+  overflow-y: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -252,7 +260,6 @@ table {
   function sortTable(colIndex) {
     const table = document.getElementById("data-table");
     const rows = Array.from(table.rows).slice(2); // skip filter + header
-console.log(sortDirection, currentSortedColumn,colIndex)
     // Inverser si on clique la même colonne
     if (currentSortedColumn === colIndex) {
       sortDirection = !sortDirection;
