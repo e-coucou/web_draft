@@ -25,7 +25,7 @@
     }
 
     .footer-copyright {
-        font-size: 10px;
+        font-size: 1.4vw;
         right: 10px;
         bottom: 5px;
         text-align: right;
@@ -34,7 +34,6 @@
 
     .export-btn, .record-count {
         width: auto;
-        font-size: 14px;
         padding: 8px 12px;
     }
     }
@@ -80,7 +79,7 @@
     #data-table tbody tr:nth-child(odd) {
         background-color: #ffffff;
     }
-#data-table {
+  #data-table {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
@@ -106,7 +105,9 @@
   #data-table tbody tr:nth-child(odd) {
     background-color: #ffffff;
   }
-
+  #data-table tr.clickable:hover {
+    background-color: #acf69a;
+  }
   #data-table th {
   background-color: rgb(0,87,53);
     /* background-color: #4CAF50; */
@@ -177,14 +178,23 @@ table {
     </thead>
     <tbody>
       <% data.forEach(item => { %>
-        <tr>
+        <tr
+            <% if (item.vcard && item.vcard.trim() !== '') { %>
+                class="clickable"
+                onclick="handleRowClick('<%= item.id %>','<%= item.vcard %>')"
+                style="cursor: pointer;"
+            <% } %>
+        >
           <!-- <td><%= item.id %></td> -->
           <td><%= item.level %></td>
           <td><%= item.option %></td>
           <td><%= item.qualite %></td>
           <td><%= item.timeFormatted %></td>
             <!-- <td><script>document.write(formatTimestamp(<%= item.time %>));</script></td> -->
-          <td><%= item.type %></td>
+          <td style="color: <%= item.hasVCard ? 'red' : 'inherit' %>;">
+            <%= item.type %>
+          </td>
+          <!-- <td><%= item.hasVCard %></td> -->
           <td><%= item.version %></td>
         </tr>
       <% }) %>
@@ -298,9 +308,14 @@ table {
           : valB.toString().localeCompare(valA);
       }
     });
-
+    
     // Réinsérer les lignes
     rows.forEach(row => table.tBodies[0].appendChild(row));
+  }
+
+  function handleRowClick(id, vcard) {
+    alert("Ligne cliquée avec ID : " + id + '\n' + vcard);
+    // ou window.location.href = `/details/${id}`;
   }
 
   function formatTimestamp(ts) {

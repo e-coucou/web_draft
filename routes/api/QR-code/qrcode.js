@@ -280,9 +280,12 @@ router.get("/metrics", async(req,res) => {
     const formattedData = dataArray.map(item => ({
         ...item,
         timeFormatted: formatTimestamp(item.time),
-        timeRaw: item.time
+        timeRaw: item.time,
+        hasVCard: item.vcard && item.vcard.trim() !== ''
     }));
     const count = formattedData.length;
+
+    console.log(formattedData);
     
     res.render(path.join(__dirname,'./tpl/metrics_loop.html'), { data: formattedData });
 });
