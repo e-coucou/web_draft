@@ -250,7 +250,8 @@ router.get("/info", async (req,res) => {
     );
 });
 router.get("/doc", async (req,res) => {
-   res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
+   res.status(200).sendFile(path.join(__dirname,"/documentation_v2.html"));
+//v0   res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
 //    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
 // router.get("/metrics",async(req,res) => {
@@ -284,10 +285,7 @@ router.get("/metrics", async(req,res) => {
         hasVCard: item.vcard && item.vcard.trim() !== ''
     }));
     const count = formattedData.length;
-
-    console.log(formattedData);
-    
-    res.render(path.join(__dirname,'./tpl/metrics_loop.html'), { data: formattedData });
+    res.render(path.join(__dirname,'./tpl/metrics_loop.ejs'), { data: formattedData });
 });
 
 // Route pour exporter en CSV

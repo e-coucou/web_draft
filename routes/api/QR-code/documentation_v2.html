@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>QR-Code Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            animation: {
+              fade: 'fadeIn 0.5s ease-in-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: 0 },
+                '100%': { opacity: 1 },
+              },
+            },
+          },
+        },
+      };
+
+      let fullURL;
+      function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+      }
+      function generateUrl() {
+        const baseUrl = 'https://draft.e-coucou.com/api/qrcode/vcard?';
+        const params = new URLSearchParams();
+        
+        const nom = document.getElementById('nom').value.trim();
+        if (nom) params.append('nom', nom);
+        const prenom = document.getElementById('prenom').value.trim();
+        if (prenom) params.append('prenom', prenom);
+        const email = document.getElementById('email').value.trim();
+        if (email) params.append('email', email);
+        const genre = document.getElementById('genre').value.trim();
+        if (genre) params.append('genre', genre);
+        const adresse = document.getElementById('adresse').value.trim();
+        if (adresse) params.append('adresse', adresse);
+        const site = document.getElementById('site').value.trim();
+        if (site) params.append('site', site);
+        const mobile = document.getElementById('mobile').value.trim();
+        if (mobile) params.append('mobile', mobile);
+        const organisation = document.getElementById('organisation').value.trim();
+        if (organisation) params.append('organisation', organisation);
+        const fonction = document.getElementById('fonction').value.trim();
+        if (fonction) params.append('fonction', fonction);
+
+
+        params.append('QUAL', document.getElementById('qual').value);
+        params.append('LEVEL', document.getElementById('level').value);
+        params.append('CONTRASTE', document.getElementById('contraste').checked ? '1' : '0');
+        params.append('STANDARD', document.getElementById('standard').checked ? '1' : '0');
+        params.append('COLOR', document.getElementById('color').value);
+
+        fullUrl = baseUrl + params.toString() + '&PIXEL=10';
+        document.getElementById('qrcodeText').value = fullUrl;
+      }
+      function lauchURL() {
+        const webURL = fullUrl+"&WEB=0";
+        window.open(webURL, '_blank');
+      }
+      function GetImage() {
+        const getPNG = fullUrl;
+        window.open(getPNG, '_blank');
+      }
+  </script>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
+        <h1 class="text-xl font-semibold">QR-Code Documentation</h1>
+      </div>
+      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
+    </header>
+
+    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade">
+      <section class="text-center">
+        <h2 class="text-2xl font-bold">/vCard? [Carte de Visite]</h2>
+      </section>
+
+      <section>
+        <h3 class="text-lg font-semibold mb-2">Root commande :</h3>
+        <div class="flex items-center gap-2 mb-4">
+          <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">/api/qrcode/vcard?</code>
+        </div>
+
+        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <summary class="font-medium cursor-pointer">📇 Identification</summary>
+          <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+            <li><b>nom</b> = DOE → FN:John DOE</li>
+            <li><b>prenom</b> = John</li>
+            <li><b>genre</b> = M. / Mme / Dr</li>
+            <li><b>email</b> = john.doe@domain.net</li>
+            <li><b>mobile</b>, <b>fonction</b>, <b>organisation</b>, <b>www</b> → libres</li>
+          </ul>
+        </details>
+
+        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <summary class="font-medium cursor-pointer">🏠 Adresse physique</summary>
+          <ul class="list-disc pl-6 mt-2 text-sm">
+            <li><b>site</b>, <b>adresse</b> → champs libres</li>
+          </ul>
+        </details>
+
+        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <summary class="font-medium cursor-pointer">⚙️ Configuration QR-Code</summary>
+          <ul class="list-disc pl-6 mt-2 text-sm">
+            <li><b>QUAL</b> = L / M / Q / H</li>
+            <li><b>COLOR</b> = #rrggbb</li>
+            <li><b>LEVEL</b> = 0 à 7 / -1</li>
+            <li><b>PIXEL</b> = 6 à 12</li>
+            <li><b>CONTRASTE</b> = 1</li>
+            <li><b>STANDARD</b> = 1 ou 0</li>
+          </ul>
+        </details>
+
+        <details class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <summary class="font-medium cursor-pointer">📝 Exemple vCard</summary>
+          <pre class="mt-2 text-sm bg-gray-50 dark:bg-gray-900 p-3 rounded overflow-x-auto">
+            BEGIN:VCARD
+            VERSION:4.0
+            FN:John DOE
+            N:DOE;John;;M.;
+            EMAIL;TYPE=INTERNET:john.doe@domain.net
+            END:VCARD
+          </pre>
+        </details>
+      </section>
+
+      <section class="mt-8">
+        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <summary class="font-medium cursor-pointer">🎯 Constructeur d'URL</summary>
+        <!-- <h3 class="text-xl font-semibold mb-2">🎯 Constructeur d'URL</h3> -->
+        <div class="grid grid-cols-12 gap-4 mb-4">
+          <div class="col-span-12 md:col-span-2">
+            <label class="block">Genre</label>
+            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+          </div>
+          <div class="col-span-12 md:col-span-5">
+            <label class="block">Nom</label>
+            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+          </div>
+          <div class="col-span-12 md:col-span-5">
+            <label class="block">Prénom</label>
+            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block">Entreprise</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-3">
+                <input type="Organisation" id="organisation" placeholder="Département" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-9">
+                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+            </div>
+          <label class="block">Média Info</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-5">
+                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-7">
+                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+            </div>
+          <label class="block">Adresse</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-4">
+                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-8">
+                <input type="adresse" id="adresse" placeholder="Adresse Postale" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+            </div>
+
+          <label class="block">Design et Paramètres du QR-Code</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-2">
+                <select id="qual" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                  <option value="L">L</option>
+                  <option value="M">M</option>
+                  <option value="Q">Q</option>
+                  <option value="H">H</option>
+                </select>
+              </div>
+          <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
+              <div class="col-span-12 md:col-span-2">
+                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                    <option value="-1">-1</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" id="contraste" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Contraste
+              </label>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" id="standard" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Standard
+              </label>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <label class="block">Couleur</label>
+              <input type="color" id="color" value="#b82b5b" onchange="generateUrl()" class="w-full h-10" />
+            </div>
+        </div>
+
+
+
+        </div>
+        </details>
+
+        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
+        <div class="flex gap-2 mt-2">
+          <button onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button>
+          <button onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Get QR-Code</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
+      <p>eCoucou 2025 — (v) 0.1 r0</p>
+    </footer>
+  </body>
+</html>
