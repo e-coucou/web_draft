@@ -226,6 +226,7 @@ async function logMetrics(source, type, level, qualite, version, option, _txt  )
     .then(()=> { console.log("Metrics Logged"); })
     .catch(err => {console.log(err); });
 }
+router.use(express.json());
 router.get("/vcard", async (req,res) => {
     // On nettoye les 'undefined'
     const expected = ['nom', 'prenom', 'genre', 'email', 'adresse', 'mobile', 'site', 'titre', 'fonction', 'organisation', 'www', 'QUAL', 'COLOR', 'WEB', 'PIXEL', 'LEVEL', 'CONTRASTE', 'STANDARD'];
@@ -320,16 +321,14 @@ router.get('/cypherjson', (req,res) => {
     res.send(cypher);
 });
 router.post('/decypherjson', (req,res) => {
-    // try {
+    try {
         const {vcard} = req.body;
         if (!vcard) return res.status(400).send('Champ "encrypted" manquant');
-
         const plaintext = decryptFromCompactJSON(vcard,SECRET_KEY);
-        console.log(plaintext);
         res.send(`<html><body><h1>Texte déchiffré :</h1><p>${plaintext}</p></body></html>`);
-    // } catch (err) {
-    //     res.status(500).send('Erreur de déchiffrement : ' + err.message);
-    // }
+    } catch (err) {
+        res.status(500).send('Erreur de déchiffrement : ' + err.message);
+    }
 });
 
 //-- Export module et fonctions
