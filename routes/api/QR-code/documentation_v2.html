@@ -26,8 +26,7 @@
       const baseOrigin = window.location.origin;
       let adresse='';
       let fullURL;
-
-        function toggleDarkMode() {
+      function toggleDarkMode() {
         document.documentElement.classList.toggle('dark');
       }
       function generateUrl() {
@@ -115,6 +114,21 @@
     window.addEventListener('DOMContentLoaded', () => {
         ['rue', 'ville', 'code', 'pays'].forEach(id => {
             document.getElementById(id).addEventListener('input', updateMap);});
+      // Mettre la couleur au chargement
+      const btColor = document.getElementById('color');
+      const btFetchImg = document.getElementById('btFetchImg');
+      const btGetImage = document.getElementById('btGetImage');
+      const btLaunch = document.getElementById('btLaunch');
+      btFetchImg.style.backgroundColor = btColor.value;
+      btLaunch.style.backgroundColor = btColor.value;
+      btGetImage.style.backgroundColor = btColor.value;
+
+      // Mettre à jour dynamiquement la couleur
+      btColor.addEventListener('input', () => {
+        btFetchImg.style.backgroundColor = btColor.value;
+        btLaunch.style.backgroundColor = btColor.value;
+        btGetImage.style.backgroundColor = btColor.value;
+      });
     });
   </script>
   </head>
@@ -298,9 +312,9 @@ END:VCARD
         </details>
         <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
         <div class="flex gap-2 mt-2">
-          <button onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button>
-          <button onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Get QR-Code</button>
-          <button onclick="fetchImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Afficher QR-Code</button>
+          <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button>
+          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Get QR-Code</button>
+          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700">Afficher QR-Code</button>
         </div>
         <div class="mt-6">
           <img id="fetchedImage" class="mx-auto hidden max-w-[90vw] max-h-[90vh]" alt="QR-Code" />
