@@ -69,6 +69,7 @@
 
         fullUrl = baseUrl + params.toString() + '&PIXEL=10';
         document.getElementById('qrcodeText').value = fullUrl;
+        saveFormToCookie();
       }
       function lauchURL() {
         const webURL = fullUrl+"&WEB=0";
@@ -110,26 +111,64 @@
             mapContainer.classList.add('hidden');
         }
       }
+    // Gestion dez cookies
+        function saveFormToCookie() {
+        const fields = [
+            'nom', 'prenom', 'genre', 'email', 'mobile', 'fonction', 'organisation',
+            'www', 'site', 'rue', 'ville', 'code', 'pays',
+            'QUAL', 'COLOR', 'LEVEL', 'PIXEL', 'CONTRASTE', 'STANDARD'
+        ];
+
+        const data = {};
+
+        fields.forEach(field => {
+            const el = document.getElementById(field);
+            if (el) data[field] = el.value || (el.type === 'checkbox' ? el.checked : '');
+        });
+
+        document.cookie = `vcardForm=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=604800`; // 7 jours
+        }      
     // Lancer updateMap à chaque modification des champ
     window.addEventListener('DOMContentLoaded', () => {
         ['rue', 'ville', 'code', 'pays'].forEach(id => {
             document.getElementById(id).addEventListener('input', updateMap);});
-      // Mettre la couleur au chargement
-      const btColor = document.getElementById('color');
-      const btFetchImg = document.getElementById('btFetchImg');
-      const btGetImage = document.getElementById('btGetImage');
-      const btLaunch = document.getElementById('btLaunch');
-      btFetchImg.style.backgroundColor = btColor.value;
-      btLaunch.style.backgroundColor = btColor.value;
-      btGetImage.style.backgroundColor = btColor.value;
+        loadFormFromCookie();
 
-      // Mettre à jour dynamiquement la couleur
-      btColor.addEventListener('input', () => {
+        // Mettre la couleur au chargement
+        const btColor = document.getElementById('color');
+        const btFetchImg = document.getElementById('btFetchImg');
+        const btGetImage = document.getElementById('btGetImage');
+        const btLaunch = document.getElementById('btLaunch');
         btFetchImg.style.backgroundColor = btColor.value;
         btLaunch.style.backgroundColor = btColor.value;
         btGetImage.style.backgroundColor = btColor.value;
-      });
+
+        // Mettre à jour dynamiquement la couleur
+        btColor.addEventListener('input', () => {
+            btFetchImg.style.backgroundColor = btColor.value;
+            btLaunch.style.backgroundColor = btColor.value;
+            btGetImage.style.backgroundColor = btColor.value;
+        });
+        });
+    // Rechargement des cookies
+    function loadFormFromCookie() {
+    const cookie = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('vcardForm='));
+
+    if (!cookie) return;
+
+    const data = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+
+    Object.keys(data).forEach(key => {
+        const el = document.getElementById(key);
+        if (el) {
+        if (el.type === 'checkbox') el.checked = data[key];
+        else el.value = data[key];
+        }
     });
+    }
+
   </script>
   </head>
   <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">

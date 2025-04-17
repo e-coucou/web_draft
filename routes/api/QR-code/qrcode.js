@@ -15,13 +15,14 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // const {firebaseUpload} = require('./js/firebaseDB')
 const database = require("./js/realtime");
+const { console } = require("inspector");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
 
 let qr_json, alphabet,loc_json, info_json;
 let qrcode = [], qrinfo = [], grille;
-let dim, code, image;
+let dim, code;
 let version = 5, type='Q', level = 4, mode = 'B', option=false;
 let message, message_l;
 
@@ -142,60 +143,42 @@ function createPNG(base_color,contraste,standard) {
 // to find the appropriate Y value.
 // if (text[1]) context.fillText(text[1], 600, titleY + lineHeight);
 
-        let color;
-        let a,b,c,d,g;
+    let color;
+    let a,b,c,d,g;
 
-        for (let i=0; i<dim; i++) {
-            for (let j=0; j<dim; j++) {
-                a=Math.floor(Math.random()*10); b=Math.floor(Math.random()*10); c= Math.floor(Math.random()*10); d=Math.floor(Math.random()*10);
-                g=Math.floor(Math.random()*5+1);
-                let cRGB = hex2Rgb(base_color);
-                let coul = { r:Math.trunc(cRGB.r+g*((a>d)?a:-a)), g:Math.trunc(cRGB.g+g*((b>d)?b:-b)), b: Math.trunc(cRGB.b+g*((c>d)?c:-c)) };
-                if (contraste || standard) {
-                    color = base_color;
-                } else {
-                    const r = Math.max(0,Math.min(255,coul.r));
-                    const g = Math.max(0,Math.min(255,coul.g));
-                    const b = Math.max(0,Math.min(255,coul.b));
-                    color = rgb2Hex(r,g,b);
-                }
-                switch(grille.grille[i][j]) {
-                    case 1: color = '#ffffff'; break;
-                    case -1: color = '#ff0000'; break;
-                }
-                context.fillStyle = color;
-                context.strokeStyle =color;
-                context.beginPath();
-                if (standard) {a=0;b=0;c=0;d=0}
-                context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM, DIM, [a,b,c,d]);
-                context.stroke();
-                context.fill();
+    for (let i=0; i<dim; i++) {
+        for (let j=0; j<dim; j++) {
+            a=Math.floor(Math.random()*10); b=Math.floor(Math.random()*10); c= Math.floor(Math.random()*10); d=Math.floor(Math.random()*10);
+            g=Math.floor(Math.random()*5+1);
+            let cRGB = hex2Rgb(base_color);
+            let coul = { r:Math.trunc(cRGB.r+g*((a>d)?a:-a)), g:Math.trunc(cRGB.g+g*((b>d)?b:-b)), b: Math.trunc(cRGB.b+g*((c>d)?c:-c)) };
+            if (contraste || standard) {
+                color = base_color;
+            } else {
+                const r = Math.max(0,Math.min(255,coul.r));
+                const g = Math.max(0,Math.min(255,coul.g));
+                const b = Math.max(0,Math.min(255,coul.b));
+                color = rgb2Hex(r,g,b);
             }
+            switch(grille.grille[i][j]) {
+                case 1: color = '#ffffff'; break;
+                case -1: color = '#ff0000'; break;
+            }
+            context.fillStyle = color;
+            context.strokeStyle =color;
+            context.beginPath();
+            if (standard) {a=0;b=0;c=0;d=0}
+            context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM, DIM, [a,b,c,d]);
+            context.stroke();
+            context.fill();
         }
+    }
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
-async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
-    const cypher = encryptToCompactJSON(_txt,SECRET_KEY);
-    const data = {
-        type: type,
-        level: level,
-        version: version,
-        qualite: qualite,
-        option: option,
-        time: new Date().getTime(),
-        vcard: cypher
-    }
-    let ref = database.ref(source);
-    ref.push(data)
-    .then(()=> { console.log("Metrics Logged"); })
-    .catch(err => {console.log(err); });
-}
-router.get("/vcard", async (req,res) => {
-    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
-    let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
+function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
@@ -218,14 +201,43 @@ router.get("/vcard", async (req,res) => {
     dim = ((version-1)*4) + 21;
     type = valide[0].t;
     encodeMess();
-
     if (!option) {
         createQR(level);
     } else {
         level = optimise();
         createQR(level);
     }
-    image = createPNG(base_color,CONTRASTE&1,STANDARD&1);
+    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1);
+    return image;
+}
+async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
+    const cypher = encryptToCompactJSON(_txt,SECRET_KEY);
+    const data = {
+        type: type,
+        level: level,
+        version: version,
+        qualite: qualite,
+        option: option,
+        time: new Date().getTime(),
+        vcard: cypher
+    }
+    let ref = database.ref(source);
+    ref.push(data)
+    .then(()=> { console.log("Metrics Logged"); })
+    .catch(err => {console.log(err); });
+}
+router.get("/vcard", async (req,res) => {
+    // On nettoye les 'undefined'
+    const expected = ['nom', 'prenom', 'genre', 'email', 'adresse', 'mobile', 'site', 'titre', 'fonction', 'organisation', 'www', 'QUAL', 'COLOR', 'WEB', 'PIXEL', 'LEVEL', 'CONTRASTE', 'STANDARD'];
+    expected.forEach( param => {
+        if (req.query[param] === undefined || req.query[param] === null) {
+            req.query[param] = ''; // Remplace undefined ou null par ''
+        }
+    });
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
+    let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
+
+    const image = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -254,19 +266,6 @@ router.get("/doc", async (req,res) => {
 //v0   res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
 //    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
-// router.get("/metrics",async(req,res) => {
-//     const ref = database.ref("qrcode");
-//     ref.once('value')
-//         .then((snap)=> { 
-//             const db = Object.entries(snap.val());
-//             const count =  (db.filter(item=>{
-//                 const k=item[1];
-//                 return (k.type == 'vCard');
-//             })).length;
-//             res.status(200).json({nb:count}); })
-//         .catch(err => { res.status(400).send(err);})
-// });
-
 let dataArray;
 
 router.get("/metrics", async(req,res) => {
@@ -287,7 +286,6 @@ router.get("/metrics", async(req,res) => {
     const count = formattedData.length;
     res.render(path.join(__dirname,'./tpl/metrics_loop.ejs'), { data: formattedData });
 });
-
 // Route pour exporter en CSV
 router.get('/export', (req, res) => {
   // Données que tu veux exporter
@@ -302,7 +300,6 @@ router.get('/export', (req, res) => {
   res.attachment('data_export.csv');
   res.send(csv);
 });
-
 router.get('/data', (req, res) => {
   const limit = 10; // Nombre d'éléments par bloc
   const startIndex = req.query.start || 0; // Commence à partir de l'index donné (par défaut 0)
@@ -312,17 +309,27 @@ router.get('/data', (req, res) => {
 
   res.json(nextData); // Envoie le "bloc" sous forme JSON
 });
-
 router.get('/cypher', (req,res) => {
     const mess = 'Mon message très secret';
     const cypher = encrypt(mess, SECRET_KEY);
     res.send(cypher);
 });
-
 router.get('/cypherjson', (req,res) => {
     const mess = 'Mon message très secret';
     const cypher = encryptToCompactJSON(mess, SECRET_KEY);
     res.send(cypher);
+});
+router.post('/decypherjson', (req,res) => {
+    // try {
+        const {vcard} = req.body;
+        if (!vcard) return res.status(400).send('Champ "encrypted" manquant');
+
+        const plaintext = decryptFromCompactJSON(vcard,SECRET_KEY);
+        console.log(plaintext);
+        res.send(`<html><body><h1>Texte déchiffré :</h1><p>${plaintext}</p></body></html>`);
+    // } catch (err) {
+    //     res.status(500).send('Erreur de déchiffrement : ' + err.message);
+    // }
 });
 
 //-- Export module et fonctions

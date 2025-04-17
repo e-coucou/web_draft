@@ -174,10 +174,32 @@
     rows.forEach(row => table.tBodies[0].appendChild(row));
   }
 
-  function handleRowClick(id, vcard) {
-    alert("Ligne cliquée avec ID : " + id + '\n' + vcard);
+  async function handleRowClick(id, vcard) {
+    // alert("Ligne cliquée avec ID : " + id + '\n' + vcard);
     // ou window.location.href = `/details/${id}`;
-  }
+    try {
+        const response = await fetch('/api/qrcode/decypherjson', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ vcard })
+        });
+
+        const html = await response.text();
+
+        // Extraire uniquement le texte clair du HTML retourné
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const plaintext = doc.querySelector('p')?.textContent;
+
+        if (plaintext) {
+          alert('Texte déchiffré :\n' + plaintext);
+        } else {
+          alert('Erreur : impossible de lire la réponse');
+        }
+      } catch (error) {
+        alert('Erreur : ' + error);
+      }
+    }
 
   function formatTimestamp(ts) {
     const date = new Date(Number(ts));
