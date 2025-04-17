@@ -49,6 +49,8 @@
         if (organisation) params.append('organisation', organisation);
         const fonction = document.getElementById('fonction').value.trim();
         if (fonction) params.append('fonction', fonction);
+        const www = document.getElementById('www').value.trim();
+        if (www) params.append('www', www);
 
 
         params.append('QUAL', document.getElementById('qual').value);
@@ -104,7 +106,8 @@
         <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">🏠 Adresse physique</summary>
           <ul class="list-disc pl-6 mt-2 text-sm">
-            <li><b>site</b>, <b>adresse</b> → champs libres</li>
+            <li><b>site</b> → champs libres désigne le lieu</li>
+            <li><b>adresse</b> → champs libres séparé par de ; rue;ville;code postal</li>
           </ul>
         </details>
 
@@ -164,11 +167,14 @@
             </div>
           <label class="block">Média Info</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
-              <div class="col-span-12 md:col-span-5">
+              <div class="col-span-12 md:col-span-2">
                 <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
               </div>
-              <div class="col-span-12 md:col-span-7">
+              <div class="col-span-12 md:col-span-5">
                 <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-5">
+                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
               </div>
             </div>
           <label class="block">Adresse</label>
@@ -177,7 +183,7 @@
                 <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-8">
-                <input type="adresse" id="adresse" placeholder="Adresse Postale" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="adresse" id="adresse" placeholder="Adresse Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
               </div>
             </div>
 
