@@ -3,10 +3,11 @@
     margin: 20px;
 }
 @media (max-width: 600px) {
-.footer-bar {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
 }
 @media (min-width: 768px) {
     .table-wrapper {
@@ -21,11 +22,9 @@
     text-align: right;
     max-width: 100%;
 }
-
 .export-btn, .record-count {
     width: auto;
     padding: 8px 12px;
-}
 }
 /* Positionner le bouton d'export en bas à droite */
 .footer-bar {
@@ -38,9 +37,8 @@
   align-items: center;
   z-index: 1000;
 }
-
 /* Styles identiques pour les deux éléments */
-.record-count, .export-btn {
+.record-count, .export-btn, button {
   font-size: 12px;
   height: 36px;
   padding: 0 20px;
@@ -48,83 +46,49 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  /* background-color: rgb(127,255,212); */
-  background-color: rgb(0,87,53);
-  color: white;
 }
-
 /* Spécifique au bouton */
 .export-btn {
   border: none;
   cursor: pointer;
 }
 .export-btn:hover {
-  background-color: #1c8021; /* Couleur de fond plus foncée au survol */
+  background-color: #081f57; /* Couleur de fond plus foncée au survol */
+  color: white;
 }
-
-    #data-table tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    #data-table tbody tr:nth-child(odd) {
-        background-color: #ffffff;
-    }
-  #data-table {
+#data-table {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
-  }
-
-  #data-table th, #data-table td {
+}
+#data-table th, #data-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
-  }
-
-  #data-table thead input {
+}
+#data-table thead input {
     width: 95%;
     padding: 4px;
     box-sizing: border-box;
     text-align: center;
-  }
-
-  #data-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  #data-table tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  #data-table tr.clickable:hover {
-    background-color: #acf69a;
-  }
-  #data-table th {
-  background-color: rgb(0,87,53);
-    /* background-color: #4CAF50; */
-    color: white;
-  }
-  th.sorted-column {
+}
+#data-table tr.clickable:hover {
+    font-size:medium;
+}
+th.sorted-column {
     border-left: 2px solid #ddd;
-    background-color: #f4f4f4;
   }
-table thead th {
-  position: sticky;
-  top: 0;
-  background-color: #ffffff; /* ou même gris clair si tu veux */
-  z-index: 10;
-}
 .footer-copyright {
-  position: fixed;
-  bottom: 0;
-  right: 20px;
-  font-size: 10px;
-  color: #50c862;
-  z-index: 500;
-  padding-bottom: 6px;
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    font-size: 10px;
+    color: #50c862;
+    z-index: 500;
+    padding-bottom: 6px;
 }
-
 table thead th {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(149, 28, 28, 0.1);
 }
 .table-wrapper {
   max-height: 90vh;

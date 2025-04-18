@@ -208,7 +208,7 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
         createQR(level);
     }
     const image = createPNG(base_color,CONTRASTE&1,STANDARD&1);
-    return image;
+    return [image, base_color];
 }
 async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
     const cypher = encryptToCompactJSON(_txt,SECRET_KEY);
@@ -238,7 +238,7 @@ router.get("/vcard", async (req,res) => {
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
     let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
 
-    const image = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR);
+    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -304,10 +304,9 @@ router.get('/export', (req, res) => {
 router.get('/data', (req, res) => {
   const limit = 10; // Nombre d'éléments par bloc
   const startIndex = req.query.start || 0; // Commence à partir de l'index donné (par défaut 0)
-
   // Slice pour récupérer un "blocs" de données
-  const nextData = dataArray.slice(startIndex, startIndex + limit);
-
+  const max = Math.max(dataArray.length-1,startIndex+limit);
+  const nextData = dataArray.slice(startIndex, max);
   res.json(nextData); // Envoie le "bloc" sous forme JSON
 });
 router.get('/cypher', (req,res) => {

@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>QR-Code Documentation</title>
+    <style>
+    @media (max-width: 600px) {
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        }
+    }
+    @media (min-width: 768px) {
+    .table-wrapper {
+        max-height: none;
+        overflow-y: visible;
+        }
+    }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -172,7 +187,7 @@
   </script>
   </head>
   <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
-    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between">
+    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
       <div class="flex items-center gap-4">
         <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
         <h1 class="text-xl font-semibold">QR-Code Documentation</h1>
@@ -180,17 +195,15 @@
       <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
     </header>
 
-    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade">
+    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
       <section class="text-center">
         <h2 class="text-2xl font-bold">Carte de Visite</h2>
       </section>
-
       <section>
         <h3 class="text-lg font-semibold mb-2">Root commande :</h3>
         <div class="flex items-center gap-2 mb-4">
           <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">/api/qrcode/vcard?param1=val1&param2=val2</code>
         </div>
-
         <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">📇 Identification</summary>
           <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
@@ -201,7 +214,6 @@
             <li><b>mobile</b>, <b>fonction</b>, <b>organisation</b>, <b>www</b> → libres</li>
           </ul>
         </details>
-
         <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">🏠 Adresse physique</summary>
           <ul class="list-disc pl-6 mt-2 text-sm">
@@ -209,7 +221,6 @@
             <li><b>adresse</b> → champs libres séparé par des ; Destinataire;Rue;Ville;??;Code Postal;Pays</li>
           </ul>
         </details>
-
         <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">⚙️ Configuration QR-Code</summary>
           <ul class="list-disc pl-6 mt-2 text-sm">
@@ -221,7 +232,6 @@
             <li><b>STANDARD</b> = 1 ou 0</li>
           </ul>
         </details>
-
         <details class="bg-white dark:bg-gray-800 p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">📝 Exemple vCard</summary>
           <pre class="mt-2 text-sm bg-gray-50 dark:bg-gray-900 p-3 rounded overflow-x-auto">
@@ -311,10 +321,10 @@ END:VCARD
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
                 <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
-                  <option value="L">L</option>
-                  <option value="M">M</option>
-                  <option value="Q">Q</option>
-                  <option value="H">H</option>
+                  <option value="L">L  (7%)</option>
+                  <option value="M">M (15%)</option>
+                  <option value="Q">Q (25%)</option>
+                  <option value="H">H (30%)</option>
                 </select>
               </div>
           <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
@@ -356,7 +366,7 @@ END:VCARD
           <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700">Afficher QR-Code</button>
         </div>
         <div class="mt-6">
-          <img id="fetchedImage" class="mx-auto hidden max-w-[90vw] max-h-[90vh]" alt="QR-Code" />
+          <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
         </div>
       </section>
     </main>
