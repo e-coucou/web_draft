@@ -269,7 +269,7 @@ router.get("/doc", async (req,res) => {
 });
 let dataArray;
 
-router.get("/metrics", async(req,res) => {
+router.get("/audit", async(req,res) => {
     const snapshot = await database.ref('qrcode').once('value');
     const allData = snapshot.val();
 
@@ -286,6 +286,29 @@ router.get("/metrics", async(req,res) => {
     }));
     const count = formattedData.length;
     res.render(path.join(__dirname,'./tpl/metrics_loop.ejs'), { data: formattedData });
+});
+router.get("/metrics", (req,res) => {
+    res.render(path.join(__dirname,"./tpl/metrics_chart.html"));
+});
+router.get("/metrics_data", async(req,res) => {
+    const snapshot = await database.ref('qrcode').once('value');
+    const allData = snapshot.val();
+    // const filtered = Object.entries(allData)
+    //     .filter(([_, v]) => v.type === "vCard")
+    //     .map(([id, v]) => ({ id, ...v }));
+    const dataArray = Object.entries(allData).map(([id, item]) => ({ id,...item }));
+
+    try {
+        const grouped = dataArray.reduce((acc, log) => {
+            const day = new Date(log.time).toISOString().split('T')[0];
+            acc[day] = (acc[day] || 0) + 1;
+            return acc;
+        }, {});
+        res.status(200).json(grouped);
+    } catch (err) {
+        res.status(500).json({code:err, error: 'Erreur API logs' });
+    }
+    // res.render(path.join(__dirname,'./tpl/metrics_loop.ejs'), { data: formattedData });
 });
 // Route pour exporter en CSV
 router.get('/export', (req, res) => {

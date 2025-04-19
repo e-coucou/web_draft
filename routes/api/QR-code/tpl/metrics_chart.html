@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logs par jour</title>
+    <style>
+    @media (max-width: 600px) {
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        }
+    }
+    @media (min-width: 768px) {
+    .table-wrapper {
+        max-height: none;
+        overflow-y: visible;
+        }
+    }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            animation: {
+              fade: 'fadeIn 0.5s ease-in-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: 0 },
+                '100%': { opacity: 1 },
+              },
+            },
+          },
+        },
+      };
+      const currentUrl = window.location.href;
+      const baseOrigin = window.location.origin;
+      let adresse='';
+      let fullURL;
+      function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+        renderChart(); // recharge le graphique
+      }
+    </script>
+</head>
+  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
+      <div class="flex items-center gap-4">
+        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
+        <h1 class="text-xl font-semibold">QR-Code Metrics</h1>
+      </div>
+      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
+    </header>
+  <div class="p-6 rounded-2xl shadow-xl max-w-4xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Metrics</h2>
+    <canvas id="logChart" class="w-full h-64"></canvas>
+  </div>
+
+  <script>
+    function getChartColors() {
+        const isDark = document.documentElement.classList.contains('dark');
+        return {
+            background: isDark ? '#1f2937' : '#ffffff', // fond graphique
+            bg: isDark ? '#60a5fa' : '#3b82f6', // les barre
+            text: isDark ? '#ffffff' : '#111827',
+            grid: isDark ? '#4b5563' : '#d1d5db'
+        };
+    }
+
+    async function renderChart() {
+      const res = await fetch('/api/qrcode/metrics_data');
+      const data = await res.json();
+
+    const ctx = document.getElementById('logChart').getContext('2d');
+    if (window.chart) window.chart.destroy();
+    const colors = getChartColors();
+    const backgroundPlugin = {
+    id: 'customCanvasBackground',
+        beforeDraw: (chart) => {
+            const { ctx, width, height } = chart;
+            ctx.save();
+            ctx.fillStyle = colors.background;
+            ctx.fillRect(0, 0, width, height);
+            ctx.restore();
+        }
+    };
+      window.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(data),
+          datasets: [{
+            label: 'Logs',
+            data: Object.values(data),
+            backgroundColor: colors.bg
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: colors.text } },
+          },
+          scales: {
+            x: { title: { display: true, text: 'Date' },
+                 ticks: { color: colors.text },
+                 grid: { color: colors.grid }
+                },
+            y: { beginAtZero: true, title: { display: true, text: 'Occurrences' },
+                 ticks: {color: colors.text},
+                 grid: {color: colors.grid}
+                }
+          }
+        },
+        plugins: [backgroundPlugin]
+      });
+    }
+
+    renderChart();
+  </script>
+    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
+      <p>eCoucou 2025 — (v) 0.1 r0</p>
+    </footer>
+</body>
+</html>
