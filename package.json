@@ -9,7 +9,8 @@
     "firebase-admin": "^13.2.0",
     "hex-rgb": "^5.0.0",
     "json2csv": "^6.0.0-alpha.2",
-    "node": "^20.3.0"
+    "node": "^20.3.0",
+    "passkit-generator": "^3.3.1"
   },
   "name": "web_draft",
   "description": "mon site Web",

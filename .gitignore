@@ -145,3 +145,10 @@ yarn.lock
 routes/api/QR-code/data/rky-metrics-credential.json
 routes/api/QR-code/data/rky-metrics-credential.json
 routes/api/QR-code/data/rky-metrics-credential.json
+routes/api/QR-code/certs/Certificats.p12
+routes/api/QR-code/certs/convert keyp12.txt
+routes/api/QR-code/certs/key.pem
+routes/api/QR-code/certs/key.pem.b64
+routes/api/QR-code/certs/pass.pem
+routes/api/QR-code/certs/pass.pem.b64
+routes/api/QR-code/certs/wwdr.pem
