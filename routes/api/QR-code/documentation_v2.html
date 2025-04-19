@@ -41,6 +41,8 @@
       const baseOrigin = window.location.origin;
       let adresse='';
       let fullURL;
+      let version;
+      
       function toggleDarkMode() {
         document.documentElement.classList.toggle('dark');
       }
@@ -167,22 +169,31 @@
         });
     // Rechargement des cookies
     function loadFormFromCookie() {
-    const cookie = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('vcardForm='));
+        const cookie = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('vcardForm='));
 
-    if (!cookie) return;
+        if (!cookie) return;
 
-    const data = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+        const data = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
 
-    Object.keys(data).forEach(key => {
-        const el = document.getElementById(key);
-        if (el) {
-        if (el.type === 'checkbox') el.checked = data[key];
-        else el.value = data[key];
-        }
-    });
+        Object.keys(data).forEach(key => {
+            const el = document.getElementById(key);
+            if (el) {
+            if (el.type === 'checkbox') el.checked = data[key];
+            else el.value = data[key];
+            }
+        });
+        generateUrl();
     }
+
+    async function getVersion() {
+        const res = await fetch('/api/qrcode/version');
+        const vData = await res.json();
+        document.getElementById('version').textContent = `© 2025 e-Coucou — v${vData.version} - ${vData.maj}`;
+                console.log(vData)
+    }
+    getVersion();
 
   </script>
   </head>
@@ -360,19 +371,19 @@ END:VCARD
 
         </details>
         <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
+        <div class="mt-6">
+          <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
+        </div>
         <div class="flex gap-2 mt-2">
           <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button>
           <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Get QR-Code</button>
           <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700">Afficher QR-Code</button>
         </div>
-        <div class="mt-6">
-          <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
-        </div>
       </section>
     </main>
 
     <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
-      <p>© 2025 e-Coucou — (v) 0.1 r0</p>
+      <p id="version"></p>
     </footer>
   </body>
 </html>

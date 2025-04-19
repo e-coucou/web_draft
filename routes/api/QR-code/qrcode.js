@@ -227,6 +227,9 @@ async function logMetrics(source, type, level, qualite, version, option, _txt  )
     .catch(err => {console.log(err); });
 }
 router.use(express.json());
+router.get("/version", (req, res) => {
+    res.status(200).json({version: 1.1, maj:'avril/25', release: 0.0});
+});
 router.get("/vcard", async (req,res) => {
     // On nettoye les 'undefined'
     const expected = ['nom', 'prenom', 'genre', 'email', 'adresse', 'mobile', 'site', 'titre', 'fonction', 'organisation', 'www', 'QUAL', 'COLOR', 'WEB', 'PIXEL', 'LEVEL', 'CONTRASTE', 'STANDARD'];
