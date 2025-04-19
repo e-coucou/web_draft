@@ -56,12 +56,23 @@
       </div>
       <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
     </header>
-  <div class="p-6 rounded-2xl shadow-xl max-w-4xl mx-auto">
+  <div class="p-6 rounded-2xl shadow-xl max-w-4xl mx-auto max-h-[80vh] inherit">
+    <div class="flex gap-4 mb-4 inherit">
+        <select id="filterType" class="border rounded p-2 bg-gray-200 dark:bg-gray-600 inherit">
+            <option value="">Tous Types</option>
+        </select>
+        <select id="filterOption" class="border rounded p-2 bg-gray-200 dark:bg-gray-600 inherit">
+            <option value="">Toutes Optimisations</option>
+        </select>
+        <div id="logCount" class="absolute bottom-2 right-4 text-sm bg-white/80 dark:bg-gray-800/80 px-3 py-1 rounded shadow">0</div>
+    </div>
     <h2 class="text-2xl font-semibold mb-4">Metrics</h2>
     <canvas id="logChart" class="w-full h-64"></canvas>
   </div>
 
   <script>
+    let rawData = [];
+
     function getChartColors() {
         const isDark = document.documentElement.classList.contains('dark');
         return {
@@ -72,9 +83,37 @@
         };
     }
 
+    async function getDataRaw() {
+      const res = await fetch('/api/qrcode/metrics_raw');
+      rawData = await res.json();
+      console.log(rawData)
+      getFilters();
+      renderChart();
+    }
+
+    function getFilters() {
+        const types = [...new Set(rawData.map(log => log.type))];
+        const options = [...new Set(rawData.map(log => log.option))];
+
+        const typeSelect = document.getElementById('filterType');
+        const optionSelect = document.getElementById('filterOption');
+
+        for (const t of types) {
+            typeSelect.innerHTML += `<option value="${t}">${t}</option>`;
+            }
+        for (const o of options) {
+            optionSelect.innerHTML += `<option value="${o}">${o}</option>`;
+            }
+    }
+
     async function renderChart() {
-      const res = await fetch('/api/qrcode/metrics_data');
+      const type = document.getElementById('filterType').value;
+      const option = document.getElementById('filterOption').value;
+      const params = new URLSearchParams({ type, option });
+      const res = await fetch(`/api/qrcode/metrics_data?${params}`);
       const data = await res.json();
+      
+      console.log(res)
 
     const ctx = document.getElementById('logChart').getContext('2d');
     if (window.chart) window.chart.destroy();
@@ -117,12 +156,17 @@
         },
         plugins: [backgroundPlugin]
       });
+      // Mettre à jour le compteur
+      const total = Object.values(data).reduce((sum, val) => sum + val, 0);
+      document.getElementById('logCount').textContent = `records: ${total}`;
     }
-
-    renderChart();
+    
+    document.getElementById('filterType').addEventListener('change', renderChart);
+    document.getElementById('filterOption').addEventListener('change', renderChart);
+    getDataRaw();
   </script>
-    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
-      <p>eCoucou 2025 — (v) 0.1 r0</p>
+    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
+      <p>© 2025 e-Coucou — (v) 0.1 r0</p>
     </footer>
 </body>
 </html>

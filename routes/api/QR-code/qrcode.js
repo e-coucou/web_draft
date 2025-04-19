@@ -290,13 +290,24 @@ router.get("/audit", async(req,res) => {
 router.get("/metrics", (req,res) => {
     res.render(path.join(__dirname,"./tpl/metrics_chart.html"));
 });
+router.get("/metrics_raw", async (req,res) => {
+    const snapshot = await database.ref('qrcode').once('value');
+    const allData = snapshot.val();
+    const dataArray = Object.entries(allData).map(([id, item]) => ({ id,...item }));
+    res.status(200).json(dataArray);
+});
 router.get("/metrics_data", async(req,res) => {
     const snapshot = await database.ref('qrcode').once('value');
     const allData = snapshot.val();
-    // const filtered = Object.entries(allData)
-    //     .filter(([_, v]) => v.type === "vCard")
-    //     .map(([id, v]) => ({ id, ...v }));
-    const dataArray = Object.entries(allData).map(([id, item]) => ({ id,...item }));
+    let {type, option} = req.query;
+    const parsedOption = option === 'true' ? true : option === 'false' ? false : null;
+
+    const filtered = Object.entries(allData)
+        .filter(([_, v]) => { 
+            return (!type || v.type === type)&&(parsedOption===null || v.option === parsedOption);
+        })
+        .map(([id, v]) => ({ id, ...v }));
+    const dataArray = Object.entries(filtered).map(([id, item]) => ({ id,...item }));
 
     try {
         const grouped = dataArray.reduce((acc, log) => {
