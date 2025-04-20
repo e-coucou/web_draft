@@ -17,9 +17,9 @@ async function getPassWallet() {
       {
         type: 'generic', // requis
         serialNumber: '1234567890',
-        description: 'Pass QR personnalisé',
+        description: 'Mes coordonnées',
         organizationName: 'eCoucou',
-        logoText: 'Accès'
+        logoText: 'vCard'
       }
     );
 

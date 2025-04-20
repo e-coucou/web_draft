@@ -176,6 +176,7 @@ function createPNG(base_color,contraste,standard) {
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
+    fs.writeFileSync("./routes/api/QR-code/assets.pass/image.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
 function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
