@@ -1,0 +1,20 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "pass.com.e-coucou.vcard",
+  "serialNumber": "1234567890",
+  "teamIdentifier": "ABCD1234XY",
+  "organizationName": "eCoucou",
+  "description": "Pass QR personnalisé",
+  "logoText": "Accès",
+  "foregroundColor": "rgb(255,255,255)",
+  "backgroundColor": "rgb(0,122,255)",
+  "generic": {
+    "primaryFields": [
+      {
+        "key": "info",
+        "label": "Scan",
+        "value": "QR Code personnalisé"
+      }
+    ]
+  }
+}

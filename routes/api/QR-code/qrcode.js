@@ -9,13 +9,13 @@ const { Polynome, logTable, createPoly } = require("./js/reed_salomon");
 const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
+const {getPassWallet} = require("./js/pass_wallet");
 
 const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("./js/crypto-aes");
 const SECRET_KEY = process.env.SECRET_KEY;
 
 // const {firebaseUpload} = require('./js/firebaseDB')
 const database = require("./js/realtime");
-const { console } = require("inspector");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
@@ -324,7 +324,21 @@ router.get("/metrics_data", async(req,res) => {
     }
     // res.render(path.join(__dirname,'./tpl/metrics_loop.ejs'), { data: formattedData });
 });
-// Route pour exporter en CSV
+router.get("/wallet", async (req, res) => {
+    try {
+        const buffer = await getPassWallet();
+        res.set({
+        'Content-Type': 'application/vnd.apple.pkpass',
+        'Content-Disposition': 'attachment; filename=pass.pkpass',
+        'Content-Length': buffer.length
+        });
+
+        res.send(buffer);
+    } catch (err) {
+        console.error('Erreur lors de la génération du pass :', err);
+        res.status(500).send({ error: 'Erreur génération pass' });
+    }
+});
 router.get('/export', (req, res) => {
   // Données que tu veux exporter
   const dataToExport = dataArray;

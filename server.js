@@ -1,5 +1,15 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
+} else {
+    // Écriture des fichiers dans certs/
+// Récupération des variables encodées
+    const keyPem = Buffer.from(process.env.KEY_PEM, 'base64').toString('utf8');
+    const certPem = Buffer.from(process.env.CERT_PEM, 'base64').toString('utf8');
+    const certDir = path.join('/routes/api/qQR-code/', 'certs');
+    fs.mkdirSync(certDir, { recursive: true });
+
+    fs.writeFileSync(path.join(certDir, 'signerKey.pem'), keyPem);
+    fs.writeFileSync(path.join(certDir, 'signerCert.pem'), certPem);
 }
 console.log(process.env.PORT)
 
