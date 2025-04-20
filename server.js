@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Récupération des variables encodées
     const keyPem = Buffer.from(process.env.KEY_PEM, 'base64').toString('utf8');
     const certPem = Buffer.from(process.env.CERT_PEM, 'base64').toString('utf8');
-    const certDir = path.join('/routes/api/QR-code/', 'certs');
+    const certDir = path.join('./routes/api/QR-code/', 'certs');
     fs.mkdirSync(certDir, { recursive: true });
 
     fs.writeFileSync(path.join(certDir, 'signerKey.pem'), keyPem);
