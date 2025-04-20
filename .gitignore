@@ -151,7 +151,6 @@ routes/api/QR-code/certs/key.pem
 routes/api/QR-code/certs/key.pem.b64
 routes/api/QR-code/certs/pass.pem
 routes/api/QR-code/certs/pass.pem.b64
-routes/api/QR-code/certs/wwdr.pem
 routes/api/QR-code/certs/certificate.pem
 routes/api/QR-code/certs/certificate.pem.b64
 routes/api/QR-code/certs/pass.cer
