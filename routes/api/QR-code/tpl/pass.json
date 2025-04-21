@@ -1,0 +1,45 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "pass.com.votreentreprise.vcard", // Votre identifiant unique créé sur le portail développeur Apple
+  "serialNumber": "VCARD123456789", // Un numéro de série unique pour ce pass spécifique
+  "teamIdentifier": "VOTRE_TEAM_ID", // Votre Team ID Apple Developer
+  "organizationName": "Nom de votre entreprise ou votre nom",
+  "description": "Ma Carte de Visite",
+  "logoText": "Contact",
+  "foregroundColor": "rgb(255, 255, 255)", // Couleur du texte
+  "backgroundColor": "rgb(50, 50, 50)",   // Couleur de fond du pass
+
+  // --- Section Clé pour le QR Code vCard ---
+  "barcode": {
+    "message": "BEGIN:VCARD\nVERSION:3.0\nN:Dupont;Jean;;;\nFN:Jean Dupont\nORG:Ma Société\nTITLE:Développeur\nTEL;TYPE=WORK,VOICE:(+33)123456789\nEMAIL:jean.dupont@masociete.com\nURL:http://www.masociete.com\nEND:VCARD", // <-- COLLEZ ICI LE CONTENU TEXTE COMPLET DE VOTRE FICHIER VCARD
+    "format": "PKBarcodeFormatQR", // Spécifie un QR code
+    "messageEncoding": "utf-8" // Important pour les caractères spéciaux (iso-8859-1 est aussi possible mais utf-8 est plus sûr)
+    // "altText": "QR Code Contact Jean Dupont" // Texte alternatif pour l'accessibilité (optionnel mais recommandé)
+  },
+
+  // --- Autres informations sur le pass (optionnel) ---
+  "generic": {
+    "primaryFields": [
+      {
+        "key": "nom",
+        "label": "Nom",
+        "value": "Jean Dupont"
+      }
+    ],
+    "secondaryFields": [
+      {
+        "key": "societe",
+        "label": "Société",
+        "value": "Ma Société"
+      }
+    ],
+    "auxiliaryFields": [
+       {
+        "key": "scan",
+        "label": "Scannez pour ajouter aux contacts",
+        "value": "" // Laissez vide ou mettez une info mineure
+      }
+    ]
+    // Vous pouvez aussi ajouter des "backFields" pour le verso du pass
+  }
+}

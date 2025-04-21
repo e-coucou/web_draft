@@ -176,7 +176,7 @@ function createPNG(base_color,contraste,standard) {
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
-    fs.writeFileSync("./routes/api/QR-code/assets.pass/image.png", buffer, { encoding: "utf8", flag: "w+" });
+    fs.writeFileSync("./routes/api/QR-code/old/image.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
 function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
@@ -328,13 +328,18 @@ router.get("/metrics_data", async(req,res) => {
 router.get("/wallet", async (req, res) => {
     try {
         const buffer = await getPassWallet();
-        res.set({
-        'Content-Type': 'application/vnd.apple.pkpass',
-        'Content-Disposition': 'attachment; filename=pass.pkpass',
-        'Content-Length': buffer.length
-        });
-
+        res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
+        res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
+        // res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);
+        res.setHeader('Content-Length', buffer.length);
         res.send(buffer);
+        // res.set({
+        //     'Content-Type': 'application/vnd.apple.pkpass',
+        //     'Content-Disposition': 'attachment; filename=pass.pkpass',
+        //     'Content-Disposition': `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`,
+        //     'Content-Length': buffer.length
+        // });
+        // res.send(buffer);
     } catch (err) {
         console.error('Erreur lors de la génération du pass :', err);
         res.status(500).send({ error: 'Erreur génération pass' });
