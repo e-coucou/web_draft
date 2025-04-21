@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>QR-Code Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+    @media (max-width: 600px) {
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        }
+    }
+    @media (min-width: 768px) {
+    .table-wrapper {
+        max-height: none;
+        overflow-y: visible;
+        }
+    }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            animation: {
+              fade: 'fadeIn 0.5s ease-in-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: 0 },
+                '100%': { opacity: 1 },
+              },
+            },
+          },
+        },
+      };
+      const currentUrl = window.location.href;
+      const baseOrigin = window.location.origin;
+      let adresse='';
+      let fullURL;
+      let version;
+      
+      function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+      }
+      function generateVCARD() {
+        let nom = document.getElementById('nom').value.trim();
+        if (!nom) nom=null;
+        let prenom = document.getElementById('prenom').value.trim();
+        // if (prenom) params.append('prenom', prenom);
+        let email = document.getElementById('email').value.trim();
+        // if (email) params.append('email', email);
+        let genre = document.getElementById('genre').value.trim();
+        // if (!genre) genre=null;
+        let site = document.getElementById('site').value.trim();
+        // if (site) params.append('site', site);
+        const mobile = document.getElementById('mobile').value.trim();
+        // if (mobile) params.append('mobile', mobile);
+        const organisation = document.getElementById('organisation').value.trim();
+        // if (organisation) params.append('organisation', organisation);
+        const fonction = document.getElementById('fonction').value.trim();
+        // if (fonction) params.append('fonction', fonction);
+        const www = document.getElementById('www').value.trim();
+        // if (www) params.append('www', www);
+
+        const rue = document.getElementById('rue').value.trim();
+        const code = document.getElementById('code').value.trim();
+        const ville = document.getElementById('ville').value.trim();
+        const pays = document.getElementById('pays').value.trim();
+        adresse = organisation+';'+rue+';'+ville+';;'+code+';'+pays;
+        let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${fonction}\nEND:VCARD\n`);
+        console.log(_texte)
+        return {vCard:_texte, nom:nom, societe:organisation, prenom:prenom, www:www, mobile:mobile,fonction:fonction, couleur: document.getElementById('color').value};
+      }
+      function generateUrl() {
+//        const baseUrl = 'https://draft.e-coucou.com/api/qrcode/vcard?';
+        const baseUrl = baseOrigin + '/api/qrcode/vcard?';
+        const params = new URLSearchParams();
+        
+        const nom = document.getElementById('nom').value.trim();
+        if (nom) params.append('nom', nom);
+        const prenom = document.getElementById('prenom').value.trim();
+        if (prenom) params.append('prenom', prenom);
+        const email = document.getElementById('email').value.trim();
+        if (email) params.append('email', email);
+        const genre = document.getElementById('genre').value.trim();
+        if (genre) params.append('genre', genre);
+        const site = document.getElementById('site').value.trim();
+        if (site) params.append('site', site);
+        const mobile = document.getElementById('mobile').value.trim();
+        if (mobile) params.append('mobile', mobile);
+        const organisation = document.getElementById('organisation').value.trim();
+        if (organisation) params.append('organisation', organisation);
+        const fonction = document.getElementById('fonction').value.trim();
+        if (fonction) params.append('fonction', fonction);
+        const www = document.getElementById('www').value.trim();
+        if (www) params.append('www', www);
+
+        const rue = document.getElementById('rue').value.trim();
+        const code = document.getElementById('code').value.trim();
+        const ville = document.getElementById('ville').value.trim();
+        const pays = document.getElementById('pays').value.trim();
+        // if (adresse) params.append('adresse', adresse);
+        adresse = organisation+';'+rue+';'+ville+';;'+code+';'+pays;
+        if (adresse) params.append('adresse', adresse);
+
+        params.append('QUAL', document.getElementById('qual').value);
+        params.append('LEVEL', document.getElementById('level').value);
+        params.append('CONTRASTE', document.getElementById('contraste').checked ? '1' : '0');
+        params.append('STANDARD', document.getElementById('standard').checked ? '1' : '0');
+        params.append('COLOR', document.getElementById('color').value);
+
+        fullUrl = baseUrl + params.toString() + '&PIXEL=10';
+        document.getElementById('qrcodeText').value = fullUrl;
+        saveFormToCookie();
+      }
+      function lauchURL() {
+        const webURL = fullUrl+"&WEB=0";
+        window.open(webURL, '_blank');
+      }
+      function GetImage() {
+        const getPNG = fullUrl;
+        window.open(getPNG, '_blank');
+      }
+      function fetchImage() {
+        const getPNG = fullUrl + "&WEB=1";
+        fetch(getPNG)
+          .then(response => response.blob())
+          .then(blob => {
+            const imgUrl = URL.createObjectURL(blob);
+            const img = document.getElementById('fetchedImage');
+            img.src = imgUrl;
+            img.classList.remove('hidden');
+          })
+          .catch(error => console.error('Erreur image :', error));
+      }
+      function addWallet() {
+        const { vCard, nom, societe, prenom, www, mobile,fonction, couleur } = generateVCARD();
+        fetch('/api/qrcode/get_pkpass', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ vCard, nom, societe, prenom, www, mobile,fonction, couleur  })
+          })
+          .then(response => response.blob())
+          .then(blob => {
+            const aUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = aUrl;
+            // a.download = 'pass.pkpass';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            }
+          )
+        // .then(response => response.json())
+        // .then(data => console.log(data))
+        .catch(error => console.error('Erreur Wallet Création :', error));
+      }
+
+      function updateMap() {
+        const rue = document.getElementById('rue').value.trim();
+        const ville = document.getElementById('ville').value.trim();
+        const code = document.getElementById('code').value.trim();
+
+        const fullAddress = [rue, code, ville].filter(Boolean).join(', ');
+
+        const mapContainer = document.getElementById('mapContainer');
+        const googleMap = document.getElementById('googleMap');
+
+        if (fullAddress.length > 5) {
+            const query = encodeURIComponent(fullAddress);
+            googleMap.src = `https://www.google.com/maps?q=${query}&output=embed`;
+            mapContainer.classList.remove('hidden');
+        } else {
+            googleMap.src = '';
+            mapContainer.classList.add('hidden');
+        }
+      }
+    // Gestion dez cookies
+        function saveFormToCookie() {
+        const fields = [
+            'nom', 'prenom', 'genre', 'email', 'mobile', 'fonction', 'organisation',
+            'www', 'site', 'rue', 'ville', 'code', 'pays',
+            'QUAL', 'COLOR', 'LEVEL', 'PIXEL', 'CONTRASTE', 'STANDARD'
+        ];
+
+        const data = {};
+
+        fields.forEach(field => {
+            const el = document.getElementById(field);
+            if (el) data[field] = el.value || (el.type === 'checkbox' ? el.checked : '');
+        });
+
+        document.cookie = `vcardForm=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=604800`; // 7 jours
+        }      
+    // Lancer updateMap à chaque modification des champ
+    window.addEventListener('DOMContentLoaded', () => {
+        ['rue', 'ville', 'code', 'pays'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateMap);});
+        loadFormFromCookie();
+
+        // Mettre la couleur au chargement
+        const btColor = document.getElementById('color');
+        const btFetchImg = document.getElementById('btFetchImg');
+        const btGetImage = document.getElementById('btGetImage');
+        // const btLaunch = document.getElementById('btLaunch');
+        const btWallet = document.getElementById('btWallet');
+        btFetchImg.style.backgroundColor = btColor.value;
+        // btLaunch.style.backgroundColor = btColor.value;
+        btWallet.style.backgroundColor = btColor.value;
+        btGetImage.style.backgroundColor = btColor.value;
+
+        // Mettre à jour dynamiquement la couleur
+        btColor.addEventListener('input', () => {
+                btFetchImg.style.backgroundColor = btColor.value;
+                // btLaunch.style.backgroundColor = btColor.value;
+                btGetImage.style.backgroundColor = btColor.value;
+                btWallet.style.backgroundColor = btColor.value;
+            });
+        });
+    // Rechargement des cookies
+    function loadFormFromCookie() {
+        const cookie = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('vcardForm='));
+
+        if (!cookie) return;
+
+        const data = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
+
+        Object.keys(data).forEach(key => {
+            const el = document.getElementById(key);
+            if (el) {
+            if (el.type === 'checkbox') el.checked = data[key];
+            else el.value = data[key];
+            }
+        });
+        generateUrl();
+    }
+
+    async function getVersion() {
+        const res = await fetch('/api/qrcode/version');
+        const vData = await res.json();
+        document.getElementById('version').textContent = `© 2025 e-Coucou — v${vData.version} - ${vData.maj}`;
+                console.log(vData)
+    }
+    getVersion();
+
+  </script>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
+      <div class="flex items-center gap-4">
+        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
+        <h1 class="text-xl font-semibold">QR-Code Documentation</h1>
+      </div>
+      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
+    </header>
+
+    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
+      <section class="text-center">
+        <h2 class="text-2xl font-bold">Carte de Visite</h2>
+      </section>
+      <section class="mt-8">
+        <!-- <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <summary class="font-medium cursor-pointer">🎯 Constructeur d'URL</summary> -->
+        <!-- <h3 class="text-xl font-semibold mb-2">🎯 Constructeur d'URL</h3> -->
+        <div class="grid grid-cols-12 gap-4 mb-4">
+          <div class="col-span-12 md:col-span-2">
+            <label class="block">Genre</label>
+            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+          </div>
+          <div class="col-span-12 md:col-span-5">
+            <label class="block">Nom</label>
+            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+          </div>
+          <div class="col-span-12 md:col-span-5">
+            <label class="block">Prénom</label>
+            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block">Entreprise</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-3">
+                <input type="Organisation" id="organisation" placeholder="Département" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-9">
+                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+            </div>
+          <label class="block">Média Info</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-3">
+                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-4">
+                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-5">
+                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+            </div>
+          <label class="block">Adresse</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-2">
+                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-3">
+                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-2">
+                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-3">
+                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+              <div class="col-span-12 md:col-span-2">
+                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+              </div>
+            </div>
+            <div id="mapContainer" class="mt-4 hidden">
+              <div class="flex items-center text-gray-700 mb-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12H9v5h2V6zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                  </svg>
+                  <span class="font-semibold">Emplacement estimé</span>
+              </div>
+              <div class="rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                <iframe id="googleMap" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </div>
+<!-- <div id="mapContainer" class="hidden mt-6"> -->
+
+          <label class="block">Design et Paramètres du QR-Code</label>
+            <div class="grid grid-cols-12 gap-4 mb-4">
+              <div class="col-span-12 md:col-span-2">
+                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                  <option value="L">L  (7%)</option>
+                  <option value="M">M (15%)</option>
+                  <option value="Q">Q (25%)</option>
+                  <option value="H">H (30%)</option>
+                </select>
+              </div>
+          <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
+              <div class="col-span-12 md:col-span-2">
+                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                    <option value="-1">-1</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" id="contraste" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Contraste
+              </label>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" id="standard" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Standard
+              </label>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <label class="block">Couleur</label>
+              <input type="color" id="color" value="#b82b5b" onchange="generateUrl()" class="w-full h-10" />
+            </div>
+        </div>
+        </div>
+
+        <!-- </details> -->
+        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
+        <div class="mt-6">
+          <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
+        </div>
+        <div class="mt-6">
+          <img id="getWallet" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="Wallet" />
+        </div>
+        <div class="flex gap-2 mt-2">
+          <!-- <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button> -->
+          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"><i class="fa-solid fa-cloud-download-alt"></i></button>
+          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700"><i class="fa-solid fa-qrcode qrcode-icon"></i></button>
+          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 text-white rounded hover:bg-green-700"><i class="fab fa-apple-pay"></i></button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
+      <p id="version"></p>
+    </footer>
+  </body>
+</html>
