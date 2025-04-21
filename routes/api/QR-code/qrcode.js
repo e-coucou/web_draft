@@ -178,7 +178,7 @@ function createPNG(base_color,contraste,standard) {
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
-    fs.writeFileSync("./routes/api/QR-code/assets.pass/background.png", buffer, { encoding: "utf8", flag: "w+" });
+    fs.writeFileSync("./routes/api/QR-code/assets.pass/thumbnail.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
 function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
@@ -261,7 +261,7 @@ router.get("/vcard", async (req,res) => {
 router.get("/info", async (req,res) => {
    res.status(200).json({
         api: "QR-Code",
-        version: "1.1",
+        version: eCoucou().version,
         auteur : "eCoucou",
         annee: 2025,
         documentation: "/api/qrcode/doc",
@@ -270,8 +270,6 @@ router.get("/info", async (req,res) => {
 });
 router.get("/doc", async (req,res) => {
    res.status(200).sendFile(path.join(__dirname,"/documentation_v2.html"));
-//v0   res.status(200).sendFile(path.join(__dirname,"/documentation.html"));
-//    res.status(200).send("<h1>API - QR-Code Documentation</h1><hr><div><a>/api/qrcode/vcard?</a><div>")
 });
 let dataArray;
 

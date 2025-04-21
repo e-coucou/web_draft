@@ -63,16 +63,16 @@ async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonct
             },
             {
                 key: "s2",
-                label: www,
-                value: "by eCoucou",
+                label: "",
+                value: www,
                 textAlignment: "PKTextAlignmentLeft",
             },
         );
     pass.auxiliaryFields.push(
         {
             key: "a1",
-            label: "de",
-            value: "version 1.1",
+            label: "by eCoucou",
+            value: "",
             textAlignment: "PKTextAlignmentLeft",
         });
     console.log('---------------',pass);
