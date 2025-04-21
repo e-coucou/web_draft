@@ -46,6 +46,35 @@
       function toggleDarkMode() {
         document.documentElement.classList.toggle('dark');
       }
+      function generateVCARD() {
+        let nom = document.getElementById('nom').value.trim();
+        if (!nom) nom=null;
+        let prenom = document.getElementById('prenom').value.trim();
+        // if (prenom) params.append('prenom', prenom);
+        let email = document.getElementById('email').value.trim();
+        // if (email) params.append('email', email);
+        let genre = document.getElementById('genre').value.trim();
+        // if (!genre) genre=null;
+        let site = document.getElementById('site').value.trim();
+        // if (site) params.append('site', site);
+        const mobile = document.getElementById('mobile').value.trim();
+        // if (mobile) params.append('mobile', mobile);
+        const organisation = document.getElementById('organisation').value.trim();
+        // if (organisation) params.append('organisation', organisation);
+        const fonction = document.getElementById('fonction').value.trim();
+        // if (fonction) params.append('fonction', fonction);
+        const www = document.getElementById('www').value.trim();
+        // if (www) params.append('www', www);
+
+        const rue = document.getElementById('rue').value.trim();
+        const code = document.getElementById('code').value.trim();
+        const ville = document.getElementById('ville').value.trim();
+        const pays = document.getElementById('pays').value.trim();
+        adresse = organisation+';'+rue+';'+ville+';;'+code+';'+pays;
+        let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${fonction}\nEND:VCARD\n`);
+        console.log(_texte)
+        return {vCard:_texte, nom:nom, societe:organisation};
+      }
       function generateUrl() {
 //        const baseUrl = 'https://draft.e-coucou.com/api/qrcode/vcard?';
         const baseUrl = baseOrigin + '/api/qrcode/vcard?';
@@ -108,6 +137,28 @@
           })
           .catch(error => console.error('Erreur image :', error));
       }
+      function addWallet() {
+        const { vCard, nom, societe } = generateVCARD();
+        fetch('/api/qrcode/get_pkpass', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ vCard, nom , societe })
+          })
+          .then(response => response.blob())
+          .then(blob => {
+            const aUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = aUrl;
+            // a.download = 'pass.pkpass';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            }
+          )
+        // .then(response => response.json())
+        // .then(data => console.log(data))
+        .catch(error => console.error('Erreur Wallet Création :', error));
+      }
 
       function updateMap() {
         const rue = document.getElementById('rue').value.trim();
@@ -156,16 +207,19 @@
         const btFetchImg = document.getElementById('btFetchImg');
         const btGetImage = document.getElementById('btGetImage');
         const btLaunch = document.getElementById('btLaunch');
+        const btWallet = document.getElementById('btWallet');
         btFetchImg.style.backgroundColor = btColor.value;
         btLaunch.style.backgroundColor = btColor.value;
+        btWallet.style.backgroundColor = btColor.value;
         btGetImage.style.backgroundColor = btColor.value;
 
         // Mettre à jour dynamiquement la couleur
         btColor.addEventListener('input', () => {
-            btFetchImg.style.backgroundColor = btColor.value;
-            btLaunch.style.backgroundColor = btColor.value;
-            btGetImage.style.backgroundColor = btColor.value;
-        });
+                btFetchImg.style.backgroundColor = btColor.value;
+                btLaunch.style.backgroundColor = btColor.value;
+                btGetImage.style.backgroundColor = btColor.value;
+                btWallet.style.backgroundColor = btColor.value;
+            });
         });
     // Rechargement des cookies
     function loadFormFromCookie() {
@@ -374,10 +428,14 @@ END:VCARD
         <div class="mt-6">
           <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
         </div>
+        <div class="mt-6">
+          <img id="getWallet" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="Wallet" />
+        </div>
         <div class="flex gap-2 mt-2">
           <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button>
           <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Get QR-Code</button>
           <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700">Afficher QR-Code</button>
+          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 text-white rounded hover:bg-green-700">+Wallet</button>
         </div>
       </section>
     </main>

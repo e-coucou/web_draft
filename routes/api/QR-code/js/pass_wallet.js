@@ -4,7 +4,7 @@ const path = require('path');
 const pass_tpl = require("./pass_template");
 const { v4: uuidv4 } = require('uuid');
 
-async function getPassWallet() {
+async function getPassWallet(vcardData, nom, societe) {
 
     function addCert() { return certs ; };
     function addProps() {return passData ; };
@@ -14,7 +14,6 @@ async function getPassWallet() {
     const signerKey = path.join(CERT_FOLDER, 'signerKey.pem');
     const WWDR = path.join(CERT_FOLDER, 'wwdr.pem');
     const signerKeyPassphrase = process.env.KEYPASSPHRASE; // Mot de passe du fichier .p12
-    const { vcardData, nom, societe } = {vcardData:'BEGIN:VCARD VERSION:4.0 FN:John DOE N:DOE;John;;; EMAIL;TYPE=INTERNET:john.doe@e-coucou.com END VCARD', nom:'Eric', societe:'eCoucou'};
  
     // Charger les certificats
     const certs = {
@@ -42,7 +41,6 @@ async function getPassWallet() {
     // console.log(passData);
     // const pass_i = new PKPass(passData, certs);
     // pass_i.type = 'generic';
-    // OLD by EP
     // console.log(pass_i);
     const pass = await PKPass.from(
       {
@@ -62,6 +60,7 @@ async function getPassWallet() {
     //     logoText: 'vCard'
     );
     pass.type = "generic";
+    pass.setBarcodes({message:vcardData,format:"PKBarcodeFormatQR"});
     console.log('---------------',pass);
     const buffer = pass.getAsBuffer();
     // const buffer = await PKPass.generate();
