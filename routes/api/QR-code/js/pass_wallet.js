@@ -1,13 +1,15 @@
+const {eCoucou} = require("./info");
+
 const { PKPass } = require('passkit-generator');
 const fs = require('fs');
 const path = require('path');
 const pass_tpl = require("./pass_template");
 const { v4: uuidv4 } = require('uuid');
 
-async function getPassWallet(vcardData, nom, societe) {
-
+async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonction, couleur) {
     function addCert() { return certs ; };
     function addProps() {return passData ; };
+    function addGeneric() {return genericData ; };
     // --- Configuration Essentielle (les certifcats/les clés) ---
     const CERT_FOLDER = path.join('./routes/api/QR-code/', 'certs'); // Dossier où sont stockés les certificats
     const signerCert = path.join(CERT_FOLDER, 'signerCert.pem');
@@ -25,42 +27,54 @@ async function getPassWallet(vcardData, nom, societe) {
     // Préparer les données spécifiques du pass
     const passData = {
       ...pass_tpl, // Copie les valeurs par défaut du template
+      backgroundColor: couleur,
       teamIdentifier: process.env.ID_TEAM_APPLE,
       serialNumber: uuidv4(), // Génère un ID unique
-      barcode: {
-        ...pass_tpl.barcode, // Garde le format et l'encoding
-        message: vcardData, // Insère les données vCard pour le QR code
-        altText: `Carte de Visite: ${nom}`, // Texte alternatif
-      },
-      generic: { // Remplace/ajoute les valeurs spécifiques
-        ...pass_tpl.generic,
-        primaryFields: [{ ...pass_tpl.generic.primaryFields[0], value: nom }],
-        secondaryFields: societe ? [{ ...pass_tpl.generic.secondaryFields[0], value: societe }] : [], // Ajoute société si fournie
-      },
     };
-    // console.log(passData);
-    // const pass_i = new PKPass(passData, certs);
-    // pass_i.type = 'generic';
-    // console.log(pass_i);
     const pass = await PKPass.from(
       {
         model: path.join('./routes/api/QR-code/assets'),
         certificates: addCert() 
       },
       addProps(),
-    // {
-    //       wwdr: fs.readFileSync('./routes/api/QR-code/certs/wwdr.pem'),
-    //       signerCert: fs.readFileSync('./routes/api/QR-code/certs/signerCert.pem'),
-    //       signerKey: fs.readFileSync('./routes/api/QR-code/certs/signerKey.pem'),
-    //       signerKeyPassphrase: signerKeyPassphrase
-    //     }
-    //     serialNumber: '1234567890',
-    //     description: 'Mes coordonnées',
-    //     organizationName: 'eCoucou',
-    //     logoText: 'vCard'
     );
     pass.type = "generic";
     pass.setBarcodes({message:vcardData,format:"PKBarcodeFormatQR"});
+    pass.headerFields.push(
+        {
+            key: "1",
+            label: "V",
+            value: eCoucou().version,
+            textAlignment: "PKTextAlignmentCenter",
+        });
+    pass.primaryFields.push(
+        {
+            key: "p1",
+            label: societe,
+            value: prenom+' '+nom,
+            textAlignment: "PKTextAlignmentLeft",
+        });
+    pass.secondaryFields.push(
+            {
+                key: "s1",
+                label: fonction,
+                value: mobile,
+                textAlignment: "PKTextAlignmentLeft",
+            },
+            {
+                key: "s2",
+                label: www,
+                value: "by eCoucou",
+                textAlignment: "PKTextAlignmentLeft",
+            },
+        );
+    pass.auxiliaryFields.push(
+        {
+            key: "a1",
+            label: "de",
+            value: "version 1.1",
+            textAlignment: "PKTextAlignmentLeft",
+        });
     console.log('---------------',pass);
     const buffer = pass.getAsBuffer();
     // const buffer = await PKPass.generate();

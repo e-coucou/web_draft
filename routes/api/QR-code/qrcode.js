@@ -1,3 +1,5 @@
+const {eCoucou} = require("./js/info");
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -176,7 +178,7 @@ function createPNG(base_color,contraste,standard) {
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
-    fs.writeFileSync("./routes/api/QR-code/old/image.png", buffer, { encoding: "utf8", flag: "w+" });
+    fs.writeFileSync("./routes/api/QR-code/assets.pass/background.png", buffer, { encoding: "utf8", flag: "w+" });
     return Buffer.from(buffer,"base64");
 }
 function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
@@ -229,7 +231,7 @@ async function logMetrics(source, type, level, qualite, version, option, _txt  )
 }
 router.use(express.json());
 router.get("/version", (req, res) => {
-    res.status(200).json({version: 1.1, maj:'avril/25', release: 0.0});
+    res.status(200).json(eCoucou());
 });
 router.get("/vcard", async (req,res) => {
     // On nettoye les 'undefined'
@@ -326,10 +328,9 @@ router.get("/metrics_data", async(req,res) => {
     // res.render(path.join(__dirname,'./tpl/metrics_loop.ejs'), { data: formattedData });
 });
 router.post("/get_pkpass", async(req, res, next) => {
-    const { vCard, nom, societe } = req.body;
-    console.log(vCard, nom, societe);
+    const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
     try {
-        const buffer = await getPassWallet(vCard, nom, societe);
+        const buffer = await getPassWallet(vCard, nom, societe, prenom, www, mobile, fonction, couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
         // res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
         res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);
@@ -339,9 +340,8 @@ router.post("/get_pkpass", async(req, res, next) => {
         // console.error('Erreur lors de la génération du pass :', err);
         res.status(500).send({ error: 'Erreur génération pass', err: err });
     }
-
 });
-router.get("/wallet", async (req, res) => {
+router.get("/wallet_test", async (req, res) => {
     const vcardData = 'BEGIN:VCARD VERSION:4.0\nFN:John DOE\nN:DOE;John;;M.;\nEMAIL;TYPE=INTERNET:john.doe@domain.net\nEND:VCARD';
     const nom = "Eric";
     const societe = "eCoucou";

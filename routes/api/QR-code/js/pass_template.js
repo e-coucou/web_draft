@@ -10,13 +10,14 @@ const passTemplate = {
 
   // --- Informations générales (peuvent être personnalisées) ---
   organizationName: "eCoucou",
-  description: "Carte de Visite Numérique",
-  logoText: "Contact",
+  description: "Ma Carte de Visite",
+  logoText: "vCard",
 
   // --- Apparence (personnalisable) ---
   foregroundColor: "rgb(255, 255, 255)",
-  backgroundColor: "rgb(60, 60, 60)",
-  labelColor: "rgb(200, 200, 200)",
+//   backgroundColor: "rgb(255, 176, 29)",
+  backgroundColor: "rgb(131, 215, 197)",
+  labelColor: "rgb(206, 201, 201)",
 
   // --- Code-barres (sera rempli dynamiquement) ---
   barcode: {
@@ -27,30 +28,30 @@ const passTemplate = {
   },
 
   // --- Structure du Pass (ici type 'generic', personnalisable) ---
-  generic: {
-    primaryFields: [
-      {
-        key: "nom", // Clé interne
-        label: "Nom", // Étiquette affichée
-        // 'value' sera ajouté dynamiquement
-      }
-    ],
-    secondaryFields: [
-       {
-        key: "societe",
-        label: "Société",
-        // 'value' sera ajouté dynamiquement
-      }
-    ],
-     auxiliaryFields: [
-      {
-        key: "info",
-        label: "Scannez le QR Code",
-        value: "Pour ajouter aux contacts"
-      }
-    ],
-    // backFields: [ ... ] // Pour le verso du pass
-  },
+//   generic: {
+//     primaryFields: [
+//       {
+//         key: "nom", // Clé interne
+//         label: "Nom", // Étiquette affichée
+//         // 'value' sera ajouté dynamiquement
+//       }
+//     ],
+//     secondaryFields: [
+//        {
+//         key: "societe",
+//         label: "Société",
+//         // 'value' sera ajouté dynamiquement
+//       }
+//     ],
+//      auxiliaryFields: [
+//       {
+//         key: "info",
+//         label: "Scannez le QR Code",
+//         value: "Pour ajouter aux contacts"
+//       }
+//     ],
+//     // backFields: [ ... ] // Pour le verso du pass
+//   },
 
   // --- Données spécifiques (sera rempli dynamiquement) ---
   serialNumber: "" // Sera généré dynamiquement
