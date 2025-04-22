@@ -34,7 +34,6 @@
       function generateWallet() {
         let nom = document.getElementById('nom').value.trim();
         let _texte = document.getElementById('code').value.trim();
-        console.log(_texte)
         return {wallet:_texte, nom:nom, couleur: document.getElementById('color').value};
       }
       function generateUrl() {
@@ -79,7 +78,6 @@
       }
       function addWallet() {
         const { wallet, nom, couleur } = generateWallet();
-        console.log(wallet)
         fetch('/api/qrcode/get_wallet', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

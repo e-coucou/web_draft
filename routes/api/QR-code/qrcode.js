@@ -341,7 +341,6 @@ router.post("/get_pkpass", async(req, res, next) => {
 });
 router.post("/get_wallet", async(req, res, next) => {
     const { wallet, nom, couleur } = req.body;
-    console.log(wallet,nom,couleur, req.body);
     const [image, base_color] = encodeQR(wallet, 'L', 8, -1, 1, 1,couleur);
     try {
         const buffer = await getBarreCode(nom, wallet, couleur);

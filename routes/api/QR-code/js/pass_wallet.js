@@ -77,7 +77,6 @@ async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonct
     const buffer = pass.getAsBuffer();
     return buffer;
 }
-
 async function getBarreCode(nom, code,couleur) {
     function addProps() {return passData ; };
     const passData = {
@@ -118,7 +117,6 @@ async function getBarreCode(nom, code,couleur) {
             value: code,
             textAlignment: "PKTextAlignmentLeft",
         });
-    console.log("---", pass);
     const buffer = pass.getAsBuffer();
     return buffer;
 }
