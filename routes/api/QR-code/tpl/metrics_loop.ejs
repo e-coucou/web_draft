@@ -4,25 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>QR-Code Metrics ...</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/css/styleTail.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            animation: {
-              fade: 'fadeIn 0.5s ease-in-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: 0 },
-                '100%': { opacity: 1 },
-              },
-            },
-          },
-        },
-      };
     function toggleDarkMode() {
       document.documentElement.classList.toggle('dark');
       }

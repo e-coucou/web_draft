@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>QR-Code Documentation</title>
+    <link href="/css/styleTail.css" rel="stylesheet">
     <style>
     @media (max-width: 600px) {
     .footer-bar {
@@ -19,24 +20,7 @@
         }
     }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            animation: {
-              fade: 'fadeIn 0.5s ease-in-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: 0 },
-                '100%': { opacity: 1 },
-              },
-            },
-          },
-        },
-      };
       const currentUrl = window.location.href;
       const baseOrigin = window.location.origin;
       let adresse='';

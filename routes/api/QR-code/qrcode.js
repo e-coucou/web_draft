@@ -11,7 +11,7 @@ const { Polynome, logTable, createPoly } = require("./js/reed_salomon");
 const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
-const {getPassWallet} = require("./js/pass_wallet");
+const {getPassWallet, getBarreCode} = require("./js/pass_wallet");
 
 const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("./js/crypto-aes");
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -340,11 +340,12 @@ router.post("/get_pkpass", async(req, res, next) => {
     }
 });
 router.get("/wallet_test", async (req, res) => {
-    const vcardData = 'BEGIN:VCARD VERSION:4.0\nFN:John DOE\nN:DOE;John;;M.;\nEMAIL;TYPE=INTERNET:john.doe@domain.net\nEND:VCARD';
-    const nom = "Eric";
-    const societe = "eCoucou";
+    const code = '018137-440-01';
+    const nom = "Mons";
+    const couleur = "#458192"
+    const [image, base_color] = encodeQR(code, 'L', 2, -1, 1, 1,"#000000");
     try {
-        const buffer = await getPassWallet(vcardData, nom, societe);
+        const buffer = await getBarreCode(nom, code,couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
         res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
         // res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);
