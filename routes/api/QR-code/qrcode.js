@@ -339,6 +339,22 @@ router.post("/get_pkpass", async(req, res, next) => {
         res.status(500).send({ error: 'Erreur génération pass', err: err });
     }
 });
+router.post("/get_wallet", async(req, res, next) => {
+    const { wallet, nom, couleur } = req.body;
+    console.log(wallet,nom,couleur, req.body);
+    const [image, base_color] = encodeQR(wallet, 'L', 8, -1, 1, 1,couleur);
+    try {
+        const buffer = await getBarreCode(nom, wallet, couleur);
+        res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
+        // res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
+        res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);
+        res.setHeader('Content-Length', buffer.length);
+        res.status(200).send(buffer);
+    } catch (err) {
+        // console.error('Erreur lors de la génération du pass :', err);
+        res.status(500).send({ error: 'Erreur génération pass', err: err });
+    }
+});
 router.get("/wallet_test", async (req, res) => {
     const code = '018137-440-01';
     const nom = "Mons";
