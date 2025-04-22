@@ -343,7 +343,7 @@ router.get("/wallet_test", async (req, res) => {
     const code = '018137-440-01';
     const nom = "Mons";
     const couleur = "#458192"
-    const [image, base_color] = encodeQR(code, 'L', 4, -1, 1, 1,"#000000");
+    const [image, base_color] = encodeQR(code, 'L', 8, -1, 1, 1,"#000000");
     try {
         const buffer = await getBarreCode(nom, code,couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
