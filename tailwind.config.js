@@ -8,6 +8,18 @@ module.exports = {
   plugins: [],
   darkMode: 'class',
   theme: {
+    colors: {
+      bgDark: '#1C1C1C', //text-gray-200 
+      txtDark: '#F8F9F9',
+      PDark: '#2ECC71',
+      SDark: '#58D68D',
+      AccentDark: "#A3E4D7",
+      bgClair: '#F8F9F9', //text-gray-200 
+      txtClair: '#2C3E50',
+      PClair: '#2ECC71',
+      SClair: '#A3E4D7',
+      AccentClair: "#1A7940"
+    },
     extend: {
       animation: {
         fade: 'fadeIn 0.5s ease-in-out forwards',

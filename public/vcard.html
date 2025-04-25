@@ -193,18 +193,18 @@
         const btGetImage = document.getElementById('btGetImage');
         // const btLaunch = document.getElementById('btLaunch');
         const btWallet = document.getElementById('btWallet');
-        btFetchImg.style.backgroundColor = btColor.value;
-        // btLaunch.style.backgroundColor = btColor.value;
-        btWallet.style.backgroundColor = btColor.value;
-        btGetImage.style.backgroundColor = btColor.value;
+        // btFetchImg.style.backgroundColor = btColor.value;
+        // // btLaunch.style.backgroundColor = btColor.value;
+        // btWallet.style.backgroundColor = btColor.value;
+        // btGetImage.style.backgroundColor = btColor.value;
 
         // Mettre à jour dynamiquement la couleur
-        btColor.addEventListener('input', () => {
-                btFetchImg.style.backgroundColor = btColor.value;
-                // btLaunch.style.backgroundColor = btColor.value;
-                btGetImage.style.backgroundColor = btColor.value;
-                btWallet.style.backgroundColor = btColor.value;
-            });
+        // btColor.addEventListener('input', () => {
+        //         btFetchImg.style.backgroundColor = btColor.value;
+        //         // btLaunch.style.backgroundColor = btColor.value;
+        //         btGetImage.style.backgroundColor = btColor.value;
+        //         btWallet.style.backgroundColor = btColor.value;
+        //     });
         });
     // Rechargement des cookies
     function loadFormFromCookie() {
@@ -236,35 +236,33 @@
 
   </script>
   </head>
-  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
-    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
+  <body class="bg-bgClair dark:bg-bgDark text-txtClair dark:text-txtDark font-sans transition-colors duration-300">
+    <header class="bg-bgClair dark:bg-bgDark shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
       <div class="flex items-center gap-4">
-        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
-        <h1 class="text-xl font-semibold">QR-Code Documentation</h1>
+        <!-- <img src="../../img/ecoucou.png" alt="Logo" class="h-12" /> -->
+        <img src="../../img/ecoucou.jpeg" alt="Logo" class="h-12" />
+        <h1 class="text-xl font-semibold">QR-Code</h1>
       </div>
-      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
+      <button onclick="toggleDarkMode()" class="bg-SClair dark:bg-SDark text-txtClair px-4 py-1 rounded">🌓 Mode</button>
     </header>
 
-    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
+    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade accent-AccentClair dark:accent-AccentDark placeholder-blue-900" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
       <section class="text-center">
         <h2 class="text-2xl font-bold">Carte de Visite</h2>
       </section>
       <section class="mt-8">
-        <!-- <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <summary class="font-medium cursor-pointer">🎯 Constructeur d'URL</summary> -->
-        <!-- <h3 class="text-xl font-semibold mb-2">🎯 Constructeur d'URL</h3> -->
         <div class="grid grid-cols-12 gap-4 mb-4">
           <div class="col-span-12 md:col-span-2">
             <label class="block">Genre</label>
-            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
           </div>
           <div class="col-span-12 md:col-span-5">
             <label class="block">Nom</label>
-            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded  bg-PClair dark:bg-PDark" />
           </div>
           <div class="col-span-12 md:col-span-5">
             <label class="block">Prénom</label>
-            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded  bg-PClair dark:bg-PDark" />
           </div>
         </div>
 
@@ -272,50 +270,50 @@
           <label class="block">Entreprise</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-3">
-                <input type="Organisation" id="organisation" placeholder="Département" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="Organisation" id="organisation" placeholder="Département" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-9">
-                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
             </div>
           <label class="block">Média Info</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-3">
-                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-4">
-                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-5">
-                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
             </div>
           <label class="block">Adresse</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-3">
-                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-2">
-                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-3">
-                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
               <div class="col-span-12 md:col-span-2">
-                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
               </div>
             </div>
             <div id="mapContainer" class="mt-4 hidden">
-              <div class="flex items-center text-gray-700 mb-2">
+              <div class="flex items-center mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12H9v5h2V6zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                   </svg>
                   <span class="font-semibold">Emplacement estimé</span>
               </div>
-              <div class="rounded-xl shadow-lg overflow-hidden border border-gray-200">
+              <div class="rounded-xl shadow-lg overflow-hidden border border-white-600">
                 <iframe id="googleMap" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
             </div>
@@ -324,7 +322,7 @@
           <label class="block">Design et Paramètres du QR-Code</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
                   <option value="L">L  (7%)</option>
                   <option value="M">M (15%)</option>
                   <option value="Q">Q (25%)</option>
@@ -333,7 +331,7 @@
               </div>
           <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
               <div class="col-span-12 md:col-span-2">
-                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
                     <option value="-1">-1</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -347,12 +345,12 @@
             </div>
             <div class="col-span-12 md:col-span-2">
               <label class="inline-flex items-center gap-2">
-                <input type="checkbox" id="contraste" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Contraste
+                <input type="checkbox" id="contraste" onchange="generateUrl()" class="form-checkbox" /> Contraste
               </label>
             </div>
             <div class="col-span-12 md:col-span-2">
               <label class="inline-flex items-center gap-2">
-                <input type="checkbox" id="standard" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Standard
+                <input type="checkbox" id="standard" onchange="generateUrl()" class="form-checkbox" /> Standard
               </label>
             </div>
             <div class="col-span-12 md:col-span-2">
@@ -363,7 +361,7 @@
         </div>
 
         <!-- </details> -->
-        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
+        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-PClair dark:bg-PDark text-txtClair dark:text-txtDark" />
         <div class="mt-6">
           <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
         </div>
@@ -371,15 +369,14 @@
           <img id="getWallet" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="Wallet" />
         </div>
         <div class="flex gap-2 mt-2">
-          <!-- <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button> -->
-          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"><i class="fa-solid fa-cloud-download-alt"></i></button>
-          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700"><i class="fa-solid fa-qrcode qrcode-icon"></i></button>
-          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 text-white rounded hover:bg-green-700"><i class="fab fa-apple-pay"></i></button>
+          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-solid fa-cloud-download-alt"></i></button>
+          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-solid fa-qrcode qrcode-icon"></i></button>
+          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fab fa-apple-pay"></i></button>
         </div>
       </section>
     </main>
 
-    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
+    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-SClair dark:bg-SDark dark:text-AccentClair text-AccentClair py-0.5 rounded shadow">
       <p id="version"></p>
     </footer>
   </body>

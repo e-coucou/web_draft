@@ -113,7 +113,7 @@
             if (el) data[field] = el.value || (el.type === 'checkbox' ? el.checked : '');
         });
 
-        document.cookie = `vcardForm=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=604800`; // 7 jours
+        document.cookie = `walletForm=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=8640000`; // 100 jours
         }      
     // Lancer updateMap à chaque modification des champ
     window.addEventListener('DOMContentLoaded', () => {
@@ -125,23 +125,23 @@
         const btGetImage = document.getElementById('btGetImage');
         // const btLaunch = document.getElementById('btLaunch');
         const btWallet = document.getElementById('btWallet');
-        btFetchImg.style.backgroundColor = btColor.value;
-        // btLaunch.style.backgroundColor = btColor.value;
-        btWallet.style.backgroundColor = btColor.value;
-        btGetImage.style.backgroundColor = btColor.value;
+        // btFetchImg.style.backgroundColor = btColor.value;
+        // // btLaunch.style.backgroundColor = btColor.value;
+        // btWallet.style.backgroundColor = btColor.value;
+        // btGetImage.style.backgroundColor = btColor.value;
 
         // Mettre à jour dynamiquement la couleur
-        btColor.addEventListener('input', () => {
-                btFetchImg.style.backgroundColor = btColor.value;
-                btGetImage.style.backgroundColor = btColor.value;
-                btWallet.style.backgroundColor = btColor.value;
-            });
+        // btColor.addEventListener('input', () => {
+        //         btFetchImg.style.backgroundColor = btColor.value;
+        //         btGetImage.style.backgroundColor = btColor.value;
+        //         btWallet.style.backgroundColor = btColor.value;
+        //     });
         });
     // Rechargement des cookies
     function loadFormFromCookie() {
         const cookie = document.cookie
             .split('; ')
-            .find(row => row.startsWith('vcardForm='));
+            .find(row => row.startsWith('walletForm='));
 
         if (!cookie) return;
 
@@ -167,31 +167,29 @@
 
   </script>
   </head>
-  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
-    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
+  <body class="bg-bgClair dark:bg-bgDark text-txtClair dark:text-txtDark font-sans transition-colors duration-300">
+    <header class="bg-bgClair dark:bg-bgDark shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
       <div class="flex items-center gap-4">
-        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
+        <!-- <img src="../../img/ecoucou.png" alt="Logo" class="h-12" /> -->
+        <img src="../../img/ecoucou.jpeg" alt="Logo" class="h-12" />
         <h1 class="text-xl font-semibold">QR-Code</h1>
       </div>
-      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
+      <button onclick="toggleDarkMode()" class="bg-SClair dark:bg-SDark text-txtClair px-4 py-1 rounded">🌓 Mode</button>
     </header>
 
-    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
+    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade accent-AccentClair dark:accent-Accent" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
       <section class="text-center">
         <h2 class="text-2xl font-bold">Coupon Wallet</h2>
       </section>
       <section class="mt-8">
-        <!-- <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <summary class="font-medium cursor-pointer">🎯 Constructeur d'URL</summary> -->
-        <!-- <h3 class="text-xl font-semibold mb-2">🎯 Constructeur d'URL</h3> -->
         <div class="grid grid-cols-12 gap-4 mb-4">
-          <div class="col-span-12 md:col-span-5">
+          <div class="col-span-12 md:col-span-6">
             <label class="block">Nom</label>
-            <input type="text" id="nom" placeholder="My Society" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="nom" placeholder="My Society" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
           </div>
-          <div class="col-span-12 md:col-span-5">
+          <div class="col-span-12 md:col-span-6">
             <label class="block">Code</label>
-            <input type="text" id="code" placeholder="CodeBar" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="code" placeholder="CodeBar" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark" />
           </div>
         </div>
 
@@ -200,7 +198,7 @@
           <label class="block">Design et Paramètres du QR-Code</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
                   <option value="L">L  (7%)</option>
                   <option value="M">M (15%)</option>
                   <option value="Q">Q (25%)</option>
@@ -209,7 +207,7 @@
               </div>
           <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
               <div class="col-span-12 md:col-span-2">
-                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
                     <option value="-1">-1</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -223,15 +221,15 @@
             </div>
             <div class="col-span-12 md:col-span-2">
               <label class="inline-flex items-center gap-2">
-                <input type="checkbox" id="contraste" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Contraste
+                <input type="checkbox" id="contraste" onchange="generateUrl()" class="form-checkbox text-txtClair dark:text-txtDark" /> Contraste
               </label>
             </div>
             <div class="col-span-12 md:col-span-2">
               <label class="inline-flex items-center gap-2">
-                <input type="checkbox" id="standard" onchange="generateUrl()" class="form-checkbox text-blue-600" /> Standard
+                <input type="checkbox" id="standard" onchange="generateUrl()" class="form-checkbox cursor-pointer" /> Standard
               </label>
             </div>
-            <div class="col-span-12 md:col-span-2">
+            <div class="col-span-12 md:col-span-3">
               <label class="block">Couleur</label>
               <input type="color" id="color" value="#b82b5b" onchange="generateUrl()" class="w-full h-10" />
             </div>
@@ -239,7 +237,7 @@
         </div>
 
         <!-- </details> -->
-        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
+        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-PClair dark:bg-PDark text-txtClair dark:text-txtDark" />
         <div class="mt-6">
           <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
         </div>
@@ -247,15 +245,14 @@
           <img id="getWallet" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="Wallet" />
         </div>
         <div class="flex gap-2 mt-2">
-          <!-- <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button> -->
-          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"><i class="fa-solid fa-cloud-download-alt"></i></button>
-          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700"><i class="fa-solid fa-qrcode qrcode-icon"></i></button>
-          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 text-white rounded hover:bg-green-700"><i class="fab fa-apple-pay"></i></button>
+          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-solid fa-cloud-download-alt"></i></button>
+          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-solid fa-qrcode qrcode-icon"></i></button>
+          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fab fa-apple-pay"></i></button>
         </div>
       </section>
     </main>
 
-    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
+    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-SClair dark:bg-SDark dark:text-AccentClair text-AccentClair py-0.5 rounded shadow">
       <p id="version"></p>
     </footer>
   </body>
