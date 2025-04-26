@@ -1,15 +1,28 @@
 {
   "name": "eCoucou",
   "short_name": "eCoucou",
-  "start_url": "/",
+  "description": "Explorez les contenus interactifs de eCoucou, votre portail intuitif et moderne.",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#F0FAF4",
   "theme_color": "#10B981",
+  "orientation": "portrait-primary",
+  "scope": "/",
   "icons": [
     {
       "src": "/favicon.ico",
-      "sizes": "48x48",
+      "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }
