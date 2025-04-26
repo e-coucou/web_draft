@@ -124,7 +124,7 @@ function optimise() {
     }
     return (sel);
 }
-function createPNG(base_color,contraste,standard) {
+function createPNG(base_color,contraste,standard,option=true) {
     const width = (dim+2)*DIM;
     const height = (dim+2)*DIM;
 
@@ -177,11 +177,14 @@ function createPNG(base_color,contraste,standard) {
     }
 
     const buffer = canvas.toBuffer("image/png");
-    fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
-    fs.writeFileSync("./routes/api/QR-code/assets.pass/thumbnail.png", buffer, { encoding: "utf8", flag: "w+" });
+    if (option) {
+        fs.writeFileSync("./routes/api/QR-code/assets.pass/thumbnail.png", buffer, { encoding: "utf8", flag: "w+" });
+    } else {
+        fs.writeFileSync("./public/images/image.png", buffer, { encoding: "utf8", flag: "w+" });
+    }
     return Buffer.from(buffer,"base64");
 }
-function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
+function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,option=true) {
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
@@ -210,7 +213,7 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR) {
         level = optimise();
         createQR(level);
     }
-    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1);
+    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1,option);
     return [image, base_color];
 }
 async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
@@ -327,6 +330,7 @@ router.get("/metrics_data", async(req,res) => {
 });
 router.post("/get_pkpass", async(req, res, next) => {
     const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
+    const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'L', 8, -1, 1, 1,couleur,true);
     try {
         const buffer = await getPassWallet(vCard, nom, societe, prenom, www, mobile, fonction, couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
@@ -341,7 +345,9 @@ router.post("/get_pkpass", async(req, res, next) => {
 });
 router.post("/get_wallet", async(req, res, next) => {
     const { wallet, nom, couleur, type } = req.body;
-    const [image, base_color] = encodeQR(wallet, 'L', 8, -1, 1, 1,couleur);
+    const option = (type==="QR") ? false : true;
+    const mess_ = option ? wallet : 'https://draft.e-coucou.com';
+    const [image, base_color] = encodeQR(mess_, 'L', 8, -1, 1, 1,couleur,option);
     try {
         const buffer = await getBarreCode(nom, wallet, couleur, type);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
