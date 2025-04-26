@@ -307,7 +307,7 @@ router.get("/audit", async(req,res) => {
 
     // Filtrer uniquement les objets avec type == "vCard"
     const filtered = Object.entries(allData)
-        .filter(([_, v]) => v.type === "vCard")
+        // .filter(([_, v]) => v.type === "vCard")
         .map(([id, v]) => ({ id, ...v }));
     dataArray = Object.entries(filtered).map(([id, item]) => ({ id,...item }));
     const formattedData = dataArray.map(item => ({

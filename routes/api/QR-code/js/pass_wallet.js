@@ -20,6 +20,16 @@ const certs = {
     signerKey: fs.readFileSync(signerKey),
     signerKeyPassphrase: signerKeyPassphrase,
 };
+function getBrightness(hexColor) {
+    // Enlève le "#" si présent
+    hexColor = hexColor.replace('#', '');
+    // Convertir en valeurs R, V, B
+    let r = parseInt(hexColor.substring(0, 2), 16);
+    let g = parseInt(hexColor.substring(2, 4), 16);
+    let b = parseInt(hexColor.substring(4, 6), 16);
+    // Formule de luminance perçue
+    return (0.299 * r + 0.587 * g + 0.114 * b);
+}
 function addCert() { return certs ; };
 function addBack_id(id) { 
     const b_id = {
@@ -73,6 +83,11 @@ function addField(key,label,value,align="PKTextAlignmentCenter") {
     };
     return info;
 }
+function getLabelCouleur(couleur) {
+    const bright = getBrightness(couleur);
+    const labelCoul = (bright>127) ? "#3A3A3A" : "#cdcdcd";
+    return labelCoul;
+}
 async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonction, couleur) {
     function addProps() {return passData ; };
     const vCardID = uuidv4();
@@ -80,6 +95,7 @@ async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonct
     const passData = {
         ...pass_tpl, // Copie les valeurs par défaut du template
         backgroundColor: couleur,
+        labelColor: getLabelCouleur(couleur),
         teamIdentifier: process.env.ID_TEAM_APPLE,
         serialNumber: vCardID, // Génère un ID unique
     };
@@ -110,8 +126,9 @@ async function getBarreCode(nom, code,couleur,type) {
     drawStrip(couleur);
     const passData = {
         ...pass_tpl, // Copie les valeurs par défaut du template
-        logoText: "018137",
+        logoText: code.split('-')[0],
         backgroundColor: couleur,
+        labelColor: getLabelCouleur(couleur),
         teamIdentifier: process.env.ID_TEAM_APPLE,
         serialNumber: vCardID, // Génère un ID unique
     };

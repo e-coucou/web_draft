@@ -12,6 +12,18 @@
     "link": "wallet.html"
   },
   {
+    "title": "Admin-Metrics",
+    "description": "Metric de création de QR-Code",
+    "image": "./images/wallet.png",
+    "link": "/api/qrcode/metrics"
+  },
+  {
+    "title": "Admin-AuditTrail",
+    "description": "Log de création de QR-Code",
+    "image": "./images/wallet.png",
+    "link": "/api/qrcode/audit"
+  },
+{
     "title": "zipf",
     "description": "Evolution de la Population Française depuis 1968",
     "image": "./img/france.png",
