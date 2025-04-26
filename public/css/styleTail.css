@@ -707,6 +707,9 @@ video {
 .font-semibold {
   font-weight: 600;
 }
+.italic {
+  font-style: italic;
+}
 .text-AccentClair {
   --tw-text-opacity: 1;
   color: rgb(26 121 64 / var(--tw-text-opacity, 1));

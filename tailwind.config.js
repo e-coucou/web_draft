@@ -18,9 +18,12 @@ module.exports = {
       txtClair: '#2C3E50',
       PClair: '#2ECC71',
       SClair: '#A3E4D7',
-      AccentClair: "#1A7940"
+      AccentClair: "#1A7940",
     },
     extend: {
+      colors:{
+        placeholderL: '#000010',
+      },
       animation: {
         fade: 'fadeIn 0.5s ease-in-out forwards',
       },
