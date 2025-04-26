@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bienvenue sur eCoucou, votre espace interactif pour découvrir nos pages thématiques.">
+  <meta name="author" content="eCoucou">
+  <meta name="robots" content="index, follow">
+  <title>eCoucou - Accueil</title>
+  <link rel="preload" href="./data/pages.json" as="fetch" type="application/json" crossorigin="anonymous">
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade-in{opacity:0;transform:translateY(20px);animation:fadeInUp 1s forwards}@keyframes fadeInUp{to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-100">
+<nav class="bg-white shadow-md fixed w-full z-10">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="text-xl font-bold text-blue-600">eCoucou</div>
+    <div class="space-x-4">
+      <a href="#" class="text-gray-700 hover:text-blue-500">Home</a>
+      <a href="#" class="text-gray-700 hover:text-blue-500">About</a>
+      <a href="#" class="text-gray-700 hover:text-blue-500">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="flex-1 flex items-center justify-center bg-gradient-to-br from-cyan-300 to-blue-500 text-white text-center p-6 mt-16">
+  <h1 class="text-4xl md:text-6xl font-bold animate-pulse">Bienvenue sur eCoucou!</h1>
+</div>
+
+<div class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 bg-white" id="gallery"></div>
+
+<footer class="bg-gray-800 text-gray-300 text-center p-4 text-sm mt-6">
+  &copy; 2025 eCoucou. Tous droits réservés.
+</footer>
+
+<script>
+    fetch('./data/pages.json', { cache: 'force-cache' })
+    .then(response => response.json())
+    .then(pages => {
+        const gallery = document.getElementById('gallery');
+        pages.forEach((page, i) => {
+        gallery.innerHTML += `
+            <a href="${page.link}" class="group block bg-gray-50 rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden fade-in" style="animation-delay:${0.1*(i+1)}s;">
+            <img src="${page.image}" alt="${page.title}" class="w-full h-40 object-cover group-hover:scale-105 transition">
+            <div class="p-4 text-center">
+                <h2 class="font-bold text-lg">${page.title}</h2>
+                <p class="text-gray-600 text-sm mt-1">${page.description}</p>
+            </div>
+            </a>`;
+        });
+    });
+// const pages = [
+//   {title:"Page 1",desc:"Short description 1",img:"https://via.placeholder.com/300",link:"page1.html"},
+//   {title:"Page 2",desc:"Short description 2",img:"https://via.placeholder.com/300",link:"page2.html"},
+//   {title:"Page 3",desc:"Short description 3",img:"https://via.placeholder.com/300",link:"page3.html"},
+//   {title:"Page 4",desc:"Short description 4",img:"https://via.placeholder.com/300",link:"page4.html"},
+//   {title:"Page 5",desc:"Short description 5",img:"https://via.placeholder.com/300",link:"page5.html"},
+//   {title:"Page 6",desc:"Short description 6",img:"https://via.placeholder.com/300",link:"page6.html"},
+//   {title:"Page 7",desc:"Short description 7",img:"https://via.placeholder.com/300",link:"page7.html"},
+//   {title:"Page 8",desc:"Short description 8",img:"https://via.placeholder.com/300",link:"page8.html"},
+//   {title:"Page 9",desc:"Short description 9",img:"https://via.placeholder.com/300",link:"page9.html"},
+//   {title:"Page 10",desc:"Short description 10",img:"https://via.placeholder.com/300",link:"page10.html"},
+// ];
+
+const gallery=document.getElementById('gallery');
+pages.forEach((page,i)=>{
+  gallery.innerHTML+=`
+    <a href="${page.link}" class="group block bg-gray-50 rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden fade-in" style="animation-delay:${0.1*(i+1)}s;">
+      <img src="${page.img}" alt="${page.title}" class="w-full h-40 object-cover group-hover:scale-105 transition">
+      <div class="p-4 text-center">
+        <h2 class="font-bold text-lg">${page.title}</h2>
+        <p class="text-gray-600 text-sm mt-1">${page.desc}</p>
+      </div>
+    </a>`;
+});
+</script>
+
+</body>
+</html>

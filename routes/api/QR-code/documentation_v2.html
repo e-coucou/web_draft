@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>QR-Code Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="/css/styleTail.css" rel="stylesheet">
     <style>
     @media (max-width: 600px) {
@@ -192,18 +193,18 @@
         const btGetImage = document.getElementById('btGetImage');
         const btLaunch = document.getElementById('btLaunch');
         const btWallet = document.getElementById('btWallet');
-        btFetchImg.style.backgroundColor = btColor.value;
-        btLaunch.style.backgroundColor = btColor.value;
-        btWallet.style.backgroundColor = btColor.value;
-        btGetImage.style.backgroundColor = btColor.value;
+        // btFetchImg.style.backgroundColor = btColor.value;
+        // btLaunch.style.backgroundColor = btColor.value;
+        // btWallet.style.backgroundColor = btColor.value;
+        // btGetImage.style.backgroundColor = btColor.value;
 
         // Mettre à jour dynamiquement la couleur
-        btColor.addEventListener('input', () => {
-                btFetchImg.style.backgroundColor = btColor.value;
-                btLaunch.style.backgroundColor = btColor.value;
-                btGetImage.style.backgroundColor = btColor.value;
-                btWallet.style.backgroundColor = btColor.value;
-            });
+        // btColor.addEventListener('input', () => {
+        //         btFetchImg.style.backgroundColor = btColor.value;
+        //         btLaunch.style.backgroundColor = btColor.value;
+        //         btGetImage.style.backgroundColor = btColor.value;
+        //         btWallet.style.backgroundColor = btColor.value;
+        //     });
         });
     // Rechargement des cookies
     function loadFormFromCookie() {
@@ -235,25 +236,25 @@
 
   </script>
   </head>
-  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
-    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
+  <body class="bg-bgClair dark:bg-bgDark text-txtClair dark:text-txtDark font-sans transition-colors duration-300">
+    <header class="bg-bgClair dark:bg-bgDark shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
       <div class="flex items-center gap-4">
-        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
-        <h1 class="text-xl font-semibold">QR-Code Documentation</h1>
+        <img src="../../img/ecoucou.png" alt="eCoucou" class="h-12" />
+        <!-- <img src="../../img/ecoucou.jpeg" alt="Logo" class="h-12" /> -->
+        <h1 class="text-xl font-semibold">QR-Documentation</h1>
       </div>
-      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">🌓 Mode</button>
+      <button onclick="toggleDarkMode()" class="bg-SClair dark:bg-SDark text-txtClair px-4 py-1 rounded">🌓 Mode</button>
     </header>
 
-    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
+    <main class="p-6 max-w-5xl mx-auto space-y-6 animate-fade accent-AccentClair dark:accent-Accent" style="max-height:85vh; overflow-y:auto; overflow-x: auto; -webkit-overflow-scrolling:touch;">
       <section class="text-center">
         <h2 class="text-2xl font-bold">Carte de Visite</h2>
       </section>
-      <section>
         <h3 class="text-lg font-semibold mb-2">Root commande :</h3>
         <div class="flex items-center gap-2 mb-4">
-          <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">/api/qrcode/vcard?param1=val1&param2=val2</code>
+          <code class="bg-bgClair dark:bg-bgDark px-2 py-1 rounded text-sm">/api/qrcode/vcard?param1=val1&param2=val2</code>
         </div>
-        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <details class="mb-4 bg-bgPClair dark:bg-bgPDark text-txtClair dark:text-txtDark p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">📇 Identification</summary>
           <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
             <li><b>nom</b> = DOE → FN:John DOE</li>
@@ -263,14 +264,14 @@
             <li><b>mobile</b>, <b>fonction</b>, <b>organisation</b>, <b>www</b> → libres</li>
           </ul>
         </details>
-        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <details class="mb-4 bg-bgPClair dark:bg-bgDark p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">🏠 Adresse physique</summary>
           <ul class="list-disc pl-6 mt-2 text-sm">
             <li><b>site</b> → désigne le lieu</li>
             <li><b>adresse</b> → champs libres séparé par des ; Destinataire;Rue;Ville;??;Code Postal;Pays</li>
           </ul>
         </details>
-        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <details class="mb-4 bg-bgPClair dark:bg-bgDark p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">⚙️ Configuration QR-Code</summary>
           <ul class="list-disc pl-6 mt-2 text-sm">
             <li><b>QUAL</b> = L / M / Q / H</li>
@@ -281,7 +282,7 @@
             <li><b>STANDARD</b> = 1 ou 0</li>
           </ul>
         </details>
-        <details class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <details class="bg-bgPClair dark:bg-bgDark p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">📝 Exemple vCard</summary>
           <pre class="mt-2 text-sm bg-gray-50 dark:bg-gray-900 p-3 rounded overflow-x-auto">
 BEGIN:VCARD
@@ -295,21 +296,21 @@ END:VCARD
       </section>
 
       <section class="mt-8">
-        <details class="mb-4 bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <details class="mb-4 bg-bgPClair dark:bg-bgDark p-4 rounded shadow">
           <summary class="font-medium cursor-pointer">🎯 Constructeur d'URL</summary>
         <!-- <h3 class="text-xl font-semibold mb-2">🎯 Constructeur d'URL</h3> -->
         <div class="grid grid-cols-12 gap-4 mb-4">
           <div class="col-span-12 md:col-span-2">
             <label class="block">Genre</label>
-            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
           </div>
           <div class="col-span-12 md:col-span-5">
             <label class="block">Nom</label>
-            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
           </div>
           <div class="col-span-12 md:col-span-5">
             <label class="block">Prénom</label>
-            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
           </div>
         </div>
 
@@ -317,40 +318,40 @@ END:VCARD
           <label class="block">Entreprise</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-3">
-                <input type="Organisation" id="organisation" placeholder="Département" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="Organisation" id="organisation" placeholder="Département" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-9">
-                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
             </div>
           <label class="block">Média Info</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-3">
-                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-4">
-                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-5">
-                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
             </div>
           <label class="block">Adresse</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-3">
-                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-2">
-                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-3">
-                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
               <div class="col-span-12 md:col-span-2">
-                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700" />
+                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700" />
               </div>
             </div>
             <div id="mapContainer" class="mt-4 hidden">
@@ -369,7 +370,7 @@ END:VCARD
           <label class="block">Design et Paramètres du QR-Code</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700">
                   <option value="L">L  (7%)</option>
                   <option value="M">M (15%)</option>
                   <option value="Q">Q (25%)</option>
@@ -378,7 +379,7 @@ END:VCARD
               </div>
           <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
               <div class="col-span-12 md:col-span-2">
-                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700">
+                <select id="level" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-bgClair dark:bg-gray-700">
                     <option value="-1">-1</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -408,7 +409,7 @@ END:VCARD
         </div>
 
         </details>
-        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white" />
+        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-PClair dark:bg-PDark text-txtClair dark:text-txtDark" />
         <div class="mt-6">
           <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
         </div>
@@ -416,15 +417,15 @@ END:VCARD
           <img id="getWallet" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="Wallet" />
         </div>
         <div class="flex gap-2 mt-2">
-          <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Ouvrir dans un Onglet</button>
-          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Get QR-Code</button>
-          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 text-white rounded hover:bg-green-700">Afficher QR-Code</button>
-          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 text-white rounded hover:bg-green-700">+Wallet</button>
+          <button id="btLaunch" onclick="lauchURL()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-up-right-from-square"></i></button>
+          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-cloud-arrow-down"></i></button>
+          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-qrcode"></i></button>
+          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-id-card"></i></button>
         </div>
       </section>
     </main>
 
-    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
+    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-SClair dark:bg-SDark dark:text-AccentClair text-AccentClair py-0.5 rounded shadow">
       <p id="version"></p>
     </footer>
   </body>

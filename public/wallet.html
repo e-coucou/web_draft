@@ -33,8 +33,9 @@
       }
       function generateWallet() {
         let nom = document.getElementById('nom').value.trim();
+        let type = document.getElementById('type').value.trim();
         let _texte = document.getElementById('code').value.trim();
-        return {wallet:_texte, nom:nom, couleur: document.getElementById('color').value};
+        return {wallet:_texte, nom:nom, couleur: document.getElementById('color').value,type:type};
       }
       function generateUrl() {
 //        const baseUrl = 'https://draft.e-coucou.com/api/qrcode/vcard?';
@@ -77,11 +78,11 @@
           .catch(error => console.error('Erreur image :', error));
       }
       function addWallet() {
-        const { wallet, nom, couleur } = generateWallet();
+        const { wallet, nom, couleur, type } = generateWallet();
         fetch('/api/qrcode/get_wallet', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ wallet, nom, couleur  })
+            body: JSON.stringify({ wallet, nom, couleur, type  })
           })
           .then(response => response.blob())
           .then(blob => {
@@ -198,6 +199,12 @@
           <label class="block">Design et Paramètres du QR-Code</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
+                <select id="type" onchange="generateUrl()" placeholder="TYPE QR/BC" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
+                  <option value="QR">QR-CODE</option>
+                  <option value="BC">BAR-CODE</option>
+                </select>
+              </div>
+              <div class="col-span-12 md:col-span-2">
                 <select id="qual" onchange="generateUrl()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
                   <option value="L">L  (7%)</option>
                   <option value="M">M (15%)</option>
@@ -245,9 +252,9 @@
           <img id="getWallet" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="Wallet" />
         </div>
         <div class="flex gap-2 mt-2">
-          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-solid fa-cloud-download-alt"></i></button>
-          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-solid fa-qrcode qrcode-icon"></i></button>
-          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fab fa-apple-pay"></i></button>
+          <button id="btGetImage" onclick="GetImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-cloud-arrow-down"></i></button>
+          <button id="btFetchImg" onclick="fetchImage()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-qrcode"></i></button>
+          <button id="btWallet" onclick="addWallet()" class="px-4 py-2 bg-SClair dark:bg-SDark text-txtClair rounded dark:hover:bg-PDark hover:bg-PDark"><i class="fa-duotone fa-solid fa-id-card"></i></button>
         </div>
       </section>
     </main>

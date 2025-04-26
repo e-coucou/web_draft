@@ -21,8 +21,14 @@ module.exports = {
       AccentClair: "#1A7940",
     },
     extend: {
-      colors:{
-        placeholderL: '#000010',
+      colors: {
+        primary: '#34D399',
+        primaryDark: '#10B981',
+        backgroundLight: '#F0FAF4',
+        backgroundDark: '#052E16',
+        accent: '#A7F3D0',
+        textDark: '#1F2937',
+        textLight: '#F0FDF4',
       },
       animation: {
         fade: 'fadeIn 0.5s ease-in-out forwards',

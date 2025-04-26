@@ -1,84 +1,81 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>eCoucou Main Page</title>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eCoucou</title>
+  <meta name="theme-color" content="#10B981">
+  <link rel="manifest" href="./data/manifest.json">
+  <link href="/css/styleTail.css" rel="stylesheet">
+  <link rel="preload" href="./data/pages.json" as="fetch" type="application/json" crossorigin="anonymous">
   <style>
-    @import url(../css/styles2.css);
-  </style>
-  <head>
-    <title>Main Menu</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
-    <script src="js/sketch.js"></script>
-  </head>
-  <body>
-      <div style="outline: none;" tabindex="-1">
-        <div class="Layout-module--container">
-          <div class="Layout-module--content">
-            <div class="Topbar-module">
-              <header class="Topbar-module--root">
-                <div class="Topbar-module--clock">🐣</div>
-                <div class="Topbar-module--date" id="idDate"></div>
-                    <a href="./dev/Merlin/"><img class="Topbar-module--img" src="./img/Magic.png" /></a>
-                    <a href="./dev/Appolonian/"><img class="Topbar-module--img" src="./img/appolonian.png" /></a>
-                    <a href="./dev/28d Challenge/"><img class="Topbar-module--img" src="./img/ecoucou.png" /></a>
-                    <a href="./dev/Minuteur/"><img class="Topbar-module--img" src="./img/minuteur.png" /></a>
-                    <a href="./dev/Spirale Prime/"><img class="Topbar-module--img" src="./img/SpiralePrime.png" /></a>
-                    <a href="./dev/QR-Code/"><img class="Topbar-module--img" src="./img/QR-Code.gif" /></a>
-                <div class="Topbar-module--clock">🇫🇷</div>
-                <!-- <nav>
-                  <ul>
-                    <li><a href="./dev/Evolution/"><img class="menu" src="./img/p5_0.png" /></a></li>
-                    <li><a href="./dev/Automate Wolfram/"><img class="menu" src="./img/p5_1.png" /></a></li>
-                    <li><a href="./dev/Creative/"><img class="menu" src="./img/creative.png" /></a></li>
-                    <li><a href="./dev/QR-Code/"><img class="menu" src="./img/QR-Code.gif" /></a></li>
-                  </ul>
-                </nav> -->
-              </header>
-            </div>
-            <div class="challenge-module--simplestep"></div>
-            <main>
-              <div class="Main-module--root">
-                <div class="Section-module--appli">
-                  <div class="Section-module--titre" id="title">Particules</div>
-                  <div class="Section-module--description" id="description">Programme permettant la création de QR-Code.<br>Fonctionnalités :</div>
-                  <div class="Section-module-container--img" id="racc">
-                    <a href="./dev/QR-Code/" id="raccHREF">
-                      <img src="./img/QR-Code.gif" class="Section-module--img" id="raccIMG"/></a>
-                  </div>
-                </div>
-                <div class="Section-menu--container">
-                  <nav class="Section-module--menu">
-                    <div class="Section-menu--titre">
-                      <button>Applications</button>
-                    </div>
-                    <div class="Section-menu--root" id="menu">
-                      <!-- <button>Bouton 1</button>
-                      <button>Bouton 2</button>
-                      <button>Ceci est un bouton de sélection</button> -->
-                    </div>
-                  </nav>
-                </div>
-              </div>
-            </main>
-            <div class="challenge-module--simplestep"></div>
-            <footer class="Footer-module--root">
-              <div>by e-Coucou Mars 24</div>
-              <div>Main Menu</div>
-              <div>© 2024</div>
-              </footer>
-          </div>
-        </div>
-      </div>
-   </body>
-  <script>
-    var date = new Date();
-    var dateString = date.toISOString('fr-FR');
-      document.getElementById("idDate").innerHTML=dateString.substring(0,10).replaceAll('-','/');
-    function getDate() {
-      document.getElementById("idDate").innerHTML=dateString.left(10);
-      console.log(date.toLocaleString('fr-FR'));
+    html {
+      transition: background-color 0.5s, color 0.5s;
     }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-backgroundLight text-textDark dark:bg-backgroundDark dark:text-textLight">
+
+  <button id="theme-toggle" class="fixed top-4 right-4 bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">
+    🌙 Mode sombre
+  </button>
+
+  <main class="min-h-screen flex flex-col justify-center items-center text-center px-4">
+    <h1 class="text-4xl font-bold mb-8">Bienvenue sur eCoucou</h1>
+    <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl"></div>
+  </main>
+
+  <footer class="mt-12 text-center text-sm text-gray-500 dark:text-gray-300 py-4">
+    © 2025 eCoucou. Tous droits réservés.
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      toggleButton.textContent = '☀️ Mode clair';
+    }
+
+    toggleButton.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      if (document.documentElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+        toggleButton.textContent = '☀️ Mode clair';
+      } else {
+        localStorage.setItem('theme', 'light');
+        toggleButton.textContent = '🌙 Mode sombre';
+      }
+    });
+
+    fetch('./data/pages.json', { cache: 'force-cache' })
+      .then(response => response.json())
+      .then(pages => {
+        const gallery = document.getElementById('gallery');
+        pages.forEach((page, i) => {
+          gallery.innerHTML += `
+            <a href="${page.link}" class="group block bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden fade-in" style="animation-delay:${0.1*(i+1)}s;">
+              <img src="${page.image}" alt="${page.title}" class="w-full h-40 object-cover group-hover:scale-105 transition">
+              <div class="p-4 text-center">
+                <h2 class="font-bold text-lg">${page.title}</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">${page.description}</p>
+              </div>
+            </a>`;
+        });
+      });
   </script>
+  <script src="/service-worker.js"></script>
+</body>
 </html>

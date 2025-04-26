@@ -1,0 +1,15 @@
+{
+  "name": "eCoucou",
+  "short_name": "eCoucou",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0FAF4",
+  "theme_color": "#10B981",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

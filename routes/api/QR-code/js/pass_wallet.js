@@ -46,7 +46,6 @@ function addBack_copyright() {
     return info;
 }
 function addBack_terms() {
-    console.log(Terms())
     const info = {
         key : "terms",
         label : "Terms and Conditions",
@@ -105,7 +104,7 @@ async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonct
     const buffer = pass.getAsBuffer();
     return buffer;
 }
-async function getBarreCode(nom, code,couleur) {
+async function getBarreCode(nom, code,couleur,type) {
     function addProps() {return passData ; };
     const vCardID = uuidv4();
     drawStrip(couleur);
@@ -124,8 +123,11 @@ async function getBarreCode(nom, code,couleur) {
       addProps(),
     );
     pass.type = "generic";
-    // pass.setBarcodes({message:code,format:"PKBarcodeFormatQR"});
-    pass.setBarcodes({message:code,format:"PKBarcodeFormatCode128"});
+    if (type === "QR") {
+        pass.setBarcodes({message:code,format:"PKBarcodeFormatQR"});
+    } else {
+        pass.setBarcodes({message:code,format:"PKBarcodeFormatCode128"});
+    }
     pass.headerFields.push(addField('1','rev.',eCoucou().version));
     pass.primaryFields.push(addField('p1',"",nom,"PKTextAlignmentLeft"));
     pass.auxiliaryFields.push(addField('a1',"",code,"PKTextAlignmentLeft"));

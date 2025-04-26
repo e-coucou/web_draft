@@ -340,10 +340,10 @@ router.post("/get_pkpass", async(req, res, next) => {
     }
 });
 router.post("/get_wallet", async(req, res, next) => {
-    const { wallet, nom, couleur } = req.body;
+    const { wallet, nom, couleur, type } = req.body;
     const [image, base_color] = encodeQR(wallet, 'L', 8, -1, 1, 1,couleur);
     try {
-        const buffer = await getBarreCode(nom, wallet, couleur);
+        const buffer = await getBarreCode(nom, wallet, couleur, type);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
         // res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
         res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);
