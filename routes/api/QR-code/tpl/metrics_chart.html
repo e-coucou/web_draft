@@ -27,6 +27,7 @@
       const baseOrigin = window.location.origin;
       let adresse='';
       let fullURL;
+
       window.addEventListener('DOMContentLoaded', () => {
         const toggleButton = document.getElementById('theme-toggle');
         document.documentElement.classList.add('dark');
@@ -38,8 +39,8 @@
           } else {
             toggleButton.textContent = '🌙 ';
           }
-        });
         renderChart(); // recharge le graphique
+        });
       });
     </script>
 </head>
@@ -61,7 +62,7 @@
         <select id="filterOption" class="border rounded p-2 bg-primary dark:bg-primaryDark inherit">
             <option value="">Toutes Optimisations</option>
         </select>
-        <div id="logCount" class="absolute bottom-2 right-4 text-sm bg-white/80 dark:bg-gray-800/80 px-3 py-1 rounded shadow">0</div>
+        <div id="logCount" class="absolute bottom-2 right-4 text-sm bg-accent dark:text-textDark px-3 py-1 rounded-full shadow">0</div>
     </div>
     <h2 class="text-2xl font-semibold mb-4">Metrics</h2>
     <canvas id="logChart" class="w-full h-64"></canvas>
@@ -73,17 +74,22 @@
     function getChartColors() {
         const isDark = document.documentElement.classList.contains('dark');
         return {
-            background: isDark ? bg-primaryDark : '#ffffff', // fond graphique
+            background: isDark ? couleurs.primaryDark : couleurs.primary, // fond graphique
             // background: isDark ? '#1f2937' : '#ffffff', // fond graphique
-            bg: isDark ? '#63DAC5' : '#53cAb5', // les barre
+            // bg: isDark ? '#63DAC5' : '#53cAb5', // les barre
+            bg: isDark ? couleurs.backgroundLight : couleurs.backgroundDark, // les barre
             text: isDark ? '#ffffff' : '#111827',
             grid: isDark ? '#4b5563' : '#d1d5db'
         };
     }
+      let couleurs;
+
 
     async function getDataRaw() {
       const res = await fetch('/api/qrcode/metrics_raw');
       rawData = await res.json();
+      const ret = await fetch('/api/params/colors');
+      couleurs = await ret.json();
       getFilters();
       renderChart();
     }
@@ -164,7 +170,6 @@
         const res = await fetch('/api/qrcode/version');
         const vData = await res.json();
         document.getElementById('version').textContent = `© 2025 e-Coucou — v${vData.version} - ${vData.maj}`;
-                console.log(vData)
     }
     getVersion();
 

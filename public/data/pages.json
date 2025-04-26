@@ -12,15 +12,15 @@
     "link": "wallet.html"
   },
   {
-    "title": "Admin-Metrics",
+    "title": "QRCode-Metrics",
     "description": "Metric de création de QR-Code",
-    "image": "./images/wallet.png",
+    "image": "./images/metrics.jpeg",
     "link": "/api/qrcode/metrics"
   },
   {
-    "title": "Admin-AuditTrail",
+    "title": "QRCode-AuditTrail",
     "description": "Log de création de QR-Code",
-    "image": "./images/wallet.png",
+    "image": "./images/audit.jpeg",
     "link": "/api/qrcode/audit"
   },
 {
@@ -30,6 +30,12 @@
     "link": "./dev/Zipf/index.html"
   },
   {
+    "title": "Pétanques",
+    "description": "PST - Tournois Annuels",
+    "image": "./images/petanque.jpeg",
+    "link": "/dev/Petanque_PST/"
+  },
+{
     "title": "Minuteur",
     "description": "Minuteur préréglé pour ménager ses temps de réflexion, de repos ou ses cuissons ...",
     "image": "./img/minuteur.png",
