@@ -1,12 +1,14 @@
-const CACHE_NAME = 'ecoucou-cache-v1';
+const CACHE_NAME = 'ecoucou-cache-v2';
 const FILES_TO_CACHE = [
   '/',
   '/index.html',
-  './data/pages.json',
+  '/data/manifest.json',
+  '/data/pages.json',
   '/favicon.ico',
   '/vcard.html',
   '/wallet.html',
-  './images'
+  '/images/wallet.png',
+  '/images/vcard.png'
 ];
 
 self.addEventListener('install', event => {

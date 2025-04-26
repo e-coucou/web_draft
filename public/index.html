@@ -7,7 +7,7 @@
   <title>eCoucou</title>
   <meta name="theme-color" content="#10B981">
   <link rel="manifest" href="./data/manifest.json">
-  <link href="/css/styleTail.css" rel="stylesheet">
+  <link href="./css/styleTail.css" rel="stylesheet">
   <link rel="preload" href="./data/pages.json" as="fetch" type="application/json" crossorigin="anonymous">
   <style>
     html {
@@ -15,8 +15,8 @@
     }
     .fade-in {
       opacity: 0;
-      transform: translateY(10px);
-      animation: fadeIn 0.5s ease forwards;
+      transform: translateY(30px);
+      animation: fadeIn 1.5s ease forwards;
     }
     @keyframes fadeIn {
       to {
@@ -31,7 +31,7 @@
   <button id="theme-toggle" class="fixed top-4 right-4 bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
 
   <main class="min-h-screen flex flex-col justify-center items-center text-center px-4">
-    <h1 class="text-4xl font-bold mb-8">Bienvenue sur eCoucou</h1>
+    <h1 class="text-4xl font-bold mb-8 animate-pulse">Bienvenue sur eCoucou</h1>
     <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl"></div>
   </main>
 
