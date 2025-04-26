@@ -261,6 +261,31 @@ router.get("/vcard", async (req,res) => {
     }
     logMetrics("qrcode","vCard", level, type, version, option, _texte );
 })
+router.get("/wallet", async (req,res) => {
+    // On nettoye les 'undefined'
+    const expected = ['nom', 'code', 'QUAL', 'COLOR', 'WEB', 'PIXEL', 'LEVEL', 'CONTRASTE', 'STANDARD'];
+    expected.forEach( param => {
+        if (req.query[param] === undefined || req.query[param] === null) {
+            req.query[param] = ''; // Remplace undefined ou null par ''
+        }
+    });
+    const {nom, code, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
+    let _texte = code;
+
+    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR);
+    imageName = "image.png";
+    if (WEB) {
+        if (WEB==1) {
+            res.writeHead(200, {"Content-Type": "image/png", "Content-Length" : image.length });
+            res.end(image);
+        } else {
+            res.status(200).send(`<H3 style="color: ${base_color}">Voici votre QR-Code</H3><p>Optimisation Level [${level}]</p><hr><img style="height: 60%" src="../../images/${imageName}"><br><p>by eCoucou 2025</p>`);
+        }
+    } else {
+        res.status(200).send(image);
+    }
+    logMetrics("qrcode","Wallet", level, type, version, option, _texte );
+})
 router.get("/info", async (req,res) => {
    res.status(200).json({
         api: "QR-Code",

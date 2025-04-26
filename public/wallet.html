@@ -9,15 +9,15 @@
     <style>
     @media (max-width: 600px) {
     .footer-bar {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 10px;
         }
     }
     @media (min-width: 768px) {
     .table-wrapper {
-        max-height: none;
-        overflow-y: visible;
+          max-height: none;
+          overflow-y: visible;
         }
     }
     </style>
@@ -41,18 +41,15 @@
 //        const baseUrl = 'https://draft.e-coucou.com/api/qrcode/vcard?';
         const baseUrl = baseOrigin + '/api/qrcode/wallet?';
         const params = new URLSearchParams();
-        
         const nom = document.getElementById('nom').value.trim();
         if (nom) params.append('nom', nom);
         const code = document.getElementById('code').value.trim();
         if (code) params.append('code', code);
-
         params.append('QUAL', document.getElementById('qual').value);
         params.append('LEVEL', document.getElementById('level').value);
         params.append('CONTRASTE', document.getElementById('contraste').checked ? '1' : '0');
         params.append('STANDARD', document.getElementById('standard').checked ? '1' : '0');
         params.append('COLOR', document.getElementById('color').value);
-
         fullUrl = baseUrl + params.toString() + '&PIXEL=10';
         document.getElementById('qrcodeText').value = fullUrl;
         saveFormToCookie();
@@ -99,27 +96,22 @@
         // .then(data => console.log(data))
         .catch(error => console.error('Erreur Wallet Création :', error));
       }
-
     // Gestion dez cookies
-        function saveFormToCookie() {
-        const fields = [
-            'nom', 'code', 
-            'qual', 'color', 'level', 'PIXEL', 'constraste', 'standard'
-        ];
-
-        const data = {};
-
-        fields.forEach(field => {
-            const el = document.getElementById(field);
-            if (el) data[field] = el.value || (el.type === 'checkbox' ? el.checked : '');
-        });
-
-        document.cookie = `walletForm=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=8640000`; // 100 jours
+      function saveFormToCookie() {
+          const fields = [
+              'nom', 'code', 
+              'qual', 'color', 'level', 'PIXEL', 'constraste', 'standard'
+          ];
+          const data = {};
+          fields.forEach(field => {
+              const el = document.getElementById(field);
+              if (el) data[field] = el.value || (el.type === 'checkbox' ? el.checked : '');
+          });
+          document.cookie = `walletForm=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=8640000`; // 100 jours
         }      
     // Lancer updateMap à chaque modification des champ
-    window.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener('DOMContentLoaded', () => {
         loadFormFromCookie();
-
         // Mettre la couleur au chargement
         const btColor = document.getElementById('color');
         const btFetchImg = document.getElementById('btFetchImg');
@@ -130,7 +122,6 @@
         // // btLaunch.style.backgroundColor = btColor.value;
         // btWallet.style.backgroundColor = btColor.value;
         // btGetImage.style.backgroundColor = btColor.value;
-
         // Mettre à jour dynamiquement la couleur
         // btColor.addEventListener('input', () => {
         //         btFetchImg.style.backgroundColor = btColor.value;
