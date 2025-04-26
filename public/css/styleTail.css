@@ -465,6 +465,12 @@ video {
 .top-4 {
   top: 1rem;
 }
+.left-4 {
+  left: 1rem;
+}
+.bottom-8 {
+  bottom: 2rem;
+}
 .z-10 {
   z-index: 10;
 }
@@ -510,6 +516,12 @@ video {
 }
 .mt-8 {
   margin-top: 2rem;
+}
+.mb-12 {
+  margin-bottom: 3rem;
+}
+.mb-20 {
+  margin-bottom: 5rem;
 }
 .block {
   display: block;
@@ -764,6 +776,10 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 .pl-6 {
   padding-left: 1.5rem;
