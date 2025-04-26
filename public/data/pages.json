@@ -2,13 +2,13 @@
   {
     "title": "vCard",
     "description": "Création d'un QR-Code qui est une vCard que vous pourrez intégrer dans Wallet",
-    "image": "https://via.placeholder.com/300",
+    "image": "./images/vcard.png",
     "link": "vcard.html"
   },
   {
     "title": "wallet",
     "description": "Créer une Carte Wallet générant un QR-Code ou un CodeBar",
-    "image": "https://via.placeholder.com/300",
+    "image": "./images/wallet.png",
     "link": "wallet.html"
   }
 ]

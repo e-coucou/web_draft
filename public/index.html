@@ -28,9 +28,7 @@
 </head>
 <body class="bg-backgroundLight text-textDark dark:bg-backgroundDark dark:text-textLight">
 
-  <button id="theme-toggle" class="fixed top-4 right-4 bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">
-    🌙 Mode sombre
-  </button>
+  <button id="theme-toggle" class="fixed top-4 right-4 bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
 
   <main class="min-h-screen flex flex-col justify-center items-center text-center px-4">
     <h1 class="text-4xl font-bold mb-8">Bienvenue sur eCoucou</h1>
@@ -46,17 +44,17 @@
 
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
-      toggleButton.textContent = '☀️ Mode clair';
+      toggleButton.textContent = '☀️';
     }
 
     toggleButton.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
       if (document.documentElement.classList.contains('dark')) {
         localStorage.setItem('theme', 'dark');
-        toggleButton.textContent = '☀️ Mode clair';
+        toggleButton.textContent = '☀️';
       } else {
         localStorage.setItem('theme', 'light');
-        toggleButton.textContent = '🌙 Mode sombre';
+        toggleButton.textContent = '🌙 ';
       }
     });
 
@@ -76,6 +74,6 @@
         });
       });
   </script>
-  <script src="/service-worker.js"></script>
+  <script src="./js/service-worker.js"></script>
 </body>
 </html>
