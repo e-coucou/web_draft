@@ -10,5 +10,18 @@
     "description": "Créer une Carte Wallet générant un QR-Code ou un CodeBar",
     "image": "./images/wallet.png",
     "link": "wallet.html"
+  },
+  {
+    "title": "zipf",
+    "description": "Evolution de la Population Française depuis 1968",
+    "image": "./img/france.png",
+    "link": "./dev/Zipf/index.html"
+  },
+  {
+    "title": "Minuteur",
+    "description": "Minuteur préréglé pour ménager ses temps de réflexion, de repos ou ses cuissons ...",
+    "image": "./img/minuteur.png",
+    "link": "./dev/Minuteur/"
   }
+
 ]
