@@ -547,9 +547,6 @@ video {
 .h-64 {
   height: 16rem;
 }
-.h-20 {
-  height: 5rem;
-}
 .max-h-\[80vh\] {
   max-height: 80vh;
 }
@@ -645,9 +642,6 @@ video {
 .gap-6 {
   gap: 1.5rem;
 }
-.gap-8 {
-  gap: 2rem;
-}
 .space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
@@ -700,6 +694,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(163 228 215 / var(--tw-bg-opacity, 1));
 }
+.bg-accent {
+  --tw-bg-opacity: 1;
+  background-color: rgb(167 243 208 / var(--tw-bg-opacity, 1));
+}
 .bg-backgroundLight {
   --tw-bg-opacity: 1;
   background-color: rgb(240 250 244 / var(--tw-bg-opacity, 1));
@@ -708,17 +706,13 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
 }
-.bg-primaryDark {
-  --tw-bg-opacity: 1;
-  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
-}
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: rgb(52 211 153 / var(--tw-bg-opacity, 1));
 }
-.bg-accent {
+.bg-primaryDark {
   --tw-bg-opacity: 1;
-  background-color: rgb(167 243 208 / var(--tw-bg-opacity, 1));
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
 }
 .bg-gradient-to-br {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -770,10 +764,6 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
 }
 .pl-6 {
   padding-left: 1.5rem;
@@ -828,17 +818,13 @@ video {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity, 1));
 }
-.text-txtClair {
-  --tw-text-opacity: 1;
-  color: rgb(44 62 80 / var(--tw-text-opacity, 1));
-}
 .text-textLight {
   --tw-text-opacity: 1;
   color: rgb(240 253 244 / var(--tw-text-opacity, 1));
 }
-.text-accent {
+.text-txtClair {
   --tw-text-opacity: 1;
-  color: rgb(167 243 208 / var(--tw-text-opacity, 1));
+  color: rgb(44 62 80 / var(--tw-text-opacity, 1));
 }
 .accent-AccentClair {
   accent-color: #1A7940;
@@ -937,6 +923,14 @@ video {
   --tw-text-opacity: 1;
   color: rgb(51 186 165 / var(--tw-text-opacity, 1));
 }
+.dark\:text-accent:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(167 243 208 / var(--tw-text-opacity, 1));
+}
+.dark\:text-textDark:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
+}
 .dark\:text-textLight:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(240 253 244 / var(--tw-text-opacity, 1));
@@ -944,14 +938,6 @@ video {
 .dark\:text-txtDark:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(248 249 249 / var(--tw-text-opacity, 1));
-}
-.dark\:text-textDark:is(.dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
-}
-.dark\:text-accent:is(.dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(167 243 208 / var(--tw-text-opacity, 1));
 }
 .dark\:accent-AccentDark:is(.dark *) {
   accent-color: #A3E4D7;

@@ -1,4 +1,4 @@
-const tailwindConfig = require('/Users/rky/Documents/GitHub/web_draft/tailwind.config');
+const tailwindConfig = require('../../../tailwind.config');
 const express = require("express");
 const router = express.Router();
 router.use(express.json());
