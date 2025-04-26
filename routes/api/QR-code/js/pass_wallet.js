@@ -96,7 +96,7 @@ async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonct
     pass.primaryFields.push(addField('p1',societe,(prenom+' '+nom),"PKTextAlignmentLeft"));
     pass.secondaryFields.push(addField('s1',fonction,mobile,"PKTextAlignmentLeft"));
     pass.secondaryFields.push(addField('s2',"",www,"PKTextAlignmentLeft"));
-    pass.auxiliaryFields.push(addField('a1','by eCoucou',"PKTextAlignmentLeft"));
+    pass.auxiliaryFields.push(addField('a1','by eCoucou',"","PKTextAlignmentLeft"));
     pass.backFields.push(addBack_id(vCardID));
     pass.backFields.push(addBack_www());
     pass.backFields.push(addBack_copyright());
