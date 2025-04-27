@@ -1,0 +1,104 @@
+ <!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terms and Conditions</title>
+  <link href="./css/styleTail.css" rel="stylesheet">
+  <meta name="description" content="eCoucou est votre portail interactif : explorez nos contenus exclusifs et découvrez une nouvelle façon de naviguer !">
+  <link rel="canonical" href="https://draft.e-coucou.com/">
+ <style>
+    html {
+      transition: background-color 0.5s, color 0.5s;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-backgroundLight text-textDark dark:bg-backgroundDark dark:text-textLight">
+    <header>
+      <div class="fixed top-1 left-1 items-center gap-4 z-50">
+        <a href="/">
+          <img src="../../img/ecoucou.png" alt="eCoucou" class="h-12"/>
+        </a>
+      </div>
+    </header>
+<nav class="bg-white shadow-md fixed w-full z-10">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+    <div class="text-xl font-bold text-blue-600"></div>
+    <div class="space-x-4 dark:text-textLight text-textDark">
+      <!-- <a href="#" class="hover:text-blue-500">Home</a> -->
+      <a href="index.html" class="hover:text-blue-500">Back</a>
+      <a>
+      <button id="theme-toggle" class="bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
+      </a>
+    </div>
+  </div>
+</nav>
+  <main class="min-h-screen flex flex-col justify-center items-center text-center px-4 py-20">
+    <h1 class="text-4xl font-bold mb-20 animate-pulse">Terms & Conditions</h1>
+    <!-- Content -->
+    <div class="flex-grow container mx-auto p-6 flex-col">
+
+    <section class="space-y-4 mx-auto text-left">
+        <h2 class="text-2xl font-semibold">1. Introduction</h2>
+        <p>
+            Welcome to our website. By accessing this site, you agree to be bound by these terms and conditions.
+        </p>
+
+        <h2 class="text-2xl font-semibold">2. Intellectual Property Rights</h2>
+        <p>
+            We own all the intellectual property rights of the material on this website.
+        </p>
+
+        <h2 class="text-2xl font-semibold">3. Restrictions</h2>
+        <p>
+            You are restricted from publishing any website material in any media without permission.
+        </p>
+
+        <h2 class="text-2xl font-semibold">4. Your Content</h2>
+        <p>
+            By displaying your content, you grant us a non-exclusive license to use, reproduce, and adapt it.
+        </p>
+
+        <h2 class="text-2xl font-semibold">5. Governing Law</h2>
+        <p>
+            These terms will be governed by and interpreted according to the laws of your country.
+        </p>
+    </section>
+    </div>
+  </main>
+
+  <footer class="mt-12 bottom-8 text-center text-sm text-textDark dark:text-accent z-50">
+    © 2025 eCoucou. Tous droits réservés.
+  </footer>
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      toggleButton.textContent = '☀️';
+    }
+
+    toggleButton.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      if (document.documentElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+        toggleButton.textContent = '☀️';
+      } else {
+        localStorage.setItem('theme', 'light');
+        toggleButton.textContent = '🌙 ';
+      }
+    });
+  </script>
+</body>
+</html>

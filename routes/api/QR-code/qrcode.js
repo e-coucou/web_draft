@@ -12,6 +12,7 @@ const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
 const {getPassWallet, getBarreCode} = require("./js/pass_wallet");
+const {logMetrics_qrcode} = require("../js/metrics");
 
 const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("./js/crypto-aes");
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -259,7 +260,7 @@ router.get("/vcard", async (req,res) => {
     } else {
         res.status(200).send(image);
     }
-    logMetrics("qrcode","vCard", level, type, version, option, _texte );
+    logMetrics_qrcode("qrcode","vCard", level, type, version, option, _texte );
 })
 router.get("/wallet", async (req,res) => {
     // On nettoye les 'undefined'
@@ -284,7 +285,7 @@ router.get("/wallet", async (req,res) => {
     } else {
         res.status(200).send(image);
     }
-    logMetrics("qrcode","Wallet", level, type, version, option, _texte );
+    logMetrics_qrcode("qrcode","Wallet", level, type, version, option, _texte );
 })
 router.get("/info", async (req,res) => {
    res.status(200).json({

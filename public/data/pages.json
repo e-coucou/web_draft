@@ -36,6 +36,12 @@
     "link": "/dev/Petanque_PST/"
   },
 {
+    "title": "2048",
+    "description": "Le fameux Jeux qui consiste à) faire 2048 ..",
+    "image": "./img/2048.png",
+    "link": "./dev/2048/"
+  },
+{
     "title": "Minuteur",
     "description": "Minuteur préréglé pour ménager ses temps de réflexion, de repos ou ses cuissons ...",
     "image": "./img/minuteur.png",

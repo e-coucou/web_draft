@@ -1,5 +1,5 @@
 function eCoucou() {
-    return {version: 2.10, maj:'avril/25', release: 0};
+    return {version: 2.12, maj:'avril/25', release: 0};
 }
 
 function Clair () {

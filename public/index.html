@@ -53,7 +53,7 @@
     .fade-in {
       opacity: 0;
       transform: translateY(30px);
-      animation: fadeIn 1.5s ease forwards;
+      animation: fadeIn 0.5s ease forwards;
     }
     @keyframes fadeIn {
       to {
@@ -73,11 +73,11 @@
       <!-- <button id="theme-toggle" class="fixed top-10 right-4 bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button> -->
     </header>
 <nav class="bg-white shadow-md fixed w-full z-10">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
     <div class="text-xl font-bold text-blue-600"></div>
     <div class="space-x-4 dark:text-textLight text-textDark">
       <!-- <a href="#" class="hover:text-blue-500">Home</a> -->
-      <a href="#" class="hover:text-blue-200">About</a>
+      <a href="terms.html" class="hover:text-blue-200">About</a>
       <a href="#" class="hover:text-blue-500">Contact</a>
       <a>
       <button id="theme-toggle" class="bg-primaryDark text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
@@ -85,7 +85,7 @@
     </div>
   </div>
 </nav>
-  <main class="min-h-screen flex flex-col justify-center items-center text-center px-4 py-12">
+  <main class="min-h-screen flex flex-col justify-center items-center text-center px-4 py-20">
     <h1 class="text-4xl font-bold mb-20 animate-pulse">eCoucou</h1>
     <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl"></div>
   </main>
