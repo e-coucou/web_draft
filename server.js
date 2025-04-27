@@ -36,6 +36,9 @@ app.use("/api/qrcode",QRcode);
 const Param = require("./routes/api/js/params");
 app.use("/api/params",Param);
 
+const {Metrics} = require("./routes/api/js/metrics");
+app.use("/api/metrics",Metrics);
+
 //app.get("/api", (req, res) => {res.send("eCoucou")});
 
 console.log('Mon serveur est en marche ... en 3000 localement');

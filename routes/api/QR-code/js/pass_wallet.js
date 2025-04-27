@@ -43,7 +43,7 @@ function addBack_www() {
     const info = {
         key : "website",
         label : "Suivez moi",
-        value : "http://draf.e-coucou.com"
+        value : "http://draft.e-coucou.com"
     };
     return info;
 }

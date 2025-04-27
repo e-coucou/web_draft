@@ -12,13 +12,13 @@ const { Encodeur, Binary } = require("./js/encodeur");
 const { Grille } = require("./js/grille");
 const { evaluate } = require("./js/penalites");
 const {getPassWallet, getBarreCode} = require("./js/pass_wallet");
-const {logMetrics_qrcode} = require("../js/metrics");
+const {logMetrics_qrcode, logRecord} = require("../js/metrics");
 
-const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("./js/crypto-aes");
+const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("../js/crypto-aes");
 const SECRET_KEY = process.env.SECRET_KEY;
 
 // const {firebaseUpload} = require('./js/firebaseDB')
-const database = require("./js/realtime");
+const database = require("../js/realtime");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
@@ -217,22 +217,22 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,option=true)
     const image = createPNG(base_color,CONTRASTE&1,STANDARD&1,option);
     return [image, base_color];
 }
-async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
-    const cypher = encryptToCompactJSON(_txt,SECRET_KEY);
-    const data = {
-        type: type,
-        level: level,
-        version: version,
-        qualite: qualite,
-        option: option,
-        time: new Date().getTime(),
-        vcard: cypher
-    }
-    let ref = database.ref(source);
-    ref.push(data)
-    .then(()=> { console.log("Metrics Logged"); })
-    .catch(err => {console.log(err); });
-}
+// async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
+//     const cypher = encryptToCompactJSON(_txt,SECRET_KEY);
+//     const data = {
+//         type: type,
+//         level: level,
+//         version: version,
+//         qualite: qualite,
+//         option: option,
+//         time: new Date().getTime(),
+//         vcard: cypher
+//     }
+//     let ref = database.ref(source);
+//     ref.push(data)
+//     .then(()=> { console.log("Metrics Logged"); })
+//     .catch(err => {console.log(err); });
+// }
 router.use(express.json());
 router.get("/version", (req, res) => {
     res.status(200).json(eCoucou());
@@ -356,7 +356,7 @@ router.get("/metrics_data", async(req,res) => {
 });
 router.post("/get_pkpass", async(req, res, next) => {
     const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
-    const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'L', 8, -1, 1, 1,couleur,true);
+    const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,couleur,true);
     try {
         const buffer = await getPassWallet(vCard, nom, societe, prenom, www, mobile, fonction, couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
@@ -373,9 +373,14 @@ router.post("/get_wallet", async(req, res, next) => {
     const { wallet, nom, couleur, type } = req.body;
     const option = (type==="QR") ? false : true;
     const mess_ = option ? wallet : 'https://draft.e-coucou.com';
-    const [image, base_color] = encodeQR(mess_, 'L', 8, -1, 1, 1,couleur,option);
+    const [image, base_color] = encodeQR(mess_, 'M', 8, -1, 1, 1,couleur,option);
     try {
         const buffer = await getBarreCode(nom, wallet, couleur, type);
+        if (option) {
+            logRecord('records','kpass',{type: type, QR:{ texte:mess_}, Pass:{nom:nom, code:wallet, color:couleur}});
+        } else {
+            logRecord('records','kpass',{type: type, Pass:{nom:nom, code:wallet, color:couleur}});
+        }
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
         // res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
         res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);
