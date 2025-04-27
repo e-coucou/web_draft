@@ -1001,6 +1001,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
 }
+.dark\:bg-accent:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(167 243 208 / var(--tw-bg-opacity, 1));
+}
 .dark\:text-AccentClair:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(26 121 64 / var(--tw-text-opacity, 1));

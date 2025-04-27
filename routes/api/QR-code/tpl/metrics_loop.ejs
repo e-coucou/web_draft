@@ -6,18 +6,45 @@
     <title>QR-Code Metrics ...</title>
     <link href="/css/styleTail.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    @media (max-width: 600px) {
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        }
+    }
+    @media (min-width: 768px) {
+    .table-wrapper {
+        max-height: none;
+        overflow-y: visible;
+        }
+    }
+    </style>
     <script>
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-      }
-  </script>
-  <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
-    <header class="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between">
+      window.addEventListener('DOMContentLoaded', () => {
+        const toggleButton = document.getElementById('theme-toggle');
+        document.documentElement.classList.add('dark');
+        toggleButton.textContent = '☀️';
+        toggleButton.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          if (document.documentElement.classList.contains('dark')) {
+            toggleButton.textContent = '☀️';
+          } else {
+            toggleButton.textContent = '🌙 ';
+          }
+        });
+      });
+    </script>
+  <body class="bg-backgroundLight dark:bg-backgroundDark dark:text-textLight text-textDark font-sans transition-colors duration-300">
+    <header class="bg-backgroundLight dark:bg-backgroundDark shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
       <div class="flex items-center gap-4">
-        <img src="../../img/ecoucou.png" alt="Logo" class="h-12" />
-        <h1 class="text-xl font-semibold">QR-Code Documentation</h1>
+        <a href="/index.html">
+          <img src="../../img/ecoucou.png" alt="eCoucou" class="h-12"/>
+        </a>
+        <h1 class="text-xl font-semibold">QR-Code</h1>
       </div>
-      <button onclick="toggleDarkMode()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded btNuit">🌓 Mode</button>
+      <button id="theme-toggle" class="bg-primary dark:bg-primaryDark text-textLight px-4 py-1 rounded-full shadow-lg z-50">x</button>
     </header>
   <style>
     body {
@@ -27,13 +54,13 @@
     <link rel="stylesheet" href="/css/style_api_vcard.css">
 </head>
 <div class="footer-bar">
-  <button class="export-btn bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded" onclick="window.location.href='/api/qrcode/export'">Exporter vers Excel (CSV)</button>
-  <p id="recordCount" class="record-count bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-1 rounded">0 enregistrements</p>
+  <button class="export-btn bg-primary dark:bg-primaryDark text-textDark dark:text-textLight px-4 py-1 rounded" onclick="window.location.href='/api/qrcode/export'">Exporter vers Excel (CSV)</button>
+  <p id="recordCount" class="record-count bg-accent dark:bg-accent text-textDark px-4 py-1 rounded">0 enregistrements</p>
 </div>
 <div class="table-wrapper bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
   <table id="data-table" >
     <thead>
-      <tr class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 font-sans transition-colors duration-300">
+      <tr class="bg-gray-100 dark:bg-gray-700 text-textDark font-sans transition-colors duration-300">
         <!-- <th><input type="text" onkeyup="filterTable(0)" placeholder="Filtrer ID" /></th> -->
         <th><input type="text" onkeyup="filterTable(0)" placeholder="Filtrer Level" /></th>
         <th><input type="text" onkeyup="filterTable(1)" placeholder="Filtrer Option" /></th>
@@ -78,9 +105,7 @@
     </tbody>
   </table>
 </div>
-    <footer class="text-center text-[10px] absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-600 dark:text-green-400 text-green-600 py-0.5 rounded shadow">
-      <p id="version">©</p>
-    </footer>
+  </script>
 
   <div id="loading">Chargement...</div>
 
@@ -234,5 +259,8 @@
     }
     getVersion();
   </script>
+  <footer class="text-center text-[10px] fixed bottom-4 left-1/2 -translate-x-1/2 bg-primary dark:bg-primaryDark dark:text-AccentClair text-AccentClair py-0.5 rounded-full shadow">
+    <p id="version"></p>
+  </footer>
 </body>
 </html>
