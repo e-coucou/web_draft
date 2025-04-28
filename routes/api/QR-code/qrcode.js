@@ -356,9 +356,14 @@ router.get("/metrics_data", async(req,res) => {
 });
 router.post("/get_pkpass", async(req, res, next) => {
     const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
-    const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,couleur,true);
+    if (www===undefined || www===null || www==="") {
+        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,"#000000",true);
+    } else {
+        const [image, base_color] = encodeQR(www, 'M', 8, -1, 1, 0,couleur,true);
+    }
     try {
         const buffer = await getPassWallet(vCard, nom, societe, prenom, www, mobile, fonction, couleur);
+        logRecord('records','kpass',{type: "vCard", Pass:{nom:nom, code:vCard,prenom:prenom,www:www,mobile:mobile,fonction:fonction, color:couleur}});
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
         // res.setHeader('Content-Disposition', 'attachment; filename=pass.pkpass');
         res.setHeader('Content-Disposition', `attachment; filename="vcard-${nom.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pkpass"`);

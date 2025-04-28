@@ -16,7 +16,10 @@ Metrics.get("/records", async (req, res) => {
     const snapshot = await database.ref('records').once('value');
     const allData = snapshot.val();
     const dataArray = Object.entries(allData).map(([id, item]) => ({ id,...item }));
-    res.status(200).json(dataArray);
+    let all=[];
+    dataArray.forEach(( item) => { all.push({other:item, cypher: JSON.parse(decryptFromCompactJSON(item.data, SECRET_KEY))})});
+    res.status(200).json(all);
+    // res.status(200).json({cypher: JSON.parse(decryptFromCompactJSON(dataArray[0].data, SECRET_KEY)), other: dataArray[0]});
 });
 Metrics.get("/delete", async (req, res) => {
     const ref = database.ref('records');
