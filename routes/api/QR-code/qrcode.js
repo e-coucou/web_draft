@@ -18,7 +18,8 @@ const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require(".
 const SECRET_KEY = process.env.SECRET_KEY;
 
 // const {firebaseUpload} = require('./js/firebaseDB')
-const database = require("../js/realtime");
+const {database} = require("../js/realtime");
+const authenticateToken = require("../../config/auth");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
@@ -52,6 +53,15 @@ function componentToHex(c) {
 }
 function rgb2Hex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+async function authProfil(email) {
+    const snapshot = await database.ref('users').orderByChild('email').equalTo(email).once('value');
+    if (! snapshot.exists()) {
+        return undefined;
+    } else {
+        const profil = Object.entries(snapshot.val()).map(([id, item]) => ({ id,...item }));
+        return profil;
+    }
 }
 function loadData() {
     for (let i=0; i<Object.keys(qr_json).length;i++) {
@@ -302,7 +312,7 @@ router.get("/doc", async (req,res) => {
 });
 let dataArray;
 
-router.get("/audit", async(req,res) => {
+router.get("/audit", authenticateToken, async(req,res) => {
     const snapshot = await database.ref('qrcode').once('value');
     const allData = snapshot.val();
 
@@ -357,7 +367,7 @@ router.get("/metrics_data", async(req,res) => {
 router.post("/get_pkpass", async(req, res, next) => {
     const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
     if (www===undefined || www===null || www==="") {
-        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,"#000000",true);
+        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,"#83C7D5",true);
     } else {
         const [image, base_color] = encodeQR(www, 'M', 8, -1, 1, 0,couleur,true);
     }
@@ -374,7 +384,7 @@ router.post("/get_pkpass", async(req, res, next) => {
         res.status(500).send({ error: 'Erreur génération pass', err: err });
     }
 });
-router.post("/get_wallet", async(req, res, next) => {
+router.post("/get_wallet", authenticateToken, async(req, res, next) => {
     const { wallet, nom, couleur, type } = req.body;
     const option = (type==="QR") ? false : true;
     const mess_ = option ? wallet : 'https://draft.e-coucou.com';

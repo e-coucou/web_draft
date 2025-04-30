@@ -82,9 +82,13 @@
       }
       function addWallet() {
         const { wallet, nom, couleur, type } = generateWallet();
+        const idToken = localStorage.getItem('accessToken');
         fetch('/api/qrcode/get_wallet', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                    'Authorization': 'Bearer ' + idToken,
+                    'Content-Type': 'application/json' 
+                  },
             body: JSON.stringify({ wallet, nom, couleur, type  })
           })
           .then(response => response.blob())

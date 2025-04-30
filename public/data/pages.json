@@ -3,48 +3,56 @@
     "title": "vCard",
     "description": "Création d'un QR-Code qui est une vCard que vous pourrez intégrer dans Wallet",
     "image": "./images/vcard.png",
+    "acces": ["admin","public"],
     "link": "vcard.html"
   },
   {
     "title": "wallet",
     "description": "Créer une Carte Wallet générant un QR-Code ou un CodeBar",
     "image": "./images/wallet.png",
+    "acces": ["admin","public"],
     "link": "wallet.html"
   },
   {
     "title": "QRCode-Metrics",
     "description": "Metric de création de QR-Code",
     "image": "./images/metrics.jpeg",
+    "acces": ["admin"],
     "link": "/api/qrcode/metrics"
   },
   {
     "title": "QRCode-AuditTrail",
     "description": "Log de création de QR-Code",
     "image": "./images/audit.jpeg",
+    "acces": ["admin"],
     "link": "/api/qrcode/audit"
   },
 {
     "title": "zipf",
     "description": "Evolution de la Population Française depuis 1968",
     "image": "./img/france.png",
+    "acces": ["admin"],
     "link": "./dev/Zipf/index.html"
   },
   {
     "title": "Pétanques",
     "description": "PST - Tournois Annuels",
     "image": "./images/petanque.jpeg",
+    "acces": ["admin"],
     "link": "/dev/Petanque_PST/"
   },
 {
     "title": "2048",
     "description": "Le fameux Jeux qui consiste à) faire 2048 ..",
     "image": "./img/2048.png",
+    "acces": ["admin"],
     "link": "./dev/2048/"
   },
 {
     "title": "Minuteur",
     "description": "Minuteur préréglé pour ménager ses temps de réflexion, de repos ou ses cuissons ...",
     "image": "./img/minuteur.png",
+    "acces": ["admin","public"],
     "link": "./dev/Minuteur/"
   }
 

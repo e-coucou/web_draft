@@ -1,0 +1,80 @@
+flowchart TD
+  A1[Page de Login] --> A2[Envoi email + password à /login]
+  A2 --> A3[Retour: access_token + refresh_token]
+  A3 --> A4[Stockage dans localStorage]
+  A4 --> B1[Appels API sécurisés avec access_token]
+
+  B1 -->|Si access_token expiré| B2[Axios intercepteur détecte 401]
+  B2 --> B3[POST /refresh-token avec refresh_token]
+  B3 --> B4[Nouveau access_token reçu]
+  B4 --> B5[Rejoue la requête API automatiquement]
+
+  A1 --> C1[Formulaire reset password]
+  C1 --> C2[POST /reset-password avec email]
+  C2 --> C3[Firebase génère un lien sécurisé]
+  C3 --> C4[Email envoyé à l'utilisateur]
+  C4 --> C5[Utilisateur clique ➔ change son mot de passe]
+
+----------------------
+Architecture SERVER
+/
+ ├── server.js              // Serveur Express principal
+ ├── auth.js                // Middleware authentification JWT
+ ├── routes/
+ │    ├── login.js          // Route POST /login
+ │    ├── refresh.js        // Route POST /refresh-token
+ │    ├── resetPassword.js  // Route POST /reset-password
+ │    └────── api/
+ ├── config/
+ │    ├── firebase.js       // Initialisation Firebase Admin SDK
+ │    └── secrets.js        // Clés JWT (access/refresh secrets)
+ ├── utils/
+ │    └── email.js          // Fonction d'envoi d'email (Nodemailer)
+ ├── package.json           // Dépendances (express, firebase-admin, jsonwebtoken, nodemailer)
+ │
+ └── 
+-----------------------
+Architecture Client
+ /public
+ ├── index.html             // Page d'accueil (login ou dashboard)
+ ├── dashboard.html         // Page après connexion
+ ├── login.html             // Formulaire de connexion
+ ├── resetPassword.html     // Formulaire de reset mot de passe
+ ├── js/
+ │    ├── api.js            // Axios instance + intercepteurs
+ │    ├── login.js          // Soumission du formulaire de login
+ │    ├── dashboard.js      // Appels aux API sécurisés
+ │    └── resetPassword.js  // Gestion du formulaire reset
+ └── css/
+      └── styles.css        // (facultatif pour styling)
+
+Résumé                  | Fichier
+Fichier.                | Rôle
+auth.js                 | Middleware qui protège les routes avec JWT
+server.js               | Routeur général Express
+login.js                | Connexion et génération des tokens
+refresh.js              | Renouvellement de access_token avec refresh_token
+resetPassword.js        | Envoi du lien de réinitialisation de mot de passe
+firebase.js             | Connexion au projet Firebase
+email.js                | Utilitaire d'envoi d'email avec Nodemailer
+api.js                  | Axios configuré avec gestion automatique des tokens
+login.js (front)        | Gère la soumission du formulaire login
+dashboard.js (front)    | Gère les appels API protégés
+resetPassword.js (front)| Gère la demande de reset de mot de passe
+
+---------------------
+Contenu :
+Serveur Node.js/Express avec :
+Authentification login
+Refresh token refresh-token
+Reset password par mail reset-password
+Middleware sécurité auth.js
+Front-end (pages HTML) avec :
+login.html
+dashboard.html
+resetPassword.html
+Client JS :
+Axios configuré avec intercepteur
+Gestion login, refresh, reset
+Fichier package.json prêt
+Mini CSS pour un look propre

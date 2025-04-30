@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
+    "axios": "^1.9.0",
+    "bcrypt": "^5.1.1",
     "canvas": "^3.1.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
@@ -9,6 +11,7 @@
     "firebase-admin": "^13.2.0",
     "hex-rgb": "^5.0.0",
     "json2csv": "^6.0.0-alpha.2",
+    "jsonwebtoken": "^9.0.2",
     "node": "^20.3.0",
     "passkit-generator": "^3.3.1"
   },

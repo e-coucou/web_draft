@@ -1,5 +1,7 @@
 const path = require("path");
 const fs = require("fs");
+// const cors = require('cors');
+
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -20,12 +22,13 @@ var express = require('express');
 // const {initFireDB} = require("./routes/api/QR-code/js/firebaseDB");
 
 var app = express();
+// app.use(cors());
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+app.use(express.json());
+
 
 require('dotenv').config();
-
-var server = app.listen(process.env.PORT || 3000);
 
 app.use(express.static('public'));
 // initFireDB();
@@ -39,6 +42,22 @@ app.use("/api/params",Param);
 const {Metrics} = require("./routes/api/js/metrics");
 app.use("/api/metrics",Metrics);
 
-//app.get("/api", (req, res) => {res.send("eCoucou")});
+const signupRoute = require('./routes/config/signup');
+app.use('/', signupRoute);
 
-console.log('Mon serveur est en marche ... en 3000 localement');
+const loginRoute = require('./routes/config/login');
+app.use('/', loginRoute);
+const refreshRoute = require('./routes/config/refresh');
+app.use('/', refreshRoute);
+const resetPasswordRoute = require('./routes/config/reset_password');
+app.use('/', resetPasswordRoute);
+// Exemple route sécurisée
+const authenticateToken = require('./routes/config/auth');
+app.get('/dashboard-data', authenticateToken, (req, res) => {
+  res.json({ message: `Bienvenue ${req.user.email} !`, profil: req.user.profil });
+});
+
+// Server start
+const PORT = process.env.PORT || 3000;
+//app.get("/api", (req, res) => {res.send("eCoucou")});
+app.listen(PORT,() => console.log('Mon serveur est en marche ... en 3000 localement'));

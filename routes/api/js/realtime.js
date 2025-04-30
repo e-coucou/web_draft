@@ -9,4 +9,4 @@ admin.initializeApp({
 
 let database = admin.database();
 
-module.exports = database;
+module.exports = {database, admin};
