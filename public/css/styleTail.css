@@ -499,9 +499,6 @@ video {
 .top-1 {
   top: 0.25rem;
 }
-.top-10 {
-  top: 2.5rem;
-}
 .z-10 {
   z-index: 10;
 }
@@ -960,13 +957,13 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(28 28 28 / var(--tw-bg-opacity, 1));
 }
-.dark\:bg-primaryDark:is(.dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
-}
 .dark\:bg-primary:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(52 211 153 / var(--tw-bg-opacity, 1));
+}
+.dark\:bg-primaryDark:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
 }
 .dark\:text-AccentClair:is(.dark *) {
   --tw-text-opacity: 1;

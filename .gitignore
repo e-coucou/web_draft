@@ -158,6 +158,4 @@ routes/api/QR-code/certs/signerCert.pem
 routes/api/QR-code/certs/signerCert.pem.b64
 routes/api/QR-code/certs/signerKey.pem
 routes/api/QR-code/certs/signerKey.pem.b64
-routes/api/config/secret.js
 
-routes/config/secret.js
