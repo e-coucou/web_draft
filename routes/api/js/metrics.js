@@ -6,7 +6,7 @@ const path = require("path");
 const Metrics = express.Router();
 const { createCanvas } = require("canvas");
 const { Parser } = require('json2csv');
-const authenticateToken = require("../../config/auth");
+const {authenticateToken, requireAuth} = require("../../config/auth");
 const {database} = require("./realtime");
 
 const {encrypt,decrypt,encryptToCompactJSON,decryptFromCompactJSON} = require("./crypto-aes");
@@ -23,7 +23,7 @@ async function authProfil(email) {
     }
 }
 Metrics.use(express.json());
-Metrics.get("/secret", authenticateToken, async (req, res) => {
+Metrics.get("/secret", requireAuth, async (req, res) => {
     const email = req.user.email; // email validé via token
     try {
         const profil = await authProfil(email);

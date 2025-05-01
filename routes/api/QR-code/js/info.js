@@ -1,7 +1,7 @@
 const eC = {version: 'v0.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
 
 function eCoucou() {
-    return {version: 2.30, maj:'avril/25', release: 0};
+    return {version: 2.31, maj:'avril/25', release: 1};
 }
 
 function Clair () {

@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const cookieParser = require("cookie-parser");
 // const cors = require('cors');
 
 
@@ -16,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
     fs.writeFileSync(path.join(certDir, 'signerKey.pem'), keyPem);
     fs.writeFileSync(path.join(certDir, 'signerCert.pem'), certPem);
 }
-console.log(process.env.PORT)
+// console.log(process.env.PORT)
 
 var express = require('express');
 // const {initFireDB} = require("./routes/api/QR-code/js/firebaseDB");
@@ -26,6 +27,7 @@ var app = express();
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.json());
+app.use(cookieParser()); // avant les routes
 
 
 require('dotenv').config();
@@ -52,12 +54,14 @@ app.use('/', refreshRoute);
 const resetPasswordRoute = require('./routes/config/reset_password');
 app.use('/', resetPasswordRoute);
 // Exemple route sécurisée
-const authenticateToken = require('./routes/config/auth');
-app.get('/dashboard-data', authenticateToken, (req, res) => {
-  res.json({ message: `Bienvenue ${req.user.email} !`, profil: req.user.profil });
-});
+// const {requireAuth} = require('./routes/config/auth');
+// app.get('/dashboard-data', requireAuth, (req, res) => {
+//   res.json({ message: `Bienvenue ${req.user.email} !`, profil: req.user.profil });
+// });
 
 // Server start
 const PORT = process.env.PORT || 3000;
 //app.get("/api", (req, res) => {res.send("eCoucou")});
 app.listen(PORT,() => console.log('Mon serveur est en marche ... en 3000 localement'));
+
+console.log(process.env.NODE_ENV);

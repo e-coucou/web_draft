@@ -135,7 +135,6 @@
     // gestion du login
     const loginContainer = document.getElementById('loginContainer');
     loginBtn.addEventListener('click', () => {
-      console.log('click')
         if (loginButton.value != 'logout') {
           loginContainer.style.display = 'block';
         } else {
@@ -180,6 +179,7 @@
         }
       });
     // Affichage des vignettes
+    const idToken = localStorage.getItem('accessToken');
     fetch('./data/pages.json', { cache: 'force-cache' })
       .then(response => response.json())
       .then(pages => {
@@ -193,6 +193,53 @@
                 <p class="text-textLight dark:text-textDark text-sm mt-1">${page.description}</p>
               </div>
             </a>`;
+// NEW METHODE with cookies ...          
+          // const card = document.createElement('div');
+          // card.className = "group block bg-primary dark:bg-primaryDark rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden fade-in";
+          // card.style.animationDelay = `${0.1 * (i + 1)}s`;
+          // card.innerHTML = `
+          //   <img src="${page.image}" alt="${page.title}" class="w-full h-40 object-cover group-hover:scale-105 transition">
+          //   <div class="p-4 text-center">
+          //     <h2 class="font-bold text-lg">${page.title}</h2>
+          //     <p class="text-textLight dark:text-textDark text-sm mt-1">${page.description}</p>
+          //   </div>
+          // `;
+          // card.addEventListener('click', async () => {
+          //   if (page.link.endsWith('.html')) {
+          //     window.location.href = page.link;
+          //     return;
+          //   }
+
+          //   const response = await fetch(page.link, {
+          //     method: 'GET',
+          //     headers: {
+          //       'Authorization': 'Bearer ' + idToken,
+          //       // 'Content-Type': 'application/json' 
+          //     }
+          //   });
+
+          //   // const data = await response.json();
+          //   if (!response.ok) {
+          //     const text = await response.text();
+          //     console.error('Erreur serveur :', text);
+          //     return;
+          //   }
+
+          //   const contentType = response.headers.get('content-type');
+
+          //   if (contentType.includes('application/json')) {
+          //     const data = await response.json();
+          //     console.log('Réponse JSON :', data);
+          //     // Traitement ou affichage du JSON
+          //   } else if (contentType.includes('text/html')) {
+          //     // Pour du HTML, on redirige simplement
+          //     window.location.href = page.link;
+          //   } else {
+          //     console.warn('Type non géré :', contentType);
+          //   }
+      
+          // });
+          // gallery.appendChild(card);
         });
       });
   </script>

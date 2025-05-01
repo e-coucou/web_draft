@@ -32,7 +32,7 @@
     "description": "Evolution de la Population Française depuis 1968",
     "image": "./img/france.png",
     "acces": ["admin"],
-    "link": "./dev/Zipf/index.html"
+    "link": "/dev/Zipf/index.html"
   },
   {
     "title": "Pétanques",

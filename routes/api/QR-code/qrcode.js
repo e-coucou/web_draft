@@ -19,7 +19,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // const {firebaseUpload} = require('./js/firebaseDB')
 const {database} = require("../js/realtime");
-const authenticateToken = require("../../config/auth");
+const {authenticateToken,requireAuth} = require("../../config/auth");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
 let DIM = 3;
@@ -312,7 +312,7 @@ router.get("/doc", async (req,res) => {
 });
 let dataArray;
 
-router.get("/audit", authenticateToken, async(req,res) => {
+router.get("/audit", requireAuth, async(req,res) => {
     const snapshot = await database.ref('qrcode').once('value');
     const allData = snapshot.val();
 
@@ -384,7 +384,7 @@ router.post("/get_pkpass", async(req, res, next) => {
         res.status(500).send({ error: 'Erreur génération pass', err: err });
     }
 });
-router.post("/get_wallet", authenticateToken, async(req, res, next) => {
+router.post("/get_wallet", requireAuth, async(req, res, next) => {
     const { wallet, nom, couleur, type } = req.body;
     const option = (type==="QR") ? false : true;
     const mess_ = option ? wallet : 'https://draft.e-coucou.com';
