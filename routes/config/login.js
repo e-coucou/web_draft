@@ -41,7 +41,8 @@ router.post('/login', async (req, res) => {
 router.get('/logout', (req, res) => {
   res.clearCookie('token');
   res.clearCookie('refresh');
-  res.redirect('/');
+  // res.redirect('/');
+  res.status(200).json({success:true});
 });
 
 router.get('/cookies', (req,res) => {

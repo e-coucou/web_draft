@@ -76,8 +76,8 @@
   <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
     <div class="text-xl font-bold text-blue-600"></div>
     <div class="space-x-4 dark:text-textLight text-textDark">
-      <a href="terms.html" class="hover:text-blue-200">Terms</a>
-      <a href="/api/qrcode/doc" class="hover:text-blue-500">Documentation</a>
+      <!-- <a href="terms.html" class="hover:text-blue-200">Terms</a>
+      <a href="/api/qrcode/doc" class="hover:text-blue-500">Documentation</a> -->
       <a>
         <button id="loginBtn" class="bg-accent dark:bg-primary px-4 py-2 rounded-full shadow-lg z-50">login</button>
         <button id="theme-toggle" class="bg-accent dark:bg-primary text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
@@ -96,7 +96,7 @@
   <div class="links">
     <br><hr>
     <a href="/signup.html">Créer un compte</a> | 
-    <a href="/newPassword.html">Mot de passe oublié</a>
+    <a href="/reset_password.html">Mot de passe oublié</a>
   </div>
 </div>
 
@@ -134,14 +134,29 @@
 
     // gestion du login
     const loginContainer = document.getElementById('loginContainer');
-    loginBtn.addEventListener('click', () => {
+    loginBtn.addEventListener('click', async () => {
         if (loginButton.value != 'logout') {
           loginContainer.style.display = 'block';
         } else {
           loginContainer.style.display = 'none';
-          localStorage.removeItem('accessToken');
+          // localStorage.removeItem('accessToken');
           localStorage.removeItem('nickname');
-          location.reload();
+          try {
+            const response = await fetch('/logout', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+              location.reload();
+            } else {
+              alert(data.message || 'Échec de DéConnexion');
+            }
+          } catch (error) {
+            alert("Erreur lors de déConnexion");
+          }
       }
     });
     if (token && nickname) {
@@ -168,7 +183,7 @@
           });
           const data = await response.json();
           if (response.ok && data.success) {
-            localStorage.setItem('accessToken', data.accessToken);
+            // localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('nickname', data.nickname);
             location.reload();
           } else {
@@ -179,7 +194,7 @@
         }
       });
     // Affichage des vignettes
-    const idToken = localStorage.getItem('accessToken');
+    // const idToken = localStorage.getItem('accessToken');
     fetch('./data/pages.json', { cache: 'force-cache' })
       .then(response => response.json())
       .then(pages => {
@@ -193,7 +208,7 @@
                 <p class="text-textLight dark:text-textDark text-sm mt-1">${page.description}</p>
               </div>
             </a>`;
-// NEW METHODE with cookies ...          
+// NEW METHODE with cookies ... less secured !          
           // const card = document.createElement('div');
           // card.className = "group block bg-primary dark:bg-primaryDark rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden fade-in";
           // card.style.animationDelay = `${0.1 * (i + 1)}s`;

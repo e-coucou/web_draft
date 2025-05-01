@@ -13,7 +13,7 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="text" id="nickname" placeholder="Nickname" required>
         <input type="password" id="password" placeholder="Mot de passe" required>
-      <input type="text" id="profil" placeholder="Profil" required>
+      <!-- <input type="text" id="profil" placeholder="Profil" required> -->
       <button type="submit">Créer mon compte</button>
     </form>
     <div class="links">
@@ -28,7 +28,7 @@
         const email = document.getElementById('email').value;
         const nickname = document.getElementById('nickname').value;
         const password = document.getElementById('password').value;
-        const profil = document.getElementById('profil').value;
+        const profil = 'public'; //document.getElementById('profil').value;
 
         const response = await fetch('/signup', {
             method: 'POST',

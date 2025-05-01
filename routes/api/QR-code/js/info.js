@@ -1,7 +1,10 @@
-const eC = {version: 'v0.1', release:'r0', date:'sep/23', owner: 'rky', code:'y2H', annee:'2023'};
+const eC_ = {version: 2.32, release:1, date:'avril/23', owner: 'rky', code:'y2H', annee:'2025', maj:'mai/25'};
 
+function eC() {
+    return eC_;
+}
 function eCoucou() {
-    return {version: 2.31, maj:'avril/25', release: 1};
+    return {version: 2.32, maj:'avril/25', release: 1};
 }
 
 function Clair () {
@@ -50,4 +53,4 @@ En utilisant ce logiciel, vous reconnaissez et acceptez ces conditions.
     return termsAndConditions;
 }
 
-module.exports = {eCoucou, Clair, Fonce, Terms};
+module.exports = {eCoucou, Clair, Fonce, Terms, eC};

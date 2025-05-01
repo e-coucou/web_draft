@@ -1,4 +1,4 @@
-const {eCoucou} = require("./js/info");
+const {eCoucou,eC} = require("./js/info");
 
 const express = require("express");
 const fs = require("fs");
@@ -245,7 +245,7 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,option=true)
 // }
 router.use(express.json());
 router.get("/version", (req, res) => {
-    res.status(200).json(eCoucou());
+    res.status(200).json(eC());
 });
 router.get("/vcard", async (req,res) => {
     // On nettoye les 'undefined'
