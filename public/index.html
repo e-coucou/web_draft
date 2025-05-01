@@ -139,7 +139,8 @@
           loginContainer.style.display = 'block';
         } else {
           loginContainer.style.display = 'none';
-          // localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('accessToken');
           localStorage.removeItem('nickname');
           try {
             const response = await fetch('/logout', {
@@ -183,7 +184,8 @@
           });
           const data = await response.json();
           if (response.ok && data.success) {
-            // localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('refreshToken', data.refreshToken);
             localStorage.setItem('nickname', data.nickname);
             location.reload();
           } else {

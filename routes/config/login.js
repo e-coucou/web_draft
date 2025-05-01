@@ -31,8 +31,7 @@ router.post('/login', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',      // à activer si HTTPS
       sameSite: 'strict' // limite le cross-site
     });
-    res.json({ success: true, nickname:payload.nickname });
-    // res.json({ success: true, accessToken, refreshToken, nickname:payload.nickname });
+    res.json({ success: true, accessToken, refreshToken, nickname:payload.nickname });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
