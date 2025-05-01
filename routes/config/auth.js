@@ -1,3 +1,4 @@
+const path = require("path");
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('./secret');
 
@@ -19,13 +20,13 @@ function authenticateToken(req, res, next) {
 // auth par token dans cookies
 function requireAuth(req, res, next) {
   const token = req.cookies.token;
-  if (!token) return res.status(401).send('Non authentifié');
+  if (!token) return res.status(401).sendFile(path.join(__dirname,'../../public/401.html'));
   try {
     const user = jwt.verify(token, JWT_SECRET);
     req.user = user; // accessible ensuite
     next();
   } catch (err) {
-    res.status(403).send('Token invalide');
+    res.status(403).sendFile(path.join(__dirname,'../../public/403.html'));
   }
 }
 
