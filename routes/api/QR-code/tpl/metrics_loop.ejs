@@ -23,35 +23,71 @@
     </style>
     <script>
       window.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('accessToken');
+        const nickname = localStorage.getItem('nickname');
+        const loginButton = document.getElementById('loginBtn');
         const toggleButton = document.getElementById('theme-toggle');
-        document.documentElement.classList.add('dark');
-        toggleButton.textContent = '☀️';
+        // Gestion du theme jour/nuit
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+          toggleButton.textContent = '☀️';
+        } else {
+          document.documentElement.classList.remove('dark');
+          toggleButton.textContent = '🌙';
+        }
         toggleButton.addEventListener('click', () => {
           document.documentElement.classList.toggle('dark');
           if (document.documentElement.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
             toggleButton.textContent = '☀️';
           } else {
-            toggleButton.textContent = '🌙 ';
+            localStorage.setItem('theme', 'light');
+            toggleButton.textContent = '🌙';
           }
         });
+        if (token && nickname) {
+        loginButton.value = "logout";
+        loginButton.innerHTML = '👤 '+localStorage.nickname + ' 🔚';
+    } else {
+        loginButton.innerHTML = "logIn";
+    };
+
       });
     </script>
   <body class="bg-backgroundLight dark:bg-backgroundDark dark:text-textLight text-textDark font-sans transition-colors duration-300">
     <header class="bg-backgroundLight dark:bg-backgroundDark shadow p-4 flex items-center justify-between" style="z-index: 100;width: 100%;">
       <div class="flex items-center gap-4">
-        <a href="/index.html">
+        <a href="/">
           <img src="../../img/ecoucou.png" alt="eCoucou" class="h-12"/>
         </a>
-        <h1 class="text-xl font-semibold">QR-Code</h1>
+        <!-- <h1 class="text-xl font-semibold">QR-Code</h1> -->
+        <nav class=" shadow-md fixed w-full z-10">
+          <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+            <div class="text-xl font-bold text-blue-600"></div>
+            <div class="space-x-4 dark:text-textLight text-textDark">
+              <!-- <a href="terms.html" class="hover:text-blue-200">Terms</a>
+              <a href="/api/qrcode/doc" class="hover:text-blue-500">Documentation</a> -->
+              <a>
+                <button id="loginBtn" class="bg-accent dark:bg-primary px-4 py-2 rounded-full shadow-lg z-50">login</button>
+                <button id="theme-toggle" class="bg-accent dark:bg-primary text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
+              </a>
+            </div>
+          </div>
+        </nav>
       </div>
-      <button id="theme-toggle" class="bg-primary dark:bg-primaryDark text-textLight px-4 py-1 rounded-full shadow-lg z-50">x</button>
-    </header>
-  <style>
+  </header>
+<style>
     body {
         font-size: 1.9vw;
     }
-    </style>
+    a {
+      pointer-events: auto !important;
+      z-index: 1000;
+      position: relative;
+    }
+</style>
     <link rel="stylesheet" href="/css/style_api_vcard.css">
+
 </head>
 <div class="footer-bar">
   <button class="export-btn bg-primary dark:bg-primaryDark text-textDark dark:text-textLight px-4 py-1 rounded" onclick="window.location.href='/api/qrcode/export'">Exporter vers Excel (CSV)</button>

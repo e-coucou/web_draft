@@ -38,7 +38,7 @@
   z-index: 1000;
 }
 /* Styles identiques pour les deux éléments */
-.record-count, .export-btn, button {
+.record-count, .export-btn {
   font-size: 12px;
   height: 36px;
   padding: 0 20px;

@@ -28,15 +28,6 @@
       let fullURL;
       let version;
       
-      // function toggleDarkMode() {
-      //   const toggleButton = document.getElementById('theme-toggle');
-      //   if (document.documentElement.classList.contains('dark')) {
-      //     toggleButton.textContent = '☀️';
-      //   } else {
-      //     toggleButton.textContent = '🌙';
-      //   }
-      //     // document.documentElement.classList.toggle('dark');
-      // }
       function generateWallet() {
         let nom = document.getElementById('nom').value.trim();
         let type = document.getElementById('type').value.trim();
@@ -124,16 +115,24 @@
         loadFormFromCookie();
 
         const toggleButton = document.getElementById('theme-toggle');
-        document.documentElement.classList.add('dark');
-        toggleButton.textContent = '☀️';
+        // Gestion du theme jour/nuit
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+          toggleButton.textContent = '☀️';
+        } else {
+          document.documentElement.classList.remove('dark');
+          toggleButton.textContent = '🌙';
+        }
         toggleButton.addEventListener('click', () => {
           document.documentElement.classList.toggle('dark');
           if (document.documentElement.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
             toggleButton.textContent = '☀️';
           } else {
-            toggleButton.textContent = '🌙 ';
+            localStorage.setItem('theme', 'light');
+            toggleButton.textContent = '🌙';
           }
-      });
+        });
 
         // Mettre la couleur au chargement
         const btColor = document.getElementById('color');

@@ -120,6 +120,9 @@
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
       toggleButton.textContent = '☀️';
+    } else {
+      document.documentElement.classList.remove('dark');
+      toggleButton.textContent = '🌙';
     }
     toggleButton.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
@@ -128,7 +131,7 @@
         toggleButton.textContent = '☀️';
       } else {
         localStorage.setItem('theme', 'light');
-        toggleButton.textContent = '🌙 ';
+        toggleButton.textContent = '🌙';
       }
     });
 
