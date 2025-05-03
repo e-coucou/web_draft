@@ -79,24 +79,45 @@
       <!-- <a href="terms.html" class="hover:text-blue-200">Terms</a>
       <a href="/api/qrcode/doc" class="hover:text-blue-500">Documentation</a> -->
       <a>
-        <button id="loginBtn" class="bg-accent dark:bg-primary px-4 py-2 rounded-full shadow-lg z-50">login</button>
+          <!-- <button @click="showLogin = true" class="bg-accent dark:bg-primary px-4 py-2 rounded-full hover:bg-blue-700 z-50">login</button> -->
+          <button id="loginBtn" class="bg-accent dark:bg-primary px-4 py-2 rounded-full shadow-lg z-50">login</button>
         <button id="theme-toggle" class="bg-accent dark:bg-primary text-white px-4 py-2 rounded-full shadow-lg z-50">🌙</button>
       </a>
     </div>
   </div>
 </nav>
 <!-- Formulaire de connexion -->
-<div class="form-container dark:bg-primary bg-accent" id="loginContainer">
+<!-- <div class=" dark:bg-primary bg-accent backdrop-blur-sm" id="loginContainer"> -->
+<div id="loginContainer" class="hidden fixed inset-0 bg-accent/40 backdrop-blur-sm z-50 flex items-center justify-center min-h-screen">
   <h2>Connexion</h2>
   <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="password" placeholder="Mot de passe" required>
-    <button type="submit">Se connecter</button>
+    <a><input class="w-full border p-2 rounded mb-2" type="email" id="email" placeholder="Email" required></a><br>
+    <a><input class="w-full border p-2 rounded mb-4" type="password" id="password" placeholder="Mot de passe" required></a>
+    <div class="flex justify-end space-x-2">
+      <button class="px-4 py-2 rounded bg-primary" type="submit">Se connecter</button>
+    </div>
   </form>
-  <div class="links">
-    <br><hr>
-    <a href="/signup.html">Créer un compte</a> | 
-    <a href="/reset_password.html">Mot de passe oublié</a>
+  <div class="w-full">
+    <br><hr class="py-2">
+    <button id = "signupBtn" class="bg-backgroundDark text-accent rounded-full px-4 py-2">Créer un compte</button> | 
+    <a class="bg-backgroundDark text-accent rounded-full px-4 py-2" href="/reset_password.html">Mot de passe oublié</a>
+  </div>
+</div>
+
+<!-- Formulaire de création de compte -->
+<div id="signupContainer" class="hidden fixed inset-0 bg-backgroundDark/70 backdrop-blur-sm z-50 flex items-center justify-center min-h-screen">
+  <h2>Créer un compte</h2>
+  <form id="signupForm">
+      <input class="w-full border p-2 rounded mb-2" type="email" id="email_C" placeholder="Email" required>
+      <input class="w-full border p-2 rounded mb-2" type="text" id="nickname_C" placeholder="Nickname" required>
+      <input class="w-full border p-2 rounded mb-2" type="password" id="password_C" placeholder="Mot de passe" required>
+      <div class="flex justify-end space-x-2">
+        <!-- <input type="text" id="profil" placeholder="Profil" required> -->
+        <button id="createBtn" class="px-4 py-2 rounded text-textLight bg-backgroundDark" type="submit">Créer mon compte</button>
+      </div>
+  </form>
+  <div class="w-full">
+    <a class="bg-backgroundDark text-accent rounded-full px-4 py-2" href="/">Déjà inscrit ? Se connecter sur la page d'acceuil</a>
   </div>
 </div>
 
@@ -116,7 +137,7 @@
     const token = localStorage.getItem('accessToken');
     const nickname = localStorage.getItem('nickname');
 
-    // Gestion du theme jour/nuit
+  // Gestion du theme jour/nuit
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
       toggleButton.textContent = '☀️';
@@ -171,8 +192,39 @@
     } else {
         loginButton.innerHTML = "logIn";
     };
+    // gestion du signup
+    const signupButton = document.getElementById('signupBtn')
+    const signupContainer = document.getElementById('signupContainer');
+    signupButton.addEventListener('click', async () => {
+      loginContainer.style.display = 'none';
+      signupContainer.style.display = 'block';
+      console.log( "création ");
+      const createButton = document.getElementById('createBtn');
+      createButton.addEventListener('click', async () => {
+        const email = document.getElementById('email_C').value;
+        const nickname = document.getElementById('nickname_C').value;
+        const password = document.getElementById('password_C').value;
+        const profil = 'public'; //document.getElementById('profil').value;
 
-      // Soumission du formulaire de connexion sans Axios
+        console.log(email)
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, profil,nickname })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Compte créé. Vous pouvez maintenant vous connecter.');
+            window.location.href = '/';
+        } else {
+            alert(data.message);
+        }
+      });
+    });
+
+      // Soumission du formulaire de connexion
       document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
@@ -269,7 +321,18 @@
       display: none;
       position: absolute;
       top: 60px;
-      right: 20px;
+      /* right: 20px; */
+      /* background-color: rgb(102, 245, 183); */
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+    #signupContainer {
+      display: none;
+      position: absolute;
+      top: 60px;
+      /* right: 20px; */
       /* background-color: rgb(102, 245, 183); */
       border: 1px solid #ccc;
       padding: 20px;

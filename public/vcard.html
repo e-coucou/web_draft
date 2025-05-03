@@ -96,6 +96,7 @@
         params.append('CONTRASTE', document.getElementById('contraste').checked ? '1' : '0');
         params.append('STANDARD', document.getElementById('standard').checked ? '1' : '0');
         params.append('COLOR', document.getElementById('color').value);
+        params.append('FORME', document.getElementById('forme').value);
 
         fullUrl = baseUrl + params.toString() + '&PIXEL=10';
         document.getElementById('qrcodeText').value = fullUrl;
@@ -168,7 +169,7 @@
         const fields = [
             'nom', 'prenom', 'genre', 'email', 'mobile', 'fonction', 'organisation',
             'www', 'site', 'rue', 'ville', 'code', 'pays',
-            'qual', 'color', 'level', 'PIXEL', 'contraste', 'standard'
+            'qual', 'color', 'level', 'PIXEL', 'contraste', 'standard','forme'
         ];
 
         const data = {};
@@ -362,6 +363,16 @@
                     <option value="6">6</option>
                     <option value="7">7</option>
                 </select>
+            </div>
+            <div class="col-span-12 md:col-span-2">
+              <select id="forme" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-PClair dark:bg-PDark">
+                <option value=0>Standard (Carré)</option>
+                <option value=1>Losange</option>
+                <option value=2>Rond</option>
+                <option value=3>Etoile</option>
+                <option value=4>Cime</option>
+                <option value=5>Triangle</option>
+              </select>
             </div>
             <div class="col-span-12 md:col-span-2">
               <label class="inline-flex items-center gap-2">

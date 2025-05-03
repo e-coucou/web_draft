@@ -1,4 +1,4 @@
-const {eCoucou, Terms} = require("./info");
+const {eCoucou, Terms, eC} = require("./info");
 
 const { PKPass } = require('passkit-generator');
 const fs = require('fs');
@@ -108,7 +108,7 @@ async function getPassWallet(vcardData, nom, societe, prenom, www, mobile, fonct
     );
     pass.type = "generic";
     pass.setBarcodes({message:vcardData,format:"PKBarcodeFormatQR"});
-    pass.headerFields.push(addField('1','rev.',eCoucou().version));
+    pass.headerFields.push(addField('1','rev.',eC().version));
     pass.primaryFields.push(addField('p1',societe,(prenom+' '+nom),"PKTextAlignmentLeft"));
     pass.secondaryFields.push(addField('s1',fonction,mobile,"PKTextAlignmentLeft"));
     pass.secondaryFields.push(addField('s2',"",www,"PKTextAlignmentLeft"));
@@ -145,7 +145,7 @@ async function getBarreCode(nom, code,couleur,type) {
     } else {
         pass.setBarcodes({message:code,format:"PKBarcodeFormatCode128"});
     }
-    pass.headerFields.push(addField('1','rev.',eCoucou().version));
+    pass.headerFields.push(addField('1','rev.',eC().version));
     pass.primaryFields.push(addField('p1',"",nom,"PKTextAlignmentLeft"));
     pass.auxiliaryFields.push(addField('a1',"",code,"PKTextAlignmentLeft"));
     pass.backFields.push(addBack_id(vCardID));

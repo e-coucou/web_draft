@@ -135,7 +135,7 @@ function optimise() {
     }
     return (sel);
 }
-function createPNG(base_color,contraste,standard,option=true) {
+function createPNG(base_color,contraste,standard, forme = 0 ,option=true) {
     const width = (dim+2)*DIM;
     const height = (dim+2)*DIM;
 
@@ -177,13 +177,50 @@ function createPNG(base_color,contraste,standard,option=true) {
                 case 1: color = '#ffffff'; break;
                 case -1: color = '#ff0000'; break;
             }
+            context.save();
             context.fillStyle = color;
             context.strokeStyle =color;
             context.beginPath();
             if (standard) {a=0;b=0;c=0;d=0}
-            context.roundRect((i+1)*(DIM), (j+1)*(DIM), DIM, DIM, [a,b,c,d]);
+            context.translate((i+1)*(DIM),(j+1)*(DIM));
+            switch(forme) {
+                case '0': context.roundRect(0, 0, DIM, DIM, [a,b,c,d]); break;
+                case '1': // losange
+                    context.scale(0.707107, 0.707107)
+                    context.rotate(Math.PI/4);
+                    context.roundRect(0, 0, DIM, DIM, [a,b,c,d]);
+                    // context.rect(0,0,DIM,DIM);
+                    break;
+                case '2': // circle
+                    context.scale(0.95, 0.95)
+                    context.ellipse(0,0,DIM/2,DIM/2,0,0,6.28);
+                    break;
+                case '4': // triangle
+                    context.moveTo(0,DIM);
+                    context.lineTo(DIM,DIM);
+                    context.lineTo(DIM/2,0);
+                    context.lineTo(0,DIM);
+                    break;
+                case '5': // triangle
+                    context.lineTo(0,DIM);
+                    context.lineTo(DIM,0);
+                    context.lineTo(0,0);
+                    break;
+                case '3': // etoile
+                    context.moveTo(0,DIM/2)
+                    context.lineTo(DIM/2-DIM/6,DIM/2+DIM/6);
+                    context.lineTo(DIM/2,DIM);
+                    context.lineTo(DIM/2+DIM/6,DIM/2+DIM/6);
+                    context.lineTo(DIM,DIM/2);
+                    context.lineTo(DIM/2+DIM/6,DIM/2-DIM/6);
+                    context.lineTo(DIM/2,0);
+                    context.lineTo(DIM/2-DIM/6,DIM/2-DIM/6);
+                    context.lineTo(0,DIM/2);
+                    break;
+            }
             context.stroke();
             context.fill();
+            context.restore()
         }
     }
 
@@ -195,7 +232,7 @@ function createPNG(base_color,contraste,standard,option=true) {
     }
     return Buffer.from(buffer,"base64");
 }
-function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,option=true) {
+function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,forme=0,option=true) {
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
@@ -224,7 +261,7 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,option=true)
         level = optimise();
         createQR(level);
     }
-    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1,option);
+    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1,forme,option);
     return [image, base_color];
 }
 // async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
@@ -249,16 +286,15 @@ router.get("/version", (req, res) => {
 });
 router.get("/vcard", async (req,res) => {
     // On nettoye les 'undefined'
-    const expected = ['nom', 'prenom', 'genre', 'email', 'adresse', 'mobile', 'site', 'titre', 'fonction', 'organisation', 'www', 'QUAL', 'COLOR', 'WEB', 'PIXEL', 'LEVEL', 'CONTRASTE', 'STANDARD'];
+    const expected = ['nom', 'prenom', 'genre', 'email', 'adresse', 'mobile', 'site', 'titre', 'fonction', 'organisation', 'www', 'QUAL', 'COLOR', 'WEB', 'PIXEL', 'LEVEL', 'CONTRASTE', 'STANDARD', 'FORME'];
     expected.forEach( param => {
         if (req.query[param] === undefined || req.query[param] === null) {
             req.query[param] = ''; // Remplace undefined ou null par ''
         }
     });
-    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
+    const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD, FORME} = req.query;
     let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
-
-    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR);
+    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, FORME);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -283,7 +319,7 @@ router.get("/wallet", async (req,res) => {
     const {nom, code, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
     let _texte = code;
 
-    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR);
+    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, 0);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -367,9 +403,9 @@ router.get("/metrics_data", async(req,res) => {
 router.post("/get_pkpass", async(req, res, next) => {
     const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
     if (www===undefined || www===null || www==="") {
-        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,"#83C7D5",true);
+        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,"#83C7D5",0,true);
     } else {
-        const [image, base_color] = encodeQR(www, 'M', 8, -1, 1, 0,couleur,true);
+        const [image, base_color] = encodeQR(www, 'M', 8, -1, 1, 0,couleur,0,true);
     }
     try {
         const buffer = await getPassWallet(vCard, nom, societe, prenom, www, mobile, fonction, couleur);
@@ -388,7 +424,7 @@ router.post("/get_wallet", requireAuth, async(req, res, next) => {
     const { wallet, nom, couleur, type } = req.body;
     const option = (type==="QR") ? false : true;
     const mess_ = option ? wallet : 'https://draft.e-coucou.com';
-    const [image, base_color] = encodeQR(mess_, 'M', 8, -1, 1, 1,couleur,option);
+    const [image, base_color] = encodeQR(mess_, 'M', 8, -1, 1, 1,couleur,0,option);
     try {
         const buffer = await getBarreCode(nom, wallet, couleur, type);
         if (option) {
@@ -410,7 +446,7 @@ router.get("/wallet_test", async (req, res) => {
     const code = '018137-440-01';
     const nom = "Mons";
     const couleur = "#458192"
-    const [image, base_color] = encodeQR(code, 'L', 8, -1, 1, 1,"#000000");
+    const [image, base_color] = encodeQR(code, 'L', 8, -1, 1, 1,"#000000",0);
     try {
         const buffer = await getBarreCode(nom, code,couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');
