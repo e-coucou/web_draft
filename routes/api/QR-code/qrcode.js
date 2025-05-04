@@ -135,10 +135,10 @@ function optimise() {
     }
     return (sel);
 }
-function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0) {
+function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0, option=false) {
 
     let tScan=0, n=1;
-    console.log('cadre',cadre,contraste)
+    console.log('cadre',cadre,contraste,option)
     if (cadre==1) { tScan = 40; n=2}
     const width = (dim+n*2)*DIM;
     const height = (dim+n*2)*DIM + tScan;
@@ -267,7 +267,7 @@ function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0) {
     }
     return Buffer.from(buffer,"base64");
 }
-function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,forme=0,option=true, cadre=0, logo=false) {
+function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,forme=0,OPTION=true, cadre=0, logo=false) {
     alphabet = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/alpha.json', "utf8"));
     qr_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/block.json', "utf8"));
     loc_json = JSON.parse(fs.readFileSync('./routes/api/QR-code/data/patterns.json', "utf8"));
@@ -296,7 +296,7 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,forme=0,opti
         level = optimise();
         createQR(level);
     }
-    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1,forme,cadre,logo);
+    const image = createPNG(base_color,CONTRASTE&1,STANDARD&1,forme,cadre,logo,OPTION);
     return [image, base_color];
 }
 // async function logMetrics(source, type, level, qualite, version, option, _txt  ) {
@@ -329,7 +329,7 @@ router.get("/vcard", async (req,res) => {
     });
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD, FORME, CADRE} = req.query;
     let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
-    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, FORME, true,CADRE,false);
+    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, FORME, false,CADRE,false);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -354,7 +354,7 @@ router.get("/wallet", async (req,res) => {
     const {nom, code, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD} = req.query;
     let _texte = code;
 
-    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, 0,false,0,false);
+    const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, '0',false,0,false);
     imageName = "image.png";
     if (WEB) {
         if (WEB==1) {
@@ -438,9 +438,9 @@ router.get("/metrics_data", async(req,res) => {
 router.post("/get_pkpass", async(req, res, next) => {
     const { vCard, nom, prenom, societe, www, mobile, fonction, couleur } = req.body;
     if (www===undefined || www===null || www==="") {
-        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, 1, 1,"#83C7D5",0,true,0,false);
+        const [image, base_color] = encodeQR('https://draft.e-coucou.com', 'M', 8, -1, '1', '1',"#83C7D5",'0',true,0,false);
     } else {
-        const [image, base_color] = encodeQR(www, 'M', 8, -1, 1, 0,couleur,0,true,0,false);
+        const [image, base_color] = encodeQR(www, 'M', 8, -1, '1', '0',couleur,'0',true,0,false);
     }
     try {
         const buffer = await getPassWallet(vCard, nom, societe, prenom, www, mobile, fonction, couleur);
@@ -459,7 +459,7 @@ router.post("/get_wallet", requireAuth, async(req, res, next) => {
     const { wallet, nom, couleur, type } = req.body;
     const option = (type==="QR") ? false : true;
     const mess_ = option ? wallet : 'https://draft.e-coucou.com';
-    const [image, base_color] = encodeQR(mess_, 'M', 8, -1, 1, 1,couleur,0,option,0,false);
+    const [image, base_color] = encodeQR(mess_, 'M', 8, -1, '1', '1',couleur,'0',option,0,false);
     try {
         const buffer = await getBarreCode(nom, wallet, couleur, type);
         if (option) {
@@ -481,7 +481,7 @@ router.get("/wallet_test", async (req, res) => {
     const code = '018137-440-01';
     const nom = "Mons";
     const couleur = "#458192"
-    const [image, base_color] = encodeQR(code, 'L', 8, -1, 1, 1,"#000000",0,false,0,false);
+    const [image, base_color] = encodeQR(code, 'L', 8, -1,'1', '1',"#000000",'0',false,0,false);
     try {
         const buffer = await getBarreCode(nom, code,couleur);
         res.setHeader('Content-Type', 'application/vnd.apple.pkpass');

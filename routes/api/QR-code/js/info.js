@@ -1,4 +1,4 @@
-const eC_ = {version: 2.41, release:0, date:'avril/25', owner: 'rky', code:'y2H', annee:'2025', maj:'mai/25'};
+const eC_ = {version: 2.42, release:0, date:'avril/25', owner: 'rky', code:'y2H', annee:'2025', maj:'mai/25'};
 
 function eC() {
     return eC_;

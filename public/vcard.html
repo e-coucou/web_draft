@@ -248,7 +248,12 @@
         });
         generateUrl();
     }
-
+    function copyToClipboard() {
+      const input = document.getElementById("qrcodeText");
+      input.select();
+      input.setSelectionRange(0, 99999); // pour mobile
+      document.execCommand("copy");
+    }
     async function getVersion() {
         const res = await fetch('/api/qrcode/version');
         const vData = await res.json();
@@ -277,15 +282,15 @@
         <div class="grid grid-cols-12 gap-4 mb-4">
           <div class="col-span-12 md:col-span-2">
             <label class="block">Genre</label>
-            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+            <input type="text" id="genre" placeholder="M., Mme, Dr" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
           </div>
           <div class="col-span-12 md:col-span-5">
             <label class="block">Nom</label>
-            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded  bg-backgroundLight dark:bg-primaryDark" />
+            <input type="text" id="nom" placeholder="DOE" onchange="generateUrl()" class="w-full px-4 py-2 rounded  bg-primary dark:bg-primaryDark" />
           </div>
           <div class="col-span-12 md:col-span-5">
             <label class="block">Prénom</label>
-            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded  bg-backgroundLight dark:bg-primaryDark" />
+            <input type="text" id="prenom" placeholder="John" onchange="generateUrl()" class="w-full px-4 py-2 rounded  bg-primary dark:bg-primaryDark" />
           </div>
         </div>
 
@@ -293,40 +298,40 @@
           <label class="block">Entreprise</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-3">
-                <input type="Organisation" id="organisation" placeholder="Entreprise" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="Organisation" id="organisation" placeholder="Entreprise" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-9">
-                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="Fonction" id="fonction" placeholder="Fonction" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
             </div>
           <label class="block">Média Info</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-3">
-                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="mobile" id="mobile" placeholder="+33612345678" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-4">
-                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="email" id="email" placeholder="john.doe@my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-5">
-                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="www" id="www" placeholder="https:/my.com" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
             </div>
           <label class="block">Adresse</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="site" id="site" placeholder="Site" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-3">
-                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="rue" id="rue" placeholder="Rue" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-2">
-                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="code" id="code" placeholder="Code Postal" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-3">
-                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="Ville" id="ville" placeholder="Ville" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
               <div class="col-span-12 md:col-span-2">
-                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark" />
+                <input type="pays" id="pays" placeholder="Pays" onchange="generateUrl()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark" />
               </div>
             </div>
             <div id="mapContainer" class="mt-4 hidden">
@@ -345,7 +350,7 @@
           <label class="block">Design et Paramètres du QR-Code (auto update)</label>
             <div class="grid grid-cols-12 gap-4 mb-4">
               <div class="col-span-12 md:col-span-2">
-                <select id="qual" onchange="redraw()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark">
+                <select id="qual" onchange="redraw()" placeholder="Qualité" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark">
                   <option value="L">L  (7%)</option>
                   <option value="M">M (15%)</option>
                   <option value="Q">Q (25%)</option>
@@ -354,7 +359,7 @@
               </div>
           <!-- <label class="block">Niveau de correction (LEVEL)</label> -->
               <div class="col-span-12 md:col-span-2">
-                <select id="level" onchange="redraw()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark">
+                <select id="level" onchange="redraw()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark">
                     <option value="-1">-1</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -386,7 +391,7 @@
               <input type="color" id="color" onchange="redraw()" class="w-full h-10" />
             </div>
             <div class="col-span-12 md:col-span-2">
-              <select id="forme" onchange="redraw()" class="w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark">
+              <select id="forme" onchange="redraw()" class="w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark">
                 <option value=0>Standard (Carré)</option>
                 <option value=1>Losange</option>
                 <option value=2>Rond</option>
@@ -401,7 +406,13 @@
         </div>
 
         <!-- </details> -->
-        <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-backgroundLight dark:bg-primaryDark text-txtClair dark:text-txtDark" />
+        <div class="relative w-full">
+          <input id="qrcodeText" type="text" readonly class="mt-4 w-full px-4 py-2 rounded bg-primary dark:bg-primaryDark text-txtClair dark:text-txtDark" />
+          <button onclick="copyToClipboard()"
+            class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-blue-500 text-white px-2 py-1 rounded">
+            Copier
+          </button>
+        </div>
         <div class="mt-6">
           <img id="fetchedImage" class="mx-auto hidden max-w-[80vw] max-h-[80vh]" alt="QR-Code" />
         </div>
