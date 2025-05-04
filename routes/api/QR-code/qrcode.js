@@ -136,21 +136,16 @@ function optimise() {
     return (sel);
 }
 function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0, option=false) {
-
     let tScan=0, n=1;
-    console.log('cadre',cadre,contraste,option)
     if (cadre==1) { tScan = 40; n=2}
     const width = (dim+n*2)*DIM;
     const height = (dim+n*2)*DIM + tScan;
-
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
-
     context.fillStyle = "#000000";
     context.fillRect(0, 0, width, height);
     context.fillStyle = "#ffffff";
     context.fillRect(DIM*(n-1), DIM*(n-1), width-2*(n-1)*DIM, height-2*(n-1)*DIM - tScan);
-
     if (cadre==1) {
         // affiche SCAN ME
         context.font = "bold 40pt 'PT Sans'";
@@ -163,10 +158,8 @@ function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0, o
         context.font = "italic 10pt 'PT Sans'";
         context.fillText(cp, width-tScan, height-4);
     }
-
     let color;
     let a,b,c,d,g;
-
     for (let i=0; i<dim; i++) {
         for (let j=0; j<dim; j++) {
             a=Math.floor(Math.random()*10); b=Math.floor(Math.random()*10); c= Math.floor(Math.random()*10); d=Math.floor(Math.random()*10);
@@ -258,7 +251,6 @@ function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0, o
             context.restore()
         }
     }
-
     const buffer = canvas.toBuffer("image/png");
     if (option) {
         fs.writeFileSync("./routes/api/QR-code/assets.pass/thumbnail.png", buffer, { encoding: "utf8", flag: "w+" });
@@ -279,7 +271,6 @@ function encodeQR(_texte, QUAL,PIXEL,LEVEL,CONTRASTE,STANDARD,COLOR,forme=0,OPTI
         {option = false; level = Math.round(LEVEL);} else {option = true;}
     let base_color ='#000000';
     if (COLOR) {base_color = COLOR;}
-
     newMessage(_texte);
     message_l = message.bytes.length;
     loadData();
