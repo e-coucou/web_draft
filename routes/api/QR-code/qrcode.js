@@ -206,6 +206,15 @@ function createPNG(base_color,contraste,standard, forme = 0 ,option=true) {
                     context.lineTo(DIM,0);
                     context.lineTo(0,0);
                     break;
+                case '6': // coeur
+                    context.moveTo(DIM/2,DIM);
+                    context.lineTo(DIM,DIM/4);
+                    context.lineTo(3*DIM/4,0);
+                    context.lineTo(DIM/2,DIM/4);
+                    context.lineTo(DIM/4,0);
+                    context.lineTo(0,DIM/4);
+                    context.lineTo(DIM/2,DIM);
+                    break;
                 case '3': // etoile
                     context.moveTo(0,DIM/2)
                     context.lineTo(DIM/2-DIM/6,DIM/2+DIM/6);
@@ -216,6 +225,21 @@ function createPNG(base_color,contraste,standard, forme = 0 ,option=true) {
                     context.lineTo(DIM/2,0);
                     context.lineTo(DIM/2-DIM/6,DIM/2-DIM/6);
                     context.lineTo(0,DIM/2);
+                    break;
+                case '7': // croix
+                    context.moveTo(DIM/4,0);
+                    context.lineTo(3/4*DIM,0);
+                    context.lineTo(3/4*DIM,DIM/4);
+                    context.lineTo(DIM,DIM/4);
+                    context.lineTo(DIM,3*DIM/4);
+                    context.lineTo(3/4*DIM,3*DIM/4);
+                    context.lineTo(3/4*DIM,DIM);
+                    context.lineTo(DIM/4,DIM);
+                    context.lineTo(DIM/4,3*DIM/4);
+                    context.lineTo(0,3*DIM/4);
+                    context.lineTo(0,DIM/4);
+                    context.lineTo(DIM/4,DIM/4);
+                    context.lineTo(DIM/4,0);
                     break;
             }
             context.stroke();
