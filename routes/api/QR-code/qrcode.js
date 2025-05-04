@@ -4,7 +4,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const router = express.Router();
-const { createCanvas } = require("canvas");
+const { createCanvas,loadImage } = require("canvas");
 const { Parser } = require('json2csv');
 
 const { Polynome, logTable, createPoly } = require("./js/reed_salomon");
@@ -22,7 +22,7 @@ const {database} = require("../js/realtime");
 const {authenticateToken,requireAuth} = require("../../config/auth");
 
 const quality = [{t:'L',i:[0,1],m:' (7%)'},{t:'M',i:[0,0],m:' (15%)'},{t:'Q',i:[1,1],m:' (25%)'},{t:'H',i:[1,0],m:(' (30%)')}];
-let DIM = 3;
+let DIM = 3, img;
 
 let qr_json, alphabet,loc_json, info_json;
 let qrcode = [], qrinfo = [], grille;
@@ -251,6 +251,10 @@ function createPNG(base_color,contraste,standard, forme = 0 , cadre=0, logo=0, o
             context.restore()
         }
     }
+    if (logo) {
+        const dxy = (width-tScan-156)/2;
+        context.drawImage(img, dxy, dxy, 156, 156); //,100,100,10,10,20,20);
+    }
     const buffer = canvas.toBuffer("image/png");
     if (option) {
         fs.writeFileSync("./routes/api/QR-code/assets.pass/thumbnail.png", buffer, { encoding: "utf8", flag: "w+" });
@@ -320,6 +324,8 @@ router.get("/vcard", async (req,res) => {
     });
     const {nom, prenom, genre, email, adresse, mobile, site, titre, fonction, organisation, www, QUAL, COLOR, WEB, PIXEL, LEVEL, CONTRASTE, STANDARD, FORME, CADRE} = req.query;
     let _texte = (`BEGIN:VCARD\nVERSION:4.0\nFN:${prenom}+${nom}\nN:${nom};${prenom};;${genre};\nORG:${organisation}\nEMAIL;TYPE=INTERNET:${email}\nTEL;TYPE=cell:${mobile}\nitem1.ADR:;${adresse}\nitem1.X-ABLabel:${site}\nitem2.URL:${www}\nitem2.X-ABLabel:WWW\nTITLE:${fonction}\nLANG:FR-fr\nROLE:${titre}\nEND:VCARD\n`);
+    const imagePath = path.join(__dirname,'../../../public/images/icon-192.png');
+    img = await loadImage(imagePath);
     const [image, base_color] = encodeQR(_texte, QUAL, PIXEL, LEVEL, CONTRASTE, STANDARD,COLOR, FORME, false,CADRE,false);
     imageName = "image.png";
     if (WEB) {
