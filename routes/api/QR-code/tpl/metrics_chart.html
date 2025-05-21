@@ -27,7 +27,6 @@
       const baseOrigin = window.location.origin;
       let adresse='';
       let fullURL;
-
       window.addEventListener('DOMContentLoaded', () => {
         const toggleButton = document.getElementById('theme-toggle');
         // Gestion du theme jour/nuit
@@ -151,9 +150,12 @@
           responsive: true,
           plugins: {
             legend: { labels: { color: colors.text } },
+            pan: { enabled: true, mode: 'x' },
           },
           scales: {
-            x: { title: { display: true, text: 'Date' },
+            x: { type : 'time',
+                  time : { unit: 'day'},
+                 title: { display: true, text: 'Date' },
                  ticks: { color: colors.text },
                  grid: { color: colors.grid }
                 },

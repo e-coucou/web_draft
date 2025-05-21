@@ -49,8 +49,10 @@ app.use('/', signupRoute);
 
 const loginRoute = require('./routes/config/login');
 app.use('/', loginRoute);
+
 const refreshRoute = require('./routes/config/refresh');
 app.use('/', refreshRoute);
+
 const resetPasswordRoute = require('./routes/config/reset_password');
 app.use('/', resetPasswordRoute);
 // Exemple route sécurisée
