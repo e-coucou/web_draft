@@ -1,4 +1,4 @@
-const eC = {version: 'v5.0', release:'r1', date:'aug/24', owner: 'rky', code:'y2H', annee:'2024', creation:'sep/23'};
+const eC = {version: 'v5.0', release:'r2', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let param, run=false,enCours=2025, firstStart=true;
 let joueurs = [], eJoueurs=[];
@@ -245,7 +245,7 @@ function readELO() {
 
 
 function windowResized() {
-    let h_ = innerHeight-32;
+    let h_ = innerHeight-48;
     let w_ = min(0.59*h_, innerWidth);
     resizeCanvas(w_,h_);
     let x_ = (windowWidth - width) / 2;
@@ -264,7 +264,7 @@ function windowResized() {
 
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
-    let h_ = innerHeight-32;
+    let h_ = innerHeight-48;
     let w_ = min(0.59*h_, innerWidth);
     canvas = createCanvas(w_,h_); // mise en place du ratio 0.59
     canvas.parent("#canvas");
