@@ -245,7 +245,7 @@ function readELO() {
 
 
 function windowResized() {
-    let h_ = innerHeight-48;
+    let h_ = innerHeight-54;
     let w_ = min(0.59*h_, innerWidth);
     resizeCanvas(w_,h_);
     let x_ = (windowWidth - width) / 2;
@@ -264,7 +264,7 @@ function windowResized() {
 
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
-    let h_ = innerHeight-48;
+    let h_ = innerHeight-54;
     let w_ = min(0.59*h_, innerWidth);
     canvas = createCanvas(w_,h_); // mise en place du ratio 0.59
     canvas.parent("#canvas");
