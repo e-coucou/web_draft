@@ -64,6 +64,7 @@ app.use('/', resetPasswordRoute);
 // Server start
 const PORT = process.env.PORT || 3000;
 //app.get("/api", (req, res) => {res.send("eCoucou")});
+console.log("starting ...");
 app.listen(PORT,() => console.log('Mon serveur est en marche ... en 3000 localement'));
 
 console.log(process.env.NODE_ENV);
