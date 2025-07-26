@@ -97,7 +97,7 @@ div.entete {
 
 .styled {
     border: 0;
-    line-height: 2.5;
+    line-height: 2.5px;
     margin: 5px 40%;
     /* padding: 0 20px; */
     font-size: 1rem;

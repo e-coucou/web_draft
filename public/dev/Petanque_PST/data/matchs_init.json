@@ -1,0 +1,23 @@
+[
+    {"E1":0,"E2":2,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Gassin"},
+    {"E1":4,"E2":6,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Gassin"},
+    {"E1":0,"E2":6,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Gassin"},
+    {"E1":2,"E2":4,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Gassin"},
+    {"E1":4,"E2":0,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Gassin"},
+    {"E1":2,"E2":6,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Gassin"},
+    {"E1":1,"E2":3,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Ramatuelle"},
+    {"E1":5,"E2":7,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Ramatuelle"},
+    {"E1":1,"E2":7,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Ramatuelle"},
+    {"E1":5,"E2":3,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Ramatuelle"},
+    {"E1":1,"E2":5,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Ramatuelle"},
+    {"E1":3,"E2":7,"Sc1":0,"Sc2":0,"type":"Poule","annee":2025,"poule":"Ramatuelle"},
+    {"E1":2,"E2":7,"Sc1":0,"Sc2":0,"type":"Demi","annee":2025,"poule":"", "tableau":"Principal"},
+    {"E1":6,"E2":1,"Sc1":0,"Sc2":0,"type":"Demi","annee":2025,"poule":"", "tableau":"Principal"},
+    {"E1":0,"E2":3,"Sc1":0,"Sc2":0,"type":"Demi","annee":2025,"poule":"", "tableau":"Honneur"},
+    {"E1":4,"E2":5,"Sc1":0,"Sc2":0,"type":"Demi","annee":2025,"poule":"", "tableau":"Honneur"},
+    {"E1":3,"E2":4,"Sc1":0,"Sc2":0,"type":"Finale d'Honneur","annee":2025,"poule":"","k":0},
+    {"E1":0,"E2":5,"Sc1":0,"Sc2":0,"type":"Toute petite Finale","annee":2025,"poule":"","k":2},
+    {"E1":7,"E2":1,"Sc1":0,"Sc2":0,"type":"Petite Finale","annee":2025,"poule":"","k":4},
+    {"E1":2,"E2":6,"Sc1":0,"Sc2":0,"type":"Finale","annee":2025,"poule":"","k":6}
+    
+]

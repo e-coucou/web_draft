@@ -13,14 +13,15 @@
   // Initialize Firebase
   const app = firebase.initializeApp(firebaseConfig); // old
   let dbJoueurs,dbTypes,dbMatchs,dbTeam;
-  let j_json,e_json,m_json,t_json;
-  let equipes=[];
+  let j_json,e_json,m_json,t_json, m_init_json;
+  let equipes=[], matchs=[];
 
   
 function preload() {
   j_json = loadJSON("./data/joueurs.json");
   e_json = loadJSON("./data/equipes.json");
   m_json = loadJSON("./data/matchs.json");
+  m_init_json = loadJSON("./data/matchs_init.json");
   t_json = loadJSON("./data/type.json");
 
   let database = firebase.database();
@@ -52,6 +53,7 @@ function preload() {
   });
 
   dbTeam.on("value", function (db) {equipes=db.val();});
+  dbMatchs.on("value", function (db) {matchs=db.val();});
 
   	// database.on('value').then ( (db) => {
   	// 	let data = db.val();
@@ -72,11 +74,11 @@ function preload() {
     }
 
     function addUser(userId, name, elo ) {
-  firebase.database().ref('joueurs/' + userId).set({
-    nom: name,
-    id: userId,
-    elo : elo
-  });
+      firebase.database().ref('joueurs/' + userId).set({
+        nom: name,
+        id: userId,
+        elo : elo
+      });
   }
 
   function updateUser(userId) {
@@ -104,6 +106,37 @@ function preload() {
     let l = Object.keys(m_json).length
     for (let i = 0; i < l ; i++) {
       m_json[i].id = int(i);
+    }
+  }
+
+  function matchInit(a) {
+    let id_ = (a-2020)*8;
+    let id_m_ = (a-2020)*20;
+    let team_A = equipes.filter(e=>{ return e.annee==a;});
+    console.log(team_A);
+    let updates = {};
+    let m = matchs.filter(a=>{return a.annee==a;});
+    console.log(m);
+    if (m) {
+      for (let i=0; i<20; i++) {
+        console.log("a creer");
+        let updt = m_init_json[i];
+        updt.id = id_m_+i;
+        updt.annee = a;
+        updt.Sc1 = 0, updt.Sc2 = 0;
+        updt.E1 = updt.E1+id_;
+        updt.E2 = updt.E2+id_;
+        // console.log(updt);
+        firebase.database().ref('matchs/' + (id_m_+i)).set(updt);
+      }
+    } else {
+      m.forEach(
+          (e,i)=>{
+              e.Sc1=0; e.Sc2=0;
+              updates['/'+int(e.id)] = e;
+          }
+      )
+      dbMatchs.update(updates);
     }
   }
 

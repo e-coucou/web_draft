@@ -1,11 +1,15 @@
 // MODE
-// 0 :
-// 1 :
-// 2 :
-// 3 :
-// 4 :
-// 5 :
-// 6 :
+// 0 : liste des joueurs
+// 1 : les trounois
+// 2 : fiches des joueurs
+// 3 : courbes ELO
+// 4 : Parametres 1: ELO coef
+// 5 : Parametres 2: couleurs
+// 6 : Parametres 3: selection pointeurs/tireurs
+// 7 : Parametres 4: constitution aleatoires des équipes
+// 8 : Parametres 5: constitution manuelles des équipes
+// 9 :
+// 10: en cours
 
 const eC_Etat = ['',' [🔫]',' [🪩]'];
 let eqs = [];
@@ -175,7 +179,7 @@ function drawParam() {
                 rect(padding,5,width-2*padding,30);
                 fill(color(couleur.txt));
                 textAlign(CENTER,CENTER);textSize(dy/2.5); 
-                text('Constitutions des Equipes',width/2,y);
+                text('Constitution MANUELLE des Equipes',width/2,y);
                 textAlign(LEFT,CENTER);
                 y += 45;
                 let c=0, s=8;

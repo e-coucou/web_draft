@@ -1,3 +1,5 @@
+const BOUTON_HAUTEUR = 12;
+
 let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btEncours, btZoom, btEquipe, btResetEquipe, btRandom;
 
 function clearButtons() {
@@ -65,7 +67,7 @@ function redimButtons() {
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
         i = int(i);
-        btAnnee[i].redim((i+0.5)*dx+padding,padding+r/2,dx-4);
+        btAnnee[i].redim((i+0.5)*dx+padding,padding+r/2,dx-2);
     }
     y=40;
     btPhase[0].redim(l/2+padding,y,l-4);
@@ -140,7 +142,7 @@ class BtBase {
         this.x = x;
         this.y = y;
         this.l = l;
-        this.h = 10;
+        this.h = BOUTON_HAUTEUR;
     }
     init() {
         this.lx = this.x+this.l/2;
