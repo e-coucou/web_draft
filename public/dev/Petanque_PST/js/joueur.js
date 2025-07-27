@@ -255,14 +255,12 @@ class Joueur {
         for (let a of this.annees) {
             dy += 16;
             let t = this.matchs.filter( r => {return (r.id==a);});
-            // console.log(t);
             sc_t = a;
             for (let i in t) {
                 let m = t[i].ref;
                 let e1 = t[i].eq, e2= (t[i].eq+1) %2;
                 // let vs = m.equipes[e2].eq;
                 // let res = (m.equipes[e1].sc > m.equipes[e2].sc)?'Gagnée':'Perdue';
-                // console.log(t,m,e1,e2);
                 let sc1=m.equipes[e1].sc, sc2 = m.equipes[e2].sc;
                 let type =m.type;
                 if (type.indexOf('Finale') != -1) type ='Finale';
@@ -274,7 +272,6 @@ class Joueur {
             }
             text(sc_t,x+s,y+dy);
         }
-        // console.log(g,p,n)
         dy += 32; let vs='', ds='';
         if (g.Finale>1) vs='s';
         if (p.Finale>1) ds='s';

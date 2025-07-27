@@ -12,6 +12,7 @@ function launch(code) {
 }
 function getDataM(data) {
     m_json = data.val();
+    NB_MATCHS = m_json.length;
     launch(0x0E);
 }
 function getDataE(data) {

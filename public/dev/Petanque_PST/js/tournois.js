@@ -51,7 +51,6 @@ function ClstPoule(data) {
         let d = b[i].reduce((a,b) =>{ return a+b.d}, 0);
         r.push({n:u1[i], p:p , c:c, s:s, d:d})
     }
-    // console.log(data);
     if (r.length > 0) {
         if (annee<2024) {
             r.sort((a,b) => {return b.p - a.p;});
@@ -67,7 +66,6 @@ function ClstPoule(data) {
 }
 function newClt(data,r,x,y) {
     if (r[x].s == r[y].s) {
-        // console.log('inverser 1/2', r[0].n, r[1].n, r[1]);
         let m = data.filter(a=> { return ((a.equipes[0].eq.nom == r[x].n && 
             a.equipes[1].eq.nom == r[y].n) || (a.equipes[1].eq.nom == r[x].n && 
             a.equipes[0].eq.nom == r[y].n) 
@@ -215,9 +213,9 @@ function drawTournois(x_, y_ , w_, h_ ,a_) {
 function ClstEncour() {
     ClstEncourPoule('Gassin',0);
     ClstEncourPoule('Ramatuelle',1);
-    let id_f = 99-1;
+    let id_f = NB_MATCHS - 2;
     ClstEncourDemi('Principal',0,id_f)
-    id_f = 99-3
+    id_f = NB_MATCHS - 4;
     ClstEncourDemi('Honneur',0,id_f)
 }
 
@@ -231,15 +229,13 @@ function updateMatchs(a) {
         updates['/'+Elt.id] = m;
         
     });
-    console.log(updates);
     dbMatchs.update(updates);
 }
 
 function ClstEncourPoule(poule_,eq_) {
     let p = matchs.filter( r => { return ( r.type.indexOf('Poule') != -1 && r.poule==poule_ && r.annee==enCours); });
     let r =ClstPoule(p);
-    // console.log(r)
-    let id_ = 99 - 7;
+    let id_ = NB_MATCHS - 8;
     let i = 0;
     r.forEach(b=>
         {

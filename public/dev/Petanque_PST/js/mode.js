@@ -230,7 +230,6 @@ function drawParam() {
     }
     // y = 100;
 }
-
 function drawListe() {
     joueurs.sort( (a,b) => { return (b.hist[index].elo - a.hist[index].elo);});
     let w_ = width-2*padding;
@@ -283,7 +282,6 @@ function drawListe() {
     }    
     drawDateBar();
 }
-
 function drawDateBar() {
     let x = padding, y = padding+50;
     let dx = (width-2*padding) / matchs.length , dy=15;

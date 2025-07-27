@@ -1,5 +1,6 @@
-const eC = {version: 'v5.0', release:'r3', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v5.0', release:'r4', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
+let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
 let joueurs = [], eJoueurs=[];
 let initJoueurs = [];
@@ -104,7 +105,6 @@ function update_Nav(n) {
             switch(int(n)) {
                 case 0 : id=max(0,id - 1) ; break;
                 case 1 : id=(id+1) % eJoueurs.length;break;
-            // case 1 : mode = 0 ; console.log('retour') ;break;
             }
             break;
         case 3:
@@ -279,6 +279,7 @@ function setup() {
     score1.changed(updateScore);
     score2.changed(updateScore);
     windowResized();
+    ClstEncour();
 }
 
 function draw() {
@@ -334,8 +335,10 @@ function draw() {
         }
         showButtons();
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
-        text(mode,10,height-10);
-        text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width*3/4,height-8);
+        text(mode,9,height-10);
+        textAlign(RIGHT, CENTER);
+        text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width-6,height-6);
+        // text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width*3/4+10,height-6);
         for (let i=0; i<touchStarted.length;i++) {
             text(touches[0].x+'/'+touches[0].y,20,height-50);
         }
