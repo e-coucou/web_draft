@@ -351,6 +351,6 @@ function drawEncours() {
         let e1 = m.equipes[0].eq;
         let e2 = m.equipes[1].eq;
         let sc1 = m.equipes[0].sc, sc2=m.equipes[1].sc;
-        drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dy,w2);
+        drawScore(e1,e2,sc1,sc2,i,y,mid,s2,dy,w2, i == idScoreUpdate);
     }
 }

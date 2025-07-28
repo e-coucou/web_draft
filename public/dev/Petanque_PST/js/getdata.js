@@ -212,12 +212,12 @@ function GetScore(id_) {
     score1.value(int(m_Encours.equipes[0].sc));
     score2.value(int(m_Encours.equipes[1].sc));
     let y = 50;
-    let s2 = width * 0.07 +1;
+    let s2 = width * 0.07 +3;
     // let w2 = width/2 - s2 -padding;
     let mid = innerWidth/2;
     let dt = height*0.85/(22);
-    score1.position(mid-s2,y+(id_+1.3)*dt);
-    score2.position(mid,y+(id_+1.3)*dt);
+    score1.position(mid-4*s2,height-51) ;///y+(id_+1.3)*dt);
+    score2.position(mid+2*s2,height-51) ;//y+(id_+1.3)*dt);
     // console.log(m_Encours);
 }
 

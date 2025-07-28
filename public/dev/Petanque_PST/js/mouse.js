@@ -1,3 +1,5 @@
+let idScoreUpdate = -1;
+
 function touchStarted() {
     mouseSelection=true;
     let fs =fullscreen();
@@ -122,9 +124,11 @@ function checkDots(mX, mY) {
         if (mX>(padding) && mX<(width-padding) && mY>(50+dy/2) && mY<(50+(nb+1)*dy) && (mode==10) ) {
             let id_ = round((mY - 50) / dy) - 1;
             if ( id_<0 || id_>=nb) {
-                // console.log('rien')
+                // console.log('rien') ne passe pas ici
+                idScoreUpdate = -1;
                 return;
             } else {
+                idScoreUpdate = id_;
                 GetScore(int(id_));
             }
         }        

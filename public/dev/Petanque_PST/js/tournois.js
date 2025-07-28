@@ -2,7 +2,7 @@ const iconPhase = [' 🐣', ' 🍺', ' 🏆'];
 const medaille = ['🥇 ','🥈 ','🥉 ','','','','','🎖️ '];
 let score1,score2;
 
-function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
+function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2, sel_=false) {
     if (sc1>=sc2) {
         fill(color(couleur.sel));
     } else { fill(160) ;}
@@ -12,6 +12,7 @@ function drawScore(e1, e2, sc1, sc2, i, y, mid, s2, dt, w2) {
     } else { fill(160) ;}
     rect(mid+2 , y+(i+1)*dt-dt/2 , s2-3 , dt-2);
     fill(color(couleur.bk));
+    if (sel_) {fill(255,0,0);}
     rect(mid-w2-s2,y+(i+1)*dt-dt/2,w2,dt-2);
     rect(mid+s2,y+(i+1)*dt-dt/2,w2,dt-2);
     let e1_t = e1.tireur.nom+'/'+e1.pointeur.nom+' '+e1.nom;

@@ -1,4 +1,4 @@
-const eC = {version: 'v5.3', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v5.3', release:'r1', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -254,11 +254,13 @@ function windowResized() {
     // canvas.position(x_, y_+10);
     if ( firstStart) {firstStart=false;} else { console.log("coucou"); redimButtons(); run=true; mouseSelection=true;}
     // mouseSelection=true;
-    score1.position(width/2+x_-40,height/13*12);
-    score1.size(width/15);
+    score1.position(x_+w_/4,height-40);
+    // score1.position(width/2+x_-40,height/13*12);
+    score1.size(width/6);
     score1.class("styled2");
-    score2.position(width/2+x_,height/13*12);
-    score2.size(width/15);
+    // score2.position(width/2+x_,height/13*12);
+    score2.position(x_+w_/2,height-40);
+    score2.size(width/6);
     score2.class("styled2");
 }
 
