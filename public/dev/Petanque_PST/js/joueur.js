@@ -54,6 +54,7 @@ class Joueur {
         this.palmares=[];
         this.clast = [];
         this.matchs = [];
+        this.nbMatchs= 0;
     }
     setVictoire(annee_) {
         this.victoire += 1;
@@ -73,8 +74,18 @@ class Joueur {
         let n = int(n_);
         this.rank = n+1;
         this.hist.push({c:(n+1), elo:this.ELO});
+        // faire le delta ici ..
+        let po_=0, nu_=0,co_=0;
+        let nbClst = this.clast.length;
+        this.clast.forEach(c =>      
+        // if (nbClst>0) 
+            {
+            co_ += c.c;
+            nu_ += c.n;
+            po_ += c.p;
+        });
         if (a_) {
-            this.clast.push({a: annee, c: (n+1) , elo: this.ELO});
+            this.clast.push({a: annee, c: (n+1) , elo: this.ELO, p:this.gagne-po_, c:this.perdu-co_, n:this.nul-nu_});
         }
     }
     addMatch(p_, c_, a_, eqN_,ref_) {
@@ -94,6 +105,7 @@ class Joueur {
         if (win_>0) this.gagne += 1;
         if (win_<0) this.perdu += 1;
         if (win_==0) this.nul += 1;
+        this.nbMatchs +=1;
     }
     getColor() {
         // switch (this.victoire) {
@@ -148,9 +160,16 @@ class Joueur {
             // rect(x+5*dx+1,y-dy/2+1,dx-2,dy-2);
             fill(color(couleur.txt));
             text(nf(elo,0,1),x+dx/2, y);textStyle(NORMAL);fill(255);
-            text(this.gagne,x+dx+dx/2, y);
-            text(this.nul,x+2*dx+dx/2, y);
-            text(this.perdu,x+3*dx+dx/2, y);
+            let idx_ = annee - 2020;
+            if (filtreJ) {
+                text(this.clast[idx_].p,x+dx+dx/2, y);
+                text(this.clast[idx_].n,x+2*dx+dx/2, y);
+                text(this.clast[idx_].c,x+3*dx+dx/2, y);    
+            } else {
+                text(this.gagne,x+dx+dx/2, y);
+                text(this.nul,x+2*dx+dx/2, y);
+                text(this.perdu,x+3*dx+dx/2, y);
+            }
             textSize(10);
             text(this.pour,x+4*dx+dx/2, y);
             text(this.contre,x+5*dx+dx/2, y);
@@ -372,7 +391,7 @@ class Match {
             gain = - D/ param.ELO.seuil;
             v=0;
         }
-        if ((this.equipes[0].sc!=0) && (this.equipes[1].sc !=0)) {
+        if ((this.equipes[0].sc!=0) || (this.equipes[1].sc !=0)) {
             this.equipes[0].eq.update(gain*P*Kf,v);
             this.equipes[1].eq.update(-gain*P*Kf,-v);
         }
