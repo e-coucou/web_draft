@@ -127,7 +127,7 @@ class Joueur {
         fill(255);
         textAlign(LEFT,CENTER);
         textSize(max(int(dy/2),11));
-        let dx = w_/12;
+        let dx = w_/13;
         x += 2*s;
         if (debug == 1) {
             text(round(idx)+"/ "+this.nom+" ["+nf(elo,0,1)+"] (id="+this.id+") "+this.gagne+"/"+this.nul+"/"+this.perdu+" ("+nf(100.*this.gagne/(this.gagne+this.perdu),0,0)+"% )", x+2*s, y);
@@ -142,8 +142,9 @@ class Joueur {
             rect(x+3*dx+1,y-dy/2+1,dx-2,dy-2);
             rect(x+4*dx+1,y-dy/2+1,dx-2,dy-2);
             rect(x+5*dx+1,y-dy/2+1,dx-2,dy-2);
-            fill(color(couleur.bk));
             rect(x+6*dx+1,y-dy/2+1,dx-2,dy-2);
+            fill(color(couleur.bk));
+            rect(x+7*dx+1,y-dy/2+1,dx-2,dy-2);
             // rect(x+5*dx+1,y-dy/2+1,dx-2,dy-2);
             fill(color(couleur.txt));
             text(nf(elo,0,1),x+dx/2, y);textStyle(NORMAL);fill(255);
@@ -153,14 +154,15 @@ class Joueur {
             textSize(10);
             text(this.pour,x+4*dx+dx/2, y);
             text(this.contre,x+5*dx+dx/2, y);
+            text(nf(this.gagne/this.perdu,0,1),x+6*dx+dx/2, y);
             textSize(5);
             let tmp = '';
             for (let i=0;i<this.victoire;i++) { tmp += '🏆';}
-            text(tmp,x+6*dx+dx/2, y);
+            text(tmp,x+7*dx+dx/2, y);
             tmp = '';
             for (let i=0;i<(this.tireur);i++) { tmp += '🔫';}
             for (let i=0;i<(this.pointeur);i++) { tmp += '🪩';}
-            text(tmp,x+7*dx+dx/2, y);
+            text(tmp,x+8*dx+dx/2, y);
             textSize(12);
         }
     }

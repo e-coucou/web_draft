@@ -63,8 +63,6 @@ function updateSelJoueur(id_) {
     }
     updates['/'+id_] = j;
     dbJoueurs.update(updates);
-
-    // console.log(id_, j_json[id_]);
 }
 function resetSel() {
     let updates = {};
@@ -76,44 +74,37 @@ function resetSel() {
     dbJoueurs.update(updates);
 }
 function GetJoueur(id_) {
-    console.log("id "+id_,eqEC);
     let updates={};
-    let j;
+    let j, t; // t pour déterminé le pointeur/tireur = 1/0
     if (id_%2===0) {
         j = pEC[int(id_/2)];
+        t = 1;
     } else {
         j = tEC[int(id_/2)];
+        t = 0;
     }
-    console.log(j)
     let idJ = j.id;
     let c = eqEC.length;
     switch (c) {
         case 2: eqEC=[];
         case 0: 
-            eqEC.push(idJ);
-            // j.eq = 'A';
-            // updates['/'+idJ] = j;
-            // dbJoueurs.update(updates);
+            eqEC.push({id:idJ, t:t});
             break;
-        case 1: if (j_json[idJ].eC === j_json[eqEC[0]].eC)
+        case 1: if (j_json[idJ].eC === j_json[eqEC[0].id].eC)
             {   return;
             } else {
-                eqEC.push(idJ);
-        let eq={j1:0,j2:0};
-        eq.j1 = j_json[eqEC[0]];
-        eq.j2 = j_json[eqEC[1]];
-        eqs.push(eq);
-                // j.eq = 'A';
-                // updates['/'+idJ] = j;
-                // dbJoueurs.update(updates);
+                eqEC.push({id:idJ,t:t});
+                let eq={j1:0,j2:0};
+                eqEC.filter(t=> { return t.t==0})[0].id;
+                eq.j1 = j_json[eqEC.filter(t=> { return t.t==0})[0].id];
+                eq.j2 = j_json[eqEC.filter(t=> { return t.t==1})[0].id];
+                eqs.push(eq);
             }
             break;
     }
     j.eCSel = (j.eCSel===undefined || j.eCSel===0)?1:0;
     updates['/'+idJ] = j;
     dbJoueurs.update(updates);
-
-    console.log(idJ, j_json[idJ]);
 }
 function setRank() {
     let updates = {};

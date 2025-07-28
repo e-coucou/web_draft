@@ -1,4 +1,4 @@
-const eC = {version: 'v5.0', release:'r4', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v5.2', release:'r1', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -103,7 +103,7 @@ function update_Nav(n) {
     switch (mode) {
         case 2:
             switch(int(n)) {
-                case 0 : id=max(0,id - 1) ; break;
+                case 0 : id=(id - 1 + eJoueurs.length)  % eJoueurs.length ; break;
                 case 1 : id=(id+1) % eJoueurs.length;break;
             }
             break;
@@ -305,16 +305,18 @@ function draw() {
                 drawListe();
                 break;
             case 2:
-                run=false; btNav[1].txt = '▶️' ; run=false;
+                run=false; btNav[1].txt = '▶️' ;
                 btZoom.setOn();
                 if (eJoueurs.length==0) {eJoueurs=initJoueurs.slice();}
                 if (eJoueurs[id].id != 0) {
                     eJoueurs[id].fiche(padding,15,width-2*padding,matchs);
                 } else {
-                    x=padding; y=15 ; s=10 ;w_=width-2*padding;
-                    rect(x+s,y-13,w_-s,26);
-                    fill(255); textAlign(LEFT,CENTER); textSize(16);
-                    text('_____ / Joueur Neutre',x+2*s,y);
+                    fill(0)
+                    rectMode(CENTER);
+                    rect(width/2,height/2,width,42);
+                    rectMode(CORNER);
+                    fill(255); textAlign(CENTER,CENTER); textSize(32);
+                    text('Joueur Neutre',width/2,height/2);
                 }
                 break;
             case 4:
@@ -337,7 +339,7 @@ function draw() {
         textAlign(LEFT,CENTER); fill(0); textSize(8); textStyle(NORMAL);
         text(mode,9,height-10);
         textAlign(RIGHT, CENTER);
-        text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width-6,height-6);
+        text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width-4,height-6);
         // text('(c) eCoucou '+eC.version+' '+eC.release+' ['+eC.annee+']',width*3/4+10,height-6);
         for (let i=0; i<touchStarted.length;i++) {
             text(touches[0].x+'/'+touches[0].y,20,height-50);

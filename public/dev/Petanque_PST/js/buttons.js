@@ -227,7 +227,6 @@ class Switch extends BtBase {
         }
     }
 }
-
 class Bouton extends BtBase{
     constructor(txt,x,y,l_,mode,init_=false) {
         super(txt,x,y,l_);
@@ -260,7 +259,6 @@ class Bouton extends BtBase{
         }
     }
 }
-
 class BoutonC extends BtBase {
     constructor(txt,x,y,l_,mode,init_=false) {
         super(txt,x,y,l_);
@@ -274,9 +272,8 @@ class BoutonC extends BtBase {
     }
     isIn(x_, y_,mode_) {
         if (this.mode.includes(mode_) || this.mode[0]===-1) {
-            if ( x_>(this.x0) && x_<(this.x+this.h0) && y_>this.y0 && y_<(this.y0+this.h0)) {
-                // return (super.isIn(x_,y_));
-                return true; } else { return false;}
+            if ( x_>(this.x0) && x_<(this.x0+this.w0) && y_>this.y0 && y_<(this.y0+this.h0)) {
+                    return true; } else { return false;}
         } else { return false;}
     }
     show(mode_) {

@@ -1,6 +1,6 @@
 // MODE
 // 0 : liste des joueurs
-// 1 : les trounois
+// 1 : les tournois
 // 2 : fiches des joueurs
 // 3 : courbes ELO
 // 4 : Parametres 1: ELO coef
@@ -233,7 +233,7 @@ function drawParam() {
 function drawListe() {
     joueurs.sort( (a,b) => { return (b.hist[index].elo - a.hist[index].elo);});
     let w_ = width-2*padding;
-    let dx = w_/12;
+    let dx = w_/13;
     let x_ = padding + 2*8 +3.5*dx;
     let y_ = 85;
     let dy_=18;
@@ -246,6 +246,7 @@ function drawListe() {
     rect(x_+3*dx,y_-dy_/2+1,dx-2,dy_-2);
     rect(x_+4*dx,y_-dy_/2+1,dx-2,dy_-2);
     rect(x_+5*dx,y_-dy_/2+1,dx-2,dy_-2);
+    rect(x_+6*dx,y_-dy_/2+1,dx-2,dy_-2);
     textAlign(CENTER,CENTER);textStyle(NORMAL);
     textSize(int(inter/2.7));
     fill(color(couleur.bk));
@@ -256,15 +257,12 @@ function drawListe() {
     // textSize(10);
     text('po',x_+4*dx+dx/2, y_);
     text('co',x_+5*dx+dx/2, y_);
+    text('r',x_+6*dx+dx/2, y_);
     // text('---'+inter+'----',100,height-50);
     eJoueurs = joueurs.filter(a=>{return a.id!=0;});
     if (filtreJ) {
         eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
     }
-    // if (eJoueurs.length > 0) {
-    //     console.log(eJoueurs)
-    //     inter = int((height-140)/eJoueurs.length);
-    // }
     for (let i in eJoueurs) {
         let idx = int(eJoueurs[i].hist[index].c);
         let elo = eJoueurs[i].hist[index].elo;
@@ -329,7 +327,6 @@ function drawGraphe() {
     drawDateBar();
     showMatch(index);
 }
-
 function drawEncours() {
     y = 20, x=0;
     fill(color(couleur.sel));
