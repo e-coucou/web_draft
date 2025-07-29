@@ -50,6 +50,11 @@ function reInit() {
     redimButtons();
     mouseSelection = true;
 }
+function updateJoueur(id_,j) {
+    let updates={};
+    updates['/'+id_] = j;
+    dbJoueurs.update(updates);
+}
 function updateSelJoueur(id_) {
     let updates={};
     let j = j_json[id_];

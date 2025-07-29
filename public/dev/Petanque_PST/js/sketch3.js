@@ -1,4 +1,4 @@
-const eC = {version: 'v6.0', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.0', release:'r1', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -146,7 +146,7 @@ function setPerm(id_=-1) {
 
     } else {
         j_json[id_].p = btPermanent.on;
-        updateSelJoueur(id_);
+        updateJoueur(id_,j_json[id_]);
     }
 }
 function BtTournoi() {

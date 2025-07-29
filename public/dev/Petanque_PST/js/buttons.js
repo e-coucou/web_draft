@@ -79,7 +79,7 @@ function redimButtons() {
     btPoule[0].redim(width/3,67,width/3-2);
     btPoule[1].redim(2*width/3,67,width/3-2);
 
-    btPermanent.redim(width-120,height-82, 125);
+    btPermanent.redim(width-100,height-72, 105);
 }
 function createButtons() {
     let left, right,center;
@@ -140,7 +140,7 @@ function createButtons() {
     btPoule.push(new Bouton("Gassin",width/3,67,width/3-2,[1],true));
     btPoule.push(new Bouton("Ramatuelle",2*width/3,67,width/3-2,[1]));
 
-    btPermanent = new Switch("Permanent",width-150,height-67,100,15,[0,2,3],false);
+    btPermanent = new Switch("Résid.",width-150,height-67,100,15,[0,2,3],false);
 }
 class BtBase {
     constructor(txt,x,y,l) {
