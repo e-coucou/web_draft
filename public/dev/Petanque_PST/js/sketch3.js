@@ -1,4 +1,4 @@
-const eC = {version: 'v5.3', release:'r1', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.0', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -95,7 +95,6 @@ function update_PM(n) {
         case 6 : if (d) { param.ELO.bonusSeuil -= HH; } else {param.ELO.bonusSeuil += HH;}; break;
         case 7 : if (d) { param.ELO.bonus -= LL; } else {param.ELO.bonus += LL;}; break;
     }
-
     calculELO(false);
     update();
 }
@@ -141,6 +140,14 @@ function setCat(id_=1) {
     categories = categories ^ id_;
     id = 0;
     update();
+}
+function setPerm(id_=-1) {
+    if (id_ == -1) {
+
+    } else {
+        j_json[id_].p = btPermanent.on;
+        updateSelJoueur(id_);
+    }
 }
 function BtTournoi() {
     joueurs = initJoueurs.slice();
@@ -214,7 +221,6 @@ function preload() {
     img=loadImage("./img/2022.JPG");
     img_finale.push({a:2022,i:img}); //1024x768
 }
-
 function readNotice() {
     btHTML = select("#retour1");
     btHTML.mousePressed(HTMLRetour);
@@ -237,13 +243,10 @@ function readELO() {
         toggle = false;
     }
 }
-
 // function touchStarted() {
 //     let fs =fullscreen();
 //     if (!fs) { fullscreen(true);}
 // }
-
-
 function windowResized() {
     let h_ = innerHeight-58;
     let w_ = min(0.59*h_, innerWidth);
@@ -263,7 +266,6 @@ function windowResized() {
     score2.size(width/6);
     score2.class("styled2");
 }
-
 function setup() {
 	console.log("%c (ツ) # eCoucou "+eC.version+" # ","background: #f00; color: #fff");
     let h_ = innerHeight-58;
@@ -349,6 +351,4 @@ function draw() {
     }
     mouseSelection=false;
 }
-
-
 document.ontouchmove = function(event) {event.preventDefault();};

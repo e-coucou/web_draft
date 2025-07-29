@@ -263,6 +263,7 @@ function drawListe() {
     if (filtreJ) {
         eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
     }
+    if (btPermanent.on) eJoueurs = eJoueurs.filter(a=>{return a.permanent});
     for (let i in eJoueurs) {
         let idx = int(eJoueurs[i].hist[index].c);
         let elo = eJoueurs[i].hist[index].elo;
@@ -317,6 +318,7 @@ function drawGraphe() {
     if (filtreJ) {
         eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
     }
+    if (btPermanent.on) eJoueurs = eJoueurs.filter(a=>{return a.permanent});
     for (let i in eJoueurs) {
         let idx = int(eJoueurs[i].hist[index].c);
         let elo = eJoueurs[i].hist[index].elo;

@@ -29,6 +29,14 @@ function checkDots(mX, mY) {
                 return
             }
         }
+        // selction si Permanent ou pas
+        if (btPermanent.isIn(mX,mY,mode)) {
+            let id_= -1;
+            if (mode===2) {
+                id_ = eJoueurs[id].id;
+            }
+            btPermanent.setSW(setPerm,id_);
+        }
         // Selection de la couleur
         for( let n in btCouleur) {
             let c = btCouleur[n];

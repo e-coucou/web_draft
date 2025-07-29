@@ -29,9 +29,10 @@ function getAnnees(key, array, keyRet) {
 }
 
 class Joueur {
-    constructor(nom_, id_) {
+    constructor(nom_, id_, p_) {
         this.nom=nom_;
         this.id = id_;
+        this.permanent = p_;
         this.reset();
         this.team = [];
         this.tireur = 0;
@@ -302,6 +303,7 @@ class Joueur {
         if (p.Demi>1) ds='s';
         text('Demi-Finale : '+g.Demi+' victoire'+vs+' / '+p.Demi+' défaite'+ds,x,y+dy);dy+=16;
         text('Poules : Gagné='+g.Poule+' / Nul='+n.Poule+' / Perdu='+p.Poule,x,y+dy);
+        if (this.permanent) {btPermanent.setOn();} else {btPermanent.setOff();}
     }
 }
 

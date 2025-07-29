@@ -37,7 +37,7 @@ function errData(err) {
 
 function reInit() {
     matchs = [], initJoueurs = [], equipes = [], joueurs = [], eJoueurs=[], annees=[];
-    j_json.forEach(j => { initJoueurs.push( new Joueur(j.nom,j.id));});
+    j_json.forEach(j => { initJoueurs.push( new Joueur(j.nom,j.id,j.p));});
     e_json.forEach(e => { equipes.push( new Equipe(e.nom,initJoueurs[e.J1],initJoueurs[e.J2],e.annee,e.id));});
     nbMatchs = Object.keys(m_json).length ;
     calculELO(true);
@@ -50,9 +50,6 @@ function reInit() {
     redimButtons();
     mouseSelection = true;
 }
-
-
-
 function updateSelJoueur(id_) {
     let updates={};
     let j = j_json[id_];
@@ -129,11 +126,8 @@ function updateTeam() {
         eId += 1;
     });
     dbTeam.update(updates);
-
     resetScore();
-
 }
-
 function resetScore() {
     let updates = {};
     let m = m_json.filter(a=>{return a.annee==enCours;});
@@ -144,13 +138,11 @@ function resetScore() {
         }
     )
     dbMatchs.update(updates);
-
 }
 function resetTeamSel() {
     resetSel();
     resetTeam();
 }
-
 function resetTeam() {
     resetScore();
     eqs = [];
@@ -166,9 +158,8 @@ function resetTeam() {
     }
     dbTeam.update(updates);
 }
-
 function randomTeam() {
-    //tirage au sort ...
+    //tirage au sort ... en j1:tireur et en j2:pointeur
     resetTeam();
     let t = j_json.filter(j => {return j.eC==1});
     let p = j_json.filter(j => {return j.eC==2});
@@ -187,8 +178,8 @@ function randomTeam() {
         let j2 = random(tB);
         let i2 = tB.indexOf(j2);
         tB.splice(i2,1);
-        eq.j1 = j1;
-        eq.j2 = j2;
+        eq.j1 = j2;
+        eq.j2 = j1;
         eqs.push(eq);
     }
     for (let i = 0; i < 4;i++) {
@@ -199,8 +190,8 @@ function randomTeam() {
         let j2 = random(tA);
         let i2 = tA.indexOf(j2);
         tA.splice(i2,1);
-        eq.j1 = j1;
-        eq.j2 = j2;
+        eq.j1 = j2;
+        eq.j2 = j1;
         eqs.push(eq);
     }    
 }

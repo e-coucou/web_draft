@@ -1,10 +1,11 @@
 const BOUTON_HAUTEUR = 12;
 
-let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btEncours, btZoom, btEquipe, btResetEquipe, btRandom;
+let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btEncours, btZoom, btEquipe, btResetEquipe, btRandom, btPermanent;
 
 function clearButtons() {
     btTournoi.setOff(),btInfo.setOff();btGraphe.setOff();btListe.setOff();btEncours.setOff();
     btZoom.setOff(),btFiltre.setOff();btEquipe.setOff();btResetEquipe.setOff(), btRandom.setOff();
+    // btPermanent.setOff();xxx
 }
 function showButtons() {
     fill(color(couleur.txt));
@@ -22,6 +23,7 @@ function showButtons() {
     btResetEquipe.show(mode);
     btRandom.show(mode);
     btFiltre.show(mode);
+    btPermanent.show(mode);
     for (c of btAnnee) { c.show(mode); }
     // for (c of btCouleur) { c.show(mode); }
     // for (c of btPM) { c.show(mode); }
@@ -44,9 +46,9 @@ function redimButtons() {
     btTournoi.redim(width*(1+0*inc)/10,y,r);
     btListe.redim(width*(1+1*inc)/10,y,r);
     btGraphe.redim(width*(1+2*inc)/10,y,r);
-    btInfo.redim(width*(1+4*inc)/10,y,r);
     btEncours.redim(width*(1+3*inc)/10,y,r);
-    btZoom.redim(width*(1+5*inc)/10,y,r);
+    btZoom.redim(width*(1+4*inc)/10,y,r);
+    btInfo.redim(width*(1+5*inc)/10,y,r);
     btEquipe.redim(width-padding-2*r,height/7*4,r);
     btResetEquipe.redim(width-padding-2*r,height/7*5,r);
     btRandom.redim(width-padding-2*r,height/7*6,r);
@@ -76,6 +78,8 @@ function redimButtons() {
 
     btPoule[0].redim(width/3,67,width/3-2);
     btPoule[1].redim(2*width/3,67,width/3-2);
+
+    btPermanent.redim(width-120,height-82, 125);
 }
 function createButtons() {
     let left, right,center;
@@ -91,13 +95,13 @@ function createButtons() {
     btGraphe = new BoutonC('📈',width*4/10,height-r-padding,r,[-1],false); btGraphe.setH(14);
     btListe = new BoutonC('🗄️',width*2.5/10,height-r-padding,r,[-1],false); btListe.setH(14);
     btEncours = new BoutonC('🥇',width*5/10,height-r-padding,r,[-1],false); btEncours.setH(14);
-    btZoom = new BoutonC('🔍',width*7/10,height-r-padding,r,[-1],false); btZoom.setH(14);
+    btZoom = new BoutonC('🔍',width*5.5/10,height-r-padding,r,[-1],false); btZoom.setH(14);
+    btInfo = new BoutonC('⚙️',width*7/10,y,r,[-1]);btInfo.setH(14);
     btEquipe = new BoutonC('⏺️',width*7/10,height-r-padding,r,[7,8],false); btEquipe.setH(14);
     btResetEquipe = new BoutonC('🆕',width*7/10,height-r-padding,r,[7,8],false); btResetEquipe.setH(14);
     btRandom = new BoutonC('🔁',width*7/10,height-r-padding,r,[7],false); btRandom.setH(14);
     l = (width-padding)/4;
     // btRetour = new Bouton('Retour ⏎',center,y,l,[4],true);
-    btInfo = new BoutonC('⚙️',width*5.5/10,y,r,[-1]);btInfo.setH(14);
     btNotice = new Bouton('Notice',width/3,20,width/3-2,[4,5],false);
     btELO = new Bouton('ELO explication !',2*width/3,20,width/3-2,[4,5],false);
     btELO.setH(12); btNotice.setH(12);
@@ -135,6 +139,8 @@ function createButtons() {
 
     btPoule.push(new Bouton("Gassin",width/3,67,width/3-2,[1],true));
     btPoule.push(new Bouton("Ramatuelle",2*width/3,67,width/3-2,[1]));
+
+    btPermanent = new Switch("Permanent",width-150,height-67,100,15,[0,2,3],false);
 }
 class BtBase {
     constructor(txt,x,y,l) {
