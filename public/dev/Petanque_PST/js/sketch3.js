@@ -19,7 +19,7 @@ let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=true;
 let debounce=0;
-let img_gassin, img_ramatuelle, img_saint_tropez;
+let img_gassin, img_ramatuelle, img_saint_tropez, img_youtube;
 let img_finale=[];
 let btHTML;
 let youtubeEmbed;
@@ -47,6 +47,12 @@ let couleur_arr =[
     {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc',err:"#ff0000"} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
+let youtube_lien = [ "https://www.youtube.com/watch?v=oZEMfP-aSvY",
+                    "https://www.youtube.com/watch?v=Xka1_ZWlMTw",
+                    "https://www.youtube.com/watch?v=FJszC_clYmU",
+                    "",
+                    "",
+                    "" ];
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -217,6 +223,7 @@ function preload() {
     img_gassin = loadImage("./img/gassin.png"); //130x143
     img_ramatuelle = loadImage("./img/ramatuelle.png"); //130x143
     img_saint_tropez = loadImage("./img/saint-tropez.png"); //130x143
+    // img_youtube=loadImage("./img/YouTube.png");
     // let img=loadImage("./img/2023.jpeg");
     // img_finale.push({a:2023,i:img}); //1024x768
     // img=loadImage("./img/2022.JPG");
@@ -266,7 +273,7 @@ function windowResized() {
     score2.position(x_+w_/2,height-40);
     score2.size(width/6);
     score2.class("styled2");
-    youtubeEmbed.position(x_+width/4,height-120);
+    img_youtube.position(innerWidth/2-60,innerHeight-180);
 
 }
 function setup() {
@@ -285,7 +292,12 @@ function setup() {
     score2 = createInput(0,'number');
     score1.changed(updateScore);
     score2.changed(updateScore);
-    youtubeEmbed = createDiv();
+    youtubeEmbed = createA('','','_blank');
+    img_youtube=createImg("./img/YouTube.png",'YouTube');
+    img_youtube.style("height","80px");
+    img_youtube.style("width","120px");
+    img_youtube.hide();
+    img_youtube.parent(youtubeEmbed);
     windowResized();
     ClstEncour();
 }
@@ -303,6 +315,7 @@ function draw() {
     if (mouseSelection) {
         background(255);
         noStroke();
+        img_youtube.hide();
         switch (mode) {
             case 3: // mode Graphe
                 btGraphe.setOn();
@@ -339,17 +352,22 @@ function draw() {
                 run=false; btNav[1].txt = '▶️' ; run=false;
                 btTournoi.setOn();
                 drawTournois(0,40,width, height-100,annee);
-                // if (phase==="Finale" && mode===1) {
-                //     youtubeEmbed.position(innerWidth/2-90,height-125);
-                //     youtubeEmbed.html(`
-                //         <iframe width="180" height="100"
-                //         src="https://www.youtube.com/embed/oZEMfP-aSvY"
-                //         frameborder="0"
-                //         allow="accelerometer; encrypted-media; picture-in-picture"
-                //         allowfullscreen
-                //         </iframe>
-                //     `);
-                // }
+                youtubeEmbed.attribute('href', youtube_lien[annee-2020]); //2020
+                // youtubeEmbed.attribute('href', "https://www.youtube.com/watch?v=Xka1_ZWlMTw"); //2021
+                // youtubeEmbed.attribute('href', "https://www.youtube.com/watch?v=FJszC_clYmU"); //2022
+                  if (phase==="Finale" && mode===1) {
+                    img_youtube.show();
+                //     image(img_youtube,(width/2)-60,height-155,120,80) ; //,xAlign=CENTER,yAlign=CENTER);
+                // //     youtubeEmbed.position(innerWidth/2-90,height-125);
+                // //     youtubeEmbed.html(`
+                // //         <iframe width="180" height="100"
+                // //         src="https://www.youtube.com/embed/oZEMfP-aSvY"
+                // //         frameborder="0"
+                // //         allow="accelerometer; encrypted-media; picture-in-picture"
+                // //         allowfullscreen
+                // //         </iframe>
+                // //     `);
+                }
                 break;
             case 10:
                 drawEncours();
