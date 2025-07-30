@@ -198,7 +198,6 @@ function drawPoule(x,y,w,h_,data) {
         }
     }
 }
-
 function drawTournois(x_, y_ , w_, h_ ,a_) {
     let x = x_+padding;
     let m = matchs.filter( r => { return ( r.annee == a_);});

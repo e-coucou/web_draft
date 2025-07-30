@@ -4,8 +4,8 @@
         "finaliste":1.05,
         "finale":1.07 ,
         "init":100,
-        "seuil":10,
-        "bonus":1.2,
+        "seuil":12,
+        "bonus":1.1,
         "bonusSeuil":6,
         "maxEcart":5 }
 }
