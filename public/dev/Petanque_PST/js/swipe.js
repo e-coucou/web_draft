@@ -2,7 +2,7 @@ let startX = 0;
 let startY = 0;
 let endX = 0;
 let endY = 0;
-let swipeThreshold = 50; // distance mini du swipe
+let swipeThreshold = 150; // distance mini du swipe
 
 let swipeSel = 0
 
