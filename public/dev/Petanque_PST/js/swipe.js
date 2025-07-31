@@ -6,6 +6,8 @@ let swipeThreshold = 150; // distance mini du swipe
 
 let swipeSel = 0
 
+const swH = [0,1,3,10];
+
 function initSwipe() {
     let canvasElement = document.querySelector("canvas");
 
@@ -39,30 +41,34 @@ function initSwipe() {
 // Fonctions à personnaliser
 function onSwipeUp() {
   console.log("Swipe vers le haut");
-  couleur_sel = 1;
+  
 }
 function onSwipeDown() {
   console.log("Swipe vers le bas");
 }
 function onSwipeLeft() {
   console.log("Swipe vers la gauche");
-  mouseSelection=true;
-  swipeSel = (swipeSel+1) % 4;
-  switch (swipeSel) {
-    case 0: BtTournoi();break;
-    case 1: BtListe();break;
-    case 2: BtGraphe();break;
-    case 3: BtEnCours();break;
+  if (swH.includes(mode)) {
+    mouseSelection=true;
+    swipeSel = (swipeSel+1) % 4;
+    switch (swipeSel) {
+        case 0: BtTournoi();break;
+        case 1: BtListe();break;
+        case 2: BtGraphe();break;
+        case 3: BtEnCours();break;
+    }
   }
 }
 function onSwipeRight() {
   console.log("Swipe vers la droite");
-  mouseSelection=true;
-  swipeSel = (swipeSel-1 + 4) % 4;
-  switch (swipeSel) {
-    case 0: BtTournoi();break;
-    case 1: BtListe();break;
-    case 2: BtGraphe();break;
-    case 3: BtEnCours();break;
+  if (swH.includes(mode)) {
+    mouseSelection=true;
+    swipeSel = (swipeSel-1 + 4) % 4;
+    switch (swipeSel) {
+        case 0: BtTournoi();break;
+        case 1: BtListe();break;
+        case 2: BtGraphe();break;
+        case 3: BtEnCours();break;
+    }
   }
 }
