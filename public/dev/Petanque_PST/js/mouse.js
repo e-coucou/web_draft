@@ -29,7 +29,7 @@ function checkDots(mX, mY) {
                 return
             }
         }
-        // selction si Permanent ou pas
+        // selection si Permanent ou pas
         if (btPermanent.isIn(mX,mY,mode)) {
             let id_= -1;
             if (mode===2) {
@@ -54,21 +54,23 @@ function checkDots(mX, mY) {
         }
         // selection switch Tournoi/Liste
         if (btTournoi.isIn(mX,mY,mode)) {
-            clearButtons();
-            btTournoi.setOn();
+            // clearButtons();
+            // btTournoi.setOn();
             BtTournoi();
             return;
         }
         if (btListe.isIn(mX,mY,mode)) { 
-            clearButtons();
-            btListe.setOn();
-            mode=0;
+            // clearButtons();
+            // btListe.setOn();
+            // mode=0;
+            BtListe();
             return;
         }
         if (btEncours.isIn(mX,mY,mode)) { 
-            clearButtons();
-            btEncours.setOn();
-            mode=10;
+            // clearButtons();
+            // btEncours.setOn();
+            // mode=10;
+            BtEnCours();
             return;
         }
         // selection Bouton de retour
@@ -145,9 +147,9 @@ function checkDots(mX, mY) {
         if (btResetEquipe.isIn(mX,mY,mode)) { if (mode==7) {resetTeam()} else {resetTeamSel()}; return;}
         if (btRandom.isIn(mX,mY,mode)) { randomTeam(); return;}
         if (btGraphe.isIn(mX,mY,mode)) {
-            mode_prev = mode;
-            clearButtons();
-            btGraphe.setOn();
+            // mode_prev = mode;
+            // clearButtons();
+            // btGraphe.setOn();
             BtGraphe();
             return;
         }    

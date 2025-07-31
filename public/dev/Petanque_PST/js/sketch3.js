@@ -1,4 +1,4 @@
-const eC = {version: 'v6.2', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.3', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -157,13 +157,28 @@ function setPerm(id_=-1) {
     }
 }
 function BtTournoi() {
+    clearButtons();
+    btTournoi.setOn();
     joueurs = initJoueurs.slice();
     mode= 1;
     id=0;
     update();
 }
+function BtListe() {
+    clearButtons();
+    btListe.setOn();
+    mode=0;
+}
+function BtEnCours() {
+    clearButtons();
+    btEncours.setOn();
+    mode=10;
+}
 function BtGraphe() {
     // mode = mode ^ 3;
+    mode_prev = mode;
+    clearButtons();
+    btGraphe.setOn();
     mode = 3;
     update();
 }
@@ -285,7 +300,8 @@ function setup() {
     let x = (windowWidth - width) / 2;
     let y = (windowHeight - height) / 2;
     canvas.position(x, y+10);
-      select("#notice").style('display','none');
+    initSwipe();
+    select("#notice").style('display','none');
     select("#ELO").style('display','none');
     select('#start').style('display','none');
     score1 = createInput(0,'number');

@@ -1,24 +1,39 @@
-let startX, startY;
+let startX = 0;
+let startY = 0;
+let endX = 0;
+let endY = 0;
 let swipeThreshold = 50; // distance mini du swipe
 
-function touchStarted() {
-  startX = mouseX;
-  startY = mouseY;
-  return false; // empêche le scrolling de la page sur iphone
-}
+let swipeSel = 0
 
-function touchEnded() {
-  let dx = mouseX - startX;
-  let dy = mouseY - startY;
+function initSwipe() {
+    let canvasElement = document.querySelector("canvas");
 
-  if (abs(dx) > abs(dy)) {
-    if (dx > swipeThreshold) onSwipeRight();
-    else if (dx < -swipeThreshold) onSwipeLeft();
-  } else {
-    if (dy > swipeThreshold) onSwipeDown();
-    else if (dy < -swipeThreshold) onSwipeUp();
-  }
-  return false; //idem empeche le scrolling
+    canvasElement.ontouchstart = function (e) {
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+    };
+
+    canvasElement.ontouchmove = function (e) {
+        const touch = e.touches[0];
+        endX = touch.clientX;
+        endY = touch.clientY;
+        e.preventDefault(); // Empêche le scroll pendant le swipe
+    };
+
+    canvasElement.ontouchend = function (e) {
+        const dx = endX - startX;
+        const dy = endY - startY;
+
+        if (abs(dx) > abs(dy)) {
+        if (dx > swipeThreshold) onSwipeRight();
+        else if (dx < -swipeThreshold) onSwipeLeft();
+        } else {
+        if (dy > swipeThreshold) onSwipeDown();
+        else if (dy < -swipeThreshold) onSwipeUp();
+        }
+    };
 }
 
 // Fonctions à personnaliser
@@ -31,8 +46,23 @@ function onSwipeDown() {
 }
 function onSwipeLeft() {
   console.log("Swipe vers la gauche");
-  annee = 2023;
+  mouseSelection=true;
+  swipeSel = (swipeSel+1) % 4;
+  switch (swipeSel) {
+    case 0: BtTournoi();break;
+    case 1: BtListe();break;
+    case 2: BtGraphe();break;
+    case 3: BtEnCours();break;
+  }
 }
 function onSwipeRight() {
   console.log("Swipe vers la droite");
+  mouseSelection=true;
+  swipeSel = (swipeSel-1 + 4) % 4;
+  switch (swipeSel) {
+    case 0: BtTournoi();break;
+    case 1: BtListe();break;
+    case 2: BtGraphe();break;
+    case 3: BtEnCours();break;
+  }
 }
