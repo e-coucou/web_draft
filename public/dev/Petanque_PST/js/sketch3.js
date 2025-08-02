@@ -50,7 +50,7 @@ let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat
 let youtube_lien = [ "https://www.youtube.com/watch?v=oZEMfP-aSvY",
                     "https://www.youtube.com/watch?v=Xka1_ZWlMTw",
                     "https://www.youtube.com/watch?v=FJszC_clYmU",
-                    "",
+                    "https://www.youtube.com/watch?v=YUnFs8UwPeM",
                     "",
                     "" ];
 
