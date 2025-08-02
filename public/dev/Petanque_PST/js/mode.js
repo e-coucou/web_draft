@@ -23,13 +23,14 @@ function drawParam() {
     switch(mode) {
         case 4:
             text('Score initial ELO :',x,y); text(param.ELO.init+' pts',x1,y); y += dy;
-            text('Limitation du gain >',x,y); text(param.ELO.seuil+' pts',x1,y); y += dy;
+            text('Limitation du gain >',x,y); text(param.ELO.maxEcart+' pts',x1,y); y += dy;
             text('Coef. match normal :',x,y); text(nf(param.ELO.std,0,2)+' pts',x1,y); y += dy;
             text('Coef. en "demi" :',x,y); text(nf(param.ELO.demi,0,2)+' pts',x1,y); y += dy;
             text('Coef. phases finales :',x,y); text(nf(param.ELO.finaliste,0,2)+' pts',x1,y); y += dy;
             text('Coef. pour la FINALE :',x,y); text(nf(param.ELO.finale,0,2)+' pts',x1,y); y += dy;
             text('Majoration si écart > :',x,y); text(param.ELO.bonusSeuil+' pts',x1,y); y += dy;
             text('Coef. de Majoration :',x,y); text(nf(param.ELO.bonus,0,2)+' pts',x1,y); y += dy;
+            text('Ratio >',x,y); text(param.ELO.seuil+' pts',x1,y); y += dy;
             y=80;
             for (let b in btPM) {
                 b = int(b);

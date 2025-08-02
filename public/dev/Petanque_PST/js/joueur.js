@@ -77,7 +77,6 @@ class Joueur {
         this.hist.push({c:(n+1), elo:this.ELO});
         // faire le delta ici ..
         let po_=0, nu_=0,co_=0;
-        let nbClst = this.clast.length;
         this.clast.forEach(c =>      
         // if (nbClst>0) 
             {
@@ -86,7 +85,7 @@ class Joueur {
             po_ += c.p;
         });
         if (a_) {
-            this.clast.push({a: annee, c: (n+1) , elo: this.ELO, p:this.gagne-po_, c:this.perdu-co_, n:this.nul-nu_});
+            this.clast.push({a: annee, clt: (n+1) , elo: this.ELO, p:this.gagne-po_, c:this.perdu-co_, n:this.nul-nu_});
         }
     }
     addMatch(p_, c_, a_, eqN_,ref_) {
@@ -251,7 +250,7 @@ class Joueur {
         tmp='Classements : ';
         text( tmp,x,y+dy); dy += 16;
         for (let c of this.clast) {
-            tmp =  c.a +':'+ c.c +(c.c==1?'er (':'eme (')+ nf(c.elo,0,1) + ')  ';
+            tmp =  c.a +':'+ c.clt +(c.clt==1?'er (':'eme (')+ nf(c.elo,0,1) + ')  ';
             text( tmp,x+s,y+dy);
             dy += 16;
         }

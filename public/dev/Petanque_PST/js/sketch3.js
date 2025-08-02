@@ -1,4 +1,4 @@
-const eC = {version: 'v6.3', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.4', release:'r0', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -91,10 +91,10 @@ function update_color(n) {
 }
 function update_PM(n) {
     let c =int(n /2), d=n%2;
-    const HH=1; LL=0.05;
+    const HH=1; LL=0.01;
     switch (c) {
         case 0 : if (d) { param.ELO.init -= HH; } else {param.ELO.init += HH;}; break;
-        case 1 : if (d) { param.ELO.seuil -= HH; } else {param.ELO.seuil += HH;}; break;
+        case 1 : if (d) { param.ELO.maxEcart -= HH; } else {param.ELO.maxEcart += HH;}; break;
         case 2 : if (d) { param.ELO.std -= LL; } else {param.ELO.std += LL;}; break;
         case 3 : if (d) { param.ELO.demi -= LL; } else {param.ELO.demi += LL;}; break;
         case 4 : if (d) { param.ELO.finaliste -= LL; } else {param.ELO.finaliste += LL;}; break;
