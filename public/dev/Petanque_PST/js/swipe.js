@@ -50,7 +50,7 @@ function onSwipeDown() {
 //   console.log("Swipe vers le bas");
     if (mode === 2) {
         mouseSelection=true;
-        update_Nav(0);
+        update_Nav(1);
     }
 }
 function onSwipeLeft() {
