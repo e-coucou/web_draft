@@ -40,17 +40,24 @@ function initSwipe() {
 
 // Fonctions à personnaliser
 function onSwipeUp() {
-  console.log("Swipe vers le haut");
-  
+//   console.log("Swipe vers le haut");
+    if (mode === 2) {
+        mouseSelection=true;
+        update_Nav(0);
+    }
 }
 function onSwipeDown() {
-  console.log("Swipe vers le bas");
+//   console.log("Swipe vers le bas");
+    if (mode === 2) {
+        mouseSelection=true;
+        update_Nav(0);
+    }
 }
 function onSwipeLeft() {
   console.log("Swipe vers la gauche");
   if (swH.includes(mode)) {
     mouseSelection=true;
-    swipeSel = (swipeSel+1) % 4;
+    swipeSel = (swipeSel-1 + 4) % 4;
     switch (swipeSel) {
         case 0: BtTournoi();break;
         case 1: BtListe();break;
@@ -63,7 +70,7 @@ function onSwipeRight() {
   console.log("Swipe vers la droite");
   if (swH.includes(mode)) {
     mouseSelection=true;
-    swipeSel = (swipeSel-1 + 4) % 4;
+    swipeSel = (swipeSel+1) % 4;
     switch (swipeSel) {
         case 0: BtTournoi();break;
         case 1: BtListe();break;
