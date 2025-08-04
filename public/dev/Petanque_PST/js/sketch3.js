@@ -1,4 +1,4 @@
-const eC = {version: 'v6.4', release:'r1', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.4', release:'r2', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -369,20 +369,8 @@ function draw() {
                 btTournoi.setOn();
                 drawTournois(0,40,width, height-100,annee);
                 youtubeEmbed.attribute('href', youtube_lien[annee-2020]); //2020
-                // youtubeEmbed.attribute('href', "https://www.youtube.com/watch?v=Xka1_ZWlMTw"); //2021
-                // youtubeEmbed.attribute('href', "https://www.youtube.com/watch?v=FJszC_clYmU"); //2022
                   if (phase==="Finale" && mode===1) {
                     img_youtube.show();
-                //     image(img_youtube,(width/2)-60,height-155,120,80) ; //,xAlign=CENTER,yAlign=CENTER);
-                // //     youtubeEmbed.position(innerWidth/2-90,height-125);
-                // //     youtubeEmbed.html(`
-                // //         <iframe width="180" height="100"
-                // //         src="https://www.youtube.com/embed/oZEMfP-aSvY"
-                // //         frameborder="0"
-                // //         allow="accelerometer; encrypted-media; picture-in-picture"
-                // //         allowfullscreen
-                // //         </iframe>
-                // //     `);
                 }
                 break;
             case 10:

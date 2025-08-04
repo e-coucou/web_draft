@@ -29,12 +29,13 @@ function initSwipe() {
         const dy = endY - startY;
 
         if (abs(dx) > abs(dy)) {
-        if (dx > swipeThreshold) onSwipeRight();
-        else if (dx < -swipeThreshold) onSwipeLeft();
-        } else {
-        if (dy > swipeThreshold) onSwipeDown();
-        else if (dy < -swipeThreshold) onSwipeUp();
-        }
+            mouseSelection = true
+            if (dx > swipeThreshold) onSwipeRight();
+            else if (dx < -swipeThreshold) onSwipeLeft();
+            } else {
+            if (dy > swipeThreshold) onSwipeDown();
+            else if (dy < -swipeThreshold) onSwipeUp();
+            }
     };
 }
 
@@ -42,21 +43,18 @@ function initSwipe() {
 function onSwipeUp() {
 //   console.log("Swipe vers le haut");
     if (mode === 2) {
-        mouseSelection=true;
         update_Nav(0);
     }
 }
 function onSwipeDown() {
 //   console.log("Swipe vers le bas");
     if (mode === 2) {
-        mouseSelection=true;
         update_Nav(1);
     }
 }
 function onSwipeLeft() {
-  console.log("Swipe vers la gauche");
+//   console.log("Swipe vers la gauche");
   if (swH.includes(mode)) {
-    mouseSelection=true;
     swipeSel = (swipeSel-1 + 4) % 4;
     switch (swipeSel) {
         case 0: BtTournoi();break;
@@ -67,9 +65,8 @@ function onSwipeLeft() {
   }
 }
 function onSwipeRight() {
-  console.log("Swipe vers la droite");
+//   console.log("Swipe vers la droite");
   if (swH.includes(mode)) {
-    mouseSelection=true;
     swipeSel = (swipeSel+1) % 4;
     switch (swipeSel) {
         case 0: BtTournoi();break;
