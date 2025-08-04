@@ -47,13 +47,14 @@ let couleur_arr =[
     {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc',err:"#ff0000"} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
-let youtube_lien = [ "https://www.youtube.com/watch?v=oZEMfP-aSvY",
+let youtube_lien = [ 
+                    "https://www.youtube.com/watch?v=oZEMfP-aSvY",
                     "https://www.youtube.com/watch?v=Xka1_ZWlMTw",
                     "https://www.youtube.com/watch?v=FJszC_clYmU",
                     "https://www.youtube.com/watch?v=YUnFs8UwPeM",
-                    "",
-                    "" ];
-
+                    "https://www.youtube.com/watch?v=fey-sqJhDuY",
+                    ""
+                    ];
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
 apiKey: "AIzaSyCwsXvdYCtmwqHCdd0MQkFky1w53M_SKns",
