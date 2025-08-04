@@ -1,4 +1,4 @@
-const eC = {version: 'v6.4', release:'r2', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.4', release:'r3', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -300,7 +300,7 @@ function setup() {
     let x = (windowWidth - width) / 2;
     let y = (windowHeight - height) / 2;
     canvas.position(x, y+10);
-    initSwipe();
+    // initSwipe();
     select("#notice").style('display','none');
     select("#ELO").style('display','none');
     select('#start').style('display','none');

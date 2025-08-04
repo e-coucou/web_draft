@@ -15,18 +15,21 @@ function initSwipe() {
         const touch = e.touches[0];
         startX = touch.clientX;
         startY = touch.clientY;
+        console.log("ici touch")
     };
 
     canvasElement.ontouchmove = function (e) {
         const touch = e.touches[0];
         endX = touch.clientX;
         endY = touch.clientY;
+        console.log("ici move")
         e.preventDefault(); // Empêche le scroll pendant le swipe
     };
 
     canvasElement.ontouchend = function (e) {
         const dx = endX - startX;
         const dy = endY - startY;
+        console.log("ici end")
 
         if (abs(dx) > abs(dy)) {
             mouseSelection = true

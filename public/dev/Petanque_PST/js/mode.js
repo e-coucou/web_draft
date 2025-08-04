@@ -14,6 +14,17 @@
 const eC_Etat = ['',' [🔫]',' [🪩]'];
 let eqs = [];
 
+function getEQS() {
+    if (eqs.length==0 ) {
+        let t = e_json.filter(a=> {return a.annee==annee});
+        t.forEach(a=> {
+            let tt = {j1: j_json[a.J1], j2: j_json[a.J2]}
+            eqs.push(tt);
+        })
+        if (eqs[0].j1.id==0) eqs=[];
+    };
+}
+
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -60,7 +71,7 @@ function drawParam() {
                 y += dy;
             }
             break;
-        case 6:
+        case 6: // selection des joueurs année en cours
             {
                 y = 20, x=0;
                 dy = height*0.85/j_json.length * 2;
@@ -112,7 +123,7 @@ function drawParam() {
                 });
             }
             break;
-        case 7:
+        case 7: // selection aléeatoire
             {
                 y = 20, x=0;
                 dy = height*0.85/(16+2);
@@ -152,6 +163,7 @@ function drawParam() {
                 if ((p.length!=8) || (t.length!=8)) { 
                     fill(color(couleur.err)); texte = 'COMPOSITION IMPOSSIBLE !';                
                 } else {
+                    getEQS();
                     textSize(dy/2.5);
                     y = y + dy + 10;
                     eqs.forEach(j => {
@@ -209,6 +221,7 @@ function drawParam() {
                 if ((pEC.length!=8) || (tEC.length!=8)) { 
                     fill(color(couleur.err)); texte = 'COMPOSITION IMPOSSIBLE !';                
                 } else {
+                    getEQS();
                     textSize(dy/2.5);
                     y = y + dy + 10;
                     eqs.forEach(j => {

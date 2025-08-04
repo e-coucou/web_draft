@@ -3,21 +3,26 @@ let idScoreUpdate = -1;
 function touchStarted() {
     mouseSelection=true;
     let fs =fullscreen();
+    // console.log("mouse start")
     // console.log(fs);
     // if (!fs) { fullscreen(true);}
     // console.log(touches[0].x+'/'+touches[0].y,20,height-50);
     checkDots(touches[0].x, touches[0].y);
 }
 function mousePressed() {
+    // console.log("mouse pressed")
     mouseSelection=true;
     checkDots(mouseX,mouseY);
 }
 function mouseMoved() {
     xM = max(padding,min(mouseX,width-2*padding));
     yM = max(padding,min(mouseY,height-2*padding));
+    // console.log("mouse moved", xM,yM)
+    
 }
 
 function checkDots(mX, mY) {
+    // console.log('dots')
     if ( ((frameCount-debounce) > 10) ) {
         debounce = frameCount;
         // Selection de la categorie du joueur /Tireur/Pointeur/Indifférent
