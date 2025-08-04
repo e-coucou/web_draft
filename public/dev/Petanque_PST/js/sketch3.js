@@ -8,8 +8,8 @@ let equipes = [];
 let matchs = [];
 let annees = [];
 let inter; // intervalle entre deux ligne sur fiche joueur
-let j_json, e_json, m_json, t_json;
-let dbJoueurs,dbTypes,dbMatchs,dbTeam;
+let j_json, e_json, m_json, t_json, v_json;
+let dbJoueurs,dbTypes,dbMatchs,dbTeam,dbVideos;
 let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
@@ -231,10 +231,12 @@ function preload() {
     dbTypes  = database.ref('types');
     dbMatchs  = database.ref('matchs');
     dbTeam  = database.ref('equipes');
+    dbVideos  = database.ref('videos');
     dbJoueurs.on("value", getDataJ, errData);
     dbTypes.on("value", getDataT, errData);
     dbMatchs.on("value", getDataM, errData);
     dbTeam.on("value", getDataE, errData);
+    dbVideos.on("value", getDataV, errData);
 
     img_gassin = loadImage("./img/gassin.png"); //130x143
     img_ramatuelle = loadImage("./img/ramatuelle.png"); //130x143
@@ -369,7 +371,8 @@ function draw() {
                 run=false; btNav[1].txt = '▶️' ; run=false;
                 btTournoi.setOn();
                 drawTournois(0,40,width, height-100,annee);
-                youtubeEmbed.attribute('href', youtube_lien[annee-2020]); //2020
+                youtubeEmbed.attribute('href', v_json[annee-2020].id); //2020
+                // youtubeEmbed.attribute('href', youtube_lien[annee-2020]); //2020
                   if (phase==="Finale" && mode===1) {
                     img_youtube.show();
                 }

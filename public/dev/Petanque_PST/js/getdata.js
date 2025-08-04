@@ -1,11 +1,11 @@
-let start = 0x0F, startOnce=true;
+let start = 0x1F, startOnce=true;
 let eq=['A','B','C','D','E','F','G','H'];
 let eqEC=[], tEC=[], pEC=[], idEqSel=0;
 let m_Encours=undefined;
 
 function launch(code) {
-    start = start & code;
-    // console.log(start);
+    // console.log(start, code);
+    start = start ^ code;
     if (start === 0) {
         reInit();
     }
@@ -13,22 +13,27 @@ function launch(code) {
 function getDataM(data) {
     m_json = data.val();
     NB_MATCHS = m_json.length;
-    launch(0x0E);
+    launch(0x01); //OE
 }
 function getDataE(data) {
     e_json = data.val();
-    launch(0x0D);
+    launch(0x02); //OD
 }
 function getDataJ(data) {
     // console.log(data.val())
     j_json = data.val();
-    launch(0x0B);
+    launch(0x04); //0B
 }
 
 function getDataT(data) {
     // console.log(data.val())
     t_json = data.val();
-    launch(0x07);
+    launch(0x08);
+}
+function getDataV(data) {
+    // console.log(data.val())
+    v_json = data.val();
+    launch(0x10);
 }
 
 function errData(err) {
