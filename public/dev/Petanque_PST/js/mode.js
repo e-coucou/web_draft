@@ -25,6 +25,19 @@ function getEQS() {
     };
 }
 
+function filtreJoueurs() {
+    switch (filtreJ2) {
+        case 0: 
+            break;
+        case 1: 
+            eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
+            break;
+        case 2: 
+            eJoueurs = eJoueurs.filter(a=>{return a.permanent});
+            break;
+    }
+}
+
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
@@ -274,10 +287,12 @@ function drawListe() {
     text('r',x_+6*dx+dx/2, y_);
     // text('---'+inter+'----',100,height-50);
     eJoueurs = joueurs.filter(a=>{return a.id!=0;});
-    if (filtreJ) {
-        eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
-    }
-    if (btPermanent.on) eJoueurs = eJoueurs.filter(a=>{return a.permanent});
+    filtreJoueurs();
+    //xxx
+    // if (filtreJ) {
+    //     eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
+    // }
+    // if (btPermanent.on) eJoueurs = eJoueurs.filter(a=>{return a.permanent});
     for (let i in eJoueurs) {
         let idx = int(eJoueurs[i].hist[index].c);
         let elo = eJoueurs[i].hist[index].elo;
@@ -329,10 +344,11 @@ function drawGraphe() {
     fill(color(couleur.bk));
     rect(padding,79,width-2*padding,height-175);
     eJoueurs = joueurs.filter(a=>{return a.id!=0;});
-    if (filtreJ) {
-        eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
-    }
-    if (btPermanent.on) eJoueurs = eJoueurs.filter(a=>{return a.permanent});
+    filtreJoueurs();
+    // if (filtreJ) {
+    //     eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});
+    // }
+    // if (btPermanent.on) eJoueurs = eJoueurs.filter(a=>{return a.permanent});
     for (let i in eJoueurs) {
         let idx = int(eJoueurs[i].hist[index].c);
         let elo = eJoueurs[i].hist[index].elo;

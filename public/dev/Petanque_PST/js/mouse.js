@@ -164,8 +164,13 @@ function checkDots(mX, mY) {
             let id_ = floor((mX-padding) / ((width-2*padding) / matchs.length));
             updateMatch(id_);
         }
-        if (btFiltre.isIn(mX,mY,mode)) {filtreJ = !(filtreJ);
-            btFiltre.txt='🌐'; if (filtreJ) {btFiltre.txt='🔢';}
+        if (btFiltre.isIn(mX,mY,mode)) {
+            filtreJ = !(filtreJ);
+            btFiltre.txt='🌐';
+            if (filtreJ) {btFiltre.txt='🔢';}
+            filtreJ2 = (filtreJ2+1) % 3;
+            btFiltre.txt = iconFiltre[filtreJ2];
+
         }
         // if (mode == 3) {
         //     let id_ = floor((mY-82)/joueurs.length);

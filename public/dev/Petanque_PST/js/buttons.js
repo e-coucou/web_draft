@@ -1,4 +1,5 @@
 const BOUTON_HAUTEUR = 12;
+const iconFiltre = ['🌐','#️⃣','🅿️']; //🔢
 
 let btTournoi,btGraphe,btRetour, btCategories=[], btInfo, btELO, btNotice, btListe, btEncours, btZoom, btEquipe, btResetEquipe, btRandom, btPermanent;
 
@@ -125,7 +126,7 @@ function createButtons() {
     // inter = int((height-120)/initJoueurs.length);
     btNav.push(new BoutonC('◀️',width*8/10,height-r-padding,14,[2,4,5,6,7,8,9],false));
     btNav.push(new BoutonC('▶️',width*9/10,height-r-padding,14,[0,2,3,4,5,6,7,8,9],false));
-    btFiltre = new BoutonC('🔢',width*8/10,height-r-padding,14,[0,3],false);
+    btFiltre = new BoutonC('🌐',width*8/10,height-r-padding,14,[0,3],false);
     dx = (width-2*padding)/annees.length;
     for (let i in annees) {
         i = int(i);
@@ -140,7 +141,7 @@ function createButtons() {
     btPoule.push(new Bouton("Gassin",width/3,67,width/3-2,[1],true));
     btPoule.push(new Bouton("Ramatuelle",2*width/3,67,width/3-2,[1]));
 
-    btPermanent = new Switch("Résid.",width-150,height-67,100,15,[0,2,3],false);
+    btPermanent = new Switch("Résid.",width-150,height-67,100,15,[2],false);
 }
 class BtBase {
     constructor(txt,x,y,l) {

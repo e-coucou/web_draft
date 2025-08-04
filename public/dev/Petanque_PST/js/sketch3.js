@@ -1,4 +1,4 @@
-const eC = {version: 'v6.4', release:'r4', date:'jul/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.5', release:'r0', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -14,7 +14,7 @@ let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
 let id = 0, idSel;
-let mode = 1, debug = 0, mode_prev, filtreJ=true; // on filtre les joueurs actifs
+let mode = 1, debug = 0, mode_prev, filtreJ=true, filtreJ2=0; // on filtre les joueurs actifs
 let annee, selA, phase = "Finale", poule, categories = 7;
 let padding = 5;
 let toggle=true;
