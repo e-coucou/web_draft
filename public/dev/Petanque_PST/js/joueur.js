@@ -179,6 +179,8 @@ class Joueur {
             for (let i=0;i<this.victoire;i++) { tmp += '🏆';}
             text(tmp,x+7*dx+dx/2, y);
             tmp = '';
+            // if (this.pointeur>0) { tmp += this.pointeur+ 'x 🪩 '; }
+            // if (this.tireur>0) { tmp += this.tireur+ 'x 🔫'; }
             for (let i=0;i<(this.tireur);i++) { tmp += '🔫';}
             for (let i=0;i<(this.pointeur);i++) { tmp += '🪩';}
             text(tmp,x+8*dx+dx/2, y);
