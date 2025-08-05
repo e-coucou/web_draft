@@ -1,4 +1,4 @@
-const eC = {version: 'v6.5', release:'r1', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.5', release:'r3', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -334,6 +334,7 @@ function draw() {
     if (mouseSelection) {
         background(255);
         noStroke();
+        reInit();
         img_youtube.hide();
         switch (mode) {
             case 3: // mode Graphe
