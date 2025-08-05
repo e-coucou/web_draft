@@ -1,4 +1,4 @@
-const eC = {version: 'v6.5', release:'r0', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.5', release:'r1', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -47,14 +47,14 @@ let couleur_arr =[
     {bk:'#0e0004', dm:'#31081f', cur:'#6b0f1a', sel:'#b91372' , txt:'#ffbbcc',err:"#ff0000"} ]
 let poules = ['Gassin', 'Ramatuelle'];
 let selCat = [ {id:1 , cat:'Tireur 🔫'},{id:2, cat:'Pointeur 🪩'},{id:4, cat:'Indécis 🤔'}];
-let youtube_lien = [ 
-                    "https://www.youtube.com/watch?v=oZEMfP-aSvY",
-                    "https://www.youtube.com/watch?v=Xka1_ZWlMTw",
-                    "https://www.youtube.com/watch?v=FJszC_clYmU",
-                    "https://www.youtube.com/watch?v=YUnFs8UwPeM",
-                    "https://www.youtube.com/watch?v=fey-sqJhDuY",
-                    ""
-                    ];
+// let youtube_lien = [ 
+//                     "https://www.youtube.com/watch?v=oZEMfP-aSvY",
+//                     "https://www.youtube.com/watch?v=Xka1_ZWlMTw",
+//                     "https://www.youtube.com/watch?v=FJszC_clYmU",
+//                     "https://www.youtube.com/watch?v=YUnFs8UwPeM",
+//                     "https://www.youtube.com/watch?v=fey-sqJhDuY",
+//                     ""
+//                     ];
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
 apiKey: "AIzaSyCwsXvdYCtmwqHCdd0MQkFky1w53M_SKns",

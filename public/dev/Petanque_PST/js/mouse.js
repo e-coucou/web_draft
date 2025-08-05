@@ -148,8 +148,8 @@ function checkDots(mX, mY) {
             }
         }        
         if (btZoom.isIn(mX,mY,mode)) { mode=2;clearButtons();btZoom.setOn(); return;}
-        if (btEquipe.isIn(mX,mY,mode)) { updateTeam(); return;}
-        if (btResetEquipe.isIn(mX,mY,mode)) { if (mode==7) {resetTeam()} else {resetTeamSel()}; return;}
+        if (btEquipe.isIn(mX,mY,mode)) { updateTeam(); reInit(); return;}
+        if (btResetEquipe.isIn(mX,mY,mode)) { if (mode==7) {resetTeam()} else {resetTeamSel()}; reInit(); return;}
         if (btRandom.isIn(mX,mY,mode)) { randomTeam(); return;}
         if (btGraphe.isIn(mX,mY,mode)) {
             // mode_prev = mode;
