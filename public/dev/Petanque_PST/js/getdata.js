@@ -1,4 +1,4 @@
-let start = 0x1F, startOnce=true;
+let start = 0x3F, startOnce=true;
 let eq=['A','B','C','D','E','F','G','H'];
 let eqEC=[], tEC=[], pEC=[], idEqSel=0;
 let m_Encours=undefined;
@@ -35,6 +35,14 @@ function getDataV(data) {
     v_json = data.val();
     launch(0x10);
 }
+
+function getDataP(data) {
+    // console.log(data.val())
+    p_json = data.val();
+    enCours = p_json.annee;
+    launch(0x20);
+}
+
 
 function errData(err) {
     console.log(err);

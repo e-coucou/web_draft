@@ -1,4 +1,4 @@
-const eC = {version: 'v6.5', release:'r3', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v6.5', release:'r4', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -8,8 +8,8 @@ let equipes = [];
 let matchs = [];
 let annees = [];
 let inter; // intervalle entre deux ligne sur fiche joueur
-let j_json, e_json, m_json, t_json, v_json;
-let dbJoueurs,dbTypes,dbMatchs,dbTeam,dbVideos;
+let j_json, e_json, m_json, t_json, v_json, p_json;
+let dbJoueurs,dbTypes,dbMatchs,dbTeam,dbVideos, dbParam;
 let index = 0;
 let nbMatchs;
 let xM=0,yM=0;
@@ -232,11 +232,13 @@ function preload() {
     dbMatchs  = database.ref('matchs');
     dbTeam  = database.ref('equipes');
     dbVideos  = database.ref('videos');
+    dbParam  = database.ref('param');
     dbJoueurs.on("value", getDataJ, errData);
     dbTypes.on("value", getDataT, errData);
     dbMatchs.on("value", getDataM, errData);
     dbTeam.on("value", getDataE, errData);
     dbVideos.on("value", getDataV, errData);
+    dbParam.on("value", getDataP, errData);
 
     img_gassin = loadImage("./img/gassin.png"); //130x143
     img_ramatuelle = loadImage("./img/ramatuelle.png"); //130x143
