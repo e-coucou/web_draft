@@ -5,7 +5,7 @@
         "finale":1.15 ,
         "init":100,
         "seuil":10,
-        "bonus":1.05,
+        "bonus":1.10,
         "bonusSeuil":5,
-        "maxEcart":5 }
+        "maxEcart":1 }
 }

@@ -217,6 +217,7 @@ function ClstEncour() {
     ClstEncourDemi('Principal',0,id_f)
     id_f = NB_MATCHS - 4;
     ClstEncourDemi('Honneur',0,id_f)
+    updateMatchs(enCours);
 }
 
 function updateMatchs(a) {

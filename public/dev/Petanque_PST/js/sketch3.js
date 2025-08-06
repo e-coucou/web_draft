@@ -1,4 +1,4 @@
-const eC = {version: 'v6.5', release:'r4', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v7.0', release:'r1', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -90,12 +90,12 @@ function update_color(n) {
     select('.entete').style('background-color',couleur.bk);
     selectAll('.notice').forEach( a => a.style('background-color',couleur.bk));
 }
-function update_PM(n) {
+function update_PM(n) { // Mise a jour des parametres ELO
     let c =int(n /2), d=n%2;
-    const HH=1; LL=0.01;
+    const HH=1, LL=0.01, HL=0.1
     switch (c) {
         case 0 : if (d) { param.ELO.init -= HH; } else {param.ELO.init += HH;}; break;
-        case 1 : if (d) { param.ELO.maxEcart -= HH; } else {param.ELO.maxEcart += HH;}; break;
+        case 1 : if (d) { param.ELO.maxEcart -= HL; } else {param.ELO.maxEcart += HL;}; break;
         case 2 : if (d) { param.ELO.std -= LL; } else {param.ELO.std += LL;}; break;
         case 3 : if (d) { param.ELO.demi -= LL; } else {param.ELO.demi += LL;}; break;
         case 4 : if (d) { param.ELO.finaliste -= LL; } else {param.ELO.finaliste += LL;}; break;
@@ -320,11 +320,10 @@ function setup() {
     img_youtube.hide();
     img_youtube.parent(youtubeEmbed);
     windowResized();
-    ClstEncour();
+    // ClstEncour();
 }
 
 function draw() {
-    ClstEncour();
     if (mode!=10) {score1.hide();score2.hide();}
     if (run) {
         if (frameCount % 30 == 0) {
@@ -337,6 +336,7 @@ function draw() {
         background(255);
         noStroke();
         reInit();
+    ClstEncour();
         img_youtube.hide();
         switch (mode) {
             case 3: // mode Graphe
