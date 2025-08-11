@@ -100,7 +100,7 @@ class Joueur {
         t[0]['idEq'] = p_;
     }
     update(delta_,win_) {
-        this.ELO += delta_;9
+        this.ELO += delta_;
         this.match += 1;
         if (win_>0) this.gagne += 1;
         if (win_<0) this.perdu += 1;
