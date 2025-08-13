@@ -50,7 +50,7 @@ function checkDots(mX, mY) {
         //    Boutons  +/-  de Param
         for( let n in btPM) {
             let b = btPM[n];
-            if (b.isIn(mX,mY,mode)) { update_PM(n); return; }
+            if (b.isIn(mX,mY,mode)) { btFiltre(n); return; }
         }
         //    Boutons  Navigation
         for( let n in btNav) {

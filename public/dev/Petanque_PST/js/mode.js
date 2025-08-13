@@ -28,6 +28,7 @@ function getEQS() {
 function filtreJoueurs() {
     switch (filtreJ2) {
         case 0: 
+            eJoueurs = joueurs.slice(0);
             break;
         case 1: 
             eJoueurs = joueurs.filter(a=>{let b= ( a.annees.filter(v=>{let t= (v==annee);return t;}));return b[0]});

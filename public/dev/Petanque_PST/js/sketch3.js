@@ -1,4 +1,4 @@
-const eC = {version: 'v7.0', release:'r1', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
+const eC = {version: 'v7.0', release:'r2', date:'aug/25', owner: 'rky', code:'y2H', annee:'2025', creation:'sep/23'};
 
 let NB_MATCHS = 0;
 let param, run=false,enCours=2025, firstStart=true;
@@ -283,7 +283,7 @@ function windowResized() {
     let y_ = (windowHeight - height) / 2;
     select('canvas').position(x_, y_+10);
     // canvas.position(x_, y_+10);
-    if ( firstStart) {firstStart=false;} else { console.log("coucou"); redimButtons(); run=true; mouseSelection=true;}
+    if ( firstStart) {firstStart=false;} else { console.log("coucou"); redimButtons(); run=false; mouseSelection=true;}
     // mouseSelection=true;
     score1.position(x_+w_/4,height-40);
     // score1.position(width/2+x_-40,height/13*12);
@@ -335,8 +335,8 @@ function draw() {
     if (mouseSelection) {
         background(255);
         noStroke();
-        reInit();
-    ClstEncour();
+        // reInit();
+        ClstEncour();
         img_youtube.hide();
         switch (mode) {
             case 3: // mode Graphe
