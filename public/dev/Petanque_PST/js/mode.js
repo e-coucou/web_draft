@@ -24,7 +24,6 @@ function getEQS() {
         if (eqs[0].j1.id==0) eqs=[];
     };
 }
-
 function filtreJoueurs() {
     switch (filtreJ2) {
         case 0: 
@@ -38,7 +37,6 @@ function filtreJoueurs() {
             break;
     }
 }
-
 function drawParam() {
     // a compléter ...
     let x = 30, x1 = width/2;
